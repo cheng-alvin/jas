@@ -3,7 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-char **parse(char *buffer) {
+#define OPERAND_SEP ", "
+
+instruction_t **parse(char *buffer) {
   char **lines = (char **)malloc(sizeof(char *) * 8);
 
   int i = 0;
@@ -14,10 +16,24 @@ char **parse(char *buffer) {
     }
 
     lines[i] = line;
-    printf("%s\n", lines[i]);
     line = strtok(NULL, "\n");
     i++;
   }
 
-  return lines;
+  instruction_t **instructions =
+      (instruction_t **)malloc(sizeof(instruction_t *) * (i + 1));
+
+  for (int j = 0; j < i; j++) {
+    char *current_line = lines[j];
+
+    instructions[j] = (instruction_t *)malloc(sizeof(instruction_t));
+    instructions[j]->instruction = strtok(current_line, " ");
+    instructions[j]->arg1 = strtok(NULL, OPERAND_SEP);
+    instructions[j]->arg2 = strtok(NULL, OPERAND_SEP);
+    instructions[j]->arg3 = strtok(NULL, OPERAND_SEP);
+  }
+
+  free(lines);
+
+  return instructions;
 }

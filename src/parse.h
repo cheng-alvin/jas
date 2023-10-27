@@ -2,7 +2,7 @@ typedef struct {
   char *instruction;
   char *arg1;
   char *arg2;
+  char *arg3;
 } instruction_t;
 
-char **parse(char *buffer);
-// instruction_t **parse(char *buffer);
+instruction_t **parse(char *buffer);
