@@ -5,7 +5,7 @@ This is the official source tree for the Jas assembler. Jas is a MIT licensed, f
 
 Jas is a work in progress and is not yet ready for production use.
 
-Feel free to contribute to the project, please see [HACKING.txt] for more details.
+Feel free to contribute to the project, please see https://github.com/cheng-alvin/jas/blob/main/HACKING.txt for more details.
 
 Regards, 
 The Jas crew.
