@@ -1,13 +1,14 @@
 CC = clang
 LD = clang
+CFLAGS = -g
 
-OBJ = main.o
+OBJ = main.o parse.o
 BUILD = ../build
 
 all: jas
 
 jas: $(OBJ)
-	$(LD) $^ -o $(BUILD)/$@
+	$(LD) $^ -o $(BUILD)/$@ 
 
 clean:
 	rm -r -f *.o $(BUILD)
