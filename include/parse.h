@@ -1,3 +1,12 @@
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Return type for the `parse` function, specifies the instruction's
+ * name and its arguments. Shall be returned from the parser function's
+ * output.
+ */
+
 typedef struct {
   char *instruction;
   char *arg1;
