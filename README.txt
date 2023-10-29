@@ -7,5 +7,3 @@ Feel free to contribute to the project, please see https://github.com/cheng-alvi
 
 Regards, 
 The Jas crew.
-
-Please note that the jas assembler is currently in development and not ready for production usage, please only test in a safe testing enviroment that may not cause any damage. NO WARRANTY WILL BE GIVEN
