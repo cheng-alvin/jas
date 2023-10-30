@@ -86,14 +86,14 @@ enum x64_opcodes {
   FUCOM = 0xDD,     /**< Floating-Point Unordered Compare */
   FUCOMI = 0xDB,    /**< Floating-Point Unordered Compare and Set EFLAGS */
   FUCOMIP =
-      0xDF,      /**< Floating-Point Unordered Compare and Set EFLAGS and Pop */
-  FLDZ = 0xD9,   /**< Floating-Point Load Zero */
-  FLD1 = 0xD9,   /**< Floating-Point Load One */
-  FLDPI = 0xDB,  /**< Floating-Point Load PI */
-  FLDLN2 = 0xDD, /**< Floating-Point Load Log2(e) */
-  FLDL2E = 0xD9, /**< Floating-Point Load Log2(e) */
-  FLDL2T = 0xD9, /**< Floating-Point Load Log2(10) */
-  FLDLG2 = 0xDD, /**< Floating-Point Load Log10(2) */
+      0xDF,       /**< Floating-Point Unordered Compare and Set EFLAGS and Pop */
+  FLDZ = 0xD9,    /**< Floating-Point Load Zero */
+  FLD1 = 0xD9,    /**< Floating-Point Load One */
+  FLDPI = 0xDB,   /**< Floating-Point Load PI */
+  FLDLN2 = 0xDD,  /**< Floating-Point Load Log2(e) */
+  FLDL2E = 0xD9,  /**< Floating-Point Load Log2(e) */
+  FLDL2T = 0xD9,  /**< Floating-Point Load Log2(10) */
+  FLDLG2 = 0xDD,  /**< Floating-Point Load Log10(2) */
   FLDLN2T = 0xD9, /**< Floating-Point Load Log2(e) */
   FLDLG2T = 0xD9, /**< Floating-Point Load Log10(2) */
   FSTP1 = 0xD9,   /**< Floating-Point Store One */
