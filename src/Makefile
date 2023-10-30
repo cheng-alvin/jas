@@ -1,5 +1,5 @@
-CC = gcc
-LD = gcc
+CC = clang
+LD = clang
 DB = gdb
 
 OBJ = main.o parse.o
