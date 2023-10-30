@@ -12,8 +12,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Install Clang
+        run: sudo apt-get install clang -y
       - name: Format code with Clang
-        run: git clang-format
+        run: clang-format -i **/*.{c,h} --verbose
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
