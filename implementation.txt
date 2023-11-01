@@ -1,0 +1,238 @@
+IGNORE, implementation details for the assembler's instruction encoding.
+========================================================================
+
+1. **MOV:**
+   - Memory to Register:
+     ```plaintext
+     MOV | 48 8B (Opcode) + ModR/M + Displacement + Immediate Value (4 bytes)
+     ```
+   - Immediate to Register:
+     ```plaintext
+     MOV | 48 B8 (Opcode for rax) + Immediate Value (8 bytes)
+     ```
+   - Register to Memory:
+     ```plaintext
+     MOV | 48 89 (Opcode) + ModR/M + Displacement
+     ```
+   - Register to Register:
+     ```plaintext
+     MOV | 48 89 (Opcode) + ModR/M
+     ```
+
+2. **ADD, SUB:**
+   - Register to Register:
+     ```plaintext
+     ADD/SUB | 48 03/2B (Opcode) + ModR/M
+     ```
+
+3. **JMP, CALL:**
+   - Relative Address (32-bit):
+     ```plaintext
+     JMP/CALL | E9/E8 (Opcode) + Relative Address (4 bytes)
+     ```
+
+4. **RET:**
+   - No operands:
+     ```plaintext
+     RET | C3 (Opcode)
+     ```
+
+5. **PUSH, POP:**
+   - Register:
+     ```plaintext
+     PUSH/POP | 50/58 (Opcode)
+     ```
+
+6. **CMP:**
+   - Register to Register:
+     ```plaintext
+     CMP | 48 3B (Opcode) + ModR/M
+     ```
+
+7. **Conditional Jumps (JZ, JNZ, JE, JNE, JL, JLE, JG, JGE):**
+   - Relative Address (8-bit):
+     ```plaintext
+     JZ/JNZ/JE/JNE/JL/JLE/JG/JGE | 74/75/74/75/7C/7E/7F/7D (Opcode) + Relative Address (1 byte)
+     ```
+
+8. **NOP:**
+   - No operands:
+     ```plaintext
+     NOP | 90 (Opcode)
+     ```
+
+9. **LEA:**
+   - Effective Address:
+     ```plaintext
+     LEA | 48 8D (Opcode) + ModR/M + Displacement
+     ```
+
+10. **XOR, OR, AND:**
+    - Register to Register:
+      ```plaintext
+      XOR/OR/AND | 48 33/0B/23 (Opcode) + ModR/M
+      ```
+
+11. **NOT:**
+    - Register:
+      ```plaintext
+      NOT | 48 F7 (Opcode) + ModR/M
+      ```
+
+12. **SHL, SHR, ROL, ROR:**
+    - Register with Immediate:
+      ```plaintext
+      SHL/SHR/ROL/ROR | C1 (Opcode) + ModR/M + Immediate Value (1 byte)
+      ```
+
+13. **TEST:**
+    - Register to Register:
+      ```plaintext
+      TEST | 48 85 (Opcode) + ModR/M
+      ```
+
+14. **SETZ, SETNZ, SETE, SETNE, SETL, SETLE, SETG, SETGE:**
+    - Register:
+      ```plaintext
+      SETZ/SETNZ/SETE/SETNE/SETL/SETLE/SETG/SETGE | 0F94/0F95/0F94/0F95/0F9C/0F9E/0F9F/0F9D (Opcode) + ModR/M
+      ```
+
+15. **MOVZX, MOVSX:**
+    - Register to Register:
+      ```plaintext
+      MOVZX/MOVSX | 48 0FB6/0FBE (Opcode) + ModR/M
+      ```
+
+16. **CDQ:**
+    - No operands:
+      ```plaintext
+      CDQ | 99 (Opcode)
+      ```
+
+17. **IDIV, IMUL:**
+    - Register to Register:
+      ```plaintext
+      IDIV/IMUL | 48 F7 (Opcode) + ModR/M
+      ```
+
+18. **NEG:**
+    - Register:
+      ```plaintext
+      NEG | 48 F7 (Opcode) + ModR/M
+      ```
+
+19. **INC, DEC:**
+    - Register:
+      ```plaintext
+      INC/DEC | FF (Opcode) + ModR/M
+      ```
+
+20. **SAL, SAR:**
+    - Register with Immediate:
+      ```plaintext
+      SAL/SAR | C1 (Opcode) + ModR/M + Immediate Value (1 byte)
+      ```
+
+21. **ADC, SBB:**
+    - Register to Register:
+      ```plaintext
+      ADC/SBB | 48 11/19 (Opcode) + ModR/M
+      ```
+
+22. **STOSB, LODSB:**
+    - No operands:
+      ```plaintext
+      STOSB/LODSB | AA/AC (Opcode)
+      ```
+
+23. **REP:**
+    - No operands:
+      ```plaintext
+      REP | F3 (Opcode)
+      ```
+
+24. **CLD, STD, CLI, STI:**
+    - No operands:
+      ```plaintext
+      CLD/STD/CLI/STI | FC/FD/FA/FB (Opcode)
+      ```
+
+25. **IN, OUT:**
+    - Port Number:
+      ```plaintext
+      IN/OUT | E5/E7 (Opcode) + Port Number (1 byte)
+      ```
+
+26. **HLT:**
+    - No operands:
+      ```plaintext
+      HLT | F4 (Opcode)
+      ```
+
+27. **INT:**
+    - Interrupt Number:
+      ```plaintext
+      INT | CD (Opcode) + Interrupt Number (1 byte)
+      ```
+
+28. **IRET:**
+    - No operands:
+      ```plaintext
+      IRET | CF (Opcode)
+      ```
+
+29. **RDTSC:**
+    - No operands:
+      ```plaintext
+      RDTSC | 0F31 (Opcode)
+      ```
+
+30. **CPUID:**
+    - No operands:
+      ```plaintext
+      CPUID | 0FA2 (Opcode)
+      ```
+
+31. **SYSCALL:**
+    - No operands:
+      ```plaintext
+      SYSCALL | 0F05 (Opcode)
+      ```
+
+32. **SYSRET:**
+    - No operands:
+      ```plaintext
+      SYSRET | 0F07 (Opcode)
+      ```
+
+33. **FADD, FSUB, FMUL, FDIV:**
+    - Register to Register:
+      ```plaintext
+      FADD/FSUB/FMUL/FDIV | D8/DC/DE/F8 (Opcode) + ModR/M
+      ```
+
+34. **FLD, FST, FCOM:**
+    - Register to Register:
+      ```plaintext
+      FLD/FST/FCOM | C0/D0/D8 (Opcode) + ModR/M
+      ```
+
+35. **FCOMI, FCOMIP:**
+    - Register to Register:
+      ```plaintext
+      FCOMI/FCOMIP | DB/DF (Opcode) + ModR
+
+/M
+      ```
+
+36. **FUCOM, FUCOMI, FUCOMIP:**
+    - Register to Register:
+      ```plaintext
+      FUCOM/FUCOMI/FUCOMIP | DD/DB/DF (Opcode) + ModR/M
+      ```
+
+37. **FLDZ, FLD1, FLDPI, FLDLN2, FLDL2E, FLDL2T, FLDLG2, FLDLN2T, FLDLG2T, FSTP1, FSTP8, FSTP9:**
+    - No operands:
+      ```plaintext
+      FLDZ/FLD1/FLDPI/FLDLN2/FLDL2E/FLDL2T/FLDLG2/FLDLN2T/FLDLG2T/FSTP1/FSTP8/FSTP9 | D9/D9/DB/DD/D9/D9/DD/DD/D9/DD/DD/DD (Opcode)
+      ```
