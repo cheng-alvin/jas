@@ -29,6 +29,8 @@ typedef struct {
  * arguments are comma *AND* space separated from each other.
  *
  * @param buffer The stringified assembly instructions to parse.
+ *
+ * @returns An array of `instruction_t` structs representing the instructions.
  */
 
 instruction_t **parse(char *buffer);
