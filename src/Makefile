@@ -2,6 +2,8 @@ CC = clang
 LD = clang
 DB = gdb
 
+CFLAGS = -I ../include
+
 OBJ = main.o parse.o
 BUILD = ../build
 
@@ -10,10 +12,9 @@ all: clean jas
 jas: $(OBJ)
 	$(LD) $^ -o $(BUILD)/$@ 
 
-CFLAGS = -g
 
 debug: $(OBJ)
-	$(LD) $^ -o $(BUILD)/$@ $(CFLAGS) 
+	$(LD) $^ -o $(BUILD)/$@ $(CFLAGS) -g
 	sudo $(DB) $(BUILD)/$@
 
 clean:
