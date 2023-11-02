@@ -4,7 +4,7 @@ DB = gdb
 
 CFLAGS = -I ../include
 
-OBJ = main.o parse.o
+OBJ = main.o parse.o endian.o write.o
 BUILD = ../build
 
 all: clean jas
