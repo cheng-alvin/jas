@@ -2,7 +2,7 @@ CC = clang
 LD = clang
 DB = gdb
 
-CFLAGS = -I ../include
+CFLAGS = -I ../include -g
 
 OBJ = main.o parse.o endian.o write.o
 BUILD = ../build
@@ -12,9 +12,7 @@ all: clean jas
 jas: $(OBJ)
 	$(LD) $^ -o $(BUILD)/$@ 
 
-
-debug: $(OBJ)
-	$(LD) $^ -o $(BUILD)/$@ $(CFLAGS) -g
+debug: clean jas $(OBJ)
 	sudo $(DB) $(BUILD)/$@
 
 clean:
