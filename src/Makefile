@@ -1,6 +1,6 @@
 CC = clang
 LD = clang
-DB = gdb
+DB = lldb
 
 CFLAGS = -I ../include -g
 
@@ -12,8 +12,9 @@ all: clean jas
 jas: $(OBJ)
 	$(LD) $^ -o $(BUILD)/$@ 
 
+# TODO: fix this ugly hack!
 debug: clean jas $(OBJ)
-	sudo $(DB) $(BUILD)/$@
+	 $(DB) $(BUILD)/jas
 
 clean:
 	rm -r -f *.o $(BUILD)
