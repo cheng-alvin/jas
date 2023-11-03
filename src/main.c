@@ -1,7 +1,5 @@
 #include "endian.h"
-#include "instructions.h"
 #include "parse.h"
-#include "registers.h"
 #include "write.h"
 #include <stdint.h>
 #include <stdio.h>
