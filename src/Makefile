@@ -5,19 +5,31 @@ DB = lldb
 CFLAGS_COMMON = -I ../include -Wall -Wextra
 CFLAGS = $(CFLAGS_COMMON)
 
-OBJ = main.o parse.o endian.o write.o
+MODULES = codegen
+
 BUILD = ../build
+HOME = ..
+
+CODEGEN_OBJ = mov.o
+MAIN_OBJ = main.o parse.o endian.o write.o
 
 all: clean jas debug
 
 jas: CFLAGS = $(CFLAGS_COMMON)
-jas: $(OBJ)
-	$(LD) $^ -o $(BUILD)/$@ 
+jas: modules $(MAIN_OBJ)
+	$(LD) $(wordlist 2,$(words $^),$^) -o $(BUILD)/$@ 
 
 debug: CFLAGS = $(CFLAGS_COMMON) -g
-debug: clean $(OBJ)
+debug: clean $(MAIN_OBJ)
 	$(LD) $(wordlist 2,$(words $^),$^) -o $(BUILD)/$@ 
 	$(DB) $(BUILD)/debug
+
+modules: codegen.o
+
+codegen.o: CFLAGS = $(CFLAGS_COMMON)
+codegen.o: $(CODEGEN_OBJ)
+	$(LD) $^ -o $@ 
+	@cp $@ $(BUILD)/$@
 
 clean:
 	rm -r -f *.o $(BUILD)
