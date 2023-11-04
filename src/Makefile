@@ -28,7 +28,7 @@ modules: codegen.o
 
 codegen.o: CFLAGS = $(CFLAGS_COMMON)
 codegen.o: $(patsubst %, codegen/, $(CODEGEN_OBJ))
-	$(LD) $^ -o $@ 
+	$(LD) $^ -o $@ -c
 	@cp $@ $(BUILD)/$@
 
 clean:
