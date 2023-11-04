@@ -10,26 +10,19 @@ MODULES = codegen
 BUILD = ../build
 HOME = ..
 
-CODEGEN_OBJ = mov.o
+
 MAIN_OBJ = main.o parse.o endian.o write.o
 
-all: clean jas debug
+all: jas debug
 
 jas: CFLAGS = $(CFLAGS_COMMON)
-jas: modules $(MAIN_OBJ)
+jas: clean $(MAIN_OBJ)
 	$(LD) $(wordlist 2,$(words $^),$^) -o $(BUILD)/$@ 
 
 debug: CFLAGS = $(CFLAGS_COMMON) -g
-debug: clean $(MAIN_OBJ)
-	$(LD) $(wordlist 2,$(words $^),$^) -o $(BUILD)/$@ 
+debug: modules clean $(MAIN_OBJ)
+	$(LD) $(wordlist 3,$(words $^),$^) -o $(BUILD)/$@ 
 	$(DB) $(BUILD)/debug
-
-modules: codegen.o
-
-codegen.o: CFLAGS = $(CFLAGS_COMMON)
-codegen.o: $(patsubst %, codegen/, $(CODEGEN_OBJ))
-	$(LD) $^ -o $@ -c
-	@cp $@ $(BUILD)/$@
 
 clean:
 	rm -r -f *.o $(BUILD)
