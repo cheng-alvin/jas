@@ -9,7 +9,7 @@ BUILD = ../build
 HOME = ..
 
 
-MAIN_OBJ = main.o parse.o endian.o write.o
+MAIN_OBJ = main.o parse.o endian.o write.o aaa.o
 
 all: jas debug
 
