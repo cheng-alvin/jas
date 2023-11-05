@@ -1,6 +1,9 @@
 #include <stdint.h>
 
 /**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
  * Converts 16, 32 and 64 bit unsigned integers to little endian
  * values respectively. This is used for the code generation process
  * and is portable to another codebase.
