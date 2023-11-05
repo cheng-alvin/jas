@@ -17,7 +17,7 @@ This is the official source tree for the Jas assembler. Jas is a MIT licensed, f
 Assemblers are heavy duty software normally written by those people who know their stuff, the Jas project aims to be a open-source assembler that's not just limited to compiling code into machine code, but to educate "Noobs" like me on the vast world of assembly language and assembler encodings. We will always aim to be as transparent and open as possible to the world! 
 
 ### ❤️ Contributing
-For developers interested and passionate about assemblers and low-level programming, please see the [contributing guide](https://github.com/cheng-alvin/jas/blob/main/HACKING.txt) in the home directory for more information on how to contribute code to the repository! No matter how big or small your changes are, you're in for a treat!
+For developers interested and passionate about assemblers and low-level programming, please see the [contributing guide](https://github.com/cheng-alvin/jas/blob/a02fea10d9d398ef63a9fc9419ce54d8b406c3a5/CONTRIBUTING.txt) in the home directory for more information on how to contribute code to the repository! No matter how big or small your changes are, you're in for a treat!
 
 ### 📝 Licensing 
 All the code under the Jas assembler project repository is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License) which is a popular open-source liense for projects like this! Please see [LICENSE](https://github.com/cheng-alvin/jas/blob/main/LICENSE) for the details. 
