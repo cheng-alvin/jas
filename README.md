@@ -22,5 +22,5 @@ For developers interested and passionate about assemblers and low-level programm
 ### 📝 Licensing 
 All the code under the Jas assembler project repository is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License) which is a popular open-source liense for projects like this! Please see [LICENSE](https://github.com/cheng-alvin/jas/blob/main/LICENSE) for the details. 
 
-Regards, 
-The Jas crew.
+---
+*Made with love by Alvin / the Jas crew and contributors ❤️ .* 
