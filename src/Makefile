@@ -5,8 +5,6 @@ DB = lldb
 CFLAGS_COMMON = -I ../include -Wall -Wextra
 CFLAGS = $(CFLAGS_COMMON)
 
-MODULES = codegen
-
 BUILD = ../build
 HOME = ..
 
