@@ -23,6 +23,7 @@
         "array": "c",
         "functional": "c",
         "utility": "c",
-        "variant": "c"
+        "variant": "c",
+        "constants.h": "c"
     }
 }
