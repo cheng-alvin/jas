@@ -11,7 +11,7 @@
   <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/cheng-alvin/jas"/>
 </p>
 
-| ⚠️ | Jas is under development and is NOT STABLE for use. Please make sure it's not used for productuin purposes!! NO WARRANTY WILL BE PROVIDED AS PER THE LICENSE|
+|⚠️ | Jas is under development and is **NOT STABLE** for use. Please make sure it's NOT used for production purposes!! **NO WARRANTY WILL BE PROVIDED AS PER THE LICENSE**|
 | -------- | ------- |
 
 This is the official source tree for the Jas assembler. Jas is a MIT licensed, free and open-source x86 assembler capable of generating ELF files designed to run on on linux systems. Please note that this is an exprimetal project designed to be a educational project for myself and others to study and use. By no means is it ready for production enviroments at this stage, no warranty of any kind is provided as outlined in the license.
