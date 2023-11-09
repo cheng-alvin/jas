@@ -1,4 +1,4 @@
-#include "constants.h"
+#include "debug_info.h"
 #include <stdint.h>
 
 /**
@@ -13,7 +13,10 @@
  * @note Throws error if mode is specified to: `LONG`.
  *
  * @param buffer The buffer to write into.
- * @param mode The x86 operating mode for the assembly code.
+ * @param info The debug information for the instruction.
+ *
+ * @returns `NULL` on error.
+ * @returns The pointer to the buffer on success.
  */
 
-uint8_t aaa(uint8_t *buffer, modes_t mode);
+uint8_t *aaa(uint8_t *buffer, info_t *info);
