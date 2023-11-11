@@ -21,7 +21,7 @@ typedef enum {
  * parsed `instruction_t` format. Used to generate machine code, but not
  * ELF files or executable files.
  *
- * @see parse.h `instruction_t` and the parse() will be defined in
+ * @see parse.h `instruction_t` and the `parse()` will be defined in
  * that file.
  *
  * @param arr The array of instructions to generate machine code from.
