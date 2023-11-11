@@ -11,7 +11,6 @@
  * @note Please see the intel manual for more information on the instruction.
  *
  * @param buffer The buffer to write into.
- * @returns The pointer to the buffer on success.
  */
 
-uint8_t *aaa(uint8_t *buffer);
+void *aaa(uint8_t *buffer);
