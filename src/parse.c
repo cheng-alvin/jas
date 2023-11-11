@@ -1,8 +1,8 @@
 #include "parse.h"
+#include "null.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #define OPERAND_SEP ", "
 
 instruction_t **parse(char *buffer) {
