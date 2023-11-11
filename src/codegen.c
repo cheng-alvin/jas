@@ -22,7 +22,8 @@ uint8_t *codegen(instruction_t *arr, int len, mode_t mode, char *file) {
         error++;
       }
 
-      aaa(buffer);
+      else
+        aaa(buffer);
     }
 
     else {
