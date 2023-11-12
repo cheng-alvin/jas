@@ -3,6 +3,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-void *aaa(uint8_t *buffer) {
-  write8(buffer, 0x37, sizeof(*buffer) / sizeof(uint8_t));
+uint8_t *aaa(uint8_t *buffer) {
+  return write8(buffer, 0x37, sizeof(*buffer) / sizeof(uint8_t));
 }
