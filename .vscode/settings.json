@@ -28,5 +28,8 @@
         "stdio.h": "c",
         "stdlib.h": "c"
     },
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "cSpell.words": [
+        "corrisponding"
+    ]
 }
