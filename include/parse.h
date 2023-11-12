@@ -5,6 +5,8 @@
  * Return type for the `parse` function, specifies the instruction's
  * name and its arguments. Shall be returned from the parser function's
  * output.
+ *
+ * TODO Revise docs for struct?
  */
 
 typedef struct {
