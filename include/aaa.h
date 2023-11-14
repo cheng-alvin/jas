@@ -14,4 +14,4 @@
  * @returns A pointer to the buffer address.
  */
 
-uint8_t *JAS_aaa(uint8_t *buffer);
+uint8_t *aaa(uint8_t *buffer);
