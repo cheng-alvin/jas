@@ -24,10 +24,10 @@ instruction_t **parse(char *buffer) {
       (instruction_t **)malloc(sizeof(instruction_t *) * (i + 1));
 
   for (int j = 0; j < i; j++) {
-    char *current_line = lines[j];
+    char *currentLine = lines[j];
 
     instructions[j] = (instruction_t *)malloc(sizeof(instruction_t));
-    instructions[j]->instruction = strtok(current_line, " ");
+    instructions[j]->instruction = strtok(currentLine, " ");
     instructions[j]->arg1 = strtok(NULL, OPERAND_SEP);
     instructions[j]->arg2 = strtok(NULL, OPERAND_SEP);
     instructions[j]->arg3 = strtok(NULL, OPERAND_SEP);

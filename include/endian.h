@@ -14,6 +14,6 @@
  * @returns The little endian result with the same size as the parameter.
  */
 
-uint16_t little_endian16(uint16_t value);
-uint32_t little_endian32(uint32_t value);
-uint64_t little_endian64(uint64_t value);
+uint16_t littleEndian16(uint16_t value);
+uint32_t littleEndian32(uint32_t value);
+uint64_t littleEndian64(uint64_t value);
