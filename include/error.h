@@ -27,6 +27,8 @@ void jasRegisterError(char *error);
  * @note Return value should be freed with `free()`!
  *
  * ~UWU~ Daddy
+ *
+ * TIP: Can be used with the `sprintf()` function to get formatting as well!
  */
 
 char *jasPollLastError();
@@ -36,8 +38,9 @@ char *jasPollLastError();
  * @since v0.0.1
  *
  * Prints all the errors that have been registered with the
- * `jasRegisterError()` function. Can be used to report errors
- * quickly without the need of setting up more boilerplate code.
+ * `jasRegisterError()` function to the standard output via `stderr`.
+ * Can be used to report errors quickly without the need of setting
+ * up more boilerplate code.
  *
  * @see `jasPollLastError()`
  * @note depends on `jasPollLastError()` to poll for the last
