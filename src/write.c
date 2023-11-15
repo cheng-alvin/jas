@@ -16,7 +16,7 @@ uint8_t *write8(uint8_t *buffer, uint8_t value, int *len) {
 
 uint8_t *write16(uint8_t *buffer, uint16_t value, int *len) {
   buffer = realloc(buffer, (*len) + sizeof(uint16_t));
-  value = littleEndian16(value);
+  value = jasLittleEndian16(value);
 
   buffer[(*len)] = (value >> 8) & 0xFF;
   buffer[(*len) + 1] = value & 0xFF;
