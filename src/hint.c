@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 static uint8_t *buffer;
-static mode_t mode;
+static jasMode_t mode;
 
 void jasHint(hint_t type, const long data) {
   switch (type) {
@@ -17,12 +17,12 @@ void jasHint(hint_t type, const long data) {
     break;
 
   case JAS_OPERATION_MODE:
-    if (sizeof(data) != sizeof(mode_t)) {
+    if (sizeof(data) != sizeof(jasMode_t)) {
       jasRegisterError("Invalid data size for hinting information bound for: `JAS_OPERATION_MODE`");
       break;
     }
 
-    mode = (mode_t)data;
+    mode = (jasMode_t)data;
     break;
 
   default:

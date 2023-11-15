@@ -27,7 +27,7 @@ typedef enum {
   JAS_REAL_MODE,
   JAS_PROTECTED_MODE,
   JAS_LONG_MODE,
-} mode_t;
+} jasMode_t;
 
 /**
  * @author cheng-alvin
@@ -54,7 +54,7 @@ uint8_t jasGetMode();
  * @param type The type of hint to be used.
  * @param data The data to be used for the hint.
  *
- * @note See `mode_t` and `hint_t` for more information regarding
+ * @note See `jasMode_t` and `hint_t` for more information regarding
  * the type infomation.
  *
  */
