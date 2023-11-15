@@ -17,7 +17,7 @@
  * @returns The pointer to the buffer.
  */
 
-uint8_t *write8(uint8_t *buffer, uint8_t value, int *len);
+uint8_t *write8(uint8_t *buffer, uint8_t value, int len);
 
 /**
  * @author cheng-alvin
@@ -36,4 +36,4 @@ uint8_t *write8(uint8_t *buffer, uint8_t value, int *len);
  * @returns The pointer to the buffer.
  */
 
-uint8_t *write16(uint8_t *buffer, uint16_t value, int *len);
+uint8_t *write16(uint8_t *buffer, uint16_t value, int len);
