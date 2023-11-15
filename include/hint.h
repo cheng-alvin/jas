@@ -59,6 +59,6 @@ uint8_t jasGetMode();
  *
  */
 
-void jasHint(hint_t type, const void *data);
+void jasHint(hint_t type, const long data);
 
 // TODO Make sure that the hint module has a `getHint` function lol.
