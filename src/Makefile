@@ -1,8 +1,8 @@
 CC = clang
-LD = clang
+LD = ld
 DB = lldb
 
-CFLAGS_COMMON = -I ../include -Wall -Wextra -c
+CFLAGS_COMMON = -I ../include -Wall -Wextra
 CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = ../build
@@ -11,11 +11,11 @@ HOME = ..
 
 MAIN_OBJ = aaa.o endian.o error.o hint.o parse.o write.o
 
-all: jas
+all: jas.o
 
-jas: CFLAGS = $(CFLAGS_COMMON)
-jas: clean $(MAIN_OBJ)
-	$(LD) $(wordlist 2,$(words $^),$^) -o $(BUILD)/$@ 
+jas.o: CFLAGS = $(CFLAGS_COMMON)
+jas.o: clean $(MAIN_OBJ)
+	$(LD) -r $(wordlist 2,$(words $^),$^) -o $(BUILD)/$@ 
 
 clean:
 	rm -r -f *.o $(BUILD)
