@@ -3,8 +3,6 @@
 #include "null.h"
 #include "write.h"
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 uint8_t *aaa() {
   if (jasGetMode() == JAS_LONG_MODE) {

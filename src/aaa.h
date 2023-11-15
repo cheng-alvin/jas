@@ -9,10 +9,9 @@
  * the result of a previous `DAA` instruction.
  *
  * @note Please see the intel manual for more information on the instruction.
+ * @note Also returns `NULL` if errors occur.
  *
  * @returns A pointer to the buffer address.
- *
- * @note Also returns `NULL` if errors occur.
  */
 
 uint8_t *aaa();
