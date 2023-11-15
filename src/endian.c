@@ -1,5 +1,7 @@
 #include <stdint.h>
 
+// TODO Rename and expose `littleEndianx` functions
+
 uint16_t littleEndian16(uint16_t value) {
   return ((value & 0xFFU) << 8) | ((value & 0xFF00U) >> 8);
 }
