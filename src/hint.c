@@ -5,7 +5,7 @@
 static uint8_t *buffer;
 static jasMode_t mode;
 
-void jasHint(hint_t type, const long data) {
+void jasAssemblerRuntimeHint(hint_t type, const long data) {
   switch (type) {
   case JAS_BUFFER:
     if (sizeof(data) != sizeof(uint8_t *)) {
