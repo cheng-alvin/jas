@@ -6,11 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-uint8_t *aaa(uint8_t *buffer) {
+uint8_t *aaa() {
   if (jasGetMode() == JAS_LONG_MODE) {
     jasRegisterError("`aaa` instruction not supported in long-mode\n");
     return NULL;
   }
 
-  return write8(buffer, 0x37, sizeof(*buffer) / sizeof(uint8_t));
+  return write8(jasGetBuffer(), 0x37, sizeof(*(jasGetBuffer())) / sizeof(uint8_t));
 }
