@@ -35,5 +35,6 @@
  */
 
 #include "aaa.h"
+#include "endian.h"
 #include "error.h"
 #include "hint.h"
