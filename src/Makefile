@@ -1,3 +1,6 @@
+# TODO Add targets and dependencies to the `MAIN_OBJ` variable inorder for the Makefile to work!!!!
+
+
 CC = clang
 LD = clang
 DB = lldb
