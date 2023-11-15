@@ -12,6 +12,8 @@
  *
  * @param buffer The buffer to write into.
  * @returns A pointer to the buffer address.
+ *
+ * @note Also returns `NULL` if errors occur.
  */
 
 uint8_t *aaa(uint8_t *buffer);
