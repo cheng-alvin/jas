@@ -1,0 +1,30 @@
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Enum that specifies the error codes when using the assembler.
+ * This is used to indicate the status of the assembler and its
+ * functions. This is also used to indicate the status of the
+ * utility functions and what not. (i.e Assembly syntax error or
+ * input error).
+ */
+
+typedef enum {
+  JAS_NO_ERROR,
+} jasErrorCode_t;
+
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Function used to get the error code's string representation.
+ * This is used to get the error code's string formatted response
+ * for printing to the user.
+ *
+ * @param c The error code to get the string representation of.
+ *
+ * @returns The string representation of the error code.
+ * @see `jasErrorCode_t` for more information on the error codes.
+ */
+
+char *jasErrorno(jasErrorCode_t c)
