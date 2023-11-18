@@ -14,5 +14,5 @@ jas:
 	$(LD) -r $(wildcard $(HOME)/$(DIRS)/*.o) -o $(BUILD)/$@
 
 clean:
-	rm -r -f *.o $(BUILD)
+	rm -r -f **/*.o $(BUILD)
 	mkdir -p $(BUILD)
