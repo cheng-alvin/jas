@@ -27,4 +27,4 @@ typedef enum {
  * @see `jasErrorCode_t` for more information on the error codes.
  */
 
-char *jasErrorno(jasErrorCode_t c)
+char *jasErrorno(jasErrorCode_t c);
