@@ -1,3 +1,6 @@
+#ifndef PARSE_H
+#define PARSE_H
+
 /**
  * @author cheng-alvin
  * @since v0.0.1
@@ -36,3 +39,5 @@ typedef struct {
  */
 
 instruction_t **parse(char *buffer);
+
+#endif

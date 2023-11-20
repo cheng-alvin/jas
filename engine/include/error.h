@@ -1,3 +1,6 @@
+#ifndef JAS_ERROR_H
+#define JAS_ERROR_H
+
 /**
  * @author cheng-alvin
  * @since v0.0.1
@@ -28,3 +31,5 @@ typedef enum {
  */
 
 char *jasErrorno(jasErrorCode_t c);
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef JAS_INIT_H
+#define JAS_INIT_H
+
 #include "error.h"
 #include <stdint.h>
 
@@ -58,3 +61,5 @@ typedef struct {
  */
 
 jasErrorCode_t jasInitNew(jasMode_t mode, jasInstance_t *instance, uint8_t *buffer);
+
+#endif

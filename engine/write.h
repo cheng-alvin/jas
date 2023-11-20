@@ -1,3 +1,6 @@
+#ifndef WRITE_H
+#define WRITE_H
+
 #include <stdint.h>
 
 /**
@@ -37,3 +40,5 @@ uint8_t *write8(uint8_t *buffer, uint8_t value, int len);
  */
 
 uint8_t *write16(uint8_t *buffer, uint16_t value, int len);
+
+#endif

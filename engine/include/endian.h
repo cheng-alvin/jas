@@ -1,3 +1,6 @@
+#ifndef JAS_ENDIAN_H
+#define JAS_ENDIAN_H
+
 #include <stdint.h>
 
 /**
@@ -17,3 +20,5 @@
 uint16_t jasLittleEndian16(uint16_t value);
 uint32_t jasLittleEndian32(uint32_t value);
 uint64_t jasLittleEndian64(uint64_t value);
+
+#endif
