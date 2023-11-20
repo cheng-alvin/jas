@@ -30,7 +30,7 @@ typedef enum {
  */
 
 typedef struct {
-  uint8_t buffer;
+  uint8_t *buffer;
   jasMode_t mode;
   int bufferLen;
 } jasInstance_t;
