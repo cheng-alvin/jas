@@ -2,7 +2,7 @@ CC = clang
 LD = ld
 DB = lldb
 
-CFLAGS_COMMON = -I . -I ../util/include -Wall -Wextra
+CFLAGS_COMMON = -I include -I ../util/include -Wall -Wextra
 CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = ../build
