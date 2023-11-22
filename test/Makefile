@@ -8,6 +8,10 @@ CFLAGS = $(CFLAGS_COMMON)
 BUILD = ../build
 HOME = ..
 
-OBJ = test.o
+OBJ = test.o info.o
 
-all: ${OBJ}
+all: labrador.o
+
+labrador.o: CFLAGS = $(CFLAGS_COMMON)
+labrador.o: ${OBJ}
+	$(LD) -r $^ -o $(BUILD)/$@ 
