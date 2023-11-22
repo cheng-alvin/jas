@@ -9,12 +9,23 @@ BUILD = build
 HOME = .
 DIRS = engine test util
 
+all: jas
+
 jas:
 	@for dir in $(DIRS); do \
 		$(MAKE) -C $$dir; \
 	done
 
 	$(CC) -o $(BUILD)/$@ $(BUILD)/*.o
+
+test:
+	$(MAKE) -C test
+	@for dir in $(DIRS); do \
+		$(MAKE) test -C $$dir; \
+	done
+
+	$(CC) -o $(BUILD)/$@ $(BUILD)/*.o -g	
+
 
 clean:
 	rm -r -f **/*.o $(BUILD)
