@@ -2,14 +2,13 @@ CC = clang
 LD = ld
 DB = lldb
 
-CFLAGS_COMMON = -I include -Wall -Wextra
+CFLAGS_COMMON = -I ../util/include -I include -Wall -Wextra
 CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = ../build
 HOME = ..
 
-
-OBJ = endian.o error.o init.o parse.o write.o
+OBJ = parse.o
 
 all: engine.o 
 
