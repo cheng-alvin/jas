@@ -14,4 +14,4 @@ all: util.o
 
 util.o: CFLAGS = $(CFLAGS_COMMON)
 util.o: $(OBJ)
-	$(LD) -r $(wordlist 2,$(words $^),$^) -o $(BUILD)/$@ 
+	$(LD) -r $^ -o $(BUILD)/$@ 

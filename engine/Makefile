@@ -14,4 +14,4 @@ all: engine.o
 
 engine.o: CFLAGS = $(CFLAGS_COMMON)
 engine.o: $(OBJ)
-	$(LD) -r $(wordlist 2,$(words $^),$^) -o $(BUILD)/$@ 
+	$(LD) -r $^ -o $(BUILD)/$@ 

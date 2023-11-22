@@ -7,11 +7,14 @@ CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = build
 HOME = .
-DIRS = engine
+DIRS = engine test util
 
 jas:
-	@for dir in $(DIRS); do \ $(MAKE) -C $(HOME)/$$dir; \ done
-	$(LD) -r $(wildcard $(HOME)/$(DIRS)/*.o) -o $(BUILD)/$@
+	@for dir in $(DIRS); do \
+		$(MAKE) -C $$dir; \
+	done
+
+	$(CC) -o $(BUILD)/$@ $(BUILD)/*.o
 
 clean:
 	rm -r -f **/*.o $(BUILD)
