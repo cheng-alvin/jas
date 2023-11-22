@@ -9,9 +9,4 @@ int getIndexOfEntry(char *name);
 int getIndexOfEntryWithFunction(testFunction_t unit);
 void fail(testFunction_t unit);
 
-typedef struct {
-  testFunction_t function;
-  int status;
-} testInfo_t;
-
 #endif
