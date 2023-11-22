@@ -24,9 +24,8 @@ test:
 		$(MAKE) test -C $$dir; \
 	done
 
-	$(CC) -o $(BUILD)/$@ $(BUILD)/*.o -g	
-
-
 clean:
-	rm -r -f **/*.o $(BUILD)
+	find . -name "*.o" -type f -delete
+	rm -r -f $(BUILD)
 	mkdir -p $(BUILD)
+	mkdir -p $(BUILD)/test
