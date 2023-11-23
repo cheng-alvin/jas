@@ -13,15 +13,17 @@ all: jas
 
 jas:
 	@for dir in $(DIRS); do \
+		if [ "$$dir" = "labrador" ]; then \
+			continue; \
+		fi \
 		$(MAKE) -C $$dir; \
 	done
 
 	$(CC) -o $(BUILD)/$@ $(BUILD)/*.o
 
-test:
-	$(MAKE) -C test
+libs:
 	@for dir in $(DIRS); do \
-		$(MAKE) test -C $$dir; \
+		$(MAKE) -C $$dir; \
 	done
 
 clean:
