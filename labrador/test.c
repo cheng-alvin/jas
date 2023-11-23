@@ -24,3 +24,7 @@ void terminateTest() {
   free(info);
   exit(exitVal);
 }
+
+void fail(testFunction_t unit) {
+  info[getIndexOfEntryWithFunction(unit)].status = 1;
+}

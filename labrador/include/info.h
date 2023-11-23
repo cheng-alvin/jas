@@ -7,6 +7,5 @@ int getStatus(testFunction_t unit);
 void addStatus(testFunction_t unit, char *name);
 int getIndexOfEntry(char *name);
 int getIndexOfEntryWithFunction(testFunction_t unit);
-void fail(testFunction_t unit);
 
 #endif

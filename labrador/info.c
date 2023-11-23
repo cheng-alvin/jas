@@ -46,7 +46,3 @@ int getIndexOfEntryWithFunction(testFunction_t unit) {
   printf(BOLD RED "failure:%s Unable to locate unit test when getting status (Reading %p) \n%s", BOLD, (void *)unit, RESET);
   exit(1);
 }
-
-void fail(testFunction_t unit) {
-  info[getIndexOfEntryWithFunction(unit)].status = 1;
-}

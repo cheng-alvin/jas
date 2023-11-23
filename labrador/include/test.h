@@ -11,6 +11,7 @@ typedef struct {
 void test(char *name, testFunction_t unit);
 int getStatus(testFunction_t unit);
 void terminateTest();
+void fail(testFunction_t unit);
 
 extern testInfo_t *info;
 
