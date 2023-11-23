@@ -17,17 +17,17 @@
  * they can all be found inside the `libutil`'s include directory.
  */
 
-#define TEST(name)      \
+#define TEST(name)   \
   \ 
-    void test_##name(); \
-  test_##name();        \
+    void __##name(); \
+  test_##name();     \
   \ 
-    void test_##name()
+    void __##name()
 
-#define ASSERT(expr)                                        \
-  if (!(expr)) {                                            \
-    printf(RED BOLD "Error: " RESET BOLD #expr "\n" RESET); \
-    exit(1)                                                 \
+#define ASSERT(expr)                                                                                  \
+  if (!(expr)) {                                                                                      \
+    printf(RED BOLD "failure: " RESET BOLD "`" #expr "` did not match with expected result\n" RESET); \
+    exit(1)                                                                                           \
   }
 
 #define SHOULD_EQUAL(a, b) ASSERT(a == b)
