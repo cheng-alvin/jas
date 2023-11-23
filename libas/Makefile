@@ -10,8 +10,8 @@ HOME = ..
 
 OBJ = parse.o
 
-all: engine.o 
+all: libas.o
 
-engine.o: CFLAGS = $(CFLAGS_COMMON)
-engine.o: $(OBJ)
+libas.o: CFLAGS = $(CFLAGS_COMMON)
+libas.o: $(OBJ)
 	$(LD) -r $^ -o $(BUILD)/$@ 
