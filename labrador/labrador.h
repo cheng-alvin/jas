@@ -20,7 +20,7 @@
 #define TEST(name)   \
   \ 
     void __##name(); \
-  test_##name();     \
+  __##name();        \
   \ 
     void __##name()
 
