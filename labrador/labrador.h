@@ -35,3 +35,5 @@
 #define SHOULD_BE_TRUE(a) ASSERT(a)
 #define SHOULD_BE_FALSE(a) ASSERT(!a)
 #define SHOULD_BE_NULL(a) ASSERT(a == NULL)
+
+#define TEST_SUITE int main(void)
