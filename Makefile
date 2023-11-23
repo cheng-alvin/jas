@@ -21,11 +21,6 @@ jas:
 
 	$(CC) -o $(BUILD)/$@ $(BUILD)/*.o
 
-libs:
-	@for dir in $(DIRS); do \
-		$(MAKE) -C $$dir; \
-	done
-
 clean:
 	find . -name "*.o" -type f -delete
 	rm -r -f $(BUILD)
