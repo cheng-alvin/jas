@@ -9,7 +9,6 @@ BUILD = ../build
 HOME = ..
 
 OBJ = endian.o init.o error.o write.o 
-TEST = main.o
 
 all: util.o 
 
