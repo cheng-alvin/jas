@@ -2,12 +2,12 @@ CC = clang
 LD = ld
 DB = lldb
 
-CFLAGS_COMMON = -I ../include -Wall -Wextra
+CFLAGS_COMMON = -Wall -Wextra
 CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = build
 HOME = .
-DIRS = as labrador util
+DIRS = libjas labrador
 
 all: jas
 
