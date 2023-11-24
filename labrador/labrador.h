@@ -14,7 +14,7 @@
  * noting the perquisites needed to do so.
  *
  * @note null.h and color.h are required for the testing framework,
- * they can all be found inside the `libutil`'s include directory.
+ * they can all be found inside the `util`'s include directory.
  */
 
 #define TEST(name)   \

@@ -7,7 +7,7 @@ CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = build
 HOME = .
-DIRS = engine labrador util
+DIRS = as labrador util
 
 all: jas
 
