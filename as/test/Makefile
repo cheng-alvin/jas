@@ -2,15 +2,15 @@ CC = clang
 LD = ld
 DB = lldb
 
-CFLAGS_COMMON = -I ../util/include -I include -Wall -Wextra
+CFLAGS_COMMON = -I ../../util/include -I ../include -I .. -I ../../labrador -Wall -Wextra
 CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = ../../build
 HOME = ../../
 
-OBJ = parse.o main.o
+OBJ = parse.o 
 
-all: test
+all: as
 
 as: CFLAGS = $(CFLAGS_COMMON)
 as: $(OBJ)

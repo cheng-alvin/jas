@@ -17,17 +17,16 @@
  * they can all be found inside the `util`'s include directory.
  */
 
-#define TEST(name)   \
+#define TEST(name) \
   \ 
-    void __##name(); \
-  __##name();        \
   \ 
-    void __##name()
+   int             \
+  main(void)
 
 #define ASSERT(expr)                                                                                  \
   if (!(expr)) {                                                                                      \
     printf(RED BOLD "failure: " RESET BOLD "`" #expr "` did not match with expected result\n" RESET); \
-    exit(1)                                                                                           \
+    exit(1);                                                                                          \
   }
 
 #define SHOULD_EQUAL(a, b) ASSERT(a == b)
@@ -36,4 +35,4 @@
 #define SHOULD_BE_FALSE(a) ASSERT(!a)
 #define SHOULD_BE_NULL(a) ASSERT(a == NULL)
 
-#define TEST_SUITE int main(void)
+#define PASS exit(0);
