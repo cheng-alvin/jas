@@ -1,5 +1,6 @@
-#include "parse.h"
+#include "color.h"
 #include "labrador.h"
+#include "parse.h"
 #include <stdlib.h>
 #include <string.h>
 

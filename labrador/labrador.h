@@ -18,10 +18,7 @@
  */
 
 #define TEST(name) \
-  \ 
-  \ 
-   int             \
-  main(void)
+  int main(void)
 
 #define ASSERT(expr)                                                                                  \
   if (!(expr)) {                                                                                      \

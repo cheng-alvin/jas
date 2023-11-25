@@ -26,3 +26,5 @@ clean:
 	rm -r -f $(BUILD)
 	mkdir -p $(BUILD)
 	mkdir -p $(BUILD)/test
+	mkdir -p $(BUILD)/test/libjas
+	find . -name "*.dylib" -type f -delete
