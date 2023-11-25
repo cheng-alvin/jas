@@ -23,8 +23,11 @@ libjas: $(EXE)
 		cd $(BUILD)/test/libjas/; \
 		echo "\033[1mTesting \`$${exe%.o}\` ...\033[0m \c"; \
 		./$${exe%.o}; \
-		if [ 0 ]; then \
-			echo "\033[1m\033[32msuccess!\033[0m"; \
+		if [ $$? -eq 0  ]; then \
+			echo "\033[1m\033[32mPASS\033[0m"; \
+		else \
+			echo "---"; \
+			exit 1; \
 		fi; \
 		done
 			
