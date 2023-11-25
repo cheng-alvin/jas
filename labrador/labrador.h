@@ -20,10 +20,10 @@
 #define TEST(name) \
   int main(void)
 
-#define ASSERT(expr)                                                                                  \
-  if (!(expr)) {                                                                                      \
-    printf(RED BOLD "failure: " RESET BOLD "`" #expr "` did not match with expected result\n" RESET); \
-    exit(1);                                                                                          \
+#define ASSERT(expr)                                                                                   \
+  if (!(expr)) {                                                                                       \
+    printf(RED BOLD "failure: " RESET BOLD "`" #expr "` did not match with expected result.\n" RESET); \
+    exit(1);                                                                                           \
   }
 
 #define SHOULD_EQUAL(a, b) ASSERT(a == b)

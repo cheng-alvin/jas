@@ -2,29 +2,31 @@ CC = clang
 LD = ld
 DB = lldb
 
-CFLAGS_COMMON = -I ../libjas/include -I ../libjas -I ../labrador -Wall -Wextra -E
+CFLAGS_COMMON = -I ../libjas/include -I ../libjas -I ../labrador -Wall -Wextra
 CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = ../build
 HOME = ../
 
-EXE = _parse.o
-DEPS = libjas.o
+EXE = parse.o
 
-all: libjas
+all: libjas.o libjas
 
 libjas.o:
 	$(MAKE) -C ../libjas
 
 libjas: CFLAGS = $(CFLAGS_COMMON)
-libjas: $(DEPS) $(EXE)
+libjas: $(EXE)
 	@clear
 	@for exe in $(EXE); do \
-		echo "Linking: $$exe"; \
 		$(CC) $$exe $(BUILD)/libjas.o -o $(BUILD)/test/libjas/$${exe%.o}; \
-		echo "Testing: $$exe"; \
 		cd $(BUILD)/test/libjas/; \
-		pwd; \
+		echo "\033[1mTesting \`$${exe%.o}\` ...\033[0m \c"; \
 		./$${exe%.o}; \
-	done
+		if [ 0 ]; then \
+			echo "\033[1m\033[32msuccess!\033[0m"; \
+		fi; \
+		done
+			
+
 	
