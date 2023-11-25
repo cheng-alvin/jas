@@ -2,7 +2,7 @@ CC = clang
 LD = ld
 DB = lldb
 
-CFLAGS_COMMON = -I include -Wall -Wextra
+CFLAGS_COMMON = -I include -Wall -Wextra 
 CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = ../build
@@ -15,3 +15,9 @@ all: libjas.o
 libjas.o: CFLAGS = $(CFLAGS_COMMON)
 libjas.o: $(OBJ)
 	$(LD) -r $^ -o $(BUILD)/$@ 
+
+# Please set `DYLD_LIBRARY_PATH` for dynamic library to work as well!
+
+libjas.dylib: CFLAGS = $(CFLAGS_COMMON)
+libjas.dylib: $(OBJ)
+	$(CC) $^ -o $(BUILD)/$@ -dynamiclib
