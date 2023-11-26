@@ -5,10 +5,9 @@
 #include <stdlib.h>
 
 jasErrorCode_t jasInitNew(jasMode_t mode, jasInstance_t *instance, uint8_t *buffer) {
-  // TODO Check if pointer `instance` is already allocated or not!
-
   instance->mode = mode;
   instance->buffer = buffer;
+  instance->bufferLen = 0;
 
   return JAS_NO_ERROR;
 }
