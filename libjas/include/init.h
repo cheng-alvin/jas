@@ -72,6 +72,10 @@ typedef struct {
  * @param mode The code-generation mode for the assembler instance.
  * @param instance The pointer to the assembler instance to be created.
  * @param buffer The buffer to be used for the assembler instance.
+ * @param format The output format for the assembler instance.
+ * @param includes The includes for the assembler instance.
+ * @param filename The filename for the assembler instance.
+ * @param isFile The isFile for the assembler instance.
  *
  * @see `jasInstance_t` and `jasMode_t` for more type information.
  * @note The `instance` parameter can be `NULL` if you want to create
@@ -84,6 +88,6 @@ typedef struct {
  * `malloc` or `realloc`!
  */
 
-jasErrorCode_t jasInitNew(jasMode_t mode, jasInstance_t *instance, uint8_t *buffer);
+jasErrorCode_t jasInitNew(jasMode_t mode, jasInstance_t *instance, uint8_t *buffer, jasOutFormat_t format, char **includes, char *filename, bool isFile);
 
 #endif
