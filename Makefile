@@ -12,13 +12,7 @@ DIRS = libjas labrador
 all: jas
 
 jas:
-	@for dir in $(DIRS); do \
-		if [ "$$dir" = "labrador" ]; then \
-			continue; \
-		fi \
-		$(MAKE) -C $$dir; \
-	done
-
+	$(MAKE) -C libjas
 	$(CC) -o $(BUILD)/$@ $(BUILD)/*.o
 
 clean:
