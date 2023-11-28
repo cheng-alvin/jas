@@ -11,7 +11,7 @@ jasErrorCode_t jasInitNew(jasMode_t mode, jasInstance_t *instance, uint8_t *buff
   instance->mode = mode;
   instance->buffer = buffer;
   instance->bufferLen = 0;
-  instance->format = (void*) format == NULL ? JAS_OUT_FORMAT_RAW : format;
+  instance->format = (void *)format == NULL ? JAS_OUT_FORMAT_RAW : format;
   instance->includes = includes;
   instance->filename = filename;
   instance->isFile = isFile;
