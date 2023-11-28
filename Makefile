@@ -11,7 +11,7 @@ DIRS = libjas labrador
 
 all: jas
 
-jas:
+jas: clean
 	$(MAKE) -C libjas
 	$(CC) -o $(BUILD)/$@ $(BUILD)/*.o
 
