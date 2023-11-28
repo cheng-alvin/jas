@@ -3,13 +3,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define REPLACE_IF_TRUE(x, y, z) \
-  if (strcmp(x, y) == 0)         \
+#define SUBSTITUTE_INSTRUCTION_IF_EQUATES(x, y, z) \
+  if (strcmp(x, y) == 0)                           \
     return z;
 
 instruction_t jasToInstructionEnum(char *instruction) {
   instruction = strlwr(instruction);
 
-  REPLACE_IF_TRUE(instruction, "aaa", AAA);
-  REPLACE_IF_TRUE(instruction, "aad", AAD);
+  SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "aaa", AAA);
+  SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "aad", AAD);
 }
