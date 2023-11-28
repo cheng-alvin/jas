@@ -1,3 +1,6 @@
+#ifndef JAS_INSTRUCTION_H
+#define JAS_INSTRUCTION_H
+
 /**
  * @author cheng-alvin
  * @since v0.0.1
@@ -29,3 +32,5 @@ typedef enum {
  */
 
 instruction_t jasToInstructionEnum(char *instruction);
+
+#endif
