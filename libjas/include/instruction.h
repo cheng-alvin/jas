@@ -1,3 +1,13 @@
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Enum for defining the several instructions that are
+ * present in the x86 architecture. Also allows functions
+ * and `switch` statements to use for easier readability
+ * and access.
+ */
+
 typedef enum {
   AAA,
   AAD,
