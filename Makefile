@@ -15,6 +15,9 @@ jas: clean
 	$(MAKE) -C libjas
 	$(CC) -o $(BUILD)/$@ $(BUILD)/*.o
 
+format:
+	clang-format -i **/*.{c,h} --verbose
+
 clean:
 	find . -name "*.o" -type f -delete
 	rm -r -f $(BUILD)
