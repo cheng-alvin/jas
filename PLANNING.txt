@@ -1,0 +1,27 @@
+**Please ignore the contents of the following file, this file is only used by developers
+of the Jas assembler for reference purposes**
+
+Planning
+========
+This is the planning document for the development of the Jas assembler. This document
+will be updated as the project progresses.
+
+Encoding instructions
+---------------------
+The first step in the development of the Jas assembler is to encode the instructions
+into binary. This will be done by creating a `struct` for each encoding entry and it's
+information. The encoding entries can be found on the intel developers PDF document.
+As shown below:
+
+instruction: [Instruction `enum` value]
+operand1: [Operand 1 `enum` type]
+operandSize1: [Operand 1 size]
+operand2: [Operand 2 `enum` type]
+operandSize2: [Operand 2 size]
+operand3: [Operand 3 `enum` type]
+operandSize3: [Operand 3 size]
+operand4: [Operand 4 `enum` type]
+operandSize4: [Operand 4 size]
+opcode: [Opcode of instruction]
+
+Then, the instructions are matched and encoded.
