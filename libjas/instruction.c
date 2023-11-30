@@ -7,7 +7,7 @@
   if (strcmp(x, y) == 0)                           \
     return z;
 
-instruction_t jasToInstructionEnum(char *instruction) {
+jasInstruction_t jasToInstructionEnum(char *instruction) {
   instruction = strlwr(instruction);
 
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "aaa", AAA);
