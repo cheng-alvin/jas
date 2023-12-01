@@ -1,3 +1,6 @@
+#ifndef JAS_CODEGEN_H
+#define JAS_CODEGEN_H
+
 #include <stdint.h>
 
 /**
@@ -53,3 +56,5 @@ typedef jasErrorCode_t (*jasInstructionEncoderPointerArray_t[])(jasOperand_t, ja
  */
 
 jasErrorCode_t codegen(jasInstruction_t instruction, jasOperand_t op1, jasOperand_t op2, jasOperand_t op3, jasOperand_t op4, jasInstance_t *instance);
+
+#endif
