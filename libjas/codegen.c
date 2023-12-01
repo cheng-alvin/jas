@@ -1,5 +1,7 @@
 #include "codegen.h"
 #include "aaa.h"
+#include "aad.h"
+#include "aam.h"
 #include "error.h"
 #include "init.h"
 #include "instruction.h"
@@ -10,7 +12,7 @@ jasErrorCode_t codegen(jasInstruction_t instruction, jasOperand_t op1, jasOperan
   if (instance->buffer == NULL)
     return JAS_ERROR_UNDEFINED_POINTER;
 
-  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&aaa};
+  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&aaa, &aad, &aam};
 
   if (instruction > sizeof(jasInstructionEncoder) / sizeof(&aaa))
     return JAS_ERROR_INVALID_INSTRUCTION;
