@@ -15,6 +15,7 @@
 typedef enum {
   JAS_NO_ERROR,
   JAS_ERROR_UNDEFINED_POINTER,
+  JAS_ERROR_INVALID_INSTRUCTION,
 } jasErrorCode_t;
 
 /**
