@@ -2,27 +2,8 @@
 #define JAS_CODEGEN_H
 
 #include "instruction.h"
+#include "operand.h"
 #include <stdint.h>
-
-/**
- * @author cheng-alvin
- * @since v0.0.1
- *
- * Union for declaring the operand type and contents for the
- * assembler. This is used to store the operand type and contents
- * which can be declared within different sizes and data widths.
- *
- * @note This is used to store the operand types can be things such
- * as `char`, `int` or anything that fits within the size of the
- * union.
- */
-
-typedef union {
-  int8_t operand8;
-  int16_t operand16;
-  int32_t operand32;
-  int64_t operand64;
-} jasOperand_t;
 
 /**
  * @author cheng-alvin
