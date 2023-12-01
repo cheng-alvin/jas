@@ -1,3 +1,6 @@
+#ifndef JAS_OPERAND_H
+#define JAS_OPERAND_H
+
 #include <stdint.h>
 
 /**
@@ -138,3 +141,5 @@ typedef enum {
   R14,
   R15
 } jasReg64_t;
+
+#endif
