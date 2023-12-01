@@ -1,6 +1,7 @@
 #ifndef JAS_CODEGEN_H
 #define JAS_CODEGEN_H
 
+#include "instruction.h"
 #include <stdint.h>
 
 /**
