@@ -2,6 +2,8 @@ CC = clang
 LD = ld
 DB = lldb
 
+# TODO Update makefile
+
 CFLAGS_COMMON = -I include -Wall -Wextra 
 CFLAGS = $(CFLAGS_COMMON)
 
