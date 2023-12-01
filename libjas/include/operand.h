@@ -21,6 +21,23 @@ typedef union {
   jasRegOperandType_t reg;
 } jasOperand_t;
 
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Union for representing registers with different bit sizes. Please
+ * note that the registers are represented in the union are 8/16/32/64 bit
+ * registers. This allows a range to be compressed together and used.
+ *
+ * @see `jasReg8_t` for more information on the 8 bit registers.
+ * @see `jasReg16_t` for more information on the 16 bit registers.
+ * @see `jasReg32_t` for more information on the 32 bit registers.
+ * @see `jasReg64_t` for more information on the 64 bit registers.
+ *
+ * @see AMD64 Architecture Programmer’s Manual 1 - 1 3.1.2
+ * @see Intel® 64 and IA-32 Architectures 1 - 3.7.2.1
+ */
+
 typedef union {
   jasReg16_t reg16;
   jasReg32_t reg32;
