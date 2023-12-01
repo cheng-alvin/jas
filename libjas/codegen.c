@@ -6,8 +6,8 @@
 #include "null.h"
 #include <stdint.h>
 
-jasErrorCode_t codegen(jasInstruction_t instruction, jasOperand_t op1, jasOperand_t op2, jasOperand_t op3, jasOperand_t op4, uint8_t *buf, jasInstance_t instance) {
-  if (buf == NULL)
+jasErrorCode_t codegen(jasInstruction_t instruction, jasOperand_t op1, jasOperand_t op2, jasOperand_t op3, jasOperand_t op4, jasInstance_t *instance) {
+  if (instance->buffer == NULL)
     return JAS_ERROR_UNDEFINED_POINTER;
 
   jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&aaa};
@@ -15,5 +15,7 @@ jasErrorCode_t codegen(jasInstruction_t instruction, jasOperand_t op1, jasOperan
   if (instruction > sizeof(jasInstructionEncoder) / sizeof(&aaa))
     return JAS_ERROR_INVALID_INSTRUCTION;
 
-  return jasInstructionEncoder[instruction](op1, op2, op3, op4, &buf, instance);
+  const jasErrorCode_t errorCode = jasInstructionEncoder[instruction](op1, op2, op3, op4, instance);
+
+  return errorCode;
 }

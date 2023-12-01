@@ -9,4 +9,4 @@ typedef union {
   uint64_t u64;
 } jasOperand_t;
 
-typedef jasErrorCode_t (*jasInstructionEncoderPointerArray_t[])(jasOperand_t, jasOperand_t, jasOperand_t, jasOperand_t, uint8_t *, jasInstance_t);
+typedef jasErrorCode_t (*jasInstructionEncoderPointerArray_t[])(jasOperand_t, jasOperand_t, jasOperand_t, jasOperand_t, jasInstance_t);
