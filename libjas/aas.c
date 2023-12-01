@@ -1,6 +1,7 @@
 #include "codegen.h"
 #include "error.h"
 #include "init.h"
+#include "macro.h"
 #include "null.h"
 #include "write.h"
 #include <stdint.h>
@@ -9,8 +10,7 @@ jasErrorCode_t aas(jasOperand_t op1, jasOperand_t op2, jasOperand_t op3, jasOper
   if (instance->mode == JAS_MODE_64)
     return JAS_ERROR_NON_LONG_MODE_INSTRUCTION;
 
-  instance->buffer = write8(instance->buffer, 0x3F, instance->bufferLen);
-  instance->bufferLen++;
+  WRITE(0x3F)
 
   return JAS_NO_ERROR;
 }
