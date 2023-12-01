@@ -36,7 +36,7 @@ typedef union {
  * in the codegen function pointer array.
  */
 
-typedef jasErrorCode_t (*jasInstructionEncoderPointerArray_t[])(jasOperand_t, jasOperand_t, jasOperand_t, jasOperand_t, jasInstance_t);
+typedef jasErrorCode_t (*jasInstructionEncoderPointerArray_t[])(jasOperand_t, jasOperand_t, jasOperand_t, jasOperand_t, jasInstance_t *);
 
 /**
  * @author cheng-alvin
