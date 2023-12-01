@@ -18,7 +18,15 @@ typedef union {
   int16_t operand16;
   int32_t operand32;
   int64_t operand64;
+  jasRegOperandType_t reg;
 } jasOperand_t;
+
+typedef union {
+  jasReg16_t reg16;
+  jasReg32_t reg32;
+  jasReg64_t reg64;
+  jasReg8_t reg8;
+} jasRegOperandType_t;
 
 /**
  * @author cheng-alvin
