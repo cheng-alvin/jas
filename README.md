@@ -1,4 +1,4 @@
-<p align="center"><img alt="logo and mascot" height="200" src="https://github.com/cheng-alvin/jas/blob/main/logo.png">
+<p align="center"><img alt="logo and mascot" src="https://github.com/cheng-alvin/jas/blob/main/logo.png">
 </p>
 
 
