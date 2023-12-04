@@ -1,6 +1,5 @@
-<p align="center"><img alt="logo and mascot" src="https://github.com/cheng-alvin/jas/blob/main/logo.png">
+<p align="center"><img alt="logo and mascot" src="https://github.com/cheng-alvin/jas/assets/88267875/a3b453ce-a0c6-443d-881f-cdcfa34e8ddc">
 </p>
-
 
 <p align="center">
   <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
