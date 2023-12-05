@@ -6,7 +6,7 @@
 
 jasErrorCode_t jasInitNew(jasMode_t mode, jasInstance_t *instance, uint8_t *buffer, jasOutFormat_t format, char **includes, char *filename, bool isFile) {
   if (instance == NULL)
-    return JAS_ERROR_UNDEFINED_POINTER;
+    return JAS_UNDEFINED_POINTER;
 
   instance->mode = mode;
   instance->buffer = buffer;
