@@ -17,10 +17,10 @@
  */
 
 typedef union {
-  int8_t operand8;
-  int16_t operand16;
-  int32_t operand32;
-  int64_t operand64;
+  uint8_t operand8;
+  uint16_t operand16;
+  uint32_t operand32;
+  uint64_t operand64;
   jasRegOperandType_t reg;
 } jasOperand_t;
 
