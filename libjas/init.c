@@ -1,9 +1,9 @@
 #include "init.h"
 #include "error.h"
-#include "null.h"
 #include <stdint.h>
 #include <stdlib.h>
 
+// TODO Add allocation for `buffer`
 jasErrorCode_t jasInitNew(jasMode_t mode, jasInstance_t *instance, uint8_t *buffer, jasOutFormat_t format, char **includes, char *filename, bool isFile) {
   if (instance == NULL)
     return JAS_UNDEFINED_POINTER;
