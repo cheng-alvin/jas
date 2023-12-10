@@ -1,5 +1,6 @@
 #include "instruction.h"
 #include "null.h"
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -7,8 +8,11 @@
   if (strcmp(x, y) == 0)                           \
     return z;
 
+// TODO Implement a checker for checking if the enum actually exists.
+
 jasInstruction_t jasToInstructionEnum(char *instruction) {
-  instruction = strlwr(instruction);
+  for (; *instruction; ++instruction)
+    *instruction = tolower(*instruction);
 
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "aaa", AAA);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "aad", AAD);
