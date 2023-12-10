@@ -1,6 +1,8 @@
 #ifndef JAS_CODEGEN_H
 #define JAS_CODEGEN_H
 
+#include "error.h"
+#include "init.h"
 #include "instruction.h"
 #include "operand.h"
 #include <stdint.h>
