@@ -13,8 +13,7 @@ all: jas
 
 jas: clean
 	$(MAKE) -C libjas
-	$(CC) -o $(BUILD)/$@ $(BUILD)/*.o
-
+	
 format:
 	clang-format -i **/*.{c,h} --verbose
 
