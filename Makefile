@@ -13,7 +13,7 @@ all: jas
 
 jas: clean
 	$(MAKE) -C libjas
-	
+
 format:
 	clang-format -i **/*.{c,h} --verbose
 
@@ -24,3 +24,7 @@ clean:
 	mkdir -p $(BUILD)/test
 	mkdir -p $(BUILD)/test/libjas
 	find . -name "*.dylib" -type f -delete
+
+test: jas
+	$(MAKE) -C test
+  
