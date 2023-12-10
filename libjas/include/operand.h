@@ -7,51 +7,6 @@
  * @author cheng-alvin
  * @since v0.0.1
  *
- * Union for declaring the operand type and contents for the
- * assembler. This is used to store the operand type and contents
- * which can be declared within different sizes and data widths.
- *
- * @note This is used to store the operand types can be things such
- * as `char`, `int` or anything that fits within the size of the
- * union.
- */
-
-typedef union {
-  uint8_t operand8;
-  uint16_t operand16;
-  uint32_t operand32;
-  uint64_t operand64;
-  jasRegOperandType_t reg;
-} jasOperand_t;
-
-/**
- * @author cheng-alvin
- * @since v0.0.1
- *
- * Union for representing registers with different bit sizes. Please
- * note that the registers are represented in the union are 8/16/32/64 bit
- * registers. This allows a range to be compressed together and used.
- *
- * @see `jasReg8_t` for more information on the 8 bit registers.
- * @see `jasReg16_t` for more information on the 16 bit registers.
- * @see `jasReg32_t` for more information on the 32 bit registers.
- * @see `jasReg64_t` for more information on the 64 bit registers.
- *
- * @see AMD64 Architecture Programmer’s Manual 1 - 1 3.1.2
- * @see Intel® 64 and IA-32 Architectures 1 - 3.7.2.1
- */
-
-typedef union {
-  jasReg16_t reg16;
-  jasReg32_t reg32;
-  jasReg64_t reg64;
-  jasReg8_t reg8;
-} jasRegOperandType_t;
-
-/**
- * @author cheng-alvin
- * @since v0.0.1
- *
  * Following couple enums defines the registers on different types of
  * bit modes present on the x86 processor family. More information on
  * these registers can be found on the x86 or intel programmers' docs.
@@ -143,5 +98,50 @@ typedef enum {
 } jasReg64_t;
 
 #define JAS_NO_OPERAND ((jasOperand_t){0})
+
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Union for representing registers with different bit sizes. Please
+ * note that the registers are represented in the union are 8/16/32/64 bit
+ * registers. This allows a range to be compressed together and used.
+ *
+ * @see `jasReg8_t` for more information on the 8 bit registers.
+ * @see `jasReg16_t` for more information on the 16 bit registers.
+ * @see `jasReg32_t` for more information on the 32 bit registers.
+ * @see `jasReg64_t` for more information on the 64 bit registers.
+ *
+ * @see AMD64 Architecture Programmer’s Manual 1 - 1 3.1.2
+ * @see Intel® 64 and IA-32 Architectures 1 - 3.7.2.1
+ */
+
+typedef union {
+  jasReg16_t reg16;
+  jasReg32_t reg32;
+  jasReg64_t reg64;
+  jasReg8_t reg8;
+} jasRegOperandType_t;
+
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Union for declaring the operand type and contents for the
+ * assembler. This is used to store the operand type and contents
+ * which can be declared within different sizes and data widths.
+ *
+ * @note This is used to store the operand types can be things such
+ * as `char`, `int` or anything that fits within the size of the
+ * union.
+ */
+
+typedef union {
+  uint8_t operand8;
+  uint16_t operand16;
+  uint32_t operand32;
+  uint64_t operand64;
+  jasRegOperandType_t reg;
+} jasOperand_t;
 
 #endif
