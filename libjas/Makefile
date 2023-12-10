@@ -4,7 +4,7 @@ DB = lldb
 
 # TODO Update makefile
 
-CFLAGS_COMMON = -I include -Wall -Wextra 
+CFLAGS_COMMON = -I include  -I ./ -Wall -Wextra 
 CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = ../build
