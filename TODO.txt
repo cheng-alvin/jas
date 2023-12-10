@@ -1,1 +1,2 @@
 - TODO Implement CodeQL into the Github repo.
+- TODO Write test cases for other functions.
