@@ -6,7 +6,7 @@ CFLAGS_COMMON = -I ../libjas/include -I ../libjas -I ../labrador -Wall -Wextra -
 CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = ../build
-HOME = ../
+HOME = ..
 
 EXE = parse.o aaa.o
 
@@ -29,6 +29,7 @@ libjas: $(EXE)
 			echo "---"; \
 			exit 1; \
 		fi; \
+		cd ../../../test; \
 		done
 			
 
