@@ -1,3 +1,7 @@
+#include <stdint.h>
+// TODO Add docs:
+// TODO Header guards?
+
 typedef enum {
   JAS_MODRM_REGISTER_OPERAND = 0b00000000,
   JAS_MODRM_ADDRESS = 0b01000000,
