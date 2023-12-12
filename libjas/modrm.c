@@ -1,10 +1,7 @@
 #include "modrm.h"
 #include <stdint.h>
 
-// TODO Convert to macro?!?
-// TODO Rename?
-
-uint8_t jasGenerateModRM(jasModRMMode_t mod, uint8_t reg, uint8_t rm) {
+uint8_t jasGenerateModrm(jasModrmMode_t mod, uint8_t reg, uint8_t rm) {
   /**
    * Uses binary ORs to concatenate the `mod`, `reg`, and
    * `rm` parameter byte values into a single byte. After this is
