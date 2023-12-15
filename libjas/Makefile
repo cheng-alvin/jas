@@ -10,7 +10,7 @@ CFLAGS = $(CFLAGS_COMMON)
 BUILD = ../build
 HOME = ..
 
-OBJ = aaa.o aad.o aam.o aas.o codegen.o endian.o error.o init.o instruction.o parse.o size.o write.o
+OBJ = aaa.o aad.o aam.o aas.o codegen.o endian.o error.o init.o instruction.o modrm.o operand.o parse.o size.o write.o
 
 all: libjas.o
 
