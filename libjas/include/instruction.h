@@ -31,6 +31,8 @@ typedef enum {
  *
  * @param instruction The instruction to convert to an enum.
  * @returns The enum of the instruction.
+ *
+ * @note Returns `-1` if the opcode is not found.
  */
 
 jasInstruction_t jasToInstructionEnum(char *instruction);
