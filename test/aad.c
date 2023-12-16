@@ -15,7 +15,7 @@ TEST(aad) {
   SHOULD_EQUAL(buffer[0], 0xD5)
   SHOULD_EQUAL(buffer[1], 0x0A)
 
-  aadExitStatus = aad((jasOperand_t){.operand8 = 0xFF}, JAS_NO_OPERAND, JAS_NO_OPERAND, JAS_NO_OPERAND, &instance);
+  aadExitStatus = aad(&(jasOperand_t){.operand8 = 0xFF}, JAS_NO_OPERAND, JAS_NO_OPERAND, JAS_NO_OPERAND, &instance);
   SHOULD_EQUAL(aadExitStatus, JAS_NO_ERROR)
   SHOULD_EQUAL(buffer[2], 0xD5)
   SHOULD_EQUAL(buffer[3], 0xFF)

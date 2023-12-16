@@ -11,7 +11,7 @@
  * @since v0.0.1
  *
  * Finds the size of an operand. Just simply searches the operand
- * union for information and checking if it's `NULL`.
+ * struct for information and checking if it's `NULL`.
  *
  * @note Not used for finding the size of a register, Please use
  * `jasRegisterSize` instead.
@@ -20,14 +20,14 @@
  * @returns The size of the operand.
  */
 
-int8_t jasOperandSize(jasOperand_t x);
+int8_t jasOperandSize(jasOperand_t *x);
 
 /**
  * @author cheng-alvin
  * @since v0.0.1
  *
  * Finds the size of a register operand. Just simply searches the operand
- * union for information and checking if it's `NULL`.
+ * struct for information and checking if it's `NULL`.
  *
  * @note Not used for finding the size of an immediate. Please use
  * `jasOperandSize` instead.
@@ -36,6 +36,6 @@ int8_t jasOperandSize(jasOperand_t x);
  * @returns The size of the register operand.
  */
 
-int8_t jasRegisterSize(jasOperand_t x);
+int8_t jasRegisterSize(jasOperand_t *x);
 
 #endif
