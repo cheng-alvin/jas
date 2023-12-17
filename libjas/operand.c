@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 bool jasRexExpectedInRegisterEncoding(jasRegOperandType_t reg) {
-  switch (jasRegisterSize(&(jasOperand_t){.reg = reg})) {
+  switch (jasRegisterSize((jasOperand_t){.reg = reg})) {
   case 8:
     switch (reg.reg8) {
     case JAS_REG_R8B:
