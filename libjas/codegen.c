@@ -9,7 +9,7 @@
 #include "null.h"
 #include <stdint.h>
 
-jasErrorCode_t codegen(jasInstruction_t instruction, jasOperand_t op1, jasOperand_t op2, jasOperand_t op3, jasOperand_t op4, jasInstance_t instance) {
+jasErrorCode_t codegen(jasInstruction_t instruction, jasUntaggedOperand_t op1, jasUntaggedOperand_t op2, jasUntaggedOperand_t op3, jasUntaggedOperand_t op4, jasInstance_t instance) {
   if (instance.buffer == NULL)
     return JAS_UNDEFINED_POINTER;
 

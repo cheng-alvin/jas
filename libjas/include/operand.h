@@ -3,6 +3,18 @@
 
 #include <stdint.h>
 
+typedef enum {
+  JAS_NO_OPERAND_TYPE,
+  JAS_REG_OPERAND_8,
+  JAS_REG_OPERAND_16,
+  JAS_REG_OPERAND_32,
+  JAS_REG_OPERAND_64,
+  JAS_OPERAND_8,
+  JAS_OPERAND_16,
+  JAS_OPERAND_32,
+  JAS_OPERAND_64
+} jasOperandType_t;
+
 /**
  * @author cheng-alvin
  * @since v0.0.1
@@ -134,6 +146,10 @@ typedef union {
  * @note This is used to store the operand types can be things such
  * as `char`, `int` or anything that fits within the size of the
  * union.
+ *
+ * @note Is untagged because it is used to store the operand type
+ * and contents which can be declared within different sizes and
+ * data widths. NOT for use in functions.
  */
 
 typedef union {
@@ -142,6 +158,11 @@ typedef union {
   uint32_t operand32;
   uint64_t operand64;
   jasRegOperandType_t reg;
-} jasOperand_t;
+} jasUntaggedOperand_t;
+
+typedef struct {
+  jasOperandType_t type;
+  jasUntaggedOperand_t operand;
+} jasTaggedOperand_t;
 
 #endif

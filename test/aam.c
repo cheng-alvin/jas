@@ -15,7 +15,7 @@ TEST(aam) {
   SHOULD_EQUAL(buffer[0], 0xD4)
   SHOULD_EQUAL(buffer[1], 0x0A)
 
-  aamExitStatus = aam((jasOperand_t){.operand8 = 0xFF}, JAS_NO_OPERAND, JAS_NO_OPERAND, JAS_NO_OPERAND, instance);
+  aamExitStatus = aam((jasUntaggedOperand_t){.operand8 = 0xFF}, JAS_NO_OPERAND, JAS_NO_OPERAND, JAS_NO_OPERAND, instance);
   SHOULD_EQUAL(aamExitStatus, JAS_NO_ERROR)
   SHOULD_EQUAL(buffer[2], 0xD4)
   SHOULD_EQUAL(buffer[3], 0xFF)
