@@ -97,14 +97,14 @@ typedef enum {
   JAS_REG_R15
 } jasReg64_t;
 
-#define JAS_NO_OPERAND &((jasOperand_t){0})
+#define JAS_NO_OPERAND ((jasOperand_t){0})
 
 /**
  * @author cheng-alvin
  * @since v0.0.1
  *
- * Struct for representing registers with different bit sizes. Please
- * note that the registers are represented in the struct are 8/16/32/64 bit
+ * Union for representing registers with different bit sizes. Please
+ * note that the registers are represented in the union are 8/16/32/64 bit
  * registers. This allows a range to be compressed together and used.
  *
  * @see `jasReg8_t` for more information on the 8 bit registers.
@@ -116,7 +116,7 @@ typedef enum {
  * @see Intel® 64 and IA-32 Architectures 1 - 3.7.2.1
  */
 
-typedef struct {
+typedef union {
   jasReg16_t reg16;
   jasReg32_t reg32;
   jasReg64_t reg64;
@@ -127,16 +127,16 @@ typedef struct {
  * @author cheng-alvin
  * @since v0.0.1
  *
- * Struct for declaring the operand type and contents for the
+ * Union for declaring the operand type and contents for the
  * assembler. This is used to store the operand type and contents
  * which can be declared within different sizes and data widths.
  *
  * @note This is used to store the operand types can be things such
  * as `char`, `int` or anything that fits within the size of the
- * struct.
+ * union.
  */
 
-typedef struct {
+typedef union {
   uint8_t operand8;
   uint16_t operand16;
   uint32_t operand32;
