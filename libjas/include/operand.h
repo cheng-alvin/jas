@@ -12,7 +12,11 @@ typedef enum {
   JAS_OPERAND_8,
   JAS_OPERAND_16,
   JAS_OPERAND_32,
-  JAS_OPERAND_64
+  JAS_OPERAND_64,
+  JAS_MEM_8,
+  JAS_MEM_16,
+  JAS_MEM_32,
+  JAS_MEM_64,
 } jasOperandType_t;
 
 /**
@@ -166,5 +170,5 @@ typedef struct {
 } jasTaggedOperand_t;
 
 jasTaggedOperand_t jasConstructOperand(void *value, jasOperandType_t type);
-
+bool jasRexExpectedInRegisterEncoding(jasTaggedOperand_t x);
 #endif
