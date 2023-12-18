@@ -66,14 +66,14 @@ typedef struct {
  * code-generation modes to your customization needs! As mentioned
  * in the `jasInstance_t` struct documentation.
  *
- * @param mode The code-generation mode for the assembler instance.
+ * @param mode The code-generation mode for the assembler instance->
  * @param instance The pointer to the assembler instance to be created.
- * @param buffer The buffer to be used for the assembler instance.
- * @param format The output format for the assembler instance.
+ * @param buffer The buffer to be used for the assembler instance->
+ * @param format The output format for the assembler instance->
  *
  * @see `jasInstance_t` and `jasMode_t` for more type information.
  * @note The `instance` parameter can be `NULL` if you want to create
- * a new instance.
+ * a new instance->
  *
  * @returns The status code for the function.
  * @see `jasErrorCode_t` for more information on the status codes.
@@ -82,6 +82,6 @@ typedef struct {
  * `malloc` or `realloc`!
  */
 
-jasErrorCode_t jasInitNew(jasMode_t mode, jasInstance_t instance, uint8_t *buffer, jasOutFormat_t format);
+jasErrorCode_t jasInitNew(jasMode_t mode, jasInstance_t *instance, uint8_t *buffer, jasOutFormat_t format);
 
 #endif
