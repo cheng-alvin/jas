@@ -20,7 +20,7 @@
  * in the codegen function pointer array.
  */
 
-typedef jasErrorCode_t (*jasInstructionEncoderPointerArray_t[])(jasUntaggedOperand_t, jasUntaggedOperand_t, jasUntaggedOperand_t, jasUntaggedOperand_t, jasInstance_t);
+typedef jasErrorCode_t (*jasInstructionEncoderPointerArray_t[])(jasTaggedOperand_t, jasTaggedOperand_t, jasTaggedOperand_t, jasTaggedOperand_t, jasInstance_t);
 
 /**
  * @author cheng-alvin
@@ -39,6 +39,6 @@ typedef jasErrorCode_t (*jasInstructionEncoderPointerArray_t[])(jasUntaggedOpera
  * @param instance The instance of the assembler unit.
  */
 
-jasErrorCode_t codegen(jasInstruction_t instruction, jasUntaggedOperand_t op1, jasUntaggedOperand_t op2, jasUntaggedOperand_t op3, jasUntaggedOperand_t op4, jasInstance_t instance);
+jasErrorCode_t codegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t instance);
 
 #endif

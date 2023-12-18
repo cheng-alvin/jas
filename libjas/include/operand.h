@@ -109,7 +109,7 @@ typedef enum {
   JAS_REG_R15
 } jasReg64_t;
 
-#define JAS_NO_OPERAND ((jasOperand_t){0})
+#define JAS_NO_OPERAND ((jasOperand_t){.type = JAS_NO_OPERAND_TYPE})
 
 /**
  * @author cheng-alvin

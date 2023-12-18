@@ -5,4 +5,4 @@
 #include "write.h"
 #include <stdint.h>
 
-jasErrorCode_t aas(jasUntaggedOperand_t op1, jasUntaggedOperand_t op2, jasUntaggedOperand_t op3, jasUntaggedOperand_t op4, jasInstance_t instance);
+jasErrorCode_t aas(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t instance);

@@ -5,4 +5,4 @@
 
 // TODO Add more docs
 
-jasErrorCode_t aaa(jasUntaggedOperand_t op1, jasUntaggedOperand_t op2, jasUntaggedOperand_t op3, jasUntaggedOperand_t op4, jasInstance_t instance);
+jasErrorCode_t aaa(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t instance);

@@ -1,11 +1,10 @@
 #include "operand.h"
-#include "size.h"
 #include <stdbool.h>
 
-bool jasRexExpectedInRegisterEncoding(jasRegOperandType_t reg) {
-  switch (jasRegisterSize((jasUntaggedOperand_t){.reg = reg})) {
-  case 8:
-    switch (reg.reg8) {
+bool jasRexExpectedInRegisterEncoding(jasTaggedOperand_t x) {
+  switch (x.type) {
+  case JAS_REG_OPERAND_8:
+    switch (x.operand.reg.reg8) {
     case JAS_REG_R8B:
     case JAS_REG_R9B:
     case JAS_REG_R10B:
@@ -23,8 +22,8 @@ bool jasRexExpectedInRegisterEncoding(jasRegOperandType_t reg) {
       return false;
     }
 
-  case 16:
-    switch (reg.reg16) {
+  case JAS_REG_OPERAND_16:
+    switch (x.operand.reg.reg16) {
     case JAS_REG_R8W:
     case JAS_REG_R9W:
     case JAS_REG_R10W:
@@ -38,8 +37,8 @@ bool jasRexExpectedInRegisterEncoding(jasRegOperandType_t reg) {
       return false;
     }
 
-  case 32:
-    switch (reg.reg32) {
+  case JAS_REG_OPERAND_32:
+    switch (x.operand.reg.reg32) {
     case JAS_REG_R8D:
     case JAS_REG_R9D:
     case JAS_REG_R10D:
@@ -53,8 +52,8 @@ bool jasRexExpectedInRegisterEncoding(jasRegOperandType_t reg) {
       return false;
     }
 
-  case 64:
-    switch (reg.reg64) {
+  case JAS_REG_OPERAND_64:
+    switch (x.operand.reg.reg64) {
     case JAS_REG_R8:
     case JAS_REG_R9:
     case JAS_REG_R10:
