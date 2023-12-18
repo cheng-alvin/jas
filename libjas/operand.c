@@ -71,3 +71,46 @@ bool jasRexExpectedInRegisterEncoding(jasTaggedOperand_t x) {
   // TODO document undefined behavior
   return false;
 }
+
+jasTaggedOperand_t jasConstructOperand(void *value, jasOperandType_t type) {
+  jasUntaggedOperand_t revisedValue;
+
+  switch (type) {
+  case JAS_REG_OPERAND_8:
+    revisedValue.reg.reg8 = *(jasReg8_t *)value;
+    break;
+
+  case JAS_REG_OPERAND_16:
+    revisedValue.reg.reg16 = *(jasReg16_t *)value;
+    break;
+
+  case JAS_REG_OPERAND_32:
+    revisedValue.reg.reg32 = *(jasReg32_t *)value;
+    break;
+
+  case JAS_REG_OPERAND_64:
+    revisedValue.reg.reg64 = *(jasReg64_t *)value;
+    break;
+
+  case JAS_OPERAND_8:
+    revisedValue.operand8 = *(uint8_t *)value;
+    break;
+
+  case JAS_OPERAND_16:
+    revisedValue.operand16 = *(uint16_t *)value;
+    break;
+
+  case JAS_OPERAND_32:
+    revisedValue.operand32 = *(uint32_t *)value;
+    break;
+
+  case JAS_OPERAND_64:
+    revisedValue.operand64 = *(uint64_t *)value;
+    break;
+
+  default:
+    return JAS_NO_OPERAND;
+  }
+
+  return (jasTaggedOperand_t){.type = type, .operand = revisedValue};
+}

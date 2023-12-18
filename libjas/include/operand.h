@@ -165,4 +165,6 @@ typedef struct {
   jasUntaggedOperand_t operand;
 } jasTaggedOperand_t;
 
+jasTaggedOperand_t jasConstructOperand(void *value, jasOperandType_t type);
+
 #endif
