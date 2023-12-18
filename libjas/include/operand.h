@@ -3,6 +3,23 @@
 
 #include <stdint.h>
 
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Enum for representing the operand type. This is used to store the
+ * operand types. Since C unions cannot be identified by their type,
+ * we need to use the idea of tagging a union along with another struct
+ * element. This is used to store the operand type and contents which
+ * can be declared within different sizes and data widths as mentioned
+ * below.
+ *
+ * @note I recommend reading the software guides of x86 just to get down
+ * the basics of the assembly language and it's encoding.
+ *
+ * @see Intel® 64 and IA-32 Architecture
+ */
+
 typedef enum {
   JAS_NO_OPERAND_TYPE,
   JAS_REG_OPERAND_8,
@@ -17,6 +34,10 @@ typedef enum {
   JAS_MEM_16,
   JAS_MEM_32,
   JAS_MEM_64,
+  JAS_REG_OPERAND_8_DISP,
+  JAS_REG_OPERAND_16_DISP,
+  JAS_REG_OPERAND_32_DISP,
+  JAS_REG_OPERAND_64_DISP,
 } jasOperandType_t;
 
 /**
@@ -113,7 +134,42 @@ typedef enum {
   JAS_REG_R15
 } jasReg64_t;
 
+// Tiny helper macro for defining the no operand.
+
 #define JAS_NO_OPERAND ((jasTaggedOperand_t){.type = JAS_NO_OPERAND_TYPE})
+
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Struct for representing the register with displacement. This is
+ * used to store the register with displacement. And can be used
+ * when you need syntax like: `[rax + 4]` or `[rax + rbx]`.
+ *
+ * This following structs will be stored within the union below
+ * for memory efficiency. Please see the operand types above this
+ * post.
+ */
+
+typedef struct {
+  jasReg8_t reg8;
+  uint8_t displacement;
+} jasRegDisplacement8_t;
+
+typedef struct {
+  jasReg16_t reg16;
+  uint16_t displacement;
+} jasRegDisplacement16_t;
+
+typedef struct {
+  jasReg32_t reg32;
+  uint32_t displacement;
+} jasRegDisplacement32_t;
+
+typedef struct {
+  jasReg64_t reg64;
+  uint64_t displacement;
+} jasRegDisplacement64;
 
 /**
  * @author cheng-alvin
@@ -137,6 +193,10 @@ typedef union {
   jasReg32_t reg32;
   jasReg64_t reg64;
   jasReg8_t reg8;
+  jasRegDisplacement8_t regDisp8;
+  jasRegDisplacement16_t regDisp16;
+  jasRegDisplacement32_t regDisp32;
+  jasRegDisplacement64 regDisp64;
 } jasRegOperandType_t;
 
 /**
@@ -164,11 +224,55 @@ typedef union {
   jasRegOperandType_t reg;
 } jasUntaggedOperand_t;
 
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Struct for representing the tagged operand. This is used to store
+ * the tagged operand using the `jasOperandType_t` enum. This allows
+ * untagged generic unions to be identified by their type. Since
+ * C does not provide a way to index them.
+ */
+
 typedef struct {
   jasOperandType_t type;
   jasUntaggedOperand_t operand;
 } jasTaggedOperand_t;
 
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Helper function for constructing the tagged operand. This is used
+ * to construct the tagged operand using the `jasOperandType_t` enum,
+ * without having messy syntax and inlines throughout.
+ *
+ * @param value The value to be stored within the operand.
+ * @param type The type of the operand.
+ *
+ * @returns The tagged operand.
+ */
+
 jasTaggedOperand_t jasConstructOperand(void *value, jasOperandType_t type);
+
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
+ * Helper to check if the operand is a register that requires the REX
+ * prefix byte. The REX prefix byte allows override of the registers
+ * allowing for more options such as the r8b-r15b registers.
+ *
+ * @param x The tagged operand to be checked.
+ *
+ * @returns Whether the operand is a register that requires the REX
+ * prefix in a boolean form.
+ *
+ * @note Once again, I recommend reading the software guides of x86
+ * just to get down the basics of the assembly language and it's
+ * encoding and what REX prefixes are.
+ */
+
 bool jasRexExpectedInRegisterEncoding(jasTaggedOperand_t x);
+
 #endif
