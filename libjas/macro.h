@@ -19,6 +19,18 @@
     WRITE_LE_16(y)           \
   }
 
+#define WRITE_IF_BREAKS(x, y) \
+  if (x) {                    \
+    WRITE(y)                  \
+    break;                    \
+  }
+
+#define WRITE_LE_16_IF_BREAKS(x, y) \
+  if (x) {                          \
+    WRITE_LE_16(y)                  \
+    break;                          \
+  }
+
 #define NO_ERROR return JAS_NO_ERROR;
 #define NO_LONG_MODE                 \
   if (instance->mode == JAS_MODE_64) \
