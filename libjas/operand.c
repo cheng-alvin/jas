@@ -68,7 +68,6 @@ bool jasRexExpectedInRegisterEncoding(jasTaggedOperand_t x) {
     }
   }
 
-  // TODO document undefined behavior
   return false;
 }
 

@@ -8,8 +8,6 @@
   if (strcmp(x, y) == 0)                           \
     return z;
 
-// TODO Implement a checker for checking if the enum actually exists.
-
 jasInstruction_t jasToInstructionEnum(char *instruction) {
   for (; *instruction; ++instruction)
     *instruction = tolower(*instruction);

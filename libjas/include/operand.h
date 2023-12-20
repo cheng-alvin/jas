@@ -30,10 +30,10 @@ typedef enum {
   JAS_OPERAND_16,
   JAS_OPERAND_32,
   JAS_OPERAND_64,
-  JAS_MEM_8,
-  JAS_MEM_16,
-  JAS_MEM_32,
-  JAS_MEM_64,
+  JAS_INDIRECT_8,
+  JAS_INDIRECT_16,
+  JAS_INDIRECT_32,
+  JAS_INDIRECT_64,
   JAS_REG_OPERAND_8_DISP,
   JAS_REG_OPERAND_16_DISP,
   JAS_REG_OPERAND_32_DISP,
@@ -184,6 +184,10 @@ typedef struct {
  * @see `jasReg32_t` for more information on the 32 bit registers.
  * @see `jasReg64_t` for more information on the 64 bit registers.
  *
+ * @see `jasRegDisplacement8_t`, `jasRegDisplacement16_t`,
+ * `jasRegDisplacement32_t`, `jasRegDisplacement64` for more
+ * information on the registers with displacement addresses.
+ *
  * @see AMD64 Architecture Programmer’s Manual 1 - 1 3.1.2
  * @see Intel® 64 and IA-32 Architectures 1 - 3.7.2.1
  */
@@ -193,6 +197,10 @@ typedef union {
   jasReg32_t reg32;
   jasReg64_t reg64;
   jasReg8_t reg8;
+  jasReg16_t indirectReg16;
+  jasReg32_t indirectReg32;
+  jasReg64_t indirectReg64;
+  jasReg8_t indirectReg8;
   jasRegDisplacement8_t regDisp8;
   jasRegDisplacement16_t regDisp16;
   jasRegDisplacement32_t regDisp32;
