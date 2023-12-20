@@ -39,3 +39,4 @@ jasErrorCode_t adc(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
     WRITE(0x81)
     break;
   }
+}
