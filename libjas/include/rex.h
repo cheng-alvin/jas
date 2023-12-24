@@ -46,5 +46,5 @@ typedef enum {
  * one that is appended by the `prefixType` parameter.
  */
 
-uint8_t jasRexConstructPrefix(uint8_t existingByte, jasRexPrefix_t prefixType)
+uint8_t jasRexConstructPrefix(uint8_t existingByte, jasRexPrefix_t prefixType);
 #endif
