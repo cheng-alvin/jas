@@ -1,4 +1,5 @@
 #include "operand.h"
+#include "error.h"
 #include <stdbool.h>
 
 bool jasRexExpectedInRegisterEncoding(jasTaggedOperand_t x) {
@@ -112,4 +113,11 @@ jasTaggedOperand_t jasConstructOperand(void *value, jasOperandType_t type) {
   }
 
   return (jasTaggedOperand_t){.type = type, .operand = revisedValue};
+}
+
+bool jasCheckIfHighRegistersAreValidUnderRexPrefix(jasTaggedOperand_t op1, jasTaggedOperand_t op2) {
+  if (jasRexExpectedInRegisterEncoding(op1) || jasRexExpectedInRegisterEncoding(op2)) {
+    return false;
+  }
+  return true;
 }
