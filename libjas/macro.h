@@ -36,6 +36,24 @@
   if (instance->mode == JAS_MODE_64) \
     return JAS_NON_LONG_MODE_INSTRUCTION;
 
-#define ENCODE_RM(x) \
-  jasGenerateModrm()
+#define ENCODE_IMMEDIATE(x)                           \
+  switch (x.type) {                                   \
+  case JAS_OPERAND_8:                                 \
+    WRITE(x.operand.operand8);                        \
+    break;                                            \
+  case JAS_OPERAND_16:                                \
+    WRITE_LE_16(x.operand.operand16);                 \
+    break;                                            \
+  case JAS_OPERAND_32:                                \
+    WRITE_LE_16((x.operand.operand32 >> 16) & 0xffff) \
+    WRITE_LE_16(x.operand.operand32 & 0xffff)         \
+    break;                                            \
+  case JAS_OPERAND_64:                                \
+    WRITE_LE_16((x.operand.operand64 >> 48) & 0xffff) \
+    WRITE_LE_16((x.operand.operand64 >> 32) & 0xffff) \
+    WRITE_LE_16((x.operand.operand64 >> 16) & 0xffff) \
+    WRITE_LE_16(x.operand.operand64 & 0xffff)         \
+    break;                                            \
+  }
+
 #endif
