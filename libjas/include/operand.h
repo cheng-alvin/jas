@@ -1,6 +1,8 @@
 #ifndef JAS_OPERAND_H
 #define JAS_OPERAND_H
 
+#include "error.h"
+#include <stdbool.h>
 #include <stdint.h>
 
 /**
@@ -44,6 +46,26 @@ typedef enum {
  * @author cheng-alvin
  * @since v0.0.1
  *
+ * Since intel instructions DO NOT support using the high registers
+ * while another register is being used with a REX prefix, this
+ * function is used for checking if the higher registers are encodable.
+ *
+ * @see  Intel® 64 and IA-32 Architectures (Volume 2A) - 3.1.1.1
+ *
+ * (As usual, if you are interested in writing assembler code, please
+ * go ahead and read the Intel manuals.)
+ *
+ * @param op1 The first operand to be checked.
+ * @param op2 The second operand to be checked.
+ * @returns The error code if the high registers are invalid or not
+ */
+
+bool jasCheckIfHighRegistersAreValidUnderRexPrefix(jasTaggedOperand_t op1, jasTaggedOperand_t op2);
+
+/**
+ * @author cheng-alvin
+ * @since v0.0.1
+ *
  * Following couple enums defines the registers on different types of
  * bit modes present on the x86 processor family. More information on
  * these registers can be found on the x86 or intel programmers' docs.
@@ -56,13 +78,17 @@ typedef enum {
 
 typedef enum {
   JAS_REG_AL,
-  JAS_REG_BL,
   JAS_REG_CL,
   JAS_REG_DL,
+  JAS_REG_BL,
+  JAS_REG_AH,
+  JAS_REG_CH,
+  JAS_REG_DH,
+  JAS_REG_BH,
+  JAS_REG_SPL,
+  JAS_REG_BPL,
   JAS_REG_SIL,
   JAS_REG_DIL,
-  JAS_REG_BPL,
-  JAS_REG_SPL,
   JAS_REG_R8B,
   JAS_REG_R9B,
   JAS_REG_R10B,
@@ -71,21 +97,18 @@ typedef enum {
   JAS_REG_R13B,
   JAS_REG_R14B,
   JAS_REG_R15B,
-  JAS_REG_AH,
-  JAS_REG_BH,
-  JAS_REG_CH,
-  JAS_REG_DH
 } jasReg8_t;
 
+// TODO Reorder:
 typedef enum {
   JAS_REG_AX,
-  JAS_REG_BX,
   JAS_REG_CX,
   JAS_REG_DX,
+  JAS_REG_BX,
   JAS_REG_DI,
+  JAS_REG_SP,
   JAS_REG_SI,
   JAS_REG_BP,
-  JAS_REG_SP,
   JAS_REG_R8W,
   JAS_REG_R9W,
   JAS_REG_R10W,
@@ -134,8 +157,7 @@ typedef enum {
   JAS_REG_R15
 } jasReg64_t;
 
-// Tiny helper macro for defining the no operand.
-
+// Tiny helper macro for expressing a blank operand.
 #define JAS_NO_OPERAND ((jasTaggedOperand_t){.type = JAS_NO_OPERAND_TYPE})
 
 /**
