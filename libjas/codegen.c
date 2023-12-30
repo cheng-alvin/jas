@@ -16,7 +16,7 @@ jasErrorCode_t codegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jas
 
   jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&aaa, &aad, &aam, &aas, &adc};
 
-  if (instruction > sizeof(jasInstructionEncoder) / sizeof(&aaa))
+  if (instruction > sizeof(jasInstructionEncoder) / sizeof(jasInstructionEncoderPointer_t))
     return JAS_INVALID_INSTRUCTION;
 
   const jasErrorCode_t errorCode = jasInstructionEncoder[instruction](op1, op2, op3, op4, instance);
