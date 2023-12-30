@@ -91,7 +91,7 @@ jasErrorCode_t adc(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
   case 0x14:
   case 0x15:
     ENCODE_IMMEDIATE(op2)
-    return JAS_OPERAND_ERROR;
+    return JAS_NO_ERROR;
 
   case 0x80:
   case 0x81:
