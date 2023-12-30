@@ -56,4 +56,10 @@
     break;                                            \
   }
 
+#define IS_REG(x) (x.type == JAS_REG_OPERAND_8 || x.type == JAS_REG_OPERAND_16 || x.type == JAS_REG_OPERAND_32 || x.type == JAS_REG_OPERAND_64)
+
+#define IS_INDIRECT(x) (x.type == JAS_INDIRECT_8 || x.type == JAS_INDIRECT_16 || x.type == JAS_INDIRECT_32 || x.type == JAS_INDIRECT_64)
+
+#define IS_IMMEDIATE(x) (x.type == JAS_OPERAND_8 || x.type == JAS_OPERAND_16 || x.type == JAS_OPERAND_32 || x.type == JAS_OPERAND_64)
+
 #endif
