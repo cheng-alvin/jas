@@ -16,11 +16,15 @@
  * This can be used as a placeholder for holding the instruction
  * encoder. Which is called a generation unit.
  *
- * @note This is used to store the instruction encoder function
- * in the codegen function pointer array.
+ * @note Not to be confused with `jasInstructionEncoderPointerArray_t`.
+ * @see `jasInstructionEncoderPointerArray_t` for more information.
+ * (below this function type definition)
  */
 
-typedef jasErrorCode_t (*jasInstructionEncoderPointerArray_t[])(jasTaggedOperand_t, jasTaggedOperand_t, jasTaggedOperand_t, jasTaggedOperand_t, jasInstance_t *);
+typedef jasErrorCode_t (*jasInstructionEncoderPointer_t)(jasTaggedOperand_t, jasTaggedOperand_t, jasTaggedOperand_t, jasTaggedOperand_t, jasInstance_t *);
+
+// Array version of the function pointer. (basically just the function pointer duplicated)
+typedef jasInstructionEncoderPointer_t jasInstructionEncoderPointerArray_t[];
 
 /**
  * @author cheng-alvin
