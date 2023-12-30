@@ -9,6 +9,10 @@
   instance->buffer = write16(instance->buffer, x, instance->bufferLen); \
   instance->bufferLen += 2;
 
+#define WRITE_LE_32(x)            \
+  WRITE_LE_16((x >> 16) & 0xffff) \
+  WRITE_LE_16(x & 0xffff)
+
 #define WRITE_IF(x, y) \
   if (x) {             \
     WRITE(y)           \
@@ -17,6 +21,11 @@
 #define WRITE_LE_16_IF(x, y) \
   if (x) {                   \
     WRITE_LE_16(y)           \
+  }
+
+#define WRITE_LE_32_IF(x, y) \
+  if (x) {                   \
+    WRITE_LE_32(y)           \
   }
 
 #define WRITE_IF_BREAKS(x, y) \
@@ -28,6 +37,12 @@
 #define WRITE_LE_16_IF_BREAKS(x, y) \
   if (x) {                          \
     WRITE_LE_16(y)                  \
+    break;                          \
+  }
+
+#define WRITE_LE_32_IF_BREAKS(x, y) \
+  if (x) {                          \
+    WRITE_LE_32(y)                  \
     break;                          \
   }
 
