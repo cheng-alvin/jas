@@ -12,15 +12,20 @@
   instance->buffer = write16(instance->buffer, x, instance->bufferLen); \
   instance->bufferLen += 2;
 
-// // #define WRITE32(x)            \
-// //   WRITE16((x >> 16) & 0xffff) \
-// //   WRITE16(x & 0xffff)
+#define WRITE32(x)            \
+  WRITE16((x >> 16) & 0xffff) \
+  WRITE16(x & 0xffff)
 
-// // #define WRITE64(x)            \
-// //   WRITE16((x >> 48) & 0xffff) \
-// //   WRITE16((x >> 32) & 0xffff) \
-// //   WRITE16((x >> 16) & 0xffff) \
-// //   WRITE16(x & 0xffff)
+#define WRITE64(x)            \
+  WRITE16((x >> 48) & 0xffff) \
+  WRITE16((x >> 32) & 0xffff) \
+  WRITE16((x >> 16) & 0xffff) \
+  WRITE16(x & 0xffff)
+
+#define CONDITIONAL_WRITE(x, y) \
+  if (x) {                      \
+    WRITE(y)                    \
+  }
 
 // Note that all of these macros are not used in the code, please uncomment if they are used. - 12/31/23
 // // #define WRITE_LE_16_IF(x, y) \
@@ -38,10 +43,10 @@
 // //     WRITE_64(y)              \
 // //  }
 
-#define CONDITIONAL_WRITE(x, y) \
-  if (x) {                      \
-    WRITE(y)                    \
-    break;                      \
+#define BREAKABLE_CONDITIONAL_WRITE(x, y) \
+  if (x) {                                \
+    WRITE(y)                              \
+    break;                                \
   }
 
 // // #define WRITE_LE_16_IF_BREAKS(x, y) \
