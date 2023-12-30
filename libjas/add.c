@@ -46,8 +46,7 @@ jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
   case JAS_REG_OPERAND_16:
     mode = JAS_MODRM_REGISTER;
 
-    // TODO encapsulate operand size override
-    WRITE(0x66)
+    OPERAND_SIZE_OVERRIDE16
     BREAKABLE_CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_16 && (op2.type == JAS_REG_OPERAND_16 || op2.type == JAS_INDIRECT_16), 0x03)
     BREAKABLE_CONDITIONAL_WRITE(op1.operand.reg.reg16 == JAS_REG_AX, 0x05)
     BREAKABLE_CONDITIONAL_WRITE(op2.type == JAS_OPERAND_8, 0x83)
