@@ -13,6 +13,12 @@
   WRITE_LE_16((x >> 16) & 0xffff) \
   WRITE_LE_16(x & 0xffff)
 
+#define WRITE_LE_64(x)            \
+  WRITE_LE_16((x >> 48) & 0xffff) \
+  WRITE_LE_16((x >> 32) & 0xffff) \
+  WRITE_LE_16((x >> 16) & 0xffff) \
+  WRITE_LE_16(x & 0xffff)
+
 #define WRITE_IF(x, y) \
   if (x) {             \
     WRITE(y)           \
@@ -26,6 +32,11 @@
 #define WRITE_LE_32_IF(x, y) \
   if (x) {                   \
     WRITE_LE_32(y)           \
+  }
+
+#define WRITE_LE_64_IF(x, y) \
+  if (x) {                   \
+    WRITE_LE_64(y)           \
   }
 
 #define WRITE_IF_BREAKS(x, y) \
@@ -43,6 +54,12 @@
 #define WRITE_LE_32_IF_BREAKS(x, y) \
   if (x) {                          \
     WRITE_LE_32(y)                  \
+    break;                          \
+  }
+
+#define WRITE_LE_64_IF_BREAKS(x, y) \
+  if (x) {                          \
+    WRITE_LE_64(y)                  \
     break;                          \
   }
 
