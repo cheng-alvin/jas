@@ -12,6 +12,7 @@
 #include <stdlib.h>
 
 // TODO Maybe rename WRITE_IF_BREAKS() macro (this name sounds absolutely awful))
+// TODO create new unit tests for `adc`
 
 jasErrorCode_t adc(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
   if (jasCheckIfHighRegistersAreValidUnderRexPrefix(op1, op2))
