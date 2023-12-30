@@ -3,3 +3,4 @@
 - TODO Rewrite unit tests.
 - TODO Since many instructions have overlapping operand encodings like `MR` or `M` (As per the intel manuals). Therefore, we can just make functions for encoding these instructions and then call them in the main function. This will reduce the code size and make it more readable.
 - TODO Ensure ALL header files have documentation!!!
+- Encapsulate WRITE macro into a "high level" write function instead of using a macro that hogs space inside my code.
