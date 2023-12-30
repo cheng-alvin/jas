@@ -17,6 +17,6 @@ jasInstruction_t jasToInstructionEnum(char *instruction) {
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "aam", AAM);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "aas", AAS);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "adc", ADC);
-
+  SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "add", ADD);
   return -1;
 }

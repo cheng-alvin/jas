@@ -4,6 +4,7 @@
 #include "aam.h"
 #include "aas.h"
 #include "adc.h"
+#include "add.h"
 #include "error.h"
 #include "init.h"
 #include "instruction.h"
@@ -14,7 +15,7 @@ jasErrorCode_t codegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jas
   if (instance->buffer == NULL)
     return JAS_UNDEFINED_POINTER;
 
-  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&aaa, &aad, &aam, &aas, &adc};
+  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&aaa, &aad, &aam, &aas, &adc, &add};
 
   if (instruction > sizeof(jasInstructionEncoder) / sizeof(jasInstructionEncoderPointer_t))
     return JAS_INVALID_INSTRUCTION;
