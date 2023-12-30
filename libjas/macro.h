@@ -1,6 +1,9 @@
 #ifndef MACRO_H
 #define MACRO_H
 
+// Internal macros for less spaghetti code 🍝.
+// Delicious!!
+
 #define WRITE(x)                                                       \
   instance->buffer = write8(instance->buffer, x, instance->bufferLen); \
   instance->bufferLen++;
