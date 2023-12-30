@@ -7,7 +7,7 @@
 
 #define WRITE_LE_16(x)                                                  \
   instance->buffer = write16(instance->buffer, x, instance->bufferLen); \
-  instance->bufferLen++;
+  instance->bufferLen += 2;
 
 #define WRITE_IF(x, y) \
   if (x) {             \
