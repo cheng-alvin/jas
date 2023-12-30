@@ -43,10 +43,10 @@
 // //     WRITE_64(y)              \
 // //  }
 
-#define BREAKABLE_CONDITIONAL_WRITE(x, y) \
-  if (x) {                                \
-    WRITE(y)                              \
-    break;                                \
+#define WRITE_IF_TRUE_THEN_BREAK(x, y) \
+  if (x) {                             \
+    WRITE(y)                           \
+    break;                             \
   }
 
 // // #define WRITE_LE_16_IF_BREAKS(x, y) \
@@ -98,6 +98,6 @@
 
 #define IS_IMMEDIATE(x) (x.type == JAS_OPERAND_8 || x.type == JAS_OPERAND_16 || x.type == JAS_OPERAND_32 || x.type == JAS_OPERAND_64)
 
-#define OPERAND_SIZE_OVERRIDE16 WRITE(0x66)
+#define OPERAND_SIZE_OVERRIDE 0x66
 
 #endif

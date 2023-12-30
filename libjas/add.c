@@ -14,7 +14,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-// TODO Maybe rename BREAKABLE_CONDITIONAL_WRITE() macro (this name sounds absolutely awful))
+// TODO Maybe rename WRITE_IF_TRUE_THEN_BREAK() macro (this name sounds absolutely awful))
 
 jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
   if (jasCheckIfHighRegistersAreValidUnderRexPrefix(op1, op2))
@@ -33,10 +33,10 @@ jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
   case JAS_REG_OPERAND_8:
     mode = JAS_MODRM_REGISTER;
 
-    BREAKABLE_CONDITIONAL_WRITE(op1.operand.reg.reg8 == JAS_REG_AL, 0x04)
+    WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg8 == JAS_REG_AL, 0x04)
 
-    BREAKABLE_CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_8 && (op2.type == JAS_REG_OPERAND_8 || op2.type == JAS_INDIRECT_8), 0x02)
-    BREAKABLE_CONDITIONAL_WRITE(op2.type == JAS_REG_OPERAND_8, 0x00)
+    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_8 && (op2.type == JAS_REG_OPERAND_8 || op2.type == JAS_INDIRECT_8), 0x02)
+    WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_REG_OPERAND_8, 0x00)
 
     WRITE(0x80)
     break;
@@ -46,11 +46,11 @@ jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
   case JAS_REG_OPERAND_16:
     mode = JAS_MODRM_REGISTER;
 
-    OPERAND_SIZE_OVERRIDE16
-    BREAKABLE_CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_16 && (op2.type == JAS_REG_OPERAND_16 || op2.type == JAS_INDIRECT_16), 0x03)
-    BREAKABLE_CONDITIONAL_WRITE(op1.operand.reg.reg16 == JAS_REG_AX, 0x05)
-    BREAKABLE_CONDITIONAL_WRITE(op2.type == JAS_OPERAND_8, 0x83)
-    BREAKABLE_CONDITIONAL_WRITE(op2.type == JAS_REG_OPERAND_16, 0x01)
+    WRITE(OPERAND_SIZE_OVERRIDE)
+    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_16 && (op2.type == JAS_REG_OPERAND_16 || op2.type == JAS_INDIRECT_16), 0x03)
+    WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg16 == JAS_REG_AX, 0x05)
+    WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_OPERAND_8, 0x83)
+    WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_REG_OPERAND_16, 0x01)
 
     WRITE(0x81)
     break;
@@ -60,10 +60,10 @@ jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
   case JAS_REG_OPERAND_32:
     mode = JAS_MODRM_REGISTER;
 
-    BREAKABLE_CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_32 && (op2.type == JAS_REG_OPERAND_32 || op2.type == JAS_INDIRECT_32), 0x03)
-    BREAKABLE_CONDITIONAL_WRITE(op1.operand.reg.reg32 == JAS_REG_EAX, 0x05)
-    BREAKABLE_CONDITIONAL_WRITE(op2.type == JAS_OPERAND_8, 0x83)
-    BREAKABLE_CONDITIONAL_WRITE(op2.type == JAS_REG_OPERAND_32, 0x01)
+    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_32 && (op2.type == JAS_REG_OPERAND_32 || op2.type == JAS_INDIRECT_32), 0x03)
+    WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg32 == JAS_REG_EAX, 0x05)
+    WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_OPERAND_8, 0x83)
+    WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_REG_OPERAND_32, 0x01)
 
     WRITE(0x81)
     break;
@@ -79,10 +79,10 @@ jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
     CONDITIONAL_WRITE(indexOfRex < 0, jasRexConstructPrefix(NULL, JAS_REX_W))
     else WRITE(jasRexConstructPrefix(instance->buffer[indexOfRex], JAS_REX_W));
 
-    BREAKABLE_CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_64 && (op2.type == JAS_REG_OPERAND_64 || op2.type == JAS_INDIRECT_64), 0x03)
-    BREAKABLE_CONDITIONAL_WRITE(op1.operand.reg.reg64 == JAS_REG_RAX, 0x05)
-    BREAKABLE_CONDITIONAL_WRITE(op2.type == JAS_OPERAND_8, 0x83)
-    BREAKABLE_CONDITIONAL_WRITE(op2.type == JAS_REG_OPERAND_64, 0x01)
+    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_64 && (op2.type == JAS_REG_OPERAND_64 || op2.type == JAS_INDIRECT_64), 0x03)
+    WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg64 == JAS_REG_RAX, 0x05)
+    WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_OPERAND_8, 0x83)
+    WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_REG_OPERAND_64, 0x01)
 
     WRITE(0x81)
     break;
@@ -108,18 +108,18 @@ jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
 
   case 0x00:
   case 0x01:
-    BREAKABLE_CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_8 || op1.type == JAS_INDIRECT_8, jasGenerateModrm(mode, op2.operand.reg.reg8, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg8 : op1.operand.reg.reg8))
-    BREAKABLE_CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_16 || op1.type == JAS_INDIRECT_16, jasGenerateModrm(mode, op2.operand.reg.reg16, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg16 : op1.operand.reg.reg16))
-    BREAKABLE_CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_32 || op1.type == JAS_INDIRECT_32, jasGenerateModrm(mode, op2.operand.reg.reg32, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg32 : op1.operand.reg.reg32))
-    BREAKABLE_CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_64 || op1.type == JAS_INDIRECT_64, jasGenerateModrm(mode, op2.operand.reg.reg64, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg64 : op1.operand.reg.reg64))
+    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_8 || op1.type == JAS_INDIRECT_8, jasGenerateModrm(mode, op2.operand.reg.reg8, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg8 : op1.operand.reg.reg8))
+    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_16 || op1.type == JAS_INDIRECT_16, jasGenerateModrm(mode, op2.operand.reg.reg16, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg16 : op1.operand.reg.reg16))
+    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_32 || op1.type == JAS_INDIRECT_32, jasGenerateModrm(mode, op2.operand.reg.reg32, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg32 : op1.operand.reg.reg32))
+    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_64 || op1.type == JAS_INDIRECT_64, jasGenerateModrm(mode, op2.operand.reg.reg64, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg64 : op1.operand.reg.reg64))
     return JAS_OPERAND_ERROR;
 
   case 0x02:
   case 0x03:
-    BREAKABLE_CONDITIONAL_WRITE((op2.type == JAS_REG_OPERAND_8 || op2.type == JAS_INDIRECT_8) && op1.type == JAS_REG_OPERAND_8, jasGenerateModrm(mode, op1.operand.reg.reg8, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg8 : op1.operand.reg.reg8))
-    BREAKABLE_CONDITIONAL_WRITE((op2.type == JAS_REG_OPERAND_16 || op2.type == JAS_INDIRECT_16) && op1.type == JAS_REG_OPERAND_16, jasGenerateModrm(mode, op1.operand.reg.reg16, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg16 : op1.operand.reg.reg16))
-    BREAKABLE_CONDITIONAL_WRITE((op2.type == JAS_REG_OPERAND_32 || op2.type == JAS_INDIRECT_32) && op1.type == JAS_REG_OPERAND_32, jasGenerateModrm(mode, op1.operand.reg.reg32, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg32 : op1.operand.reg.reg32))
-    BREAKABLE_CONDITIONAL_WRITE((op2.type == JAS_REG_OPERAND_64 || op2.type == JAS_INDIRECT_64) && op1.type == JAS_REG_OPERAND_64, jasGenerateModrm(mode, op1.operand.reg.reg64, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg64 : op1.operand.reg.reg64))
+    WRITE_IF_TRUE_THEN_BREAK((op2.type == JAS_REG_OPERAND_8 || op2.type == JAS_INDIRECT_8) && op1.type == JAS_REG_OPERAND_8, jasGenerateModrm(mode, op1.operand.reg.reg8, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg8 : op1.operand.reg.reg8))
+    WRITE_IF_TRUE_THEN_BREAK((op2.type == JAS_REG_OPERAND_16 || op2.type == JAS_INDIRECT_16) && op1.type == JAS_REG_OPERAND_16, jasGenerateModrm(mode, op1.operand.reg.reg16, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg16 : op1.operand.reg.reg16))
+    WRITE_IF_TRUE_THEN_BREAK((op2.type == JAS_REG_OPERAND_32 || op2.type == JAS_INDIRECT_32) && op1.type == JAS_REG_OPERAND_32, jasGenerateModrm(mode, op1.operand.reg.reg32, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg32 : op1.operand.reg.reg32))
+    WRITE_IF_TRUE_THEN_BREAK((op2.type == JAS_REG_OPERAND_64 || op2.type == JAS_INDIRECT_64) && op1.type == JAS_REG_OPERAND_64, jasGenerateModrm(mode, op1.operand.reg.reg64, mode == JAS_MODRM_INDIRECT ? op1.operand.reg.indirectReg64 : op1.operand.reg.reg64))
     return JAS_OPERAND_ERROR;
 
   default:
