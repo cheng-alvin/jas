@@ -78,9 +78,7 @@ jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
 
     NO_LONG_MODE
 
-    // TODO Encapsulate behaviour
-    CONDITIONAL_WRITE(indexOfRex < 0, jasRexConstructPrefix(NULL, JAS_REX_W))
-    else WRITE(jasRexConstructPrefix(instance->buffer[indexOfRex], JAS_REX_W));
+    WRITE(jasRexConstructPrefix(indexOfRex > 0 ? instance->buffer[indexOfRex] : NULL, JAS_REX_W))
 
     WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_64 && (op2.type == JAS_REG_OPERAND_64 || op2.type == JAS_INDIRECT_64), 0x03)
     WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg64 == JAS_REG_RAX, 0x05)
