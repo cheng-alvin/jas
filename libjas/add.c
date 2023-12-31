@@ -110,15 +110,15 @@ static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t 
   case 0x80:
   case 0x81:
   case 0x83:
-    return jasExtendedOperandIdentityMI(op1, op2, op3, op4, instance, mode);
+    return jasExtendedOperandIdentityMI(op1, op2, op3, op4, instance, mode, 0);
 
   case 0x00:
   case 0x01:
-    return jasExtendedOperandIdentityMR(op1, op2, op3, op4, instance, mode);
+    return jasExtendedOperandIdentityMR(op1, op2, op3, op4, instance, mode, 0);
 
   case 0x02:
   case 0x03:
-    return jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, mode);
+    return jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, mode, 0);
 
   default:
     return JAS_OPERAND_ERROR;
