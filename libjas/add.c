@@ -17,6 +17,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode, signed long long indexOfRex);
+
+static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode);
+
 // TODO Maybe rename WRITE_IF_TRUE_THEN_BREAK() macro (this name sounds absolutely awful))
 
 jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
@@ -30,6 +34,11 @@ jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
   signed long long indexOfRex = jasRexExpectedInRegisterEncoding(op1) ? instance->bufferLen : -1;
   CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op1), jasRexConstructPrefix(NULL, JAS_REX_B))
 
+  encodeOpcode(op1, op2, op3, op4, instance, mode, indexOfRex);
+  return encodeOperands(op1, op2, op3, op4, instance, mode);
+}
+
+static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode, signed long long indexOfRex) {
   switch (op1.type) {
   case JAS_INDIRECT_8:
     mode = JAS_MODRM_INDIRECT;
@@ -88,7 +97,9 @@ jasErrorCode_t add(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
     WRITE(0x81)
     break;
   }
+}
 
+static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode) {
   // TODO encapsulate behaviour - Which is stupid how I did not encapsulate this behaviour in the first place.
   // Operand encoder:
   switch (instance->buffer[instance->bufferLen - 1]) {

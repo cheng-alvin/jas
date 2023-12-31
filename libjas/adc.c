@@ -17,7 +17,7 @@
 
 static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode, signed long long indexOfRex);
 
-static void encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode);
+static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode);
 
 // TODO create new unit tests for `adc`
 
@@ -32,7 +32,7 @@ jasErrorCode_t adc(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOper
   CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op1), jasRexConstructPrefix(NULL, JAS_REX_B))
 
   encodeOpcode(op1, op2, op3, op4, instance, mode, indexOfRex);
-  encodeOperands(op1, op2, op3, op4, instance, mode);
+  return encodeOperands(op1, op2, op3, op4, instance, mode);
 }
 
 static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode, signed long long indexOfRex) {
@@ -96,7 +96,7 @@ static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTagg
   }
 }
 
-static void encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode) {
+static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode) {
 
   switch (instance->buffer[instance->bufferLen - 1]) {
   case 0x14:
