@@ -6,6 +6,7 @@
 #include "adc.h"
 #include "add.h"
 #include "and.h"
+#include "bound.h"
 #include "error.h"
 #include "init.h"
 #include "instruction.h"
@@ -16,7 +17,7 @@ jasErrorCode_t codegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jas
   if (instance->buffer == NULL)
     return JAS_UNDEFINED_POINTER;
 
-  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND};
+  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND, &jasBOUND};
 
   if (instruction > sizeof(jasInstructionEncoder) / sizeof(jasInstructionEncoderPointer_t))
     return JAS_INVALID_INSTRUCTION;
