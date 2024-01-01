@@ -18,6 +18,7 @@ typedef enum {
   AAS,
   ADC,
   ADD,
+  AND
 } jasInstruction_t;
 
 /**
