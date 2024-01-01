@@ -16,7 +16,7 @@ jasErrorCode_t codegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jas
   if (instance->buffer == NULL)
     return JAS_UNDEFINED_POINTER;
 
-  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&aaa, &aad, &aam, &aas, &adc, &add, &_and};
+  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND};
 
   if (instruction > sizeof(jasInstructionEncoder) / sizeof(jasInstructionEncoderPointer_t))
     return JAS_INVALID_INSTRUCTION;

@@ -21,7 +21,7 @@ static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t 
 
 // TODO create new unit tests for `adc`
 
-jasErrorCode_t adc(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
+jasErrorCode_t jasADC(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
   if (jasCheckIfHighRegistersAreValidUnderRexPrefix(op1, op2))
     return JAS_INVALID_HIGH_REGISTER;
 
