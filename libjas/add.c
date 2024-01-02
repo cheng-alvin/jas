@@ -17,7 +17,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode, signed long long indexOfRex);
+static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t *mode, signed long long indexOfRex);
 
 static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode);
 
@@ -34,14 +34,14 @@ jasErrorCode_t jasADD(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
   CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op1), jasRexConstructPrefix(NULL, JAS_REX_B))
   else {WRITE(0)}
 
-  encodeOpcode(op1, op2, op3, op4, instance, mode, indexOfRex);
+  encodeOpcode(op1, op2, op3, op4, instance, &mode, indexOfRex);
   if (instance->buffer[indexOfRex] == 0)
     instance->buffer = removeElement(instance->buffer, instance->bufferLen, indexOfRex);
 
   return encodeOperands(op1, op2, op3, op4, instance, mode);
 }
 
-static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode, signed long long indexOfRex) {
+static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t *mode, signed long long indexOfRex) {
   switch (op1.type) {
   case JAS_INDIRECT_8:
     mode = JAS_MODRM_INDIRECT;
