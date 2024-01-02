@@ -46,5 +46,5 @@ jasErrorCode_t jasBSF(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
   WRITE(0x0F)
   WRITE(0xBC)
 
-  jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, mode, NULL);
+  return jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, mode, NULL);
 }
