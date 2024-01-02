@@ -22,5 +22,6 @@ jasInstruction_t jasToInstructionEnum(char *instruction) {
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "bound", BOUND);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "bsf", BSF);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "bsr", BSR);
+  SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "bswap", BSWAP);
   return -1;
 }

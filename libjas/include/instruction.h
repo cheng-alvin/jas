@@ -22,6 +22,7 @@ typedef enum {
   BOUND,
   BSF,
   BSR,
+  BSWAP
 } jasInstruction_t;
 
 /**
