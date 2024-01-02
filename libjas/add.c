@@ -30,9 +30,9 @@ jasErrorCode_t jasADD(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
   jasModrmMode_t mode;
 
   // TODO encapsulate behaviour
-  // Note: If there's no REX prefix, therefore the `indexOfRex` will be 0 >
-  signed long long indexOfRex = jasRexExpectedInRegisterEncoding(op1) ? instance->bufferLen : -1;
+  signed long long indexOfRex = instance->bufferLen;
   CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op1), jasRexConstructPrefix(NULL, JAS_REX_B))
+  else {WRITE(0)}
 
   encodeOpcode(op1, op2, op3, op4, instance, mode, indexOfRex);
   return encodeOperands(op1, op2, op3, op4, instance, mode);
@@ -87,7 +87,7 @@ static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTagg
 
     NO_LONG_MODE
 
-    WRITE(jasRexConstructPrefix(indexOfRex > 0 ? instance->buffer[indexOfRex] : NULL, JAS_REX_W))
+    instance->buffer[indexOfRex] = jasRexConstructPrefix(instance->buffer[indexOfRex], JAS_REX_W);
 
     WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_64 && (op2.type == JAS_REG_OPERAND_64 || op2.type == JAS_INDIRECT_64), 0x03)
     WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg64 == JAS_REG_RAX, 0x05)
