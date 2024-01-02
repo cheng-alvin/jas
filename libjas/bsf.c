@@ -45,6 +45,8 @@ jasErrorCode_t jasBSF(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
 
   WRITE(0x0F)
   WRITE(0xBC)
+  if (instance->buffer[indexOfRex] == 0)
+    instance->buffer = removeElement(instance->buffer, instance->bufferLen, indexOfRex);
 
   return jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, mode, NULL);
 }

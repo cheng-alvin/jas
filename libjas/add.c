@@ -35,6 +35,9 @@ jasErrorCode_t jasADD(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
   else {WRITE(0)}
 
   encodeOpcode(op1, op2, op3, op4, instance, mode, indexOfRex);
+  if (instance->buffer[indexOfRex] == 0)
+    instance->buffer = removeElement(instance->buffer, instance->bufferLen, indexOfRex);
+
   return encodeOperands(op1, op2, op3, op4, instance, mode);
 }
 

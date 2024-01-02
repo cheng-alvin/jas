@@ -29,6 +29,8 @@ jasErrorCode_t jasBSWAP(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTagge
   else {
     WRITE(0xC0 + (short)op1.operand.reg.reg32)
   }
+  if (instance->buffer[indexOfRex] == 0)
+    instance->buffer = removeElement(instance->buffer, instance->bufferLen, indexOfRex);
 
   return JAS_NO_ERROR;
 }
