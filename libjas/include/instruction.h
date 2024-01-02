@@ -27,6 +27,9 @@ typedef enum {
   BTC,
   BTR,
   BTS,
+  CBW,
+  CDQE,
+  CWDE,
 } jasInstruction_t;
 
 /**
