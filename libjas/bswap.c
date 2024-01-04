@@ -25,9 +25,9 @@ jasErrorCode_t jasBSWAP(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTagge
   }
 
   WRITE(0x0F)
-  CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_64, 0xC8 + (short)op1.operand.reg.reg64)
+  CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_64, 0xC8 + jasGetRegField(op1.operand.reg.reg64))
   else {
-    WRITE(0xC0 + (short)op1.operand.reg.reg32)
+    WRITE(0xC0 + jasGetRegField(op1.operand.reg.reg32))
   }
   if (instance->buffer[indexOfRex] == 0)
     instance->buffer = removeElement(instance->buffer, instance->bufferLen, indexOfRex);

@@ -304,4 +304,6 @@ jasTaggedOperand_t jasConstructOperand(void *value, jasOperandType_t type);
 
 bool jasRexExpectedInRegisterEncoding(jasTaggedOperand_t x);
 
+// TODO Docs.
+uint8_t jasGetRegField(uint8_t x);
 #endif
