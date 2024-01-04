@@ -121,3 +121,9 @@ bool jasCheckIfHighRegistersAreValidUnderRexPrefix(jasTaggedOperand_t op1, jasTa
   }
   return true;
 }
+
+uint8_t jasGetRegField(uint8_t x) {
+  const uint8_t lookupTable[] = {0, 1, 2, 3, 4, 5, 6, 7, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7};
+
+  return lookupTable[x];
+}
