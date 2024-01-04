@@ -99,16 +99,15 @@ typedef enum {
   JAS_REG_R15B,
 } jasReg8_t;
 
-// TODO Reorder:
 typedef enum {
   JAS_REG_AX,
   JAS_REG_CX,
   JAS_REG_DX,
   JAS_REG_BX,
-  JAS_REG_DI,
   JAS_REG_SP,
-  JAS_REG_SI,
   JAS_REG_BP,
+  JAS_REG_SI,
+  JAS_REG_DI,
   JAS_REG_R8W,
   JAS_REG_R9W,
   JAS_REG_R10W,
@@ -121,13 +120,13 @@ typedef enum {
 
 typedef enum {
   JAS_REG_EAX,
-  JAS_REG_EBX,
   JAS_REG_ECX,
   JAS_REG_EDX,
-  JAS_REG_EDI,
-  JAS_REG_ESI,
-  JAS_REG_EBP,
+  JAS_REG_EBX,
   JAS_REG_ESP,
+  JAS_REG_EBP,
+  JAS_REG_ESI,
+  JAS_REG_EDI,
   JAS_REG_R8D,
   JAS_REG_R9D,
   JAS_REG_R10D,
@@ -140,13 +139,13 @@ typedef enum {
 
 typedef enum {
   JAS_REG_RAX,
-  JAS_REG_RBX,
   JAS_REG_RCX,
   JAS_REG_RDX,
-  JAS_REG_RDI,
-  JAS_REG_RSI,
-  JAS_REG_RBP,
+  JAS_REG_RBX,
   JAS_REG_RSP,
+  JAS_REG_RBP,
+  JAS_REG_RSI,
+  JAS_REG_RDI,
   JAS_REG_R8,
   JAS_REG_R9,
   JAS_REG_R10,
