@@ -108,6 +108,39 @@ jasTaggedOperand_t jasConstructOperand(void *value, jasOperandType_t type) {
     revisedValue.operand64 = *(uint64_t *)value;
     break;
 
+  case JAS_INDIRECT_8:
+    revisedValue.reg.indirectReg8 = *(jasReg8_t *)value;
+    break;
+
+  case JAS_INDIRECT_16:
+    revisedValue.reg.indirectReg16 = *(jasReg16_t *)value;
+    break;
+
+  case JAS_INDIRECT_32:
+    revisedValue.reg.indirectReg32 = *(jasReg32_t *)value;
+    break;
+
+  case JAS_INDIRECT_64:
+    revisedValue.reg.indirectReg64 = *(jasReg64_t *)value;
+    break;
+
+  case JAS_REG_OPERAND_8_DISP:
+    revisedValue.reg.regDisp8 = *(jasRegDisplacement8_t *)value;
+    break;
+
+  case JAS_REG_OPERAND_16_DISP:
+    revisedValue.reg.regDisp16 = *(jasRegDisplacement16_t *)value;
+    break;
+
+  case JAS_REG_OPERAND_32_DISP:
+    revisedValue.reg.regDisp32 = *(jasRegDisplacement32_t *)value;
+    break;
+
+  case JAS_REG_OPERAND_64_DISP:
+    revisedValue.reg.regDisp64 = *(jasRegDisplacement64 *)value;
+    break;
+
+  case JAS_NO_OPERAND_TYPE:
   default:
     return JAS_NO_OPERAND;
   }
