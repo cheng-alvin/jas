@@ -190,7 +190,7 @@ typedef struct {
 typedef struct {
   jasReg64_t reg64;
   uint64_t displacement;
-} jasRegDisplacement64;
+} jasRegDisplacement64_t;
 
 /**
  * @author cheng-alvin
@@ -225,7 +225,7 @@ typedef union {
   jasRegDisplacement8_t regDisp8;
   jasRegDisplacement16_t regDisp16;
   jasRegDisplacement32_t regDisp32;
-  jasRegDisplacement64 regDisp64;
+  jasRegDisplacement64_t regDisp64;
 } jasRegOperandType_t;
 
 /**
