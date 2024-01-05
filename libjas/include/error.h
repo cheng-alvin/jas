@@ -21,6 +21,7 @@ typedef enum {
   JAS_OPERAND_ERROR,
   JAS_MODE_ERROR,
   JAS_INVALID_HIGH_REGISTER,
+  JAS_LONG_MODE_INSTRUCTION
 } jasErrorCode_t;
 
 /**
