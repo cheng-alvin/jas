@@ -67,7 +67,6 @@
 // //     break;                          \
 // //   }
 
-#define NO_ERROR return JAS_NO_ERROR;
 #define NO_LONG_MODE                 \
   if (instance->mode == JAS_MODE_64) \
     return JAS_NON_LONG_MODE_INSTRUCTION;
