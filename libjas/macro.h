@@ -67,10 +67,6 @@
 // //     break;                          \
 // //   }
 
-#define NO_LONG_MODE                 \
-  if (instance->mode == JAS_MODE_64) \
-    return JAS_NON_LONG_MODE_INSTRUCTION;
-
 #define ENCODE_IMMEDIATE(x)                       \
   switch (x.type) {                               \
   case JAS_OPERAND_8:                             \
