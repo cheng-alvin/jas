@@ -50,7 +50,7 @@ typedef enum {
  * while another register is being used with a REX prefix, this
  * function is used for checking if the higher registers are encodable.
  *
- * @see  Intel® 64 and IA-32 Architectures (Volume 2A) - 3.1.1.1
+ * @see Intel® 64 and IA-32 Architectures (Volume 2A) - 3.1.1.1
  *
  * (As usual, if you are interested in writing assembler code, please
  * go ahead and read the Intel manuals.)
