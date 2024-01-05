@@ -85,7 +85,8 @@ static void encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTagg
   case JAS_REG_OPERAND_64:
     *mode = JAS_MODRM_REGISTER;
 
-    NO_LONG_MODE
+    if (instance->mode != JAS_MODE_64)
+      return JAS_LONG_MODE_INSTRUCTION;
 
     instance->buffer[indexOfRex] = jasRexConstructPrefix(instance->buffer[indexOfRex], JAS_REX_W);
 

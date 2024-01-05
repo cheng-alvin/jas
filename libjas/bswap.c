@@ -20,7 +20,9 @@ jasErrorCode_t jasBSWAP(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTagge
   }
 
   if (op1.type == JAS_REG_OPERAND_64) {
-    NO_LONG_MODE
+    if (instance->mode != JAS_MODE_64)
+      return JAS_LONG_MODE_INSTRUCTION;
+
     instance->buffer[indexOfRex] = jasRexConstructPrefix(instance->buffer[indexOfRex], JAS_REX_W);
   }
 

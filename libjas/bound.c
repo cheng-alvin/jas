@@ -19,7 +19,9 @@
 // `r/m16`. Until more sources can be found, there's not much I can do.
 
 jasErrorCode_t jasBOUND(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
-  NO_LONG_MODE
+  if (instance->mode == JAS_MODE_64)
+    return JAS_NON_LONG_MODE_INSTRUCTION;
+
   WRITE(0x62)
 
   if (op1.type == JAS_REG_OPERAND_16)
