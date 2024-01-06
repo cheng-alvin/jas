@@ -4,3 +4,4 @@
 - TODO Ensure ALL header files have documentation!!!
 - TODO Remove all useless `#includes`.
 - TODO Ensure all header files have header guards.
+- TODO Add some way of parsing and validating operands. People will probably will pass in garbage, even though there are guard rails. Like enums and unions.
