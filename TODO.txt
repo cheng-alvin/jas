@@ -4,4 +4,3 @@
 - TODO Ensure ALL header files have documentation!!!
 - TODO Remove all useless `#includes`.
 - TODO Ensure all header files have header guards.
-- TODO Ensure the `NO_LONG_MODE` macro is used correctly.
