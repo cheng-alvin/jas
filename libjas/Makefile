@@ -10,7 +10,7 @@ CFLAGS = $(CFLAGS_COMMON)
 BUILD = ../build
 HOME = ..
 
-OBJ = aaa.o aad.o aam.o aas.o codegen.o endian.o error.o init.o instruction.o modrm.o operand.o parse.o size.o write.o
+OBJ = bsr.o cwde.o  mr.o aaa.o bswap.o endian.o operand.o aad.o bt.o  error.o parse.o aam.o btc.o i.o aas.o btr.o remove.o adc.o bts.o init.o add.o call.o instruction.o rex.o and.o cbw.o rm.o bound.o cdqe.o mi.o write.o bsf.o codegen.o modrm.o     
 
 all: libjas.o
 
@@ -22,4 +22,4 @@ libjas.o: $(OBJ)
 
 libjas.dylib: CFLAGS = $(CFLAGS_COMMON)
 libjas.dylib: $(OBJ)
-	$(CC) $^ -o $(BUILD)/$@ -dynamiclib
+	$(CC) $^ -o $(BUILD)/$@ -dynamiclib  
