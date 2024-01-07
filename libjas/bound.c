@@ -25,7 +25,7 @@ jasErrorCode_t jasBOUND(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTagge
   WRITE(0x62)
 
   if (op1.type == JAS_REG_OPERAND_16)
-    jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, op2.type == JAS_REG_OPERAND_16_DISP ? JAS_MODRM_FOLLOWING_DISPLACEMENT : JAS_MODRM_INDIRECT, NULL);
+    jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, op2.type == JAS_REG_OPERAND_16_DISP ? JAS_MODRM_FOLLOWING_DISPLACEMENT : JAS_MODRM_INDIRECT, JAS_NULL);
   else
-    jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, op2.type == JAS_REG_OPERAND_32_DISP ? JAS_MODRM_FOLLOWING_DISPLACEMENT : JAS_MODRM_INDIRECT, NULL);
+    jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, op2.type == JAS_REG_OPERAND_32_DISP ? JAS_MODRM_FOLLOWING_DISPLACEMENT : JAS_MODRM_INDIRECT, JAS_NULL);
 }

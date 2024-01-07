@@ -10,13 +10,13 @@ instruction_t **parse(char *buffer) {
 
   int i = 0;
   char *line = strtok(buffer, "\n");
-  while (line != NULL) {
+  while (line != JAS_NULL) {
     if (i == sizeof(lines) / sizeof(char *)) {
       lines = (char **)realloc(lines, sizeof(char *) * 2 * (i + 1));
     }
 
     lines[i] = line;
-    line = strtok(NULL, "\n");
+    line = strtok(JAS_NULL, "\n");
     i++;
   }
 
@@ -28,9 +28,9 @@ instruction_t **parse(char *buffer) {
 
     instructions[j] = (instruction_t *)malloc(sizeof(instruction_t));
     instructions[j]->instruction = strtok(currentLine, " ");
-    instructions[j]->arg1 = strtok(NULL, OPERAND_SEP);
-    instructions[j]->arg2 = strtok(NULL, OPERAND_SEP);
-    instructions[j]->arg3 = strtok(NULL, OPERAND_SEP);
+    instructions[j]->arg1 = strtok(JAS_NULL, OPERAND_SEP);
+    instructions[j]->arg2 = strtok(JAS_NULL, OPERAND_SEP);
+    instructions[j]->arg3 = strtok(JAS_NULL, OPERAND_SEP);
   }
 
   free(lines);

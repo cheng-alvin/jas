@@ -16,7 +16,7 @@ jasErrorCode_t jasBSF(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
   jasModrmMode_t mode;
 
   signed long long indexOfRex = instance->bufferLen;
-  CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op2), jasRexConstructPrefix(NULL, JAS_REX_R))
+  CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op2), jasRexConstructPrefix(JAS_NULL, JAS_REX_R))
   else {
     WRITE(0)
   }
@@ -50,5 +50,5 @@ jasErrorCode_t jasBSF(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
   if (instance->buffer[indexOfRex] == 0)
     instance->buffer = removeElement(instance->buffer, instance->bufferLen, indexOfRex);
 
-  return jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, mode, NULL);
+  return jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, mode, JAS_NULL);
 }

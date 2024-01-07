@@ -72,7 +72,7 @@ typedef struct {
  * @param format The output format for the assembler instance->
  *
  * @see `jasInstance_t` and `jasMode_t` for more type information.
- * @note The `instance` parameter can be `NULL` if you want to create
+ * @note The `instance` parameter can be `JAS_NULL` if you want to create
  * a new instance->
  *
  * @returns The status code for the function.

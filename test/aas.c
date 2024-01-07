@@ -7,7 +7,7 @@
 TEST(jasAAS) {
   jasInstance_t *instance;
   uint8_t *buffer = malloc(1); // TODO Affected by adding allocation for `buffer`
-  const jasErrorCode_t initExitStatus = jasInitNew(JAS_MODE_32, instance, buffer, NULL);
+  const jasErrorCode_t initExitStatus = jasInitNew(JAS_MODE_32, instance, buffer, JAS_NULL);
   SHOULD_EQUAL(initExitStatus, JAS_NO_ERROR)
 
   jasErrorCode_t aasExitStatus = jasAAS(JAS_NO_OPERAND, JAS_NO_OPERAND, JAS_NO_OPERAND, JAS_NO_OPERAND, instance);

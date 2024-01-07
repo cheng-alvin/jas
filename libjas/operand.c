@@ -67,6 +67,9 @@ bool jasRexExpectedInRegisterEncoding(jasTaggedOperand_t x) {
     default:
       return false;
     }
+
+  default:
+    break;
   }
 
   return false;

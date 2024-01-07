@@ -28,7 +28,7 @@ jasErrorCode_t jasAND(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
 
   // TODO encapsulate behaviour
   signed long long indexOfRex = instance->bufferLen;
-  CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op1), jasRexConstructPrefix(NULL, JAS_REX_B))
+  CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op1), jasRexConstructPrefix(JAS_NULL, JAS_REX_B))
   else {WRITE(0)}
 
   encodeOpcode(op1, op2, op3, op4, instance, &mode, indexOfRex);

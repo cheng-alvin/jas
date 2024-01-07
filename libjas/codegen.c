@@ -17,7 +17,7 @@
 #include <stdint.h>
 
 jasErrorCode_t codegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
-  if (instance->buffer == NULL)
+  if (instance->buffer == JAS_NULL)
     return JAS_UNDEFINED_POINTER;
 
   jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND, &jasBOUND, &jasBSF, &jasBSR, &jasBSWAP};

@@ -21,7 +21,7 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
 
 jasErrorCode_t jasBTC(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
   signed long long indexOfRex = instance->bufferLen;
-  CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op1), jasRexConstructPrefix(NULL, JAS_REX_R))
+  CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op1), jasRexConstructPrefix(JAS_NULL, JAS_REX_R))
   else {
     WRITE(0)
   }
@@ -34,7 +34,7 @@ jasErrorCode_t jasBTC(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
     instance->buffer = removeElement(instance->buffer, instance->bufferLen, indexOfRex);
 
   if (instance->buffer[instance->bufferLen - 1] == 0xBB)
-    return jasExtendedOperandIdentityMR(op1, op2, op3, op4, instance, getMode(op1, op2), NULL);
+    return jasExtendedOperandIdentityMR(op1, op2, op3, op4, instance, getMode(op1, op2), JAS_NULL);
 
   return jasExtendedOperandIdentityMI(op1, op2, op3, op4, instance, getMode(op1, op2), 7);
 }

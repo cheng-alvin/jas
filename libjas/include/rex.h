@@ -36,7 +36,7 @@ typedef enum {
  * @since v0.0.1
  *
  * A silly helper that constructs a REX prefix byte with the given
- * prefix type with an enum. If the existing byte is `NULL`, then the
+ * prefix type with an enum. If the existing byte is `JAS_NULL`, then the
  * `REX_BASE` byte is used instead, and a new REX prefix byte is returned.
  *
  * @param existingByte The existing byte to append the prefix to.
