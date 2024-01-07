@@ -3,6 +3,7 @@
 #include "macro.h"
 #include "modrm.h"
 #include "operand.h"
+#include "write.h"
 
 jasErrorCode_t jasExtendedOperandIdentityMR(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, uint8_t mode, uint8_t opcodeExtention) {
   CONDITIONAL_WRITE(op1.type == JAS_REG_OPERAND_8 || op1.type == JAS_INDIRECT_8, jasGenerateModrm(mode, jasGetRegField(op2.operand.reg.reg8), mode == JAS_MODRM_INDIRECT ? jasGetRegField(op1.operand.reg.indirectReg8) : jasGetRegField(op1.operand.reg.reg8)))

@@ -1,5 +1,6 @@
 #include "init.h"
 #include "error.h"
+#include "null.h"
 #include <stdint.h>
 #include <stdlib.h>
 

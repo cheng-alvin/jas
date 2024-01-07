@@ -5,6 +5,7 @@
 #include "modrm.h"
 #include "null.h"
 #include "operand.h"
+#include "remove.h"
 #include "rex.h"
 #include "rm.h"
 #include "write.h"

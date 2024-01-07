@@ -7,6 +7,7 @@
 #include "mr.h"
 #include "null.h"
 #include "operand.h"
+#include "remove.h"
 #include "rex.h"
 #include "rm.h"
 #include "write.h"
@@ -55,6 +56,8 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
   default:
     return JAS_OPERAND_ERROR;
   }
+
+  return JAS_NO_ERROR;
 }
 
 // TODO Isolate?

@@ -1,0 +1,12 @@
+find . -name "*.o" -type f -delete
+rm -r -f build
+mkdir -p build
+mkdir -p build/test
+mkdir -p build/test/libjas
+find . -name "*.dylib" -type f -delete
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -C libjas
+clang -I include  -I ./ -Wall -Wextra    -c -o bsr.o bsr.c
+clang -I include  -I ./ -Wall -Wextra    -c -o cwde.o cwde.c
+clang -I include  -I ./ -Wall -Wextra    -c -o mr.o mr.c
+clang -I include  -I ./ -Wall -Wextra    -c -o aaa.o aaa.c
+clang -I include  -I ./ -Wall -Wextra    -c -o bswap.o bswap.c
