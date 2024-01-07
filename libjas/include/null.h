@@ -1,6 +1,6 @@
 #ifndef NULL_H
 #define NULL_H
 
-#define NULL 0
+#define JAS_NULL 0
 
 #endif
