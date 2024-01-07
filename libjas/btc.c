@@ -4,6 +4,7 @@
 #include "init.h"
 #include "macro.h"
 #include "mi.h"
+#include "mode.h"
 #include "modrm.h"
 #include "mr.h"
 #include "null.h"
@@ -15,8 +16,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-
-static jasModrmMode_t getMode(jasTaggedOperand_t op1, jasTaggedOperand_t op2);
 
 static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance);
 
@@ -35,9 +34,9 @@ jasErrorCode_t jasBTC(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
     instance->buffer = removeElement(instance->buffer, instance->bufferLen, indexOfRex);
 
   if (instance->buffer[instance->bufferLen - 1] == 0xBB)
-    return jasExtendedOperandIdentityMR(op1, op2, op3, op4, instance, getMode(op1, op2), JAS_NULL);
+    return jasExtendedOperandIdentityMR(op1, op2, op3, op4, instance, jasGetMode(op1, op2), JAS_NULL);
 
-  return jasExtendedOperandIdentityMI(op1, op2, op3, op4, instance, getMode(op1, op2), 7);
+  return jasExtendedOperandIdentityMI(op1, op2, op3, op4, instance, jasGetMode(op1, op2), 7);
 }
 
 static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
@@ -56,21 +55,5 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
 
   default:
     return JAS_OPERAND_ERROR;
-  }
-}
-
-// TODO Isolate?
-
-static jasModrmMode_t getMode(jasTaggedOperand_t op1, jasTaggedOperand_t op2) {
-  switch (op1.type) {
-  case JAS_REG_OPERAND_64:
-  case JAS_REG_OPERAND_32:
-  case JAS_REG_OPERAND_16:
-    return JAS_MODRM_REGISTER;
-
-  case JAS_INDIRECT_64:
-  case JAS_INDIRECT_32:
-  case JAS_INDIRECT_16:
-    return JAS_MODRM_INDIRECT;
   }
 }
