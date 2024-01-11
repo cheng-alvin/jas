@@ -27,6 +27,7 @@ typedef enum {
   BTC,
   BTR,
   BTS,
+  CALL,
   CBW,
   CDQE,
   CWDE,
