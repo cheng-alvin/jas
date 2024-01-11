@@ -18,6 +18,8 @@
 // Therefore, I will be assuming the second `m16&16` operand is the same as
 // `r/m16`. Until more sources can be found, there's not much I can do.
 
+//! Note: Usage of m16&16 is not supported.
+
 jasErrorCode_t jasBOUND(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
   if (instance->mode == JAS_MODE_64)
     return JAS_NON_LONG_MODE_INSTRUCTION;
