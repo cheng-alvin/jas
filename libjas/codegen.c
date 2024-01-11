@@ -10,6 +10,10 @@
 #include "bsf.h"
 #include "bsr.h"
 #include "bswap.h"
+#include "call.h"
+#include "cbw.h"
+#include "cdqe.h"
+#include "cwde.h"
 #include "error.h"
 #include "init.h"
 #include "instruction.h"
@@ -20,7 +24,7 @@ jasErrorCode_t codegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jas
   if (instance->buffer == JAS_NULL)
     return JAS_UNDEFINED_POINTER;
 
-  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND, &jasBOUND, &jasBSF, &jasBSR, &jasBSWAP};
+  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND, &jasBOUND, &jasBSF, &jasBSR, &jasBSWAP, &jasCALL, &jasCBW, &jasCDQE, &jasCWDE};
 
   if (instruction > sizeof(jasInstructionEncoder) / sizeof(jasInstructionEncoderPointer_t))
     return JAS_INVALID_INSTRUCTION;
