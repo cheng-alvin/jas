@@ -28,7 +28,7 @@ running `make` inside the `src/` directory. The assembler can be cleaned, debugg
 ` in the `src/` directory.
 
 ### What now?
-After reading the instructions in the HACKING.txt file, you should have a good understanding of how to contribute
+After reading the instructions here, you should have a good understanding of how to contribute
 to the Jas assembler project! Write some code, drink some coffee, and have fun!
 
 If you have any questions, please feel free to contact me at eventide1029+jas@gmail.com
