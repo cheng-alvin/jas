@@ -32,7 +32,8 @@ typedef enum {
   CDQE,
   CWDE,
   CLC,
-  CLD
+  CLD,
+  CLFLUSH
 } jasInstruction_t;
 
 /**
