@@ -10,7 +10,7 @@ CFLAGS = $(CFLAGS_COMMON)
 BUILD = ../build
 HOME = ..
 
-OBJ = bsr.o cwde.o  mr.o aaa.o bswap.o endian.o operand.o aad.o bt.o  error.o parse.o aam.o btc.o i.o aas.o btr.o remove.o adc.o bts.o init.o add.o instruction.o rex.o and.o cbw.o rm.o bound.o cdqe.o mi.o write.o bsf.o codegen.o modrm.o mode.o  
+OBJ =  aaa.o aad.o aam.o aas.o adc.o add.o and.o bound.o bsf.o bsr.o bswap.o bt.o btc.o btr.o bts.o call.o cbw.o cdqe.o clc.o cld.o clflush.o codegen.o cwde.o endian.o error.o i.o init.o instruction.o mi.o mode.o modrm.o mr.o operand.o parse.o remove.o rex.o rm.o write.o
 
 # Note, call.o has been removed because it's stashed for now.
 # Please add in later. 
