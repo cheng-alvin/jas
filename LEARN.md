@@ -47,7 +47,7 @@ x86 has a very complex instruction set, we have 87 instructions (A bit better th
 4. Control flow instructions
 5. ~~String instructions~~ (I don't think there's much information on this one, so we will be ignoring this one)
 
-Normally, the instructions have a  **prefix** followed by an **opcode** then **operands**
+Normally, the instructions are represented in a form that have a  **prefix** followed by an **opcode** then **operands**.
 
 *Note that the relevant information about x86 instruction encoding, including opcode maps and instruction formats, can often be found in "Volume 2: Instruction Set Reference." Specific chapters of interest include "Chapter 2: Instruction Format," "Chapter 3: General-Purpose Instructions," and "Chapter 4: System Instructions."*
 
@@ -69,13 +69,22 @@ Operands associate data to the opcode and allows the result to be affected by th
 
 (Note that operands can also be mixed, for example, an instruction can have an operand as a register *or* a memory address)
 
-#### Immediate operands
+### Immediate operands
 Immediate operands are operands that are encoded in the instruction itself. Immediate operands are usually used for constants and are encoded in the instruction itself. Immediate operands can be encoded in 1, 2, 4 or 8 bytes. The size of the immediate operand is determined by the operand size prefix. For example, the `mov` instruction can have an immediate operand of 1, 2, 4 or 8 bytes. The size of the immediate operand is determined by the operand size prefix. They're just simply dumped onto the instruction encoding.
 
-#### Register/indirect + Memory operands
+### Register/indirect + Memory operands
 Register operands are operands are a bit more complicated. Register operands are operands that are encoded in the instruction itself as well. But, a register code along with an addressing mode can be associated using a ModR/M byte.
 
 *For more information on ModR/M bytes, please see [here](https://en.wikipedia.org/wiki/ModR/M)*
 
+### More on the ModR/M byte
+As mentioned above, the registers are encoded in a ModR/M byte. These bytes encode 2 bits as the addressing mode, 3 bits as the register code and 3 bits as the register code of the operand. The addressing mode determines how the operand is accessed. The register code determines the register that is used. Some bits can also be left blank or used as an opcode extension. Frankly, the ModR/M byte is a bit complicated and I would recommend you to read the Intel manual for more information.
+
+Each type of register such as `rax` or `eax` is assigned a code from 1-7. (The register field in the ModR/M byte is only 3 bits, 0b111 = 7 hence it's 7) In this case, the `rax` or `eax` is assigned in value `0` by the processor. 
+
+As you've already forseen, there's way more registers than 7! We have both 32-bit, 8-bit, 16-bit registers and even 64-bit registers! (Excluding any 128-bit registers like `xmm1`) That's why we have the REX prefix and opcode extensions that changes the register sizes. For example, `0` is `eax` with a 32-bit operand size prefix, but `0` is `rax` with a 64-bit operand REX size prefix.
+
 **Always ensure to consult the Intel manual for the correct ModR/M byte encoding, exceptions that can also occur in different contexts**
 
+## Chapter 2: Structure of an assembler
+We all know that assemblers are normally just a command line tool like `nasm` or `as`. Some assemblers are also libraries that can be used in other programs, just like Jas. 
