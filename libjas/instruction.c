@@ -5,7 +5,7 @@
 #include <string.h>
 
 #define SUBSTITUTE_INSTRUCTION_IF_EQUATES(x, y, z) \
-  if (strcmp(x, y) == 0)                           \
+  if (!strcmp(x, y))                               \
     return z;
 
 jasInstruction_t jasToInstructionEnum(char *instruction) {
