@@ -34,6 +34,8 @@ Welcome to assembler boot camp! In this chapter, we will be going through the ba
 
 If you're confident with your knowledge of the basics, feel free to skip this chapter and move on to the next one.
 
+Subjects may also be severely simplified for the sake of simplicity. Please consult other sources for more information.
+
 **Please ensure that you have consulted other sources for more up-to-date information such as the Intel and/or AMD developer manuals**
 
 ### Let's get familiar with the x86 instruction set
@@ -46,12 +48,6 @@ x86 has a very complex instruction set, we have 87 instructions (A bit better th
 5. ~~String instructions~~ (I don't think there's much information on this one, so we will be ignoring this one)
 
 Normally, the instructions have a  **prefix** followed by an **opcode** then **operands**
-
-+-----------------------+-----------------------+------------------------+---------------------+-------------------------+------------------+
-| Prefixes (Optional)   | Opcode                | ModR/M (Mod-Reg-R/M)   | SIB (Scale Index Base)| Displacement (Optional)| Immediate        |
-+-----------------------+-----------------------+------------------------+---------------------+-------------------------+------------------+
-| [Optional Prefixes]   | [Main Opcode Byte]    | [ModR/M Byte]          | [SIB Byte]          | [Displacement Bytes]    | [Immediate Bytes]|
-+-----------------------+-----------------------+------------------------+---------------------+-------------------------+------------------+
 
 *Note that the relevant information about x86 instruction encoding, including opcode maps and instruction formats, can often be found in "Volume 2: Instruction Set Reference." Specific chapters of interest include "Chapter 2: Instruction Format," "Chapter 3: General-Purpose Instructions," and "Chapter 4: System Instructions."*
 
