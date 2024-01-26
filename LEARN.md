@@ -29,8 +29,8 @@ Before we start, I would like to clarify some key information and terms that wil
 ### Let's go!
 Now that we have all the boring stuff out of the way, let's get started! Get comfy, grab a cup of coffee, (and be ready to take notes) and let's get started!
 
-## Chapter 1: The basics
-Welcome to assembler boot camp! In this chapter, we will be going through the basics of an assembler's encoding, the basics would build up to the next chapter where we will be going through the inner workings of an assembler. In this chapter, the terms people throw around will be clarified and allow you to understand the encoder. Therefore, it would be easier to understand the next chapter if you understand the basics.
+## Chapter 1: Boot camp
+Welcome to assembler boot camp! In this chapter, we will be going through the basics of an assembler's encoding. It's just the basics that would build up to the next chapter where we will be going through the inner workings of an assembler. In this chapter, the terms people throw around will be clarified and allow you to understand the encoder. 
 
 If you're confident with your knowledge of the basics, feel free to skip this chapter and move on to the next one.
 
@@ -86,5 +86,15 @@ As you've already forseen, there's way more registers than 7! We have both 32-bi
 
 **Always ensure to consult the Intel manual for the correct ModR/M byte encoding, exceptions that can also occur in different contexts**
 
-## Chapter 2: Structure of an assembler
-We all know that assemblers are normally just a command line tool like `nasm` or `as`. Some assemblers are also libraries that can be used in other programs, just like Jas. 
+## Chapter 2: Structure of the assembler
+We all know that assemblers are normally just a command line tool like `nasm` or `as`. Some assemblers are also libraries that can be used in other programs, just like Jas. As briefly stated above, the Jas assembler is organized into functions and can be called directly. The behavior for the encoding of the instruction and it's operands are packaged inside the function. This allows the user to not worry about the syntax rules of the instruction and allows them to focus on the assembly code itself. 
+
+### A modular approach
+The Jas assembler is organized into modules. Each module is responsible for encoding a specific instruction. For example, the `mov` instruction is encoded in the `mov.c` module. This allows the assembler to be organized and allows the user to easily find the instruction that they are looking for. Although, the official way is to call a codegen function that calls the sub modules to do something.
+
+Unlike other approaches, the Jas assembler does not use a giant switch statement to encode the instruction. Instead, the assembler uses a function pointer table to encode the instruction. This allows the assembler to be more modular and allows the user to easily add new instructions to the assembler. 
+
+The functions are also attached onto a instance with a buffer allowing the user to easily access, review and modify the buffer, without having to worry about fighting with the operating system to open up files on disk; and makes assembling code more seamless, transparent and easy.
+
+### Operand encoding
+Many instructions share lots of operand encoding logic that can be encapsulated. Each operand encoding identities have a certain type of encoding that 
