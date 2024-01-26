@@ -29,4 +29,9 @@ jasErrorCode_t jasCLFLUSH(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTag
     WRITE(jasGenerateModrm(JAS_MODRM_INDIRECT, 7, op1.operand.reg.indirectReg64))
     break;
   }
+
+  WRITE(0x10)
+  WRITE(0x00)
+  WRITE(0x00)
+  WRITE(0x00)
 }
