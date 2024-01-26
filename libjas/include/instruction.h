@@ -36,14 +36,16 @@ typedef enum {
   CLFLUSH,
   // TODO CLFLUSHOPT - Yet to be implemented
   CLI,
-  CLTS
+  CLTS,
+  CMC
 } jasInstruction_t;
 
 /**
  * @author cheng-alvin
  * @since v0.0.1
  *
- * Converts a string instruction into an `jasInstruction_t` enum.
+ * Converts a string instruction
+ * into an `jasInstruction_t` enum.
  * useful for converting a string instruction into an enum and
  * allowing for using `switch` statement multiple times in the
  * code. (Basically allows for a faster speed).
