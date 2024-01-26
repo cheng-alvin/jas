@@ -16,6 +16,8 @@
 #include "clc.h"
 #include "cld.h"
 #include "clflush.h"
+#include "cli.h"
+#include "clts.h"
 #include "cwde.h"
 #include "error.h"
 #include "init.h"
@@ -27,7 +29,7 @@ jasErrorCode_t codegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jas
   if (instance->buffer == JAS_NULL)
     return JAS_UNDEFINED_POINTER;
 
-  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND, &jasBOUND, &jasBSF, &jasBSR, &jasBSWAP, &jasCALL, &jasCBW, &jasCDQE, &jasCWDE, &jasCLC, &jasCLD, &jasCLFLUSH};
+  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND, &jasBOUND, &jasBSF, &jasBSR, &jasBSWAP, &jasCALL, &jasCBW, &jasCDQE, &jasCWDE, &jasCLC, &jasCLD, &jasCLFLUSH /* TODO CLFLUSHOPT */, &jasCLI, &jasCLTS};
 
   if (instruction > sizeof(jasInstructionEncoder) / sizeof(jasInstructionEncoderPointer_t))
     return JAS_INVALID_INSTRUCTION;

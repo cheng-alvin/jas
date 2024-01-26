@@ -34,5 +34,7 @@ jasInstruction_t jasToInstructionEnum(char *instruction) {
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "clc", CLC);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "cld", CLD);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "clflush", CLFLUSH);
+  SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "cli", CLI);
+  SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "clts", CLTS);
   return -1;
 }

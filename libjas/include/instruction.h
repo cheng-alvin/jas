@@ -33,7 +33,10 @@ typedef enum {
   CWDE,
   CLC,
   CLD,
-  CLFLUSH
+  CLFLUSH,
+  // TODO CLFLUSHOPT - Yet to be implemented
+  CLI,
+  CLTS
 } jasInstruction_t;
 
 /**
