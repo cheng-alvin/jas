@@ -44,6 +44,8 @@ jasErrorCode_t jasADC(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
   return encodeOperands(op1, op2, op3, op4, instance, mode);
 }
 
+// TODO if op1 = reg and op2 = r/m then, use 0b00 for mode
+
 static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t *mode, signed long long indexOfRex) {
   switch (op1.type) {
   case JAS_INDIRECT_8:
