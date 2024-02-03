@@ -43,6 +43,6 @@ typedef jasInstructionEncoderPointer_t jasInstructionEncoderPointerArray_t[];
  * @param instance The instance of the assembler unit.
  */
 
-jasErrorCode_t codegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance);
+jasErrorCode_t jasCodegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance);
 
 #endif

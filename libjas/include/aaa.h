@@ -11,7 +11,7 @@
  * @since v0.0.1
  *
  * Function for Generating the code for the `aaa` instruction, normally
- * used internally. Please call this function through the `codegen()` function.
+ * used internally. Please call this function through the `jasCodegen()` function.
  *
  * @param op1 The first operand to be encoded.
  * @param op2 The second operand to be encoded.
