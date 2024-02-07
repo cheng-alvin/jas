@@ -1,15 +1,8 @@
-#include "codegen.h"
+#ifndef ADC_H
+#define ADC_H
+
 #include "error.h"
-#include "init.h"
-#include "macro.h"
-#include "modrm.h"
-#include "null.h"
-#include "operand.h"
-#include "rex.h"
-#include "write.h"
-#include <stdbool.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 /**
  * @author cheng-alvin
@@ -35,3 +28,5 @@
  */
 
 jasErrorCode_t jasADC(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance);
+
+#endif

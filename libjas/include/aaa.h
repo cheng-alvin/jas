@@ -1,9 +1,7 @@
-#ifndef JAS_AAA_H
-#define JAS_AAA_H
+#ifndef AAA_H
+#define AAA_H
 
-#include "codegen.h"
 #include "error.h"
-#include "init.h"
 #include <stdint.h>
 
 /**

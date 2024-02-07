@@ -1,11 +1,7 @@
-#ifndef JAS_AAD_H
-#define JAS_AAD_H
+#ifndef AAD_H
+#define AAD_H
 
-#include "codegen.h"
 #include "error.h"
-#include "init.h"
-#include "null.h"
-#include "write.h"
 #include <stdint.h>
 
 /**
