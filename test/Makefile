@@ -8,7 +8,7 @@ CFLAGS = $(CFLAGS_COMMON)
 BUILD = ../build
 HOME = ..
 
-EXE = parse.o aaa.o aad.o aam.o aas.o
+EXE = 
 
 all: libjas.o libjas
 
