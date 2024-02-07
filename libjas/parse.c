@@ -5,6 +5,10 @@
 #include <string.h>
 #define OPERAND_SEP ", "
 
+/**
+ * @deprecated
+ */
+
 instruction_t **parse(char *buffer) {
   char **lines = (char **)malloc(sizeof(char *) * 8);
 

@@ -2,6 +2,10 @@
 #define PARSE_H
 
 /**
+ * @deprecated
+ */
+
+/**
  * @author cheng-alvin
  * @since v0.0.1
  *
