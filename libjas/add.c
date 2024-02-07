@@ -23,15 +23,12 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
 
 static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode);
 
-// TODO Maybe rename WRITE_IF_TRUE_THEN_BREAK() macro (this name sounds absolutely awful))
-
 jasErrorCode_t jasADD(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
   if (jasCheckIfHighRegistersAreValidUnderRexPrefix(op1, op2))
     return JAS_INVALID_HIGH_REGISTER;
 
   jasModrmMode_t mode;
 
-  // TODO encapsulate behaviour
   signed long long indexOfRex = instance->bufferLen;
   CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op1), jasRexConstructPrefix(JAS_NULL, JAS_REX_B))
   else {
@@ -113,7 +110,6 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
 }
 
 static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode) {
-  // TODO encapsulate behaviour - Which is stupid how I did not encapsulate this behaviour in the first place.
   // Operand encoder:
   switch (instance->buffer[instance->bufferLen - 1]) {
   case 0x04:
