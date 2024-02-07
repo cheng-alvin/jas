@@ -10,7 +10,7 @@ jasErrorCode_t jasInitNew(jasMode_t mode, jasInstance_t *instance, uint8_t *buff
     return JAS_UNDEFINED_POINTER;
 
   instance->mode = mode;
-  instance->buffer = buffer;
+  instance->buffer = buffer == JAS_NULL ? (uint8_t *)malloc(1) : buffer;
   instance->bufferLen = 0;
   instance->format = format == JAS_NULL ? JAS_OUT_FORMAT_RAW : format;
   return JAS_NO_ERROR;
