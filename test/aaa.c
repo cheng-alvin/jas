@@ -1,6 +1,6 @@
 #include "codegen.h"
 #include "init.h"
-#include "labrador.h"
+#include "labrador/labrador.h"
 #include <stdlib.h>
 
 TEST() {
@@ -21,6 +21,8 @@ TEST() {
 
   SHOULD_EQUAL(longModeErrorCode, JAS_NON_LONG_MODE_INSTRUCTION);
   SHOULD_EQUAL(longModeInstance.bufferLen, 0);
+
+  free(longModeInstance.buffer);
 
   PASS
 }
