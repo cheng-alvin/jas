@@ -17,7 +17,7 @@
  * they can all be found inside the include directory.
  */
 
-#define TEST(name) \
+#define TEST() \
   int main(void)
 
 #define ASSERT(expr)                                                                                             \
