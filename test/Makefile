@@ -2,7 +2,7 @@ CC = clang
 LD = ld
 DB = lldb
 
-CFLAGS_COMMON = -I ../libjas/include -I ../libjas -Wall -Wextra -g
+CFLAGS_COMMON = -I ../libjas/include -I ../libjas -I .. -Wall -Wextra -g
 CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = ../build
