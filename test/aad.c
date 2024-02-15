@@ -13,10 +13,13 @@ TEST() {
   SHOULD_EQUAL(realModeInstance.buffer[0], 0xD5);
   SHOULD_EQUAL(realModeInstance.buffer[1], 0x0A);
 
-  const jasErrorCode_t realModeOperandErrorCode = jasCodegen(AAD, jasConstructOperand(10, JAS_OPERAND_8), JAS_NO_OPERAND, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
+  const uint8_t argContent = 10;
+  const jasTaggedOperand_t realModeOperand = jasConstructOperand((void *)&argContent, JAS_OPERAND_8);
+
+  const jasErrorCode_t realModeOperandErrorCode = jasCodegen(AAD, realModeOperand, JAS_NO_OPERAND, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
   SHOULD_EQUAL(realModeOperandErrorCode, JAS_NO_ERROR);
-  SHOULD_EQUAL(realModeInstance.buffer[2], 0x12);
+  SHOULD_EQUAL(realModeInstance.buffer[2], 0xD5);
   SHOULD_EQUAL(realModeInstance.buffer[3], 0x0A);
 
   free(realModeInstance.buffer);
