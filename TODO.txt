@@ -6,3 +6,28 @@
 - TODO Ensure all header files have header guards.
 - TODO Add some way of parsing and validating operands. People will probably will pass in garbage, even though there are guard rails. Like enums and unions.
 - TODO Note that the `CLFLUSHOPT` instruction is not supported by the assembler.
+
+Data Movement Instructions:
+MOV: Move data between registers or between memory and registers.
+LEA: Load effective address.
+Arithmetic and Logic Instructions:
+ADD, SUB, MUL, DIV: Basic arithmetic operations.
+AND, OR, XOR, NOT: Logical operations.
+INC, DEC: Increment and decrement.
+Control Flow Instructions:
+JMP: Unconditional jump.
+JE, JNE, JZ, JNZ: Conditional jumps.
+CALL, RET: Subroutine call and return.
+CMP: Compare values (used with conditional jumps).
+Stack Instructions:
+PUSH, POP: Push onto and pop from the stack.
+String Instructions:
+MOVS, LODS, STOS, CMPS, SCAS: String manipulation instructions.
+Input/Output Instructions:
+IN, OUT: Input/output operations.
+Flag Control Instructions:
+CLC, STC, CLI, STI: Control flags.
+Miscellaneous Instructions:
+NOP: No operation.
+HLT: Halt the processor.
+INT: Software interrupt.
