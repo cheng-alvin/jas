@@ -13,7 +13,7 @@ EXE = aaa.o aad.o
 all: libjas.o libjas
 
 libjas.o:
-	$(MAKE) -C ../libjas
+	$(MAKE) -C ../libjas debug
 
 libjas: CFLAGS = $(CFLAGS_COMMON)
 libjas: $(EXE)
@@ -33,4 +33,3 @@ libjas: $(EXE)
 		done
 			
 
-	
