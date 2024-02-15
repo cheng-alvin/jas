@@ -1,6 +1,7 @@
 #include "codegen.h"
 #include "init.h"
 #include "labrador/labrador.h"
+#include <stdlib.h>
 
 TEST() {
   jasInstance_t realModeInstance;
