@@ -30,6 +30,6 @@
 #define SHOULD_NOT_EQUAL(a, b) ASSERT(a != b)
 #define SHOULD_BE_TRUE(a) ASSERT(a)
 #define SHOULD_BE_FALSE(a) ASSERT(!a)
-#define SHOULD_BE_NULL(a) ASSERT(a == NULL)
+#define SHOULD_BE_NULL(a) ASSERT(a == JAS_NULL)
 
 #define PASS exit(0);
