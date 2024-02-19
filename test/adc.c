@@ -55,6 +55,9 @@ TEST() {
     SHOULD_EQUAL(longModeInstance.buffer[3], 0xFF);
     SHOULD_EQUAL(longModeInstance.buffer[4], 0xFF);
     SHOULD_EQUAL(longModeInstance.buffer[5], 0xFF);
+
+    free(realModeInstance.buffer);
+    free(longModeInstance.buffer);
   });
 
   ({
