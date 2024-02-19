@@ -325,7 +325,7 @@ static jasErrorCode_t initCMOVccInstructionGroup(jasTaggedOperand_t op1, jasTagg
 static jasErrorCode_t generateRex(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
   uint8_t prefix;
 
-  if (jasCheckIfHighRegistersAreValidUnderRexPrefix(op1, op2))
+  if (!jasCheckIfHighRegistersAreValidUnderRexPrefix(op1, op2))
     return JAS_INVALID_HIGH_REGISTER;
 
   if (jasRexExpectedInRegisterEncoding(op1))
