@@ -31,5 +31,12 @@
 #define SHOULD_BE_TRUE(a) ASSERT(a)
 #define SHOULD_BE_FALSE(a) ASSERT(!a)
 #define SHOULD_BE_NULL(a) ASSERT(a == JAS_NULL)
+#define SHOULD_NOT_BE_NULL(a) ASSERT(a != JAS_NULL)
 
 #define PASS exit(0);
+
+#define FAIL                                                                                   \
+  printf(RED BOLD "failure\n\n" RESET BOLD "REASON: `" #expr "Test case terminated.\n" RESET); \
+  exit(1);
+
+#define CASE(name) void name(void)
