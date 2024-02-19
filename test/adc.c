@@ -4,12 +4,12 @@
 #include <stdlib.h>
 
 TEST() {
-  jasInstance_t realModeInstance;
-  jasInstance_t longModeInstance;
-  jasInitNew(JAS_MODE_16, &realModeInstance, JAS_NULL, JAS_NULL);
-  jasInitNew(JAS_MODE_64, &longModeInstance, JAS_NULL, JAS_NULL);
-
   ({
+    jasInstance_t realModeInstance;
+    jasInstance_t longModeInstance;
+    jasInitNew(JAS_MODE_16, &realModeInstance, JAS_NULL, JAS_NULL);
+    jasInitNew(JAS_MODE_64, &longModeInstance, JAS_NULL, JAS_NULL);
+
     const uint8_t contentArr[] = {JAS_REG_AL, JAS_REG_AX, JAS_REG_EAX, JAS_REG_RAX, 0xFF, 0xFFFF, 0xFFFFFFFF};
     const jasTaggedOperand_t al = jasConstructOperand(&contentArr[0], JAS_REG_OPERAND_8);
     const jasTaggedOperand_t ax = jasConstructOperand(&contentArr[1], JAS_REG_OPERAND_16);
