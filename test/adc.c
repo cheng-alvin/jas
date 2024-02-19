@@ -57,5 +57,9 @@ TEST() {
     SHOULD_EQUAL(longModeInstance.buffer[5], 0xFF);
   });
 
+  ({
+
+  });
+
   PASS
 }
