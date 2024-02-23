@@ -29,8 +29,11 @@ jasErrorCode_t jasBTS(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
   if (opcodeStatus != JAS_NO_ERROR)
     return opcodeStatus;
 
-  if (instance->buffer[indexOfRex] == 0)
+  if (instance->buffer[indexOfRex] == 0) {
     instance->buffer = removeElement(instance->buffer, instance->bufferLen, indexOfRex);
+
+    instance->bufferLen--;
+  }
 
   if (instance->buffer[instance->bufferLen - 1] == 0xAB)
     return jasExtendedOperandIdentityMR(op1, op2, op3, op4, instance, jasGetMode(op1, op2), JAS_NULL);

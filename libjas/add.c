@@ -39,8 +39,11 @@ jasErrorCode_t jasADD(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
   if (opcodeExitStatus != JAS_NO_ERROR)
     return opcodeExitStatus;
 
-  if (instance->buffer[indexOfRex] == 0)
+  if (instance->buffer[indexOfRex] == 0) {
     instance->buffer = removeElement(instance->buffer, instance->bufferLen, indexOfRex);
+
+    instance->bufferLen--;
+  }
 
   return encodeOperands(op1, op2, op3, op4, instance, mode);
 }
