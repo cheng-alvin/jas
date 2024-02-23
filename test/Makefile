@@ -19,7 +19,7 @@ libjas: CFLAGS = $(CFLAGS_COMMON)
 libjas: $(EXE)
 	@clear
 	@for exe in $(EXE); do \
-		$(CC) $$exe $(BUILD)/libjas.o -o $(BUILD)/test/libjas/$${exe%.o}; \
+		$(CC) $$exe $(BUILD)/debug -o $(BUILD)/test/libjas/$${exe%.o}; \
 		cd $(BUILD)/test/libjas/; \
 		echo "\033[1mTesting \`$${exe%.o}\` ...\033[0m \c"; \
 		./$${exe%.o}; \
