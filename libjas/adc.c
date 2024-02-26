@@ -16,6 +16,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+//! all r/mxy are invalid and are not supported at this stage
 static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t *mode, signed long long indexOfRex);
 
 static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode);
