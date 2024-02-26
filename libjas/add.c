@@ -51,9 +51,9 @@ jasErrorCode_t jasADD(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
 static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t *mode, signed long long indexOfRex) {
   switch (op1.type) {
   case JAS_INDIRECT_8:
-    *mode = mode != JAS_NULL ? mode : JAS_MODRM_INDIRECT;
+    *mode = *mode != JAS_NULL ? mode : JAS_MODRM_INDIRECT;
   case JAS_REG_OPERAND_8:
-    *mode = mode != JAS_NULL ? mode : JAS_MODRM_REGISTER;
+    *mode = *mode != JAS_NULL ? mode : JAS_MODRM_REGISTER;
 
     WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg8 == JAS_REG_AL, 0x04)
 
@@ -64,9 +64,9 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
     break;
 
   case JAS_INDIRECT_16:
-    *mode = mode != JAS_NULL ? mode : JAS_MODRM_INDIRECT;
+    *mode = *mode != JAS_NULL ? mode : JAS_MODRM_INDIRECT;
   case JAS_REG_OPERAND_16:
-    *mode = mode != JAS_NULL ? mode : JAS_MODRM_REGISTER;
+    *mode = *mode != JAS_NULL ? mode : JAS_MODRM_REGISTER;
 
     WRITE(OPERAND_SIZE_OVERRIDE)
     WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_16 && (op2.type == JAS_REG_OPERAND_16 || op2.type == JAS_INDIRECT_16), 0x03)
@@ -78,9 +78,9 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
     break;
 
   case JAS_INDIRECT_32:
-    *mode = mode != JAS_NULL ? mode : JAS_MODRM_INDIRECT;
+    *mode = *mode != JAS_NULL ? mode : JAS_MODRM_INDIRECT;
   case JAS_REG_OPERAND_32:
-    *mode = mode != JAS_NULL ? mode : JAS_MODRM_REGISTER;
+    *mode = *mode != JAS_NULL ? mode : JAS_MODRM_REGISTER;
 
     WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_32 && (op2.type == JAS_REG_OPERAND_32 || op2.type == JAS_INDIRECT_32), 0x03)
     WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg32 == JAS_REG_EAX, 0x05)
@@ -91,9 +91,9 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
     break;
 
   case JAS_INDIRECT_64:
-    *mode = mode != JAS_NULL ? mode : JAS_MODRM_INDIRECT;
+    *mode = *mode != JAS_NULL ? mode : JAS_MODRM_INDIRECT;
   case JAS_REG_OPERAND_64:
-    *mode = mode != JAS_NULL ? mode : JAS_MODRM_REGISTER;
+    *mode = *mode != JAS_NULL ? mode : JAS_MODRM_REGISTER;
 
     if (instance->mode != JAS_MODE_64)
       return JAS_LONG_MODE_INSTRUCTION;
