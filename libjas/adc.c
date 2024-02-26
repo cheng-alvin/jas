@@ -26,7 +26,7 @@ jasErrorCode_t jasADC(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
   if (!jasCheckIfHighRegistersAreValidUnderRexPrefix(op1, op2))
     return JAS_INVALID_HIGH_REGISTER;
 
-  jasModrmMode_t mode;
+  jasModrmMode_t mode = JAS_NULL;
 
   signed long long indexOfRex = instance->bufferLen;
   CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op1), jasRexConstructPrefix(JAS_NULL, JAS_REX_B))

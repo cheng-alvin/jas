@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 jasErrorCode_t jasBSF(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
-  jasModrmMode_t mode;
+  jasModrmMode_t mode = JAS_NULL;
 
   signed long long indexOfRex = instance->bufferLen;
   CONDITIONAL_WRITE(jasRexExpectedInRegisterEncoding(op2), jasRexConstructPrefix(JAS_NULL, JAS_REX_R))

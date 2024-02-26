@@ -24,7 +24,7 @@
 static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t *mode);
 
 jasErrorCode_t jasCALL(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
-  jasModrmMode_t mode;
+  jasModrmMode_t mode = JAS_NULL;
 
   const jasErrorCode_t opcodeExitStatus = encodeOpcode(op1, op2, op3, op4, instance, &mode);
   if (opcodeExitStatus != JAS_NO_ERROR)
