@@ -72,7 +72,7 @@ TEST() {
     const jasReg8_t reg8 = JAS_REG_CL;
     const jasReg16_t reg16 = JAS_REG_BX;
     const jasReg32_t reg32 = JAS_REG_EBX;
-    // const jasReg64_t reg64 = JAS_REG_RAX;
+    const jasReg64_t reg64 = JAS_REG_RBX;
 
     const uint8_t val8 = 0xFF;
     const uint16_t val16 = 0xFFFF;
@@ -81,7 +81,7 @@ TEST() {
     const jasTaggedOperand_t cl = jasConstructOperand(&reg8, JAS_REG_OPERAND_8);
     const jasTaggedOperand_t bx = jasConstructOperand(&reg16, JAS_REG_OPERAND_16);
     const jasTaggedOperand_t ebx = jasConstructOperand(&reg32, JAS_REG_OPERAND_32);
-    // const jasTaggedOperand_t rax = jasConstructOperand(&reg64, JAS_REG_OPERAND_64);
+    const jasTaggedOperand_t rbx = jasConstructOperand(&reg64, JAS_REG_OPERAND_64);
 
     const jasTaggedOperand_t imm8 = jasConstructOperand(&val8, JAS_OPERAND_8);
     const jasTaggedOperand_t imm16 = jasConstructOperand(&val16, JAS_OPERAND_16);
@@ -112,6 +112,21 @@ TEST() {
     SHOULD_EQUAL(realModeInstance.buffer[22], 0xFF);
     SHOULD_EQUAL(realModeInstance.buffer[23], 0xFF);
     SHOULD_EQUAL(realModeInstance.buffer[24], 0xFF);
+
+    const jasErrorCode_t status4 = jasCodegen(ADC, rbx, imm32, JAS_NO_OPERAND, JAS_NO_OPERAND, &tempRealModeInstance);
+
+    SHOULD_EQUAL(status4, JAS_LONG_MODE_INSTRUCTION);
+
+    const jasErrorCode_t status5 = jasCodegen(ADC, rbx, imm32, JAS_NO_OPERAND, JAS_NO_OPERAND, &longModeInstance);
+
+    SHOULD_EQUAL(status5, JAS_NO_ERROR);
+    SHOULD_EQUAL(longModeInstance.buffer[6], 0x48);
+    SHOULD_EQUAL(longModeInstance.buffer[7], 0x81);
+    SHOULD_EQUAL(longModeInstance.buffer[8], 0xD3);
+    SHOULD_EQUAL(longModeInstance.buffer[9], 0xFF);
+    SHOULD_EQUAL(longModeInstance.buffer[10], 0xFF);
+    SHOULD_EQUAL(longModeInstance.buffer[11], 0xFF);
+    SHOULD_EQUAL(longModeInstance.buffer[12], 0xFF);
   });
 
   free(realModeInstance.buffer);
