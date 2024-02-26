@@ -151,16 +151,17 @@ TEST() {
     const jasErrorCode_t status2 = jasCodegen(ADC, bx, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status2, JAS_NO_ERROR);
-    SHOULD_EQUAL(realModeInstance.buffer[25], 0x83);
-    SHOULD_EQUAL(realModeInstance.buffer[26], 0xD3);
-    SHOULD_EQUAL(realModeInstance.buffer[27], 0xFF);
+    SHOULD_EQUAL(realModeInstance.buffer[25], 0x66);
+    SHOULD_EQUAL(realModeInstance.buffer[26], 0x83);
+    SHOULD_EQUAL(realModeInstance.buffer[27], 0xD3);
+    SHOULD_EQUAL(realModeInstance.buffer[28], 0xFF);
 
     const jasErrorCode_t status3 = jasCodegen(ADC, ebx, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status3, JAS_NO_ERROR);
-    SHOULD_EQUAL(realModeInstance.buffer[28], 0x83);
-    SHOULD_EQUAL(realModeInstance.buffer[29], 0xD3);
-    SHOULD_EQUAL(realModeInstance.buffer[30], 0xFF);
+    SHOULD_EQUAL(realModeInstance.buffer[29], 0x83);
+    SHOULD_EQUAL(realModeInstance.buffer[30], 0xD3);
+    SHOULD_EQUAL(realModeInstance.buffer[31], 0xFF);
 
     const jasErrorCode_t status4 = jasCodegen(ADC, rbx, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &tempRealModeInstance);
 
