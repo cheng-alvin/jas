@@ -129,6 +129,52 @@ TEST() {
     SHOULD_EQUAL(longModeInstance.buffer[12], 0xFF);
   });
 
+  ({
+    const jasReg8_t reg8 = JAS_REG_CL;
+    const jasReg16_t reg16 = JAS_REG_BX;
+    const jasReg32_t reg32 = JAS_REG_EBX;
+    const jasReg64_t reg64 = JAS_REG_RBX;
+
+    const uint8_t val8 = 0xFF;
+    const uint16_t val16 = 0xFFFF;
+    const uint32_t val32 = 0xFFFFFFFF;
+
+    const jasTaggedOperand_t cl = jasConstructOperand(&reg8, JAS_REG_OPERAND_8);
+    const jasTaggedOperand_t bx = jasConstructOperand(&reg16, JAS_REG_OPERAND_16);
+    const jasTaggedOperand_t ebx = jasConstructOperand(&reg32, JAS_REG_OPERAND_32);
+    const jasTaggedOperand_t rbx = jasConstructOperand(&reg64, JAS_REG_OPERAND_64);
+
+    const jasTaggedOperand_t imm8 = jasConstructOperand(&val8, JAS_OPERAND_8);
+    const jasTaggedOperand_t imm16 = jasConstructOperand(&val16, JAS_OPERAND_16);
+    const jasTaggedOperand_t imm32 = jasConstructOperand(&val32, JAS_OPERAND_32);
+
+    const jasErrorCode_t status2 = jasCodegen(ADC, bx, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
+
+    SHOULD_EQUAL(status2, JAS_NO_ERROR);
+    SHOULD_EQUAL(realModeInstance.buffer[25], 0x83);
+    SHOULD_EQUAL(realModeInstance.buffer[26], 0xD3);
+    SHOULD_EQUAL(realModeInstance.buffer[27], 0xFF);
+
+    const jasErrorCode_t status3 = jasCodegen(ADC, ebx, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
+
+    SHOULD_EQUAL(status3, JAS_NO_ERROR);
+    SHOULD_EQUAL(realModeInstance.buffer[28], 0x83);
+    SHOULD_EQUAL(realModeInstance.buffer[29], 0xD3);
+    SHOULD_EQUAL(realModeInstance.buffer[30], 0xFF);
+
+    const jasErrorCode_t status4 = jasCodegen(ADC, rbx, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &tempRealModeInstance);
+
+    SHOULD_EQUAL(status4, JAS_LONG_MODE_INSTRUCTION);
+
+    const jasErrorCode_t status5 = jasCodegen(ADC, rbx, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &longModeInstance);
+
+    SHOULD_EQUAL(status5, JAS_NO_ERROR);
+    SHOULD_EQUAL(longModeInstance.buffer[13], 0x48);
+    SHOULD_EQUAL(longModeInstance.buffer[14], 0x83);
+    SHOULD_EQUAL(longModeInstance.buffer[15], 0xD3);
+    SHOULD_EQUAL(longModeInstance.buffer[16], 0xFF);
+  });
+
   free(realModeInstance.buffer);
   free(longModeInstance.buffer);
   free(tempRealModeInstance.buffer);
