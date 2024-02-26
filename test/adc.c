@@ -69,24 +69,22 @@ TEST() {
   });
 
   ({
-    const jasReg8_t reg8High = JAS_REG_AH;
     const jasReg8_t reg8 = JAS_REG_CL;
-    // const jasReg16_t reg16 = JAS_REG_AX;
+    const jasReg16_t reg16 = JAS_REG_BX;
     // const jasReg32_t reg32 = JAS_REG_EAX;
     // const jasReg64_t reg64 = JAS_REG_RAX;
 
     const uint8_t val8 = 0xFF;
-    // const uint16_t val16 = 0xFFFF;
+    const uint16_t val16 = 0xFFFF;
     // const uint32_t val32 = 0xFFFFFFFF;
 
-    const jasTaggedOperand_t ah = jasConstructOperand(&reg8High, JAS_REG_OPERAND_8);
     const jasTaggedOperand_t cl = jasConstructOperand(&reg8, JAS_REG_OPERAND_8);
-    // const jasTaggedOperand_t ax = jasConstructOperand(&reg16, JAS_REG_OPERAND_16);
+    const jasTaggedOperand_t bx = jasConstructOperand(&reg16, JAS_REG_OPERAND_16);
     // const jasTaggedOperand_t eax = jasConstructOperand(&reg32, JAS_REG_OPERAND_32);
     // const jasTaggedOperand_t rax = jasConstructOperand(&reg64, JAS_REG_OPERAND_64);
 
     const jasTaggedOperand_t imm8 = jasConstructOperand(&val8, JAS_OPERAND_8);
-    // const jasTaggedOperand_t imm16 = jasConstructOperand(&val16, JAS_OPERAND_16);
+    const jasTaggedOperand_t imm16 = jasConstructOperand(&val16, JAS_OPERAND_16);
     // const jasTaggedOperand_t imm32 = jasConstructOperand(&val32, JAS_OPERAND_32);
 
     const jasErrorCode_t status = jasCodegen(ADC, cl, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
@@ -95,6 +93,15 @@ TEST() {
     SHOULD_EQUAL(realModeInstance.buffer[11], 0x80);
     SHOULD_EQUAL(realModeInstance.buffer[12], 0xD1);
     SHOULD_EQUAL(realModeInstance.buffer[13], 0xFF);
+
+    const jasErrorCode_t status2 = jasCodegen(ADC, bx, imm16, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
+
+    SHOULD_EQUAL(status2, JAS_NO_ERROR);
+    SHOULD_EQUAL(realModeInstance.buffer[14], 0x66);
+    SHOULD_EQUAL(realModeInstance.buffer[15], 0x81);
+    SHOULD_EQUAL(realModeInstance.buffer[16], 0xD3);
+    SHOULD_EQUAL(realModeInstance.buffer[17], 0xFF);
+    SHOULD_EQUAL(realModeInstance.buffer[18], 0xFF);
   });
 
   free(realModeInstance.buffer);
