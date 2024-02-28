@@ -16,7 +16,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-//! all r/mxy are invalid and are not supported at this stage
+//! all r/mxy are invalid and are not supported at this stage (I would say that this would apply to all of the libjas codebase!!!)
 static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t *mode, signed long long indexOfRex);
 
 static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode);
@@ -59,8 +59,8 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
 
     WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg8 == JAS_REG_AL, 0x14)
 
-    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_8 && (op2.type == JAS_REG_OPERAND_8 || op2.type == JAS_INDIRECT_8), 0x12)
     WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_REG_OPERAND_8, 0x10)
+    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_8 && (op2.type == JAS_REG_OPERAND_8 || op2.type == JAS_INDIRECT_8), 0x12)
 
     WRITE(0x80)
     break;
@@ -71,8 +71,8 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
     *mode = *mode != JAS_NULL ? mode : JAS_MODRM_REGISTER;
 
     WRITE(OPERAND_SIZE_OVERRIDE)
-    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_16 && (op2.type == JAS_REG_OPERAND_16 || op2.type == JAS_INDIRECT_16), 0x13)
     WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg16 == JAS_REG_AX, 0x15)
+    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_16 && (op2.type == JAS_REG_OPERAND_16 || op2.type == JAS_INDIRECT_16), 0x13)
     WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_OPERAND_8, 0x83)
     WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_REG_OPERAND_16, 0x11)
 
