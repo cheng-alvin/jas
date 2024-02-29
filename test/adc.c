@@ -203,7 +203,32 @@ TEST() {
     SHOULD_EQUAL(realModeInstance.buffer[34], 0x66)
     SHOULD_EQUAL(realModeInstance.buffer[35], 0x11)
     SHOULD_EQUAL(realModeInstance.buffer[36], 0xDB)
-  });
+
+    const jasErrorCode_t status3 = jasCodegen(ADC, ebx, ebx, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
+
+    SHOULD_EQUAL(status, JAS_NO_ERROR)
+    SHOULD_EQUAL(realModeInstance.buffer[37], 0x11)
+    SHOULD_EQUAL(realModeInstance.buffer[38], 0xDB)
+
+    const jasErrorCode_t status4 = jasCodegen(ADC, rbx, rbx, JAS_NO_OPERAND, JAS_NO_OPERAND, &tempRealModeInstance);
+
+    SHOULD_EQUAL(status4, JAS_LONG_MODE_INSTRUCTION);
+
+    const jasErrorCode_t status5 = jasCodegen(ADC, rbx, rbx, JAS_NO_OPERAND, JAS_NO_OPERAND, &longModeInstance);
+
+    SHOULD_EQUAL(status5, JAS_NO_ERROR);
+    SHOULD_EQUAL(longModeInstance.buffer[17], 0x48);
+    SHOULD_EQUAL(longModeInstance.buffer[18], 0x11);
+    SHOULD_EQUAL(longModeInstance.buffer[19], 0xDB);
+
+    /**
+     * @note Please note that some cases with the `0x13` and `0x12` opcodes
+     * are not tested due to the incompatible r/m and reg combinations of the instruction
+     * drivers.
+     *
+     * - Alvin
+     */
+    });
 
   free(realModeInstance.buffer);
   free(longModeInstance.buffer);
