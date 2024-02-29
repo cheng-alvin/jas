@@ -228,10 +228,11 @@ TEST() {
      *
      * - Alvin
      */
-    });
+  });
 
   free(realModeInstance.buffer);
   free(longModeInstance.buffer);
+  free(tempRealModeInstance.buffer);
   free(tempRealModeInstance.buffer);
 
   PASS
