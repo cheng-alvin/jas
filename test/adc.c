@@ -3,25 +3,6 @@
 #include "labrador/labrador.h"
 #include <stdlib.h>
 
-#define AL_IMM8 0x14
-#define AX_IMM16 0x15
-#define EAX_IMM32 0x15
-#define RAX_IMM32 0x15
-
-#define REG8_IMM8 0x80
-#define REG16_IMM16 0x81
-#define REG32_IMM32 0x81
-#define REG64_IMM32 0x81
-
-#define REG16_IMM8 0x83
-#define REG32_IMM8 0x83
-#define REG64_IMM8 0x83
-
-#define REG8_REG8 0x10
-#define REG16_REG16 0x11
-#define REG32_REG32 0x11
-#define REG64_REG64 0x11
-
 TEST() {
   jasInstance_t tempRealModeInstance;
   jasInstance_t realModeInstance;
@@ -52,21 +33,21 @@ TEST() {
     const jasErrorCode_t status = jasCodegen(ADC, al, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status, JAS_NO_ERROR);
-    SHOULD_EQUAL(realModeInstance.buffer[0], AL_IMM8);
+    SHOULD_EQUAL(realModeInstance.buffer[0], 0x14);
     SHOULD_EQUAL(realModeInstance.buffer[1], 0xFF);
 
     const jasErrorCode_t status2 = jasCodegen(ADC, ax, imm16, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status2, JAS_NO_ERROR);
     SHOULD_EQUAL(realModeInstance.buffer[2], 0x66);
-    SHOULD_EQUAL(realModeInstance.buffer[3], AX_IMM16);
+    SHOULD_EQUAL(realModeInstance.buffer[3], 0x15);
     SHOULD_EQUAL(realModeInstance.buffer[4], 0xFF);
     SHOULD_EQUAL(realModeInstance.buffer[5], 0xFF);
 
     const jasErrorCode_t status3 = jasCodegen(ADC, eax, imm32, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status3, JAS_NO_ERROR);
-    SHOULD_EQUAL(realModeInstance.buffer[6], EAX_IMM32);
+    SHOULD_EQUAL(realModeInstance.buffer[6], 0x15);
     SHOULD_EQUAL(realModeInstance.buffer[7], 0xFF);
     SHOULD_EQUAL(realModeInstance.buffer[8], 0xFF);
     SHOULD_EQUAL(realModeInstance.buffer[9], 0xFF);
@@ -80,7 +61,7 @@ TEST() {
 
     SHOULD_EQUAL(status5, JAS_NO_ERROR);
     SHOULD_EQUAL(longModeInstance.buffer[0], 0x48);
-    SHOULD_EQUAL(longModeInstance.buffer[1], RAX_IMM32);
+    SHOULD_EQUAL(longModeInstance.buffer[1], 0x15);
     SHOULD_EQUAL(longModeInstance.buffer[2], 0xFF);
     SHOULD_EQUAL(longModeInstance.buffer[3], 0xFF);
     SHOULD_EQUAL(longModeInstance.buffer[4], 0xFF);
@@ -109,7 +90,7 @@ TEST() {
     const jasErrorCode_t status = jasCodegen(ADC, cl, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status, JAS_NO_ERROR);
-    SHOULD_EQUAL(realModeInstance.buffer[11], REG8_IMM8);
+    SHOULD_EQUAL(realModeInstance.buffer[11], 0x80);
     SHOULD_EQUAL(realModeInstance.buffer[12], 0xD1);
     SHOULD_EQUAL(realModeInstance.buffer[13], 0xFF);
 
@@ -117,7 +98,7 @@ TEST() {
 
     SHOULD_EQUAL(status2, JAS_NO_ERROR);
     SHOULD_EQUAL(realModeInstance.buffer[14], 0x66);
-    SHOULD_EQUAL(realModeInstance.buffer[15], REG16_IMM16);
+    SHOULD_EQUAL(realModeInstance.buffer[15], 0x81);
     SHOULD_EQUAL(realModeInstance.buffer[16], 0xD3);
     SHOULD_EQUAL(realModeInstance.buffer[17], 0xFF);
     SHOULD_EQUAL(realModeInstance.buffer[18], 0xFF);
@@ -125,7 +106,7 @@ TEST() {
     const jasErrorCode_t status3 = jasCodegen(ADC, ebx, imm32, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status3, JAS_NO_ERROR);
-    SHOULD_EQUAL(realModeInstance.buffer[19], REG32_IMM32);
+    SHOULD_EQUAL(realModeInstance.buffer[19], 0x81);
     SHOULD_EQUAL(realModeInstance.buffer[20], 0xD3);
     SHOULD_EQUAL(realModeInstance.buffer[21], 0xFF);
     SHOULD_EQUAL(realModeInstance.buffer[22], 0xFF);
@@ -140,7 +121,7 @@ TEST() {
 
     SHOULD_EQUAL(status5, JAS_NO_ERROR);
     SHOULD_EQUAL(longModeInstance.buffer[6], 0x48);
-    SHOULD_EQUAL(longModeInstance.buffer[7], REG64_IMM32);
+    SHOULD_EQUAL(longModeInstance.buffer[7], 0x81);
     SHOULD_EQUAL(longModeInstance.buffer[8], 0xD3);
     SHOULD_EQUAL(longModeInstance.buffer[9], 0xFF);
     SHOULD_EQUAL(longModeInstance.buffer[10], 0xFF);
@@ -171,14 +152,14 @@ TEST() {
 
     SHOULD_EQUAL(status2, JAS_NO_ERROR);
     SHOULD_EQUAL(realModeInstance.buffer[25], 0x66);
-    SHOULD_EQUAL(realModeInstance.buffer[26], REG16_IMM8);
+    SHOULD_EQUAL(realModeInstance.buffer[26], 0x83);
     SHOULD_EQUAL(realModeInstance.buffer[27], 0xD3);
     SHOULD_EQUAL(realModeInstance.buffer[28], 0xFF);
 
     const jasErrorCode_t status3 = jasCodegen(ADC, ebx, imm8, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status3, JAS_NO_ERROR);
-    SHOULD_EQUAL(realModeInstance.buffer[29], REG32_IMM8);
+    SHOULD_EQUAL(realModeInstance.buffer[29], 0x83);
     SHOULD_EQUAL(realModeInstance.buffer[30], 0xD3);
     SHOULD_EQUAL(realModeInstance.buffer[31], 0xFF);
 
@@ -190,7 +171,7 @@ TEST() {
 
     SHOULD_EQUAL(status5, JAS_NO_ERROR);
     SHOULD_EQUAL(longModeInstance.buffer[13], 0x48);
-    SHOULD_EQUAL(longModeInstance.buffer[14], REG64_IMM8);
+    SHOULD_EQUAL(longModeInstance.buffer[14], 0x83);
     SHOULD_EQUAL(longModeInstance.buffer[15], 0xD3);
     SHOULD_EQUAL(longModeInstance.buffer[16], 0xFF);
   });
@@ -213,20 +194,20 @@ TEST() {
     const jasErrorCode_t status = jasCodegen(ADC, cl, cl, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status, JAS_NO_ERROR)
-    SHOULD_EQUAL(realModeInstance.buffer[32], REG8_REG8)
+    SHOULD_EQUAL(realModeInstance.buffer[32], 0x10)
     SHOULD_EQUAL(realModeInstance.buffer[33], 0xC9)
 
     const jasErrorCode_t status2 = jasCodegen(ADC, bx, bx, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status, JAS_NO_ERROR)
     SHOULD_EQUAL(realModeInstance.buffer[34], 0x66)
-    SHOULD_EQUAL(realModeInstance.buffer[35], REG16_REG16)
+    SHOULD_EQUAL(realModeInstance.buffer[35], 0x11)
     SHOULD_EQUAL(realModeInstance.buffer[36], 0xDB)
 
     const jasErrorCode_t status3 = jasCodegen(ADC, ebx, ebx, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
     SHOULD_EQUAL(status, JAS_NO_ERROR)
-    SHOULD_EQUAL(realModeInstance.buffer[37], REG32_REG32)
+    SHOULD_EQUAL(realModeInstance.buffer[37], 0x11)
     SHOULD_EQUAL(realModeInstance.buffer[38], 0xDB)
 
     const jasErrorCode_t status4 = jasCodegen(ADC, rbx, rbx, JAS_NO_OPERAND, JAS_NO_OPERAND, &tempRealModeInstance);
@@ -237,7 +218,7 @@ TEST() {
 
     SHOULD_EQUAL(status5, JAS_NO_ERROR);
     SHOULD_EQUAL(longModeInstance.buffer[17], 0x48);
-    SHOULD_EQUAL(longModeInstance.buffer[18], REG64_REG64);
+    SHOULD_EQUAL(longModeInstance.buffer[18], 0x11);
     SHOULD_EQUAL(longModeInstance.buffer[19], 0xDB);
 
     /**
