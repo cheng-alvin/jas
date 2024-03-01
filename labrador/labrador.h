@@ -1,6 +1,7 @@
 #include "color.h"
-#include "null.h"
 #include <stdio.h>
+
+#define LABRADOR_NULL 0
 
 /**
  * @author cheng-alvin
@@ -13,8 +14,9 @@
  * assembler project and can be ported to other projects as well,
  * noting the perquisites needed to do so.
  *
- * @note null.h and color.h are required for the testing framework,
+ * @note color.h is required for the testing framework,
  * they can all be found inside the include directory.
+ * (As in the `jas` folder)
  */
 
 #define TEST() \
@@ -30,8 +32,8 @@
 #define SHOULD_NOT_EQUAL(a, b) ASSERT(a != b)
 #define SHOULD_BE_TRUE(a) ASSERT(a)
 #define SHOULD_BE_FALSE(a) ASSERT(!a)
-#define SHOULD_BE_NULL(a) ASSERT(a == JAS_NULL)
-#define SHOULD_NOT_BE_NULL(a) ASSERT(a != JAS_NULL)
+#define SHOULD_BE_NULL(a) ASSERT(a == LABRADOR_NULL)
+#define SHOULD_NOT_BE_NULL(a) ASSERT(a != LABRADOR_NULL)
 
 #define PASS exit(0);
 
