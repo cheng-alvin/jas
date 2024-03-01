@@ -2,6 +2,7 @@
 #include "init.h"
 #include "labrador/labrador.h"
 #include <stdlib.h>
+#include "null.h"
 
 TEST() {
   jasInstance_t realModeInstance;

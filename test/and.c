@@ -1,4 +1,5 @@
 #include "codegen.h"
+#include "null.h"
 #include "init.h"
 #include "labrador/labrador.h"
 #include <stdlib.h>
