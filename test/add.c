@@ -220,14 +220,6 @@ TEST() {
     SHOULD_EQUAL(longModeInstance.buffer[17], 0x48);
     SHOULD_EQUAL(longModeInstance.buffer[18], 0x03);
     SHOULD_EQUAL(longModeInstance.buffer[19], 0xDB);
-
-    /**
-     * @note Please note that some cases with the `0x13` and `0x12` opcodes
-     * are not tested due to the incompatible r/m and reg combinations of the instruction
-     * drivers.
-     *
-     * - Alvin
-     */
   });
 
   free(realModeInstance.buffer);
