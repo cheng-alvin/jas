@@ -196,7 +196,7 @@ TEST() {
 
     SHOULD_EQUAL(status, JAS_NO_ERROR)
     SHOULD_EQUAL(realModeInstance.buffer[32], 0x22)
-    SHOULD_EQUAL(realModeInstance.buffer[33], 0xE9)
+    SHOULD_EQUAL(realModeInstance.buffer[33], 0xC9)
 
     const jasErrorCode_t status2 = jasCodegen(AND, bx, bx, JAS_NO_OPERAND, JAS_NO_OPERAND, &realModeInstance);
 
