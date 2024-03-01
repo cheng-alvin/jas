@@ -52,12 +52,12 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
   case JAS_REG_OPERAND_16:
   case JAS_REG_OPERAND_32:
   case JAS_REG_OPERAND_64:
-    *mode = *mode != JAS_NULL ? mode : JAS_MODRM_REGISTER;
+    *mode = *mode != JAS_NULL ? *mode : JAS_MODRM_REGISTER;
 
   case JAS_INDIRECT_16:
   case JAS_INDIRECT_32:
   case JAS_INDIRECT_64:
-    *mode = *mode != JAS_NULL ? mode : JAS_MODRM_INDIRECT;
+    *mode = *mode != JAS_NULL ? *mode : JAS_MODRM_INDIRECT;
 
     if (op1.type == JAS_REG_OPERAND_64 || op1.type == JAS_INDIRECT_64) {
       if (instance->mode != JAS_MODE_32)
