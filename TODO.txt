@@ -7,8 +7,6 @@
 - TODO Add some way of parsing and validating operands. People will probably will pass in garbage, even though there are guard rails. Like enums and unions.
 - TODO Note that the `CLFLUSHOPT` instruction is not supported by the assembler.
 
-- TODO Fix the test makefile!
-
 Data Movement Instructions:
 MOV: Move data between registers or between memory and registers.
 LEA: Load effective address.
