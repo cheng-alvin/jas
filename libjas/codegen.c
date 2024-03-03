@@ -6,6 +6,7 @@
 #include "adc.h"
 #include "add.h"
 #include "and.h"
+#include "arpl.h"
 #include "bound.h"
 #include "bsf.h"
 #include "bsr.h"
@@ -31,7 +32,7 @@ jasErrorCode_t jasCodegen(jasInstruction_t instruction, jasTaggedOperand_t op1, 
   if (instance->buffer == JAS_NULL)
     return JAS_UNDEFINED_POINTER;
 
-  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND, &jasBOUND, &jasBSF, &jasBSR, &jasBSWAP, &jasCALL, &jasCBW, &jasCDQE, &jasCWDE, &jasCLC, &jasCLD, &jasCLFLUSH /* TODO CLFLUSHOPT */, &jasCLI, &jasCLTS, &jasCMC, &jasCMOVA, jasCMOVAE, jasCMOVB, jasCMOVBE, jasCMOVC, jasCMOVE, jasCMOVG, jasCMOVGE, jasCMOVL, jasCMOVLE, jasCMOVNA, jasCMOVNAE, jasCMOVNB, jasCMOVNBE, jasCMOVNC, jasCMOVNE, jasCMOVNG, jasCMOVNGE, jasCMOVNL, jasCMOVNLE, jasCMOVNO, jasCMOVNP, jasCMOVNS, jasCMOVNZ, jasCMOVO, jasCMOVP, jasCMOVPE, jasCMOVPO, jasCMOVS, jasCMOVZ};
+  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND, &jasARPL, &jasBOUND, &jasBSF, &jasBSR, &jasBSWAP, &jasCALL, &jasCBW, &jasCDQE, &jasCWDE, &jasCLC, &jasCLD, &jasCLFLUSH /* TODO CLFLUSHOPT */, &jasCLI, &jasCLTS, &jasCMC, &jasCMOVA, jasCMOVAE, jasCMOVB, jasCMOVBE, jasCMOVC, jasCMOVE, jasCMOVG, jasCMOVGE, jasCMOVL, jasCMOVLE, jasCMOVNA, jasCMOVNAE, jasCMOVNB, jasCMOVNBE, jasCMOVNC, jasCMOVNE, jasCMOVNG, jasCMOVNGE, jasCMOVNL, jasCMOVNLE, jasCMOVNO, jasCMOVNP, jasCMOVNS, jasCMOVNZ, jasCMOVO, jasCMOVP, jasCMOVPE, jasCMOVPO, jasCMOVS, jasCMOVZ};
 
   if (instruction > sizeof(jasInstructionEncoder) / sizeof(jasInstructionEncoderPointer_t))
     return JAS_INVALID_INSTRUCTION;
