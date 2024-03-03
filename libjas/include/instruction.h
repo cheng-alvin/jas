@@ -19,6 +19,7 @@ typedef enum {
   ADC,
   ADD,
   AND,
+  ARPL,
   BOUND,
   BSF,
   BSR,
