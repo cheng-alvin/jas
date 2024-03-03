@@ -1,7 +1,7 @@
 #include "codegen.h"
 #include "init.h"
-#include "null.h"
 #include "labrador/labrador.h"
+#include "null.h"
 #include <stdlib.h>
 
 TEST() {

@@ -1,8 +1,8 @@
 #include "codegen.h"
 #include "init.h"
 #include "instruction.h"
-#include "null.h"
 #include "labrador/labrador.h"
+#include "null.h"
 #include "operand.h"
 #include <stdlib.h>
 
