@@ -1,8 +1,8 @@
-#include "error.c"
+#include "error.h"
 #include "macro.h"
 #include "mr.h"
 #include "null.h"
-#include "operand.c"
+#include "operand.h"
 #include <stdint.h>
 
 // Awaiting documentation TODO
