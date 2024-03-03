@@ -19,6 +19,7 @@ jasInstruction_t jasToInstructionEnum(char *instruction) {
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "adc", ADC);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "add", ADD);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "and", AND);
+  SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "arpl", ARPL);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "bound", BOUND);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "bsf", BSF);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "bsr", BSR);
@@ -37,5 +38,7 @@ jasInstruction_t jasToInstructionEnum(char *instruction) {
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "cli", CLI);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "clts", CLTS);
   SUBSTITUTE_INSTRUCTION_IF_EQUATES(instruction, "cmc", CMC)
+
+  // TODO revise list (some instructions are missing!!)**
   return -1;
 }
