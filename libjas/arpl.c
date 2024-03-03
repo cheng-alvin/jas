@@ -1,5 +1,5 @@
 #include "error.c"
-#include "macro.c"
+#include "macro.h"
 #include "mr.h"
 #include "null.h"
 #include "operand.c"
