@@ -2,7 +2,6 @@
 #define BSF_H
 
 #include "error.h"
-#include <stdint.h>
 
 /**
  * @author cheng-alvin
@@ -30,5 +29,3 @@
 jasErrorCode_t jasBSF(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance);
 
 #endif
-
-// TODO bsr.h onwards need cleaning of header guards and #includes

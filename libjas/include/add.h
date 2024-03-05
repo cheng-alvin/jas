@@ -2,7 +2,6 @@
 #define ADD_H
 
 #include "error.h"
-#include <stdint.h>
 
 /**
  * @author cheng-alvin

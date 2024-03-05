@@ -2,7 +2,6 @@
 #define AAA_H
 
 #include "error.h"
-#include <stdint.h>
 
 /**
  * @author cheng-alvin
@@ -22,7 +21,7 @@
  * @note All parameters are not required. Please see the intel manual for more
  * information on the `aaa` instruction.
  *
- * @note This instruction is NOT allowed to be  encoded in 64-bit of long mode.
+ * @note This instruction is NOT allowed to be encoded in 64-bit of long mode.
  * (Which throws an error if the mode is set to 64-bit)
  */
 

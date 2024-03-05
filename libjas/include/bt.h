@@ -1,16 +1,9 @@
-#include "codegen.h"
+#ifndef BT_H
+#define BT_H
+
 #include "error.h"
 #include "init.h"
-#include "macro.h"
-#include "modrm.h"
-#include "null.h"
 #include "operand.h"
-#include "rex.h"
-#include "rm.h"
-#include "write.h"
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdlib.h>
 
 /**
  * @author cheng-alvin
@@ -27,7 +20,7 @@
  *
  * @returns The error code if the encoding was successful.
  *
- * @note All operands except the fourth operand is not required.Please refer to the
+ * @note All operands except the first two operand is not required. Please refer to the
  * the intel manual for more information on the `bt` instruction.
  *
  * @warning This is NOT an assembly tutorial. Please see other resources for
@@ -36,3 +29,5 @@
  */
 
 jasErrorCode_t jasBT(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance);
+
+#endif
