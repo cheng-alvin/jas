@@ -1,5 +1,5 @@
-#ifndef JAS_INSTRUCTION_H
-#define JAS_INSTRUCTION_H
+#ifndef INSTRUCTION_H
+#define INSTRUCTION_H
 
 /**
  * @author cheng-alvin
@@ -81,7 +81,7 @@ typedef enum {
  * allowing for using `switch` statement multiple times in the
  * code. (Basically allows for a faster speed).
  *
- * @see `jasInstruction_t`
+ * @see `jasInstructio
  *
  * @param instruction The instruction to convert to an enum.
  * @returns The enum of the instruction.

@@ -1,5 +1,5 @@
-#ifndef JAS_REX_H
-#define JAS_REX_H
+#ifndef REX_H
+#define REX_H
 
 #include <stdint.h>
 

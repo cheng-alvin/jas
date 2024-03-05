@@ -1,5 +1,5 @@
-#ifndef JAS_OPERAND_H
-#define JAS_OPERAND_H
+#ifndef OPERAND_H
+#define OPERAND_H
 
 #include "error.h"
 #include <stdbool.h>

@@ -1,6 +1,5 @@
-
-#ifndef JAS_ERROR_H
-#define JAS_ERROR_H
+#ifndef ERROR_H
+#define ERROR_H
 
 /**
  * @author cheng-alvin

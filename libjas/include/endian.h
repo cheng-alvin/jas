@@ -1,5 +1,5 @@
-#ifndef JAS_ENDIAN_H
-#define JAS_ENDIAN_H
+#ifndef ENDIAN_H
+#define ENDIAN_H
 
 #include <stdint.h>
 

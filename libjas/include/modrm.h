@@ -1,5 +1,5 @@
-#ifndef JAS_MODRM_H
-#define JAS_MODRM_H
+#ifndef MODRM_H
+#define MODRM_H
 
 #include <stdint.h>
 
