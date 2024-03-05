@@ -22,6 +22,7 @@ jasErrorCode_t jasBSR(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedO
     WRITE(0)
   }
 
+  // ??? (line 26 - 31) Why is long mode not allowed ???
   if (op1.type == JAS_REG_OPERAND_64) {
     if (instance->mode == JAS_MODE_64)
       return JAS_NON_LONG_MODE_INSTRUCTION;
