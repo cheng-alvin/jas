@@ -16,6 +16,7 @@
 typedef enum {
 
   /**
+   * @brief
    * This mode is used to indicate that the operand is an indirect
    * memory address. This means that the operand is a memory address
    * that is stored in a register.
@@ -26,6 +27,7 @@ typedef enum {
   JAS_MODRM_INDIRECT = 0b00000000,
 
   /**
+   * @brief
    * This mode is used to indicate that the operand is an indirect
    * memory address with a following 8-bit displacement. This means
    * that the operand is a memory address that is stored in a register
@@ -38,6 +40,7 @@ typedef enum {
   JAS_MODRM_FOLLOWING_DISPLACEMENT_8 = 0b01000000,
 
   /**
+   * @brief
    * This mode is used to indicate that the operand is an indirect
    * memory address with a following 32-bit displacement. This means
    * that the operand is a memory address that is stored in a register
@@ -50,6 +53,7 @@ typedef enum {
   JAS_MODRM_FOLLOWING_DISPLACEMENT_16 = 0b10000000,
 
   /**
+   * @brief
    * This mode is used to indicate that the operand is a register. This
    * means that the operand is a register and not a memory address.
    *
