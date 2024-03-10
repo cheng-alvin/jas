@@ -32,3 +32,5 @@ Miscellaneous Instructions:
 NOP: No operation.
 HLT: Halt the processor.
 INT: Software interrupt.
+
+- TODO Add support for data segment pointers
