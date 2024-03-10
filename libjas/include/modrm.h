@@ -14,9 +14,48 @@
  */
 
 typedef enum {
-  JAS_MODRM_REGISTER_OPERAND = 0b00000000,
-  JAS_MODRM_INDIRECT = 0b01000000,
-  JAS_MODRM_FOLLOWING_DISPLACEMENT = 0b10000000,
+
+  /**
+   * This mode is used to indicate that the operand is an indirect
+   * memory address. This means that the operand is a memory address
+   * that is stored in a register.
+   *
+   * @example mov eax, [ebx]
+   */
+
+  JAS_MODRM_INDIRECT = 0b00000000,
+
+  /**
+   * This mode is used to indicate that the operand is an indirect
+   * memory address with a following 8-bit displacement. This means
+   * that the operand is a memory address that is stored in a register
+   * with an 8-bit displacement.
+   *
+   * @example mov eax, [ebx + 0x10]
+   * (The displacement would be 0x10 and would be dumped into the buffer)
+   */
+
+  JAS_MODRM_FOLLOWING_DISPLACEMENT_8 = 0b01000000,
+
+  /**
+   * This mode is used to indicate that the operand is an indirect
+   * memory address with a following 32-bit displacement. This means
+   * that the operand is a memory address that is stored in a register
+   * with a 32-bit displacement.
+   *
+   * @example mov eax, [ebx + 0x10000000]
+   * (The displacement would be 0x10000000 and would be dumped into the buffer)
+   */
+
+  JAS_MODRM_FOLLOWING_DISPLACEMENT_16 = 0b10000000,
+
+  /**
+   * This mode is used to indicate that the operand is a register. This
+   * means that the operand is a register and not a memory address.
+   *
+   * @example mov eax, ebx
+   */
+
   JAS_MODRM_REGISTER = 0b11000000,
 } jasModrmMode_t;
 
