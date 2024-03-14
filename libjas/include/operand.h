@@ -37,8 +37,6 @@ typedef enum {
   JAS_INDIRECT_32,
   JAS_INDIRECT_64,
   JAS_REG_OPERAND_8_DISP,
-  JAS_REG_OPERAND_16_DISP,
-  JAS_REG_OPERAND_32_DISP,
   JAS_REG_OPERAND_64_DISP,
 } jasOperandType_t;
 
@@ -145,7 +143,7 @@ typedef enum {
  *
  * Struct for representing the register with displacement. This is
  * used to store the register with displacement. And can be used
- * when you need syntax like: `[rax + 4]` or `[rax + rbx]`.
+ * when you need syntax like: `[rax + 4]`.
  *
  * This following structs will be stored within the union below
  * for memory efficiency. Please see the operand types above this
@@ -153,22 +151,12 @@ typedef enum {
  */
 
 typedef struct {
-  jasReg8_t reg8;
+  jasReg8_t reg;
   uint8_t displacement;
 } jasRegDisplacement8_t;
 
 typedef struct {
-  jasReg16_t reg16;
-  uint16_t displacement;
-} jasRegDisplacement16_t;
-
-typedef struct {
-  jasReg32_t reg32;
-  uint32_t displacement;
-} jasRegDisplacement32_t;
-
-typedef struct {
-  jasReg64_t reg64;
+  jasReg64_t reg;
   uint64_t displacement;
 } jasRegDisplacement64_t;
 
@@ -203,8 +191,6 @@ typedef union {
   jasReg64_t indirectReg64;
   jasReg8_t indirectReg8;
   jasRegDisplacement8_t regDisp8;
-  jasRegDisplacement16_t regDisp16;
-  jasRegDisplacement32_t regDisp32;
   jasRegDisplacement64_t regDisp64;
 } jasRegOperandType_t;
 
