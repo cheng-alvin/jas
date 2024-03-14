@@ -131,14 +131,6 @@ jasTaggedOperand_t jasConstructOperand(void *value, jasOperandType_t type) {
     revisedValue.reg.regDisp8 = *(jasRegDisplacement8_t *)value;
     break;
 
-  case JAS_REG_OPERAND_16_DISP:
-    revisedValue.reg.regDisp16 = *(jasRegDisplacement16_t *)value;
-    break;
-
-  case JAS_REG_OPERAND_32_DISP:
-    revisedValue.reg.regDisp32 = *(jasRegDisplacement32_t *)value;
-    break;
-
   case JAS_REG_OPERAND_64_DISP:
     revisedValue.reg.regDisp64 = *(jasRegDisplacement64_t *)value;
     break;

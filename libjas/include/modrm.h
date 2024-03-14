@@ -42,15 +42,15 @@ typedef enum {
   /**
    * @brief
    * This mode is used to indicate that the operand is an indirect
-   * memory address with a following 32-bit displacement. This means
+   * memory address with a following 64-bit displacement. This means
    * that the operand is a memory address that is stored in a register
-   * with a 32-bit displacement.
+   * with a 64-bit displacement.
    *
-   * @example mov eax, [ebx + 0x10000000]
+   * @example mov eax, [rbx + 0x100000000000000]
    * (The displacement would be 0x10000000 and would be dumped into the buffer)
    */
 
-  JAS_MODRM_FOLLOWING_DISPLACEMENT_16 = 0b10000000,
+  JAS_MODRM_FOLLOWING_DISPLACEMENT_64 = 0b10000000,
 
   /**
    * @brief
