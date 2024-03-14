@@ -312,8 +312,6 @@ jasErrorCode_t jasCMOVZ(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTagge
   return jasExtendedOperandIdentityRM(op1, op2, op3, op4, instance, JAS_MODRM_REGISTER, 0x0);
 }
 
-//! -- Helper static functions --
-
 static jasErrorCode_t initCMOVccInstructionGroup(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
   const jasErrorCode_t rexExitStatus = generateRex(op1, op2, op3, op4, instance);
   if (rexExitStatus != JAS_NO_ERROR)
