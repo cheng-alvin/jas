@@ -14,12 +14,16 @@ jasErrorCode_t jasExtendedOperandIdentityMR(jasTaggedOperand_t op1, jasTaggedOpe
       WRITE16((op1.operand.reg.regDisp64.displacement >> 32) & 0xffff)
       WRITE16((op1.operand.reg.regDisp64.displacement >> 16) & 0xffff)
       WRITE16(op1.operand.reg.regDisp64.displacement & 0xffff)
+
+      return;
     }
 
     if (op1.type == JAS_REG_OPERAND_8_DISP) {
       jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_8, op2.operand.reg.reg8, jasGetRegField(op1.operand.reg.regDisp8.reg));
 
       WRITE(op1.operand.reg.regDisp8.displacement)
+
+      return;
     }
 
     jasGenerateModrm(mode, jasGetRegField(op2.operand.reg.reg8), mode == JAS_MODRM_INDIRECT ? jasGetRegField(op1.operand.reg.indirectReg8) : jasGetRegField(op1.operand.reg.reg8));
@@ -33,12 +37,16 @@ jasErrorCode_t jasExtendedOperandIdentityMR(jasTaggedOperand_t op1, jasTaggedOpe
       WRITE16((op1.operand.reg.regDisp64.displacement >> 32) & 0xffff)
       WRITE16((op1.operand.reg.regDisp64.displacement >> 16) & 0xffff)
       WRITE16(op1.operand.reg.regDisp64.displacement & 0xffff)
+
+      return;
     }
 
     if (op1.type == JAS_REG_OPERAND_8_DISP) {
       jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_8, op2.operand.reg.reg16, jasGetRegField(op1.operand.reg.regDisp8.reg));
 
       WRITE(op1.operand.reg.regDisp8.displacement)
+
+      return;
     }
 
     jasGenerateModrm(mode, jasGetRegField(op2.operand.reg.reg16), mode == JAS_MODRM_INDIRECT ? jasGetRegField(op1.operand.reg.indirectReg16) : jasGetRegField(op1.operand.reg.reg16));
@@ -52,12 +60,16 @@ jasErrorCode_t jasExtendedOperandIdentityMR(jasTaggedOperand_t op1, jasTaggedOpe
       WRITE16((op1.operand.reg.regDisp64.displacement >> 32) & 0xffff)
       WRITE16((op1.operand.reg.regDisp64.displacement >> 16) & 0xffff)
       WRITE16(op1.operand.reg.regDisp64.displacement & 0xffff)
+
+      return;
     }
 
     if (op1.type == JAS_REG_OPERAND_8_DISP) {
       jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_8, op2.operand.reg.reg32, jasGetRegField(op1.operand.reg.regDisp8.reg));
 
       WRITE(op1.operand.reg.regDisp8.displacement)
+
+      return;
     }
 
     jasGenerateModrm(mode, jasGetRegField(op2.operand.reg.reg32), mode == JAS_MODRM_INDIRECT ? jasGetRegField(op1.operand.reg.indirectReg32) : jasGetRegField(op1.operand.reg.reg32));
@@ -71,12 +83,16 @@ jasErrorCode_t jasExtendedOperandIdentityMR(jasTaggedOperand_t op1, jasTaggedOpe
       WRITE16((op1.operand.reg.regDisp64.displacement >> 32) & 0xffff)
       WRITE16((op1.operand.reg.regDisp64.displacement >> 16) & 0xffff)
       WRITE16(op1.operand.reg.regDisp64.displacement & 0xffff)
+
+      return;
     }
 
     if (op1.type == JAS_REG_OPERAND_8_DISP) {
       jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_8, op2.operand.reg.reg64, jasGetRegField(op1.operand.reg.regDisp8.reg));
 
       WRITE(op1.operand.reg.regDisp8.displacement)
+
+      return;
     }
 
     jasGenerateModrm(mode, jasGetRegField(op2.operand.reg.reg64), mode == JAS_MODRM_INDIRECT ? jasGetRegField(op1.operand.reg.indirectReg64) : jasGetRegField(op1.operand.reg.reg64));
