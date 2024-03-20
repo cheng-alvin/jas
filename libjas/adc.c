@@ -16,7 +16,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-//! all r/mxy are invalid and are not supported at this stage (I would say that this would apply to all of the libjas codebase!!!)
 static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t *mode, signed long long indexOfRex);
 
 static jasErrorCode_t encodeOperands(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, jasModrmMode_t mode);
@@ -57,15 +56,16 @@ static jasErrorCode_t encodeOpcode(jasTaggedOperand_t op1, jasTaggedOperand_t op
   case JAS_REG_OPERAND_8:
     *mode = *mode != JAS_NULL ? *mode : JAS_MODRM_REGISTER;
 
-    WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg8 == JAS_REG_AL, 0x14)
+  case
 
-    WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_REG_OPERAND_8, 0x10)
-    WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_8 && (op2.type == JAS_REG_OPERAND_8 || op2.type == JAS_INDIRECT_8), 0x12)
+      WRITE_IF_TRUE_THEN_BREAK(op1.operand.reg.reg8 == JAS_REG_AL, 0x14)
 
-    WRITE(0x80)
-    break;
+          WRITE_IF_TRUE_THEN_BREAK(op2.type == JAS_REG_OPERAND_8, 0x10)
+              WRITE_IF_TRUE_THEN_BREAK(op1.type == JAS_REG_OPERAND_8 && (op2.type == JAS_REG_OPERAND_8 || op2.type == JAS_INDIRECT_8), 0x12)
 
-  case JAS_INDIRECT_16:
+                  WRITE(0x80) break;
+
+      case JAS_INDIRECT_16:
     *mode = *mode != JAS_NULL ? *mode : JAS_MODRM_INDIRECT;
   case JAS_REG_OPERAND_16:
     *mode = *mode != JAS_NULL ? *mode : JAS_MODRM_REGISTER;
