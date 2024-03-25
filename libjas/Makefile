@@ -8,7 +8,7 @@ CFLAGS = $(CFLAGS_COMMON)
 BUILD = ../build
 HOME = ..
 
-OBJ = # Add source files here 
+OBJ = buffer.o # Add source files here 
 
 all: libjas.o
 
