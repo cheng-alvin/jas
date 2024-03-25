@@ -44,4 +44,22 @@ typedef struct {
  */
 void write(buffer_t *buf, const uint8_t *data, const size_t data_len);
 
+/**
+ * Removes an element from the buffer struct at the specified index.
+ *
+ * @param buf The pointer to the buffer struct
+ * @param elem The index of the element to remove
+ */
+void remove(buffer_t *buf, const size_t elem);
+
+/**
+ * Removes a chunk of elements from the buffer struct starting from the
+ * `start` index to the `end` index.
+ *
+ * @param buf The pointer to the buffer struct
+ * @param start The starting index of the chunk to remove
+ * @param end The ending index of the chunk to remove
+ */
+void remove_chunk(buffer_t *buf, const size_t start, const size_t end);
+
 #endif
