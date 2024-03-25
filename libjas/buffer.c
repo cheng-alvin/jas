@@ -28,7 +28,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-void write(buffer_t *buf, const uint8_t *data, const size_t data_len) {
+void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len) {
   buf->data = (uint8_t *)(buf->data == NULL ? malloc(data_len) : realloc(buf->data, buf->len + data_len));
 
   for (size_t i = 0; i < data_len; i++)
@@ -37,7 +37,7 @@ void write(buffer_t *buf, const uint8_t *data, const size_t data_len) {
   buf->len += data_len;
 }
 
-void remove(buffer_t *buf, const size_t elem) {
+void buf_remove(buffer_t *buf, const size_t elem) {
   if (buf->len == 0)
     return;
 
@@ -48,10 +48,10 @@ void remove(buffer_t *buf, const size_t elem) {
   buf->data = realloc(buf->data, buf->len);
 }
 
-void remove_chunk(buffer_t *buf, const size_t start, const size_t end) {
+void buf_remove_chunk(buffer_t *buf, const size_t start, const size_t end) {
   if (buf->len == 0)
     return;
 
   for (size_t i = start; i < end; i++)
-    remove(buf, i);
+    buf_remove(buf, i);
 }

@@ -42,7 +42,7 @@ typedef struct {
  * @param data The pointer to the data to write
  * @param data_len The length of the data to write
  */
-void write(buffer_t *buf, const uint8_t *data, const size_t data_len);
+void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len);
 
 /**
  * Removes an element from the buffer struct at the specified index.
@@ -50,7 +50,7 @@ void write(buffer_t *buf, const uint8_t *data, const size_t data_len);
  * @param buf The pointer to the buffer struct
  * @param elem The index of the element to remove
  */
-void remove(buffer_t *buf, const size_t elem);
+void buf_remove(buffer_t *buf, const size_t elem);
 
 /**
  * Removes a chunk of elements from the buffer struct starting from the
@@ -60,6 +60,6 @@ void remove(buffer_t *buf, const size_t elem);
  * @param start The starting index of the chunk to remove
  * @param end The ending index of the chunk to remove
  */
-void remove_chunk(buffer_t *buf, const size_t start, const size_t end);
+void buf_remove_chunk(buffer_t *buf, const size_t start, const size_t end);
 
 #endif
