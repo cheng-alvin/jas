@@ -62,7 +62,7 @@ enum instructions {
   INSTR_CMPS,
   INSTR_SCAS,
   INSTR_IN,
-  INSTR_OUT ,
+  INSTR_OUT,
   INSTR_CLC,
   INSTR_STC,
   INSTR_CLI,
@@ -97,10 +97,10 @@ enum instructions {
 typedef uint8_t instr_support_t;
 
 typedef struct {
-  enum instructions type;           /* Type of the instruction */
-  enum operands *operands;          /* List of operands */
-  uint8_t *opcode;                  /* Opcode of the instruction */
-  uint8_t *prefixes;                /* Prefixes of the instruction */
+  enum instructions type;      /* Type of the instruction */
+  enum operands *operands;     /* List of operands */
+  uint8_t *opcode;             /* Opcode of the instruction */
+  uint8_t *prefixes;           /* Prefixes of the instruction */
   instr_support_t support_stat /* Operation mode encoding support status */
 } INSTR_t;
 
