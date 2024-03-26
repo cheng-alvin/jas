@@ -102,6 +102,6 @@ typedef struct {
   uint8_t *opcode;             /* Opcode of the instruction */
   uint8_t *prefixes;           /* Prefixes of the instruction */
   instr_support_t support_stat /* Operation mode encoding support status */
-} INSTR_t;
+} instruction_t;
 
 #endif
