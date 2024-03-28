@@ -62,6 +62,8 @@
 #define REG_RSI 6
 #define REG_RDI 7
 
+// REX.B dictated registers:
+
 #define REG_R8B 0
 #define REG_R9B 1
 #define REG_R10B 2
@@ -98,7 +100,6 @@
 #define REG_R14 6
 #define REG_R15 7
 
-// REX.B dictated registers:
 #define REG_SPL 4
 #define REG_BPL 5
 #define REG_SIL 6
