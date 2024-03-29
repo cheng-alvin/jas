@@ -104,4 +104,6 @@ typedef struct {
   instr_support_t support_stat /* Operation mode encoding support status */
 } instruction_t;
 
+extern instruction_t *instr_table;
+
 #endif
