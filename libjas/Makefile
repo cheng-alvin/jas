@@ -1,4 +1,4 @@
-CC = clang
+CC = gcc # Uses gcc temporarily, will switch to clang later!
 LD = ld
 DB = lldb
 
