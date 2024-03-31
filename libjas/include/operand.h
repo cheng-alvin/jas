@@ -34,6 +34,8 @@
  */
 enum operands {
   OPERAND_RESERVED /* Note: dummy, only used for testing */
+
+  // TODO Add more operand types as needed
 };
 
 typedef struct {
