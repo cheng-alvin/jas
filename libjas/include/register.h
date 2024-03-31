@@ -105,6 +105,14 @@
 #define REG_SIL 6
 #define REG_DIL 7
 
+// Segment registers: (But not dictated by REX.B)
+#define REG_ES 0
+#define REG_CS 1
+#define REG_SS 2
+#define REG_DS 3
+#define REG_FS 4
+#define REG_GS 5
+
 // TODO(Also random side note I've realized) We need a way to ensure that the REX prefixes and registers work as intended with the B prefix and that high order registers do not conflict with REX prefixes!!
 
 #endif
