@@ -117,6 +117,10 @@ typedef struct {
   instr_support_t support_stat /* Operation mode encoding support status */
 } instruction_t;
 
+/**
+ * The lookup table using the `instructions_t` enum as the index
+ * to get the corresponding instruction operand encoder structs.
+ */
 extern instruction_t **instr_table[];
 
 #endif
