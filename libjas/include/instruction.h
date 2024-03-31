@@ -108,6 +108,7 @@ typedef uint8_t instr_support_t;
 #define INSTR_SUPPORT_16BIT 0b00000001
 #define INSTR_SUPPORT_32BIT 0b00000010
 #define INSTR_SUPPORT_64BIT 0b00000100
+#define INSTR_SUPPORT_ALL 0b00000111
 
 typedef struct {
   enum operands *operands;     /* List of operands */
