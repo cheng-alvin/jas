@@ -31,11 +31,49 @@
 /**
  * Enumeration for the different types of operands and
  * operand sizes supported by the jas assembler.
+ *
+ * @note Not to be confused with `op_enc` which is used
+ * only by the encoder!
  */
 enum operands {
-  OPERAND_RESERVED /* Note: dummy, only used for testing */
+  OP_RESERVED,
+  // TODO Populate the rest of the operand enumerations. 🥰
+};
 
-  // TODO Add more operand types as needed
+/**
+ * Enumeration for the different types of operand encodings
+ * used strictly by the encoder.
+ *
+ * @warning TO BE ACCESSED BY THE USER!
+ *
+ * @note Not to be confused with `operands` which is used
+ * only by the user!
+ */
+enum op_enc {
+  OP_REL8,
+  OP_REL16,
+  OP_REL32,
+  // OP_PTR16_16,
+  // OP_PTR16_32,
+  OP_R8,
+  OP_R16,
+  OP_R32,
+  OP_R64,
+  OP_IMM8,
+  OP_IMM16,
+  OP_IMM32,
+  OP_IMM64,
+  OP_RM8,
+  OP_RM16,
+  OP_RM32,
+  OP_RM64,
+  OP_REG, // ?? Undocumented from the intel manual, re-cite information.
+  OP_MEM,
+  OP_MEM8,
+  OP_MEM16,
+  OP_MEM32,
+  OP_MEM64,
+  // TODO Add more operand enums if required.
 };
 
 typedef struct {
