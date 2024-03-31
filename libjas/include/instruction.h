@@ -110,7 +110,6 @@ typedef uint8_t instr_support_t;
 #define INSTR_SUPPORT_64BIT 0b00000100
 
 typedef struct {
-  enum instructions type;      /* Type of the instruction */
   enum operands *operands;     /* List of operands */
   uint8_t *opcode;             /* Opcode of the instruction */
   uint8_t *prefixes;           /* Prefixes of the instruction */
