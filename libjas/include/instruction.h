@@ -93,8 +93,21 @@ enum instructions {
  * corresponding operation mode.
  *
  * 🤠
+ *
+ * There are some macros defined below to help you as well!
  */
 typedef uint8_t instr_support_t;
+
+/**
+ * Macros for defining the different support status of an
+ * instruction in the different intel x86 operation modes.
+ *
+ * You can just simply `|` them together to combine it!
+ */
+
+#define INSTR_SUPPORT_16BIT 0b00000001
+#define INSTR_SUPPORT_32BIT 0b00000010
+#define INSTR_SUPPORT_64BIT 0b00000100
 
 typedef struct {
   enum instructions type;      /* Type of the instruction */
