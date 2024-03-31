@@ -15,7 +15,7 @@ jas: clean
 	$(MAKE) -C libjas
 
 format:
-	clang-format -i **/*.{c,h} --verbose
+	clang-format -i **/**/*.{c,h} --verbose # TODO clang formatter is not working and scanning all files although the attempt to fix it.
 
 clean:
 	find . -name "*.o" -type f -delete
