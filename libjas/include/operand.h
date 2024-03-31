@@ -74,6 +74,10 @@ enum op_enc {
   OP_MEM32,
   OP_MEM64,
   OP_SEG_REG,
+  OP_ACC8,
+  OP_ACC16,
+  OP_ACC32,
+  OP_ACC64,
   // TODO Add more operand enums if required.
 };
 
