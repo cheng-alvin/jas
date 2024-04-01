@@ -22,6 +22,7 @@
  *
  * @see `LICENSE`
  */
+
 #include "instruction.h"
 #include "null.h"
 #include "operand.h"
