@@ -26,6 +26,7 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 enum registers {
@@ -219,4 +220,13 @@ enum registers {
  */
 uint8_t reg_lookup_val(enum registers input);
 
+/**
+ * Function for checking wether a register needs to
+ * have a REX.B prefix provided.
+ *
+ * @param input enum registers value
+ * @return bool true if register needs REX.B
+ * @see `registers` enum
+ */
+bool reg_needs_rex(enum registers input);
 #endif
