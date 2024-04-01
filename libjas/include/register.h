@@ -115,6 +115,101 @@ enum registers {
 };
 
 /**
+ * Macro definition of the register values.
+ * These are the values that are used in the
+ * instruction encoding, unlike the enum values.
+ *
+ * @note Not to be confused with `register`
+ */
+
+#define REG_VALUE_AL 0
+#define REG_VALUE_CL 1
+#define REG_VALUE_DL 2
+#define REG_VALUE_BL 3
+#define REG_VALUE_AH 4
+#define REG_VALUE_CH 5
+#define REG_VALUE_DH 6
+#define REG_VALUE_BH 7
+
+#define REG_VALUE_AX 0
+#define REG_VALUE_CX 1
+#define REG_VALUE_DX 2
+#define REG_VALUE_BX 3
+#define REG_VALUE_SP 4
+#define REG_VALUE_BP 5
+#define REG_VALUE_SI 6
+#define REG_VALUE_DI 7
+
+#define REG_VALUE_EAX 0
+#define REG_VALUE_ECX 1
+#define REG_VALUE_EDX 2
+#define REG_VALUE_EBX 3
+#define REG_VALUE_ESP 4
+#define REG_VALUE_EBP 5
+#define REG_VALUE_ESI 6
+#define REG_VALUE_EDI 7
+
+#define REG_VALUE_RAX 0
+#define REG_VALUE_RCX 1
+#define REG_VALUE_RDX 2
+#define REG_VALUE_RBX 3
+#define REG_VALUE_RSP 4
+#define REG_VALUE_RBP 5
+#define REG_VALUE_RSI 6
+#define REG_VALUE_RDI 7
+
+// REX.B dictated registers:
+
+#define REG_VALUE_R8B 0
+#define REG_VALUE_R9B 1
+#define REG_VALUE_R10B 2
+#define REG_VALUE_R11B 3
+#define REG_VALUE_R12B 4
+#define REG_VALUE_R13B 5
+#define REG_VALUE_R14B 6
+#define REG_VALUE_R15B 7
+
+#define REG_VALUE_R8W 0
+#define REG_VALUE_R9W 1
+#define REG_VALUE_R10W 2
+#define REG_VALUE_R11W 3
+#define REG_VALUE_R12W 4
+#define REG_VALUE_R13W 5
+#define REG_VALUE_R14W 6
+#define REG_VALUE_R15W 7
+
+#define REG_VALUE_R8D 0
+#define REG_VALUE_R9D 1
+#define REG_VALUE_R10D 2
+#define REG_VALUE_R11D 3
+#define REG_VALUE_R12D 4
+#define REG_VALUE_R13D 5
+#define REG_VALUE_R14D 6
+#define REG_VALUE_R15D 7
+
+#define REG_VALUE_R8 0
+#define REG_VALUE_R9 1
+#define REG_VALUE_R10 2
+#define REG_VALUE_R11 3
+#define REG_VALUE_R12 4
+#define REG_VALUE_R13 5
+#define REG_VALUE_R14 6
+#define REG_VALUE_R15 7
+
+#define REG_VALUE_SPL 4
+#define REG_VALUE_BPL 5
+#define REG_VALUE_SIL 6
+#define REG_VALUE_DIL 7
+
+// Segment registers: (But not dictated by REX.B)
+#define REG_VALUE_ES 0
+#define REG_VALUE_CS 1
+#define REG_VALUE_SS 2
+#define REG_VALUE_DS 3
+#define REG_VALUE_FS 4
+#define REG_VALUE_GS 5
+
+/**
  * Lookup table wrapper for finding register values
  * given the register enum value.
  *
