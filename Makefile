@@ -7,7 +7,7 @@ CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = build
 HOME = .
-DIRS = libjas labrador
+DIRS = libjas
 
 all: jas
 
@@ -27,4 +27,4 @@ clean:
 
 test: jas
 	$(MAKE) -C test
-  
+ 
