@@ -115,7 +115,7 @@ typedef struct {
   uint8_t opcode_ext;        /* Opcode extension */
   uint8_t *opcode;           /* Opcode of the instruction */
   instr_support_t support;   /* Support status of the instruction (Optional, defaults to operand ident provided status) */
-  uint8_t byte_instr_opcode; /* 8 bit opcode of the instruction */
+  uint8_t byte_instr_opcode; /* 8 bit opcode fallback of the instruction */
 } instruction_t;
 
 /**
