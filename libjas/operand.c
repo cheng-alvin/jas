@@ -24,5 +24,10 @@
  */
 
 #include "operand.h"
+#include <stddef.h>
+#include <stdint.h>
 
-// TODO Write a lookup table with function pointers for encoding
+uint8_t op_lookup_encoder(enum op_ident input) {
+  uint8_t lookup[] = {};
+  return lookup[(size_t)input];
+}
