@@ -26,6 +26,7 @@
 #include "instruction.h"
 #include "null.h"
 #include "operand.h"
+#include <stdbool.h>
 
 // TODO encapsulate to another file?
 instruction_t mov[] = {
