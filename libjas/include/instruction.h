@@ -124,6 +124,6 @@ typedef struct {
  * The lookup table using the `instructions_t` enum as the index
  * to get the corresponding instruction operand encoder structs.
  */
-extern instruction_t **instr_table[];
+extern instruction_t *instr_table[];
 
 #endif
