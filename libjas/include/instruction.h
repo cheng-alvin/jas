@@ -111,7 +111,7 @@ typedef uint8_t instr_support_t;
 #define INSTR_SUPPORT_ALL 0b00000111
 
 typedef struct {
-  enum op_ident *ident;      /* Operand encoding identity */
+  enum op_ident ident;      /* Operand encoding identity */
   uint8_t opcode_ext;        /* Opcode extension */
   uint8_t *opcode;           /* Opcode of the instruction */
   instr_support_t support;   /* Support status of the instruction (Optional, defaults to operand ident provided status) */
