@@ -26,6 +26,8 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
+#include <stdint.h>
+
 enum registers {
   REG_AL,
   REG_CL,
@@ -111,5 +113,15 @@ enum registers {
   REG_FS,
   REG_GS,
 };
+
+/**
+ * Lookup table wrapper for finding register values
+ * given the register enum value.
+ *
+ * @param input enum registers value
+ * @return uint8_t register value
+ * @see `registers` enum
+ */
+uint8_t reg_lookup_val(enum registers input);
 
 #endif
