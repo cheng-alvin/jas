@@ -27,6 +27,7 @@
 #include "null.h"
 #include "operand.h"
 
+// TODO encapsulate to another file?
 instruction_t mov[] = {
     {
         .ident = OP_MR,
