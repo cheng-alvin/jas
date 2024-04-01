@@ -22,21 +22,20 @@
  *
  * @see `LICENSE`
  */
-
 #include "instruction.h"
 #include "null.h"
 #include "operand.h"
 
-// TODO Populate table
-instruction_t **instr_table[] = {mov};
-
 instruction_t mov[] = {
     {
-        ident = OP_MR,
-        opcode_ext = NULL,
-        opcode = {0x89},
-        support = NULL,
-        byte_instr_opcode = {0x88},
-        should_fallback_support = false,
+        .ident = OP_MR,
+        .opcode_ext = NULL,
+        .opcode = {0x89},
+        .support = NULL,
+        .byte_instr_opcode = {0x88},
+        .should_fallback_support = false,
     },
 };
+
+// TODO Populate table
+instruction_t *instr_table[] = {mov};
