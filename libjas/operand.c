@@ -27,7 +27,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-uint8_t op_lookup_encoder(enum op_ident input) {
-  uint8_t lookup[] = {};
+op_encoder_t op_encode_func(enum op_ident input) {
+  op_encoder_t lookup[] = {};
   return lookup[(size_t)input];
 }
