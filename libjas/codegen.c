@@ -23,20 +23,39 @@
  * @see `LICENSE`
  */
 
-#ifndef MAP_H
-#define MAP_H
-
+#include "buffer.h"
+#include "error.h"
+#include "instruction.h"
+#include "mode.h"
+#include "null.h"
 #include <stddef.h>
-#include <stdint.h>
 
-/**
- * Hashes a key to a value within the range of the array length.
- *
- * @param key The key to hash.
- * @param key_len The length of the key.
- * @param array_len The length of the array.
- * @returns The hashed value.
- */
-size_t map_hash(const uint8_t *key, const size_t key_len, const size_t array_len);
+// TODO Remember to note that NULL is when there's an error
 
-#endif
+buffer_t *codegen(enum modes mode, instruction_t *instr_arr) {
+  /**
+   * Implementation:
+   * @brief takes an array of instructions and spits
+   * out an array of binary values corresponding to
+   * the imported instructions.
+   *
+   * TODO items (Tick when completed)
+   * - Loop through the instruction array ✅
+   * - Check and validate the instructions (责任交给了identity) ✅
+   * - Dump opcodes & prefixes
+   * - Dump returned operand encoding
+   */
+
+  for (size_t i = 0; i < sizeof(instr_arr); i++) {
+    switch (instr_arr[i].instr) {
+    case INSTR_MOV:
+      // Map to operand ident
+      // Dump opcodes & prefixes
+      // Dump returned operand encoding
+      break;
+    default:
+      err("Invalid instruction");
+      return NULL;
+    }
+  }
+}
