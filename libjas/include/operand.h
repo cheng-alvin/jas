@@ -26,6 +26,7 @@
 #ifndef OPERAND_H
 #define OPERAND_H
 
+#include "buffer.h"
 #include <stdint.h>
 
 /**
@@ -69,5 +70,18 @@ typedef struct {
   void *data;         /* Data in the operand */
   enum operands type; /* Type tied to the void pointer*/
 } operand_t;
+
+/**
+ * Type wrapper for the operand encoder function pointer.
+ */
+typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t buf); // TODO Maybe put a instance?!?!
+
+/**
+ * Lookup table for the different operand encoders.
+ *
+ * @param input The operand identifier
+ * @return The operand encoder function pointer
+ */
+op_encoder_t op_encode_func(enum op_ident input);
 
 #endif
