@@ -25,7 +25,6 @@
 
 #include "operand.h"
 #include <stddef.h>
-#include <stdint.h>
 
 op_encoder_t op_encode_func(enum op_ident input) {
   op_encoder_t lookup[] = {};
