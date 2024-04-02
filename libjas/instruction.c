@@ -29,7 +29,7 @@
 #include <stdbool.h>
 
 // TODO encapsulate to another file?
-instruction_t mov[] = {
+instr_encode_table_t mov[] = {
     {
         .ident = OP_MR,
         .opcode_ext = NULL,
@@ -40,5 +40,4 @@ instruction_t mov[] = {
     },
 };
 
-// TODO Populate table
-instruction_t *instr_table[] = {mov};
+instr_encode_table_t *instr_table[] = {mov};

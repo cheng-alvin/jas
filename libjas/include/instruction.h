@@ -118,12 +118,17 @@ typedef struct {
   instr_support_t support;      /* Support status of the instruction (Optional, defaults to operand ident provided status) */
   uint8_t *byte_instr_opcode;   /* 8 bit opcode fallback of the instruction */
   bool should_fallback_support; /* If the encode needs to use the `support` */
-} instruction_t;
+} instr_encode_table_t;
 
 /**
  * The lookup table using the `instructions_t` enum as the index
  * to get the corresponding instruction operand encoder structs.
  */
-extern instruction_t *instr_table[];
+extern instr_encode_table_t *instr_table[];
+
+typedef struct {
+  enum instructions instr; /* Type of instruction */
+  operand_t *operands;     /* Operands of the instruction */
+} instruction_t;
 
 #endif
