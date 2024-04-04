@@ -75,10 +75,13 @@ enum operands {
   OP_ACC64,
 };
 
+/**
+ * Enumeration for the different operand identifiers.
+ * Used to lookup the operand encoder functions.
+ */
 enum op_ident {
   OP_MR,
 };
-// TODO add declaration for operand ident lookup
 
 typedef struct {
   void *data;         /* Data in the operand */
