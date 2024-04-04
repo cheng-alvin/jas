@@ -31,6 +31,19 @@
 #include <stdint.h>
 
 /**
+ * Definitions to the macros used in the operand encoder functions.
+ * to represent the addressing modes of the ModR/M byte.
+ *
+ * It's a very hard encoding thing to understand, therefore:
+ * @see https://wiki.osdev.org/X86-64_Instruction_Encoding#ModR.2FM_Byte
+ */
+
+#define OP_MODRM_INDIRECT 0b00000000
+#define OP_MODRM_DISP8 0b01000000
+#define OP_MODRM_DISP32 0b10000000
+#define OP_MODRM_REG 0b11000000
+
+/**
  * Enumeration for the different types of operands and
  * operand sizes supported by the jas assembler.
  */
