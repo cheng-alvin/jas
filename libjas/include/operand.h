@@ -27,6 +27,7 @@
 #define OPERAND_H
 
 #include "buffer.h"
+#include "instruction.h"
 #include <stdint.h>
 
 /**
@@ -45,10 +46,10 @@ enum operands {
   OP_IMM16,
   OP_IMM32,
   OP_IMM64,
-  OP_RM8,
-  OP_RM16,
-  OP_RM32,
-  OP_RM64,
+  OP_M8,
+  OP_M16,
+  OP_M32,
+  OP_M64,
   OP_MEM,
   OP_MEM8,
   OP_MEM16,
@@ -72,9 +73,13 @@ typedef struct {
 } operand_t;
 
 /**
- * Type wrapper for the operand encoder function pointer.
+ * Type wrapper for the operand encoder function pointer. Where
+ * each operand encoder function takes an array of operands and
+ * a buffer to write the encoded instruction to.
+ *
+ * (Based on the operand identities like MR, RM, etc.)
  */
-typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t buf); // TODO Maybe put a instance?!?!
+typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref);
 
 /**
  * Lookup table for the different operand encoders.
