@@ -28,7 +28,7 @@
 #include "operand.h"
 #include <stdint.h>
 
-void mr(operand_t *op_arr, buffer_t *buf, /* Unused: */ instr_encode_table_t *instr_ref) {
+void mr(const operand_t *op_arr, const buffer_t *buf, /* Unused: */ const instr_encode_table_t *instr_ref) {
   const uint8_t *reg = op_arr[0].data;
   const uint8_t *rm = op_arr[1].data;
 
@@ -36,9 +36,9 @@ void mr(operand_t *op_arr, buffer_t *buf, /* Unused: */ instr_encode_table_t *in
 }
 
 static inline uint8_t operand_mode(const operand_t *op_arr) {
-  if (OP_IS_R(op_arr[0].type))
+  if (OP_R(op_arr[0].type))
     return OP_MODRM_REG;
-  else if (OP_IS_M(op_arr[0].type))
+  else if (OP_M(op_arr[0].type))
     return OP_MODRM_INDIRECT;
 
   else {
