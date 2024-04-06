@@ -28,7 +28,6 @@
 #include "operand.h"
 #include <stdbool.h>
 
-// TODO encapsulate to another file?
 instr_encode_table_t mov[] = {
     {
         .ident = OP_MR,
