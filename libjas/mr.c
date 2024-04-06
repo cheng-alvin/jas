@@ -28,11 +28,17 @@
 #include "operand.h"
 #include <stdint.h>
 
+// TODO 搞个头 header 文件
+
 void mr(const operand_t *op_arr, const buffer_t *buf, /* Unused: */ const instr_encode_table_t *instr_ref) {
   const uint8_t *reg = op_arr[0].data;
   const uint8_t *rm = op_arr[1].data;
+  const uint8_t mode = operand_mode(op_arr);
 
-  return operand_mode(op_arr) << 6 | *reg << 3 | *rm;
+  if (mode == -1)
+    return;
+
+  buf_write(buf, mode << 6 | *reg << 3 | *rm, 1);
 }
 
 static inline uint8_t operand_mode(const operand_t *op_arr) {
