@@ -28,7 +28,6 @@
 
 #include "buffer.h"
 #include "instruction.h"
-#include <stdint.h>
 
 /**
  * Definitions to the macros used in the operand encoder functions.
@@ -74,6 +73,22 @@ enum operands {
   OP_ACC32,
   OP_ACC64,
 };
+
+/**
+ * Definitions for the different macros responsible of checking
+ * if the operand is a relative, register, immediate, memory, segment
+ * depending on it's specific enumeration.
+ *
+ * (In other words, it just "generalizes" the specific operand enums)
+ */
+
+#define OP_IS_REL(x) ((x) <= OP_REL32 && (x) >= OP_REL8)
+#define OP_IS_R(x) ((x) <= OP_R64 && (x) >= OP_R8)
+#define OP_IS_IMM(x) ((x) <= OP_IMM64 && (x) >= OP_IMM8)
+#define OP_IS_M(x) ((x) <= OP_M64 && (x) >= OP_M8)
+#define OP_IS_MEM(x) ((x) <= OP_MEM64 && (x) >= OP_MEM)
+#define OP_IS_SEG(x) ((x) == OP_SEG_REG)
+#define OP_IS_ACC(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
 
 /**
  * Enumeration for the different operand identifiers.
