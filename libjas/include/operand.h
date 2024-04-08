@@ -109,6 +109,12 @@ typedef struct {
  * a buffer to write the encoded instruction to.
  *
  * (Based on the operand identities like MR, RM, etc.)
+ *
+ * @param op_arr The array of operands to encode
+ * @param buf The buffer to write the encoded instruction to
+ * @param instr_ref The instruction reference table
+ *
+ * @note All encoder functions will conform to this signature.
  */
 typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref);
 
