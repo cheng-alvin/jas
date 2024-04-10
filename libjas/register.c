@@ -34,7 +34,7 @@ uint8_t reg_lookup_val(enum registers input) {
   return lookup[(size_t)input];
 }
 
-bool reg_needs_rex(enum registers input) {
+inline __attribute((always_inline)) bool reg_needs_rex(enum registers input) {
   if (input > REG_RDI && input < REG_ES)
     return true;
 
