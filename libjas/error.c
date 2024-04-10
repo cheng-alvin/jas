@@ -28,11 +28,11 @@
 
 err_callback_t err_callback;
 
-void err_add_callback(err_callback_t input) {
+inline __attribute((always_inline)) void err_add_callback(err_callback_t input) {
   err_callback = input;
 }
 
-void err(const char *msg) {
+inline __attribute((always_inline)) void err(const char *msg) {
   if (err_callback)
     err_callback(msg);
 }

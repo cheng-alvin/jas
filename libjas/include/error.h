@@ -48,7 +48,7 @@ extern err_callback_t err_callback;
  *
  * @param msg The error message to be thrown.
  */
-void err(const char *msg);
+inline __attribute((always_inline)) void err(const char *msg);
 
 /**
  * Function to add a callback function to the error handler.
@@ -56,6 +56,6 @@ void err(const char *msg);
  * @param input The function pointer to the error handler.
  * @see `err_callback_t`
  */
-void err_add_callback(err_callback_t input);
+inline __attribute((always_inline)) void err_add_callback(err_callback_t input);
 
 #endif
