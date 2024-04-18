@@ -23,31 +23,11 @@
  * @see `LICENSE`
  */
 
-#ifndef MODE_H
-#define MODE_H
+#include "mode.h"
+#include "instruction.h"
+#include <stdbool.h>
 
-/**
- * Function for checking if an instruction is
- * allowed in a given mode by checking if a
- * bit is set in the support field.
- *
- * @param mode The mode to check.
- * @param support The support field of the instruction.
- * @return True if the mode is allowed, false otherwise.
- *
- * @see instr_support_t
- */
-bool mode_valid(const enum modes mode, const instr_support_t support);
-
-/**
- * Enums representing the operating modes of
- * the x86 processor as defined by the Intel
- * manual.
- */
-enum modes {
-  MODE_REAL,
-  MODE_PROTECTED,
-  MODE_LONG,
-};
-
-#endif
+// TODO Write the fucking test case!
+bool mode_valid(const enum modes mode, const instr_support_t support) {
+  return (support & (1 << 8 - (int)mode)) != 0; /* TODO What the? */
+}
