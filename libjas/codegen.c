@@ -23,11 +23,13 @@
  * @see `LICENSE`
  */
 
+// #include "codegen.h"
 #include "buffer.h"
 #include "error.h"
 #include "instruction.h"
 #include "mode.h"
 #include "null.h"
+#include "register.h"
 #include <stddef.h>
 
 // TODO Remember to note that NULL is when there's an error
