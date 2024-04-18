@@ -47,6 +47,7 @@
  * operand sizes supported by the jas assembler.
  */
 enum operands {
+  OP_NULL,
   OP_REL8,
   OP_REL16,
   OP_REL32,
