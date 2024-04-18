@@ -24,11 +24,14 @@
  */
 
 #include "operand.h"
-#include <stddef.h>
-
 #include "mr.h"
+#include <stddef.h>
 
 op_encoder_t op_encode_func(enum op_ident input) {
   op_encoder_t lookup[] = {&mr};
   return lookup[(size_t)input];
+}
+
+enum op_ident op_identify(const operand_t *input) {
+  // TODO Call a c++ function
 }
