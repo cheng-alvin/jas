@@ -29,5 +29,5 @@
 
 // TODO Write the fucking test case!
 bool mode_valid(const enum modes mode, const instr_support_t support) {
-  return (support & (1 << 8 - (int)mode)) != 0; /* TODO What the? */
+  return (support & (1 << (int)mode)) != 0; /* TODO What the? */
 }
