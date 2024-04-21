@@ -26,6 +26,17 @@
 #ifndef OPERAND_H
 #define OPERAND_H
 
+/**
+ * C++ files are required to include this header to facilitate the
+ * use of certain C++ features used in the jas codebase.
+ *
+ * Therefore a C++ guard is required.
+ */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "buffer.h"
 #include "instruction.h"
 
@@ -126,5 +137,9 @@ typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_tabl
  * @return The operand encoder function pointer
  */
 op_encoder_t op_encode_func(enum op_ident input);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
