@@ -32,6 +32,3 @@ op_encoder_t op_encode_func(enum op_ident input) {
   return lookup[(size_t)input];
 }
 
-enum op_ident op_identify(const operand_t *input) {
-  // TODO Call a c++ function
-}
