@@ -28,7 +28,7 @@
 
 size_t hash(size_t input, const size_t len) {
   size_t hash = 5381;
-  int c;
+  size_t c;
 
   while ((c = input++)) {
     hash = ((hash << 5) + hash) + c;
