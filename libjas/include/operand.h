@@ -97,6 +97,7 @@ enum operands {
  */
 enum op_ident {
   OP_MR,
+  OP_RM,
 };
 
 typedef struct {
