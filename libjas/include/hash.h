@@ -39,6 +39,6 @@
  * @note Used internally for searching and hashing elements in
  * hash tables, not for cryptographic purposes or externally.
  */
-size_t hash(size_t *input, const size_t len);
+size_t hash(size_t input, const size_t len);
 
 #endif
