@@ -47,16 +47,6 @@ buffer_t *codegen(enum modes mode, instruction_t *instr_arr) {
    * - Dump returned operand encoding
    */
 
-  for (size_t i = 0; i < sizeof(instr_arr); i++) {
-    switch (instr_arr[i].instr) {
-    case INSTR_MOV:
-      // Map to operand ident
-      // Dump opcodes & prefixes
-      // Dump returned operand encoding
-      break;
-    default:
-      err("Invalid instruction");
-      return NULL;
-    }
+  for (int i = 0; i < sizeof(instr_arr); i++) {
+    const instr_encode_table_t *instr = instr_table[instr_arr[i].instr];
   }
-}
