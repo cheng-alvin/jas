@@ -23,10 +23,6 @@
  * @see `LICENSE`
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef OPERAND_H
 #define OPERAND_H
 
@@ -135,8 +131,4 @@ typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_tabl
  */
 op_encoder_t op_encode_func(enum op_ident input);
 
-#endif
-
-#ifdef __cplusplus
-}
 #endif
