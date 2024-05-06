@@ -23,6 +23,10 @@
  * @see `LICENSE`
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef OPERAND_H
 #define OPERAND_H
 
@@ -71,11 +75,6 @@ enum operands {
   OP_M16,
   OP_M32,
   OP_M64,
-  OP_MEM,
-  OP_MEM8,
-  OP_MEM16,
-  OP_MEM32,
-  OP_MEM64,
   OP_SEG_REG,
   OP_ACC8,
   OP_ACC16,
@@ -98,6 +97,7 @@ enum operands {
 #define OP_MEM(x) ((x) <= OP_MEM64 && (x) >= OP_MEM)
 #define OP_SEG(x) ((x) == OP_SEG_REG)
 #define OP_ACC(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
+#define OP_RM(x) (OP_R(x) || OP_M(x)
 
 /**
  * Enumeration for the different operand identifiers.
@@ -136,4 +136,8 @@ typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_tabl
  */
 op_encoder_t op_encode_func(enum op_ident input);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
