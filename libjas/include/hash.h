@@ -23,10 +23,6 @@
  * @see `LICENSE`
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef HASH_H
 #define HASH_H
 
@@ -44,9 +40,4 @@ extern "C" {
  * hash tables, not for cryptographic purposes or externally.
  */
 size_t hash(size_t input, const size_t len);
-
-#endif
-
-#ifdef __cplusplus
-}
 #endif
