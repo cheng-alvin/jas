@@ -43,7 +43,7 @@ uint8_t reg_lookup_val(enum registers input) {
   REG_VALUE_BPL, REG_VALUE_SIL, REG_VALUE_DIL, REG_VALUE_ES, REG_VALUE_CS, REG_VALUE_SS,
   REG_VALUE_DS, REG_VALUE_FS, REG_VALUE_GS};
 
-  return lookup[(size_t)input];
+  return lookup[(uint8_t)input];
 }
 
 inline __attribute((always_inline)) bool reg_needs_rex(enum registers input) {
