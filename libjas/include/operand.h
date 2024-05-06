@@ -43,6 +43,14 @@
 #define OP_MODRM_REG 0b11000000
 
 /**
+ * Macro definition for the 16-bit operand override byte for supporting
+ * word-sized operands in the x86 family.
+ *
+ * @see https://stackoverflow.com/questions/74954166/
+ */
+#define OP_WORD_OVERRIDE 0x66
+
+/**
  * Enumeration for the different types of operands and
  * operand sizes supported by the jas assembler.
  */
