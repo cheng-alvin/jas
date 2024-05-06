@@ -23,6 +23,10 @@
  * @see `LICENSE`
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef HASH_H
 #define HASH_H
 
@@ -41,4 +45,8 @@
  */
 size_t hash(size_t input, const size_t len);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
