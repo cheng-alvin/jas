@@ -92,7 +92,10 @@ enum operands {
 #define OP_M(x) ((x) <= OP_M64 && (x) >= OP_M8)
 #define OP_SEG(x) ((x) == OP_SEG_REG)
 #define OP_ACC(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
-#define OP_RM(x) (OP_R(x) || OP_M(x)
+
+// --
+
+#define OP_RM(x) (OP_R(x) || OP_M(x))
 
 /**
  * Enumeration for the different operand identifiers.
