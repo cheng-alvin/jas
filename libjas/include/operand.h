@@ -98,6 +98,30 @@ enum operands {
 #define OP_RM(x) (OP_R(x) || OP_M(x))
 
 /**
+ * Type wrapper for an unsigned char that represents the
+ * hash of an operand identifier. Used as a value for comparison
+ * against the operand identity encoder lookup table. The individual
+ * bits of the byte represent the type of operands within the
+ * operand identifier as follows:
+ *
+ * 0: Relative operand (rel8/16/32/64)
+ * 1: Register operand (r8/16/32/64)
+ * 2: Immediate operand (imm8/16/32/64)
+ * 3: Memory operand (m8/16/32/64)
+ * 4: Segment register operand (seg_reg)
+ * 5: Accumulator register operand (acc8/16/32/64)
+ *
+ * 6-7: Reserved for future use
+ *
+ * A bit set to 1 indicates that the operand is of the corresponding
+ * type, while a bit set to 0 indicates that the operand is not of the
+ * corresponding type.
+ *
+ * @note Not to be confused with the operand types (`enum operands`)
+ */
+typedef uint8_t op_ident_hash_t;
+
+/**
  * Enumeration for the different operand identifiers.
  * Used to lookup the operand encoder functions.
  */
