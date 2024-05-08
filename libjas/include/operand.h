@@ -146,12 +146,12 @@ op_ident_hash_t op_hash(enum operands input);
  * @see `op_ident_hash_t`
  */
 
-#define OP_HASH_REL 00000001
-#define OP_HASH_R 00000010
-#define OP_HASH_IMM 00000100
-#define OP_HASH_M 00001000
-#define OP_HASH_SEG 00010000
-#define OP_HASH_ACC 00100000
+#define OP_HASH_REL 0b00000001
+#define OP_HASH_R 0b00000010
+#define OP_HASH_IMM 0b00000100
+#define OP_HASH_M 0b00001000
+#define OP_HASH_SEG 0b00010000
+#define OP_HASH_ACC 0b00100000
 
 /**
  * Enumeration for the different operand identifiers.
