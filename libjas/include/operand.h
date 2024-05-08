@@ -23,6 +23,10 @@
  * @see `LICENSE`
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef OPERAND_H
 #define OPERAND_H
 
@@ -124,6 +128,18 @@ enum operands {
 typedef uint8_t op_ident_hash_t;
 
 /**
+ * Function for hashing the operand identifier.
+ * Used to compare against the operand identity encoder lookup table.
+ * (Based on the operand types like REL, R, IMM, etc.)
+ *
+ * @param input The operand identifier in enum form
+ * @return The operand hash value
+ *
+ * @see `op_ident_hash_t`
+ */
+op_ident_hash_t op_hash(enum operands input);
+
+/**
  * Macro definitions for the different operand hash values.
  * Used to compare against the operand identity encoder lookup table.
  *
@@ -174,4 +190,8 @@ typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_tabl
  */
 op_encoder_t op_encode_func(enum op_ident input);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
