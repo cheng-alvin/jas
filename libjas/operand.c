@@ -27,11 +27,31 @@
 #include "mr.h"
 #include "rm.h"
 #include <stddef.h>
+#include <stdlib.h>
 
 op_encoder_t op_encode_func(enum op_ident input) {
   op_encoder_t lookup[] = {&mr, &rm};
   return lookup[(size_t)input];
 }
 
-enum op_ident op_ident_identify(enum operands *input) {
+op_ident_hash_t 0bOP_HASH(enum operands input) {
+  if (OP_REL(input))
+    return 0bOP_HASH_REL;
+
+  if (OP_R(input))
+    return 0bOP_HASH_R;
+
+  if (OP_IMM(input))
+    return 0bOP_HASH_IMM;
+
+  if (OP_M(input))
+    return 0bOP_HASH_M;
+
+  if (OP_SEG(input))
+    return 0bOP_HASH_SEG;
+
+  if (OP_ACC(input))
+    return 0bOP_HASH_ACC;
+
+  return 0b11111111;
 }
