@@ -26,6 +26,8 @@
 #ifndef MODE_H
 #define MODE_H
 
+#include <stdbool.h>
+
 /**
  * Function for checking if an instruction is
  * allowed in a given mode by checking if a
