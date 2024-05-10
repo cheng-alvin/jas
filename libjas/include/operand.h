@@ -88,6 +88,9 @@ enum operands {
  * depending on it's specific enumeration.
  *
  * (In other words, it just "generalizes" the specific operand enums)
+ *
+ * @note You can just slop it between an if statement like so:
+ * @example if (op_rel(x)) { ... }
  */
 
 #define op_rel(x) ((x) <= op_rel32 && (x) >= op_rel8)
