@@ -139,6 +139,10 @@ typedef uint8_t op_ident_hash_t;
  * @return The operand hash value
  *
  * @see `op_ident_hash_t`
+ * @see `op_ident_identify`
+ *
+ * @note returns 0b11111111 if the operand combinations
+ * is not recognized
  */
 op_ident_hash_t op_hash(enum operands input);
 
