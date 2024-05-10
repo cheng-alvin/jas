@@ -93,14 +93,13 @@ enum operands {
  * @example if (op_rel(x)) { ... }
  */
 
-#define op_rel(x) ((x) <= op_rel32 && (x) >= op_rel8)
-#define op_r(x) ((x) <= op_r64 && (x) >= op_r8)
-#define op_imm(x) ((x) <= op_imm64 && (x) >= op_imm8)
-#define op_m(x) ((x) <= op_m64 && (x) >= op_m8)
-#define op_seg(x) ((x) == op_seg_REG)
-#define op_acc(x) ((x) <= op_acc64 && (x) >= op_acc8)
+#define op_rel(x) ((x) <= OP_REL32 && (x) >= OP_REL8)
+#define op_r(x) ((x) <= OP_R64 && (x) >= OP_R8)
+#define op_imm(x) ((x) <= OP_IMM64 && (x) >= OP_IMM8)
+#define op_m(x) ((x) <= OP_M64 && (x) >= OP_M8)
+#define op_seg(x) ((x) == OP_SEG_REG)
+#define op_acc(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
 
-#define
 // --
 
 #define op_rm(x) (op_r(x) || op_m(x))
