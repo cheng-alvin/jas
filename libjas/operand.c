@@ -34,22 +34,22 @@ op_encoder_t op_encode_func(enum op_ident input) {
 }
 
 op_ident_hash_t op_ident_hash(enum operands input) {
-  if (OP_REL(input))
+  if (op_rel(input))
     return OP_HASH_REL;
 
-  if (OP_R(input))
+  if (op_r(input))
     return OP_HASH_R;
 
-  if (OP_IMM(input))
+  if (op_imm(input))
     return OP_HASH_IMM;
 
-  if (OP_M(input))
+  if (op_m(input))
     return OP_HASH_M;
 
-  if (OP_SEG(input))
+  if (op_seg(input))
     return OP_HASH_SEG;
 
-  if (OP_ACC(input))
+  if (op_acc(input))
     return OP_HASH_ACC;
 
   return 0b11111111;

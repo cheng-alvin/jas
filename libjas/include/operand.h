@@ -90,16 +90,17 @@ enum operands {
  * (In other words, it just "generalizes" the specific operand enums)
  */
 
-#define OP_REL(x) ((x) <= OP_REL32 && (x) >= OP_REL8)
-#define OP_R(x) ((x) <= OP_R64 && (x) >= OP_R8)
-#define OP_IMM(x) ((x) <= OP_IMM64 && (x) >= OP_IMM8)
-#define OP_M(x) ((x) <= OP_M64 && (x) >= OP_M8)
-#define OP_SEG(x) ((x) == OP_SEG_REG)
-#define OP_ACC(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
+#define op_rel(x) ((x) <= op_rel32 && (x) >= op_rel8)
+#define op_r(x) ((x) <= op_r64 && (x) >= op_r8)
+#define op_imm(x) ((x) <= op_imm64 && (x) >= op_imm8)
+#define op_m(x) ((x) <= op_m64 && (x) >= op_m8)
+#define op_seg(x) ((x) == op_seg_REG)
+#define op_acc(x) ((x) <= op_acc64 && (x) >= op_acc8)
 
+#define
 // --
 
-#define OP_RM(x) (OP_R(x) || OP_M(x))
+#define op_rm(x) (op_r(x) || op_m(x))
 
 /**
  * Type wrapper for an unsigned char that represents the
@@ -144,6 +145,8 @@ op_ident_hash_t op_hash(enum operands input);
  * Used to compare against the operand identity encoder lookup table.
  *
  * @see `op_ident_hash_t`
+ *
+ * ? Could be overcomplicated?
  */
 
 #define OP_HASH_REL 0b00000001
@@ -191,7 +194,7 @@ typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_tabl
 op_encoder_t op_encode_func(enum op_ident input);
 
 /**
- * Function for identifying the operand identity, created using 
+ * Function for identifying the operand identity, created using
  * a large c++ unordered_map.
  *
  * @param input The input operand list

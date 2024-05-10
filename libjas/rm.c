@@ -44,11 +44,11 @@ void rm(const operand_t *op_arr, const buffer_t *buf, __attribute__((__unused)) 
 
   buf_write(buf, mode << 6 | *reg << 3 | *rm, 1);
 }
- 
+
 static int8_t operand_mode(const operand_t *op_arr) {
-  if (OP_R(op_arr[1].type))
+  if (op_r(op_arr[1].type))
     return OP_MODRM_REG;
-  else if (OP_M(op_arr[1].type))
+  else if (op_m(op_arr[1].type))
     return OP_MODRM_INDIRECT;
 
   else {
