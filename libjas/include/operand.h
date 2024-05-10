@@ -190,6 +190,15 @@ typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_tabl
  */
 op_encoder_t op_encode_func(enum op_ident input);
 
+/**
+ * Function for identifying the operand identity, created using 
+ * a large c++ unordered_map.
+ *
+ * @param input The input operand list
+ * @return The operand identity enumeration
+ */
+enum op_ident op_ident_identify(enum operands *input);
+
 #endif
 
 #ifdef __cplusplus
