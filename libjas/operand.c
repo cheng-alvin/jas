@@ -34,9 +34,6 @@ op_encoder_t op_encode_func(enum op_ident input) {
   return lookup[(size_t)input];
 }
 
-uint8_t op_sizeof() {
-}
-
 op_ident_hash_t op_hash(enum operands input) {
   if (op_rel(input))
     return OP_HASH_REL;

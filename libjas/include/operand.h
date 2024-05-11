@@ -89,6 +89,9 @@ enum operands {
  *
  * (In other words, it just "generalizes" the specific operand enums)
  *
+ * Btw, there's also general macros for finding the size of the
+ * operand in assembly!
+ *
  * @note You can just slop it between an if statement like so:
  * @example if (op_rel(x)) { ... }
  */
@@ -99,6 +102,15 @@ enum operands {
 #define op_m(x) ((x) <= OP_M64 && (x) >= OP_M8)
 #define op_seg(x) ((x) == OP_SEG_REG)
 #define op_acc(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
+
+// --
+
+#define op_byte(x) (x == OP_REL8 || x == OP_R8 || x == OP_IMM8 || x == OP_M8 || x == OP_ACC8)
+#define op_word(x) (x == OP_REL16 || x == OP_R16 || x == OP_IMM16 || x == OP_M16 || x == OP_ACC16)
+#define op_dword(x) (x == OP_REL32 || x == OP_R32 || x == OP_IMM32 || x == OP_M32 || x == OP_ACC32)
+#define op_qword(x) (x == OP_R64 || x == OP_IMM64 || x == OP_M64 || x == OP_ACC64)
+
+#define op_misc(x) (x == OP_SEG_REG || x == OP_NULL)
 
 // --
 
