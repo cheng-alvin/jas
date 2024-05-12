@@ -24,8 +24,10 @@
  */
 
 #include "instruction.h"
+#include "mr.h"
 #include "null.h"
 #include "operand.h"
+#include "rm.h"
 #include <stdbool.h>
 
 instr_encode_table_t mov[] = {
@@ -40,3 +42,8 @@ instr_encode_table_t mov[] = {
 };
 
 instr_encode_table_t *instr_table[] = {mov};
+
+instr_encoder_t instr_encode_func(enum op_ident input) {
+  instr_encoder_t lookup[] = {&mr, &rm};
+  return lookup[(size_t)input];
+}

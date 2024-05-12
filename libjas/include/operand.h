@@ -189,29 +189,6 @@ typedef struct {
 } operand_t;
 
 /**
- * Type wrapper for the operand encoder function pointer. Where
- * each operand encoder function takes an array of operands and
- * a buffer to write the encoded instruction to.
- *
- * (Based on the operand identities like MR, RM, etc.)
- *
- * @param op_arr The array of operands to encode
- * @param buf The buffer to write the encoded instruction to
- * @param instr_ref The instruction reference table
- *
- * @note All encoder functions will conform to this signature.
- */
-typedef void (*op_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref);
-
-/**
- * Lookup table for the different operand encoders.
- *
- * @param input The operand identifier
- * @return The operand encoder function pointer
- */
-op_encoder_t op_encode_func(enum op_ident input);
-
-/**
  * Function for identifying the operand identity, created using
  * a large c++ unordered_map.
  *

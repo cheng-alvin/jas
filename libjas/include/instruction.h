@@ -131,4 +131,27 @@ typedef struct {
   operand_t *operands;     /* Operands of the instruction */
 } instruction_t;
 
+/**
+ * Type wrapper for the instruction encoder function pointer. Where
+ * each operand encoder function takes an array of operands and
+ * a buffer to write the encoded instruction to.
+ *
+ * (Based on the operand identities like MR, RM, etc.)
+ *
+ * @param op_arr The array of operands to encode
+ * @param buf The buffer to write the encoded instruction to
+ * @param instr_ref The instruction reference table
+ *
+ * @note All encoder functions will conform to this signature.
+ */
+typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref);
+
+/**
+ * Lookup table for the different instruction class encoders.
+ *
+ * @param input The operand identity
+ * @return The operand encoder function pointer
+ */
+instr_encoder_t op_encode_func(enum op_ident input);
+
 #endif
