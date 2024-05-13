@@ -87,3 +87,7 @@ As you've already forseen, there's way more registers than 7! We have both 32-bi
 **Always ensure to consult the Intel manual for the correct ModR/M byte encoding, exceptions that can also occur in different contexts**
 
 ## Chapter 2: Structure of the assembler
+We all know that assemblers are normally just a command line tool like `nasm` or `as`. Some assemblers are also libraries that can be used in other programs, just like Jas. As briefly stated above, the Jas assembler is organized into functions and can be called directly. The behavior for the encoding of the instruction and it's operands are packaged inside the function. This allows the user to not worry about the syntax rules of the instruction and allows them to focus on the assembly code itself. 
+
+### Operand encoding
+Many instructions share lots of operand encoding logic that can be encapsulated. Each operand encoding identities have a certain type of encoding that 
