@@ -1,52 +1,46 @@
+/**
+ * MIT License
+ * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * @see `LICENSE`
+ */
+
 #ifndef REX_H
 #define REX_H
 
-#include <stdint.h>
-
 /**
- * @author cheng-alvin
- * @since v0.0.1
- *
- * Enum for defining the REX prefix modes bits, which are
- * used to extend the typical instruction range and other
- * operand properties.
- *
- * Each enum value sets a letter indicated flag inside the
- * REX prefix byte. The REX prefix byte is defined as follows:
- *
- *   7                           0
- * +---+---+---+---+---+---+---+---+
- * | 0   1   0   0 | W | R | X | B |
- * +---+---+---+---+---+---+---+---+
- *
- * As shown, the first 4 bits are always 0100 to specify the
- * REX prefix, and the corresponding bit would be set to 1 depending
- * on the enum value.
+ * Macros for defining the REX byte values. These values
+ * are used to override operand sizes when using long mode.
+ * A letter is followed after the `REX_` prefix to dictate the 
+ * prefix type used in the situation, and can be `|`ed 
+ * together as well!
  *
  * @see https://wiki.osdev.org/X86-64_Instruction_Encoding#REX_prefix
- *
- */
-typedef enum {
-  JAS_REX_W = 0b00001000,
-  JAS_REX_R = 0b00000100,
-  JAS_REX_X = 0b00000010,
-  JAS_REX_B = 0b00000001,
-} jasRexPrefix_t;
-
-/**
- * @author cheng-alvin
- * @since v0.0.1
- *
- * A silly helper that constructs a REX prefix byte with the given
- * prefix type with an enum. If the existing byte is `JAS_NULL`, then the
- * `REX_BASE` byte is used instead, and a new REX prefix byte is returned.
- *
- * @param existingByte The existing byte to append the prefix to.
- * @param prefixType The prefix type to append to the existing byte.
- *
- * @returns The REX prefix byte with the given prefix type or the
- * one that is appended by the `prefixType` parameter.
  */
 
-uint8_t jasRexConstructPrefix(uint8_t existingByte, jasRexPrefix_t prefixType);
+#define REX_W 0x48
+#define REX_R 0x44
+#define REX_X 0x42
+#define REX_B 0x41
+
+#define REX_DEFAULT 0b01000000
+
 #endif

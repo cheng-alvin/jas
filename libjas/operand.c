@@ -1,157 +1,49 @@
+/**
+ * MIT License
+ * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * @see `LICENSE`
+ */
+
 #include "operand.h"
-#include "error.h"
-#include <stdbool.h>
+#include <stdint.h>
 
-bool jasRexExpectedInRegisterEncoding(jasTaggedOperand_t x) {
-  switch (x.type) {
-  case JAS_REG_OPERAND_8:
-    switch (x.operand.reg.reg8) {
-    case JAS_REG_R8B:
-    case JAS_REG_R9B:
-    case JAS_REG_R10B:
-    case JAS_REG_R11B:
-    case JAS_REG_R12B:
-    case JAS_REG_R13B:
-    case JAS_REG_R14B:
-    case JAS_REG_R15B:
-    case JAS_REG_SIL:
-    case JAS_REG_DIL:
-    case JAS_REG_SPL:
-    case JAS_REG_BPL:
-      return true;
-    default:
-      return false;
-    }
+op_ident_hash_t op_hash(enum operands input) {
+  if (op_rel(input))
+    return OP_HASH_REL;
 
-  case JAS_REG_OPERAND_16:
-    switch (x.operand.reg.reg16) {
-    case JAS_REG_R8W:
-    case JAS_REG_R9W:
-    case JAS_REG_R10W:
-    case JAS_REG_R11W:
-    case JAS_REG_R12W:
-    case JAS_REG_R13W:
-    case JAS_REG_R14W:
-    case JAS_REG_R15W:
-      return true;
-    default:
-      return false;
-    }
+  if (op_r(input))
+    return OP_HASH_R;
 
-  case JAS_REG_OPERAND_32:
-    switch (x.operand.reg.reg32) {
-    case JAS_REG_R8D:
-    case JAS_REG_R9D:
-    case JAS_REG_R10D:
-    case JAS_REG_R11D:
-    case JAS_REG_R12D:
-    case JAS_REG_R13D:
-    case JAS_REG_R14D:
-    case JAS_REG_R15D:
-      return true;
-    default:
-      return false;
-    }
+  if (op_imm(input))
+    return OP_HASH_IMM;
 
-  case JAS_REG_OPERAND_64:
-    switch (x.operand.reg.reg64) {
-    case JAS_REG_R8:
-    case JAS_REG_R9:
-    case JAS_REG_R10:
-    case JAS_REG_R11:
-    case JAS_REG_R12:
-    case JAS_REG_R13:
-    case JAS_REG_R14:
-    case JAS_REG_R15:
-      return true;
-    default:
-      return false;
-    }
+  if (op_m(input))
+    return OP_HASH_M;
 
-  default:
-    break;
-  }
+  if (op_seg(input))
+    return OP_HASH_SEG;
 
-  return false;
-}
+  if (op_acc(input))
+    return OP_HASH_ACC;
 
-jasTaggedOperand_t jasConstructOperand(void *value, jasOperandType_t type) {
-  jasUntaggedOperand_t revisedValue;
-
-  switch (type) {
-  case JAS_REG_OPERAND_8:
-    revisedValue.reg.reg8 = *(jasReg8_t *)value;
-    break;
-
-  case JAS_REG_OPERAND_16:
-    revisedValue.reg.reg16 = *(jasReg16_t *)value;
-    break;
-
-  case JAS_REG_OPERAND_32:
-    revisedValue.reg.reg32 = *(jasReg32_t *)value;
-    break;
-
-  case JAS_REG_OPERAND_64:
-    revisedValue.reg.reg64 = *(jasReg64_t *)value;
-    break;
-
-  case JAS_OPERAND_8:
-    revisedValue.operand8 = *(uint8_t *)value;
-    break;
-
-  case JAS_OPERAND_16:
-    revisedValue.operand16 = *(uint16_t *)value;
-    break;
-
-  case JAS_OPERAND_32:
-    revisedValue.operand32 = *(uint32_t *)value;
-    break;
-
-  case JAS_OPERAND_64:
-    revisedValue.operand64 = *(uint64_t *)value;
-    break;
-
-  case JAS_INDIRECT_8:
-    revisedValue.reg.indirectReg8 = *(jasReg8_t *)value;
-    break;
-
-  case JAS_INDIRECT_16:
-    revisedValue.reg.indirectReg16 = *(jasReg16_t *)value;
-    break;
-
-  case JAS_INDIRECT_32:
-    revisedValue.reg.indirectReg32 = *(jasReg32_t *)value;
-    break;
-
-  case JAS_INDIRECT_64:
-    revisedValue.reg.indirectReg64 = *(jasReg64_t *)value;
-    break;
-
-  case JAS_REG_OPERAND_8_DISP:
-    revisedValue.reg.regDisp8 = *(jasRegDisplacement8_t *)value;
-    break;
-
-  case JAS_REG_OPERAND_64_DISP:
-    revisedValue.reg.regDisp64 = *(jasRegDisplacement64_t *)value;
-    break;
-
-  case JAS_NO_OPERAND_TYPE:
-  default:
-    return JAS_NO_OPERAND;
-  }
-
-  return (jasTaggedOperand_t){.type = type, .operand = revisedValue};
-}
-
-bool jasCheckIfHighRegistersAreValidUnderRexPrefix(jasTaggedOperand_t op1, jasTaggedOperand_t op2) {
-  if (jasRexExpectedInRegisterEncoding(op1) || jasRexExpectedInRegisterEncoding(op2)) {
-    return false;
-  }
-  return true;
-}
-
-uint8_t jasGetRegField(uint8_t x) {
-  const uint8_t lookupTable[] = {0, 1, 2, 3, 4, 5, 6, 7, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7};
-
-  return lookupTable[x];
+  return 0b11111111;
 }

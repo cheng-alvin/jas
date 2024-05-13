@@ -1,6 +1,55 @@
-#include "error.h"
-#include "modrm.h"
-#include "operand.h"
+/**
+ * MIT License
+ * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * @see `LICENSE`
+ */
 
-jasModrmMode_t jasGetMode(jasTaggedOperand_t op1, jasTaggedOperand_t op2);
-// TODO Add documentation
+#ifndef MODE_H
+#define MODE_H
+
+#include <stdbool.h>
+
+/**
+ * Function for checking if an instruction is
+ * allowed in a given mode by checking if a
+ * bit is set in the support field.
+ *
+ * @param mode The mode to check.
+ * @param support The support field of the instruction.
+ * @return True if the mode is allowed, false otherwise.
+ *
+ * @see instr_support_t
+ */
+bool mode_valid(const enum modes mode, const instr_support_t support);
+
+/**
+ * Enums representing the operating modes of
+ * the x86 processor as defined by the Intel
+ * manual.
+ */
+enum modes {
+  MODE_REAL,
+  MODE_PROTECTED,
+  MODE_LONG,
+};
+
+#endif

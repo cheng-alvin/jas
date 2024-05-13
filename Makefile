@@ -7,7 +7,7 @@ CFLAGS = $(CFLAGS_COMMON)
 
 BUILD = build
 HOME = .
-DIRS = libjas labrador
+DIRS = libjas
 
 all: jas
 
@@ -15,8 +15,8 @@ jas: clean
 	$(MAKE) -C libjas
 
 format:
-	clang-format -i **/*.{c,h} --verbose
-
+	@clang-format -i $(shell find . -name '*.c' -o -name '*.h') --verbose
+ 
 clean:
 	find . -name "*.o" -type f -delete
 	rm -r -f $(BUILD)
@@ -27,4 +27,4 @@ clean:
 
 test: jas
 	$(MAKE) -C test
-  
+ 

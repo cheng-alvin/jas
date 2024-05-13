@@ -1,16 +1,33 @@
-#include "modrm.h"
-#include "operand.h"
+/**
+ * MIT License
+ * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * @see `LICENSE`
+ */
 
-jasModrmMode_t jasGetMode(jasTaggedOperand_t op1, jasTaggedOperand_t op2) {
-  switch (op1.type) {
-  case JAS_REG_OPERAND_64:
-  case JAS_REG_OPERAND_32:
-  case JAS_REG_OPERAND_16:
-    return JAS_MODRM_REGISTER;
+#include "mode.h"
+#include "instruction.h"
+#include <stdbool.h>
 
-  case JAS_INDIRECT_64:
-  case JAS_INDIRECT_32:
-  case JAS_INDIRECT_16:
-    return JAS_MODRM_INDIRECT;
-  }
+// TODO Write the fucking test case!
+bool mode_valid(const enum modes mode, const instr_support_t support) {
+  return (support & (1 << (int)mode)) != 0; /* TODO What the? */
 }

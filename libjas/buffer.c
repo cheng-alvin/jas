@@ -23,39 +23,35 @@
  * @see `LICENSE`
  */
 
-#ifndef ERROR_H
-#define ERROR_H
+#include "buffer.h"
+#include "null.h"
+#include <stddef.h>
+#include <stdint.h>
 
-/**
- * Type wrapper for a void dictated function pointer that
- * takes a const char pointer as an argument; Which represents
- * the function that would be used to handle errors in the jas
- * library.
- */
-typedef void (*err_callback_t)(const char *msg);
+void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len) {
+  buf->data = (uint8_t *)(buf->data == NULL ? malloc(data_len) : realloc(buf->data, buf->len + data_len));
 
-/**
- * Definition for exposing the error callback function pointer
- * (or handler) to the rest of the library.
- *
- * @note Should not be set directly, use `err_add_callback` instead.
- */
-extern err_callback_t err_callback;
+  for (size_t i = 0; i < data_len; i++)
+    buf->data[buf->len + i] = data[i];
 
-/**
- * Function to throw errors in the jas library. and hand-balls it
- * to the function pointer handler by the user.
- *
- * @param msg The error message to be thrown.
- */
-inline __attribute((always_inline)) void err(const char *msg);
+  buf->len += data_len;
+}
 
-/**
- * Function to add a callback function to the error handler.
- *
- * @param input The function pointer to the error handler.
- * @see `err_callback_t`
- */
-inline __attribute((always_inline)) void err_add_callback(err_callback_t input);
+void buf_remove(buffer_t *buf, const size_t elem) {
+  if (buf->len == 0)
+    return;
 
-#endif
+  for (size_t i = elem; i < buf->len - 1; i++)
+    buf->data[i] = buf->data[i + 1];
+
+  buf->len--;
+  buf->data = realloc(buf->data, buf->len);
+}
+
+void buf_remove_chunk(buffer_t *buf, const size_t start, const size_t end) {
+  if (buf->len == 0)
+    return;
+
+  for (size_t i = start; i < end; i++)
+    buf_remove(buf, i);
+}

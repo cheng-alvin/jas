@@ -1,6 +1,6 @@
 /**
  * MIT License
- * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ * Copyright (c) 2023-2024 John Smith (example@example.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,40 +22,3 @@
  *
  * @see `LICENSE`
  */
-
-#ifndef ERROR_H
-#define ERROR_H
-
-/**
- * Type wrapper for a void dictated function pointer that
- * takes a const char pointer as an argument; Which represents
- * the function that would be used to handle errors in the jas
- * library.
- */
-typedef void (*err_callback_t)(const char *msg);
-
-/**
- * Definition for exposing the error callback function pointer
- * (or handler) to the rest of the library.
- *
- * @note Should not be set directly, use `err_add_callback` instead.
- */
-extern err_callback_t err_callback;
-
-/**
- * Function to throw errors in the jas library. and hand-balls it
- * to the function pointer handler by the user.
- *
- * @param msg The error message to be thrown.
- */
-inline __attribute((always_inline)) void err(const char *msg);
-
-/**
- * Function to add a callback function to the error handler.
- *
- * @param input The function pointer to the error handler.
- * @see `err_callback_t`
- */
-inline __attribute((always_inline)) void err_add_callback(err_callback_t input);
-
-#endif

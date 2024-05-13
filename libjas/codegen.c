@@ -1,42 +1,52 @@
-#include "codegen.h"
-#include "aaa.h"
-#include "aad.h"
-#include "aam.h"
-#include "aas.h"
-#include "adc.h"
-#include "add.h"
-#include "and.h"
-#include "arpl.h"
-#include "bound.h"
-#include "bsf.h"
-#include "bsr.h"
-#include "bswap.h"
-#include "call.h"
-#include "cbw.h"
-#include "cdqe.h"
-#include "clc.h"
-#include "cld.h"
-#include "clflush.h"
-#include "cli.h"
-#include "clts.h"
-#include "cmc.h"
-#include "cmovcc.h"
-#include "cwde.h"
+/**
+ * MIT License
+ * Copyright (c) 2023 Alvin Cheng (eventide1029@gmail.com)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * @see `LICENSE`
+ */
+
+#include "buffer.h"
 #include "error.h"
-#include "init.h"
 #include "instruction.h"
+#include "mode.h"
 #include "null.h"
+#include "register.h"
+#include <stddef.h>
 
-jasErrorCode_t jasCodegen(jasInstruction_t instruction, jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance) {
-  if (instance->buffer == JAS_NULL)
-    return JAS_UNDEFINED_POINTER;
+// TODO Remember to note that NULL is when there's an error
 
-  jasInstructionEncoderPointerArray_t jasInstructionEncoder = {&jasAAA, &jasAAD, &jasAAM, &jasAAS, &jasADC, &jasADD, &jasAND, &jasARPL, &jasBOUND, &jasBSF, &jasBSR, &jasBSWAP, &jasCALL, &jasCBW, &jasCDQE, &jasCWDE, &jasCLC, &jasCLD, &jasCLFLUSH /* TODO CLFLUSHOPT */, &jasCLI, &jasCLTS, &jasCMC, &jasCMOVA, jasCMOVAE, jasCMOVB, jasCMOVBE, jasCMOVC, jasCMOVE, jasCMOVG, jasCMOVGE, jasCMOVL, jasCMOVLE, jasCMOVNA, jasCMOVNAE, jasCMOVNB, jasCMOVNBE, jasCMOVNC, jasCMOVNE, jasCMOVNG, jasCMOVNGE, jasCMOVNL, jasCMOVNLE, jasCMOVNO, jasCMOVNP, jasCMOVNS, jasCMOVNZ, jasCMOVO, jasCMOVP, jasCMOVPE, jasCMOVPO, jasCMOVS, jasCMOVZ};
+buffer_t *codegen(enum modes mode, instruction_t *instr_arr) {
+  /**
+   * Implementation:
+   * @brief takes an array of instructions and spits
+   * out an array of binary values corresponding to
+   * the imported instructions.
+   *
+   * TODO items (Tick when completed)
+   * - Loop through the instruction array ✅
+   * - Check and validate the instructions (责任交给了identity) ✅
+   * - Dump opcodes & prefixes
+   * - Dump returned operand encoding
+   */
 
-  if (instruction > sizeof(jasInstructionEncoder) / sizeof(jasInstructionEncoderPointer_t))
-    return JAS_INVALID_INSTRUCTION;
-
-  const jasErrorCode_t errorCode = jasInstructionEncoder[instruction](op1, op2, op3, op4, instance);
-
-  return errorCode;
-}
+  for (int i = 0; i < sizeof(instr_arr); i++) {
+    const instr_encode_table_t *instr = instr_table[instr_arr[i].instr];
+  }

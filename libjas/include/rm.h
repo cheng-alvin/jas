@@ -1,7 +1,52 @@
-#include "error.h"
-#include "init.h"
-#include "macro.h"
-#include "modrm.h"
+/**
+ * MIT License
+ * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * @see `LICENSE`
+ */
+
+// TODO Review and revise header
+
+#ifndef RM_H
+#define RM_H
+
+#include "buffer.h"
 #include "operand.h"
 
-jasErrorCode_t jasExtendedOperandIdentityRM(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, uint8_t mode, uint8_t opcodeExtention);
+/**
+ * Dumb encoder function to encode based on the `rm` identity.
+ *
+ * The `rm` identity is defined as:
+ * First operand | Second operand | Third operand | Fourth operand
+ * --------------|----------------|---------------|--------------
+ * R             | R/M            | ---           | ---
+ *
+ * Reference key:
+ * - R denotes a piece of data from a general-purpose register.
+ * - R/M denotes a piece data from either a general-purpose register
+ * or memory offset.
+ *
+ * @note For notes on the arguments see `instr_encoder_t`.
+ * @extends instr_encoder_t
+ */
+void rm(const operand_t *op_arr, const buffer_t *buf, __attribute__((__unused)) const instr_encode_table_t *instr_ref);
+
+#endif

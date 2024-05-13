@@ -1,13 +1,3 @@
-- TODO Implement CodeQL into the Github repo.
-- TODO Write test cases for other functions.
-- TODO Rewrite unit tests.
-- TODO Ensure ALL header files have documentation!!!
-- TODO Remove all useless `#includes`.
-- TODO Ensure all header files have header guards.
-- TODO Add some way of parsing and validating operands. People will probably will pass in garbage, even though there are guard rails. Like enums and unions.
-- TODO Note that the `CLFLUSHOPT` instruction is not supported by the assembler.
-- TODO Added `ARPL` as it has been missed from assembler support (See p 203)
-
 Data Movement Instructions:
 MOV: Move data between registers or between memory and registers.
 LEA: Load effective address.
@@ -32,5 +22,3 @@ Miscellaneous Instructions:
 NOP: No operation.
 HLT: Halt the processor.
 INT: Software interrupt.
-
-- TODO Add support for data segment pointers

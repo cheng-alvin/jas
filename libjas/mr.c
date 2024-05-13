@@ -1,102 +1,49 @@
+/**
+ * MIT License
+ * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * @see `LICENSE`
+ */
+
+#include "mr.h"
+#include "buffer.h"
 #include "error.h"
-#include "init.h"
-#include "macro.h"
-#include "modrm.h"
 #include "operand.h"
-#include "write.h"
+#include <stdint.h>
 
-jasErrorCode_t jasExtendedOperandIdentityMR(jasTaggedOperand_t op1, jasTaggedOperand_t op2, jasTaggedOperand_t op3, jasTaggedOperand_t op4, jasInstance_t *instance, uint8_t mode, uint8_t opcodeExtention) {
-  if (op1.type == JAS_REG_OPERAND_8 || op1.type == JAS_INDIRECT_8) {
-    if (op1.type == JAS_REG_OPERAND_64_DISP) {
-      jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_64, op2.operand.reg.reg8, jasGetRegField(op1.operand.reg.regDisp64.reg));
+void mr(const operand_t *op_arr, const buffer_t *buf, __attribute__((__unused)) const instr_encode_table_t *instr_ref) {
+  uint8_t mode;
 
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 48) & 0xffff)
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 32) & 0xffff)
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 16) & 0xffff)
-      WRITE16(op1.operand.reg.regDisp64.displacement & 0xffff)
+  if (op_r(op_arr[0].type))
+    mode = OP_MODRM_REG;
+  else if (op_m(op_arr[0].type))
+    mode = OP_MODRM_INDIRECT;
 
-      return;
-    }
-
-    if (op1.type == JAS_REG_OPERAND_8_DISP) {
-      jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_8, op2.operand.reg.reg8, jasGetRegField(op1.operand.reg.regDisp8.reg));
-
-      WRITE(op1.operand.reg.regDisp8.displacement)
-
-      return;
-    }
-
-    jasGenerateModrm(mode, jasGetRegField(op2.operand.reg.reg8), mode == JAS_MODRM_INDIRECT ? jasGetRegField(op1.operand.reg.indirectReg8) : jasGetRegField(op1.operand.reg.reg8));
+  else {
+    err("Operand identity mismatch. (hint: displacements are not supported yet)");
+    return;
   }
 
-  if (op1.type == JAS_REG_OPERAND_16 || op1.type == JAS_INDIRECT_16) {
-    if (op1.type == JAS_REG_OPERAND_64_DISP) {
-      jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_64, op2.operand.reg.reg16, jasGetRegField(op1.operand.reg.regDisp64.reg));
+  const uint8_t *reg = op_arr[0].data;
+  const uint8_t *rm = op_arr[1].data;
 
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 48) & 0xffff)
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 32) & 0xffff)
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 16) & 0xffff)
-      WRITE16(op1.operand.reg.regDisp64.displacement & 0xffff)
-
-      return;
-    }
-
-    if (op1.type == JAS_REG_OPERAND_8_DISP) {
-      jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_8, op2.operand.reg.reg16, jasGetRegField(op1.operand.reg.regDisp8.reg));
-
-      WRITE(op1.operand.reg.regDisp8.displacement)
-
-      return;
-    }
-
-    jasGenerateModrm(mode, jasGetRegField(op2.operand.reg.reg16), mode == JAS_MODRM_INDIRECT ? jasGetRegField(op1.operand.reg.indirectReg16) : jasGetRegField(op1.operand.reg.reg16));
-  }
-
-  if (op1.type == JAS_REG_OPERAND_32 || op1.type == JAS_INDIRECT_32) {
-    if (op1.type == JAS_REG_OPERAND_64_DISP) {
-      jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_64, op2.operand.reg.reg32, jasGetRegField(op1.operand.reg.regDisp64.reg));
-
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 48) & 0xffff)
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 32) & 0xffff)
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 16) & 0xffff)
-      WRITE16(op1.operand.reg.regDisp64.displacement & 0xffff)
-
-      return;
-    }
-
-    if (op1.type == JAS_REG_OPERAND_8_DISP) {
-      jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_8, op2.operand.reg.reg32, jasGetRegField(op1.operand.reg.regDisp8.reg));
-
-      WRITE(op1.operand.reg.regDisp8.displacement)
-
-      return;
-    }
-
-    jasGenerateModrm(mode, jasGetRegField(op2.operand.reg.reg32), mode == JAS_MODRM_INDIRECT ? jasGetRegField(op1.operand.reg.indirectReg32) : jasGetRegField(op1.operand.reg.reg32));
-  }
-
-  if (op1.type == JAS_REG_OPERAND_64 || op1.type == JAS_INDIRECT_64) {
-    if (op1.type == JAS_REG_OPERAND_64_DISP) {
-      jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_64, op2.operand.reg.reg64, jasGetRegField(op1.operand.reg.regDisp64.reg));
-
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 48) & 0xffff)
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 32) & 0xffff)
-      WRITE16((op1.operand.reg.regDisp64.displacement >> 16) & 0xffff)
-      WRITE16(op1.operand.reg.regDisp64.displacement & 0xffff)
-
-      return;
-    }
-
-    if (op1.type == JAS_REG_OPERAND_8_DISP) {
-      jasGenerateModrm(JAS_MODRM_FOLLOWING_DISPLACEMENT_8, op2.operand.reg.reg64, jasGetRegField(op1.operand.reg.regDisp8.reg));
-
-      WRITE(op1.operand.reg.regDisp8.displacement)
-
-      return;
-    }
-
-    jasGenerateModrm(mode, jasGetRegField(op2.operand.reg.reg64), mode == JAS_MODRM_INDIRECT ? jasGetRegField(op1.operand.reg.indirectReg64) : jasGetRegField(op1.operand.reg.reg64));
-  }
-
-  return JAS_NO_ERROR;
+  buf_write(buf, mode << 6 | *reg << 3 | *rm, 1);
 }

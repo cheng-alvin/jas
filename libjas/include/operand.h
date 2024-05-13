@@ -1,296 +1,204 @@
+/**
+ * MIT License
+ * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * @see `LICENSE`
+ */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef OPERAND_H
 #define OPERAND_H
 
-#include "error.h"
-#include <stdbool.h>
-#include <stdint.h>
+#include "buffer.h"
+#include "instruction.h"
 
 /**
- * @author cheng-alvin
- * @since v0.0.1
+ * Definitions to the macros used in the operand encoder functions.
+ * to represent the addressing modes of the ModR/M byte.
  *
- * Enum for representing the operand type. This is used to store the
- * operand types. Since C unions cannot be identified by their type,
- * we need to use the idea of tagging a union along with another struct
- * element. This is used to store the operand type and contents which
- * can be declared within different sizes and data widths as mentioned
- * below.
- *
- * @note I recommend reading the software guides of x86 just to get down
- * the basics of the assembly language and it's encoding.
- *
- * @see Intel® 64 and IA-32 Architecture
+ * It's a very hard encoding thing to understand, therefore:
+ * @see https://wiki.osdev.org/X86-64_Instruction_Encoding#ModR.2FM_Byte
  */
 
-typedef enum {
-  JAS_NO_OPERAND_TYPE,
-  JAS_REG_OPERAND_8,
-  JAS_REG_OPERAND_16,
-  JAS_REG_OPERAND_32,
-  JAS_REG_OPERAND_64,
-  JAS_OPERAND_8,
-  JAS_OPERAND_16,
-  JAS_OPERAND_32,
-  JAS_OPERAND_64,
-  JAS_INDIRECT_8,
-  JAS_INDIRECT_16,
-  JAS_INDIRECT_32,
-  JAS_INDIRECT_64,
-  JAS_REG_OPERAND_8_DISP,
-  JAS_REG_OPERAND_64_DISP,
-} jasOperandType_t;
+#define OP_MODRM_INDIRECT 0b00000000
+#define OP_MODRM_DISP8 0b01000000
+#define OP_MODRM_DISP32 0b10000000
+#define OP_MODRM_REG 0b11000000
 
 /**
- * @author cheng-alvin
- * @since v0.0.1
+ * Macro definition for the 16-bit operand override byte for supporting
+ * word-sized operands in the x86 family.
  *
- * Following couple enums defines the registers on different types of
- * bit modes present on the x86 processor family. More information on
- * these registers can be found on the x86 or intel programmers' docs.
- *
- * @see AMD64 Architecture Programmer’s Manual 1 - 1 3.1.2
- * @see Intel® 64 and IA-32 Architectures 1 - 3.7.2.1
- *
- * @see https://stackoverflow.com/a/51337115/15492585 for sources
+ * @see https://stackoverflow.com/questions/74954166/
  */
-
-typedef enum {
-  JAS_REG_AL,
-  JAS_REG_CL,
-  JAS_REG_DL,
-  JAS_REG_BL,
-  JAS_REG_AH,
-  JAS_REG_CH,
-  JAS_REG_DH,
-  JAS_REG_BH,
-  JAS_REG_SPL,
-  JAS_REG_BPL,
-  JAS_REG_SIL,
-  JAS_REG_DIL,
-  JAS_REG_R8B,
-  JAS_REG_R9B,
-  JAS_REG_R10B,
-  JAS_REG_R11B,
-  JAS_REG_R12B,
-  JAS_REG_R13B,
-  JAS_REG_R14B,
-  JAS_REG_R15B,
-} jasReg8_t;
-
-typedef enum {
-  JAS_REG_AX,
-  JAS_REG_CX,
-  JAS_REG_DX,
-  JAS_REG_BX,
-  JAS_REG_SP,
-  JAS_REG_BP,
-  JAS_REG_SI,
-  JAS_REG_DI,
-  JAS_REG_R8W,
-  JAS_REG_R9W,
-  JAS_REG_R10W,
-  JAS_REG_R11W,
-  JAS_REG_R12W,
-  JAS_REG_R13W,
-  JAS_REG_R14W,
-  JAS_REG_R15W
-} jasReg16_t;
-
-typedef enum {
-  JAS_REG_EAX,
-  JAS_REG_ECX,
-  JAS_REG_EDX,
-  JAS_REG_EBX,
-  JAS_REG_ESP,
-  JAS_REG_EBP,
-  JAS_REG_ESI,
-  JAS_REG_EDI,
-  JAS_REG_R8D,
-  JAS_REG_R9D,
-  JAS_REG_R10D,
-  JAS_REG_R11D,
-  JAS_REG_R12D,
-  JAS_REG_R13D,
-  JAS_REG_R14D,
-  JAS_REG_R15D
-} jasReg32_t;
-
-typedef enum {
-  JAS_REG_RAX,
-  JAS_REG_RCX,
-  JAS_REG_RDX,
-  JAS_REG_RBX,
-  JAS_REG_RSP,
-  JAS_REG_RBP,
-  JAS_REG_RSI,
-  JAS_REG_RDI,
-  JAS_REG_R8,
-  JAS_REG_R9,
-  JAS_REG_R10,
-  JAS_REG_R11,
-  JAS_REG_R12,
-  JAS_REG_R13,
-  JAS_REG_R14,
-  JAS_REG_R15
-} jasReg64_t;
-
-// Tiny helper macro for expressing a blank operand.
-#define JAS_NO_OPERAND ((jasTaggedOperand_t){.type = JAS_NO_OPERAND_TYPE})
+#define OP_WORD_OVERRIDE 0x66
 
 /**
- * @author cheng-alvin
- * @since v0.0.1
- *
- * Struct for representing the register with displacement. This is
- * used to store the register with displacement. And can be used
- * when you need syntax like: `[rax + 4]`.
- *
- * This following structs will be stored within the union below
- * for memory efficiency. Please see the operand types above this
- * post.
+ * Enumeration for the different types of operands and
+ * operand sizes supported by the jas assembler.
  */
+enum operands {
+  OP_NULL,
+  OP_REL8,
+  OP_REL16,
+  OP_REL32,
+  OP_R8,
+  OP_R16,
+  OP_R32,
+  OP_R64,
+  OP_IMM8,
+  OP_IMM16,
+  OP_IMM32,
+  OP_IMM64,
+  OP_M8,
+  OP_M16,
+  OP_M32,
+  OP_M64,
+  OP_SEG_REG,
+  OP_ACC8,
+  OP_ACC16,
+  OP_ACC32,
+  OP_ACC64,
+};
+
+/**
+ * Definitions for the different macros responsible of checking
+ * if the operand is a relative, register, immediate, memory, segment
+ * depending on it's specific enumeration.
+ *
+ * (In other words, it just "generalizes" the specific operand enums)
+ *
+ * Btw, there's also general macros for finding the size of the
+ * operand in assembly!
+ *
+ * @note You can just slop it between an if statement like so:
+ * @example if (op_rel(x)) { ... }
+ */
+
+#define op_rel(x) ((x) <= OP_REL32 && (x) >= OP_REL8)
+#define op_r(x) ((x) <= OP_R64 && (x) >= OP_R8)
+#define op_imm(x) ((x) <= OP_IMM64 && (x) >= OP_IMM8)
+#define op_m(x) ((x) <= OP_M64 && (x) >= OP_M8)
+#define op_seg(x) ((x) == OP_SEG_REG)
+#define op_acc(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
+
+// --
+
+#define op_byte(x) (x == OP_REL8 || x == OP_R8 || x == OP_IMM8 || x == OP_M8 || x == OP_ACC8)
+#define op_word(x) (x == OP_REL16 || x == OP_R16 || x == OP_IMM16 || x == OP_M16 || x == OP_ACC16)
+#define op_dword(x) (x == OP_REL32 || x == OP_R32 || x == OP_IMM32 || x == OP_M32 || x == OP_ACC32)
+#define op_qword(x) (x == OP_R64 || x == OP_IMM64 || x == OP_M64 || x == OP_ACC64)
+
+#define op_misc(x) (x == OP_SEG_REG || x == OP_NULL)
+
+// --
+
+#define op_rm(x) (op_r(x) || op_m(x))
+
+/**
+ * Type wrapper for an unsigned char that represents the
+ * hash of an operand identifier. Used as a value for comparison
+ * against the operand identity encoder lookup table. The individual
+ * bits of the byte represent the type of operands within the
+ * operand identifier as follows:
+ *
+ * 0: Relative operand (rel8/16/32/64)
+ * 1: Register operand (r8/16/32/64)
+ * 2: Immediate operand (imm8/16/32/64)
+ * 3: Memory operand (m8/16/32/64)
+ * 4: Segment register operand (seg_reg)
+ * 5: Accumulator register operand (acc8/16/32/64)
+ *
+ * 6-7: Reserved for future use
+ *
+ * A bit set to 1 indicates that the operand is of the corresponding
+ * type, while a bit set to 0 indicates that the operand is not of the
+ * corresponding type.
+ *
+ * @note Not to be confused with the operand types (`enum operands`)
+ *
+ * Also, there are macros below to help you!
+ */
+typedef uint8_t op_ident_hash_t;
+
+/**
+ * Function for hashing the operand identifier.
+ * Used to compare against the operand identity encoder lookup table.
+ * (Based on the operand types like REL, R, IMM, etc.)
+ *
+ * @param input The operand identifier in enum form
+ * @return The operand hash value
+ *
+ * @see `op_ident_hash_t`
+ * @see `op_ident_identify`
+ *
+ * @note returns 0b11111111 if the operand combinations
+ * is not recognized
+ */
+op_ident_hash_t op_hash(enum operands input);
+
+/**
+ * Macro definitions for the different operand hash values.
+ * Used to compare against the operand identity encoder lookup table.
+ *
+ * @see `op_ident_hash_t`
+ *
+ * ? Could be overcomplicated?
+ */
+
+#define OP_HASH_REL 0b00000001
+#define OP_HASH_R 0b00000010
+#define OP_HASH_IMM 0b00000100
+#define OP_HASH_M 0b00001000
+#define OP_HASH_SEG 0b00010000
+#define OP_HASH_ACC 0b00100000
+
+/**
+ * Enumeration for the different operand identifiers.
+ * Used to lookup the operand encoder functions.
+ */
+enum op_ident {
+  OP_MR,
+  OP_RM,
+};
 
 typedef struct {
-  jasReg8_t reg;
-  uint8_t displacement;
-} jasRegDisplacement8_t;
-
-typedef struct {
-  jasReg64_t reg;
-  uint64_t displacement;
-} jasRegDisplacement64_t;
+  void *data;         /* Data in the operand */
+  enum operands type; /* Type tied to the void pointer*/
+} operand_t;
 
 /**
- * @author cheng-alvin
- * @since v0.0.1
+ * Function for identifying the operand identity, created using
+ * a large c++ unordered_map.
  *
- * Union for representing registers with different bit sizes. Please
- * note that the registers are represented in the union are 8/16/32/64 bit
- * registers. This allows a range to be compressed together and used.
- *
- * @see `jasReg8_t` for more information on the 8 bit registers.
- * @see `jasReg16_t` for more information on the 16 bit registers.
- * @see `jasReg32_t` for more information on the 32 bit registers.
- * @see `jasReg64_t` for more information on the 64 bit registers.
- *
- * @see `jasRegDisplacement8_t`, `jasRegDisplacement16_t`,
- * `jasRegDisplacement32_t`, `jasRegDisplacement64` for more
- * information on the registers with displacement addresses.
- *
- * @see AMD64 Architecture Programmer’s Manual 1 - 1 3.1.2
- * @see Intel® 64 and IA-32 Architectures 1 - 3.7.2.1
+ * @param input The input operand list
+ * @return The operand identity enumeration
  */
+enum op_ident op_ident_identify(enum operands *input);
 
-typedef union {
-  jasReg16_t reg16;
-  jasReg32_t reg32;
-  jasReg64_t reg64;
-  jasReg8_t reg8;
-  jasReg16_t indirectReg16;
-  jasReg32_t indirectReg32;
-  jasReg64_t indirectReg64;
-  jasReg8_t indirectReg8;
-  jasRegDisplacement8_t regDisp8;
-  jasRegDisplacement64_t regDisp64;
-} jasRegOperandType_t;
+#endif
 
-/**
- * @author cheng-alvin
- * @since v0.0.1
- *
- * Union for declaring the operand type and contents for the
- * assembler. This is used to store the operand type and contents
- * which can be declared within different sizes and data widths.
- *
- * @note This is used to store the operand types can be things such
- * as `char`, `int` or anything that fits within the size of the
- * union.
- *
- * @note Is untagged because it is used to store the operand type
- * and contents which can be declared within different sizes and
- * data widths. NOT for use in functions.
- */
-
-typedef union {
-  uint8_t operand8;
-  uint16_t operand16;
-  uint32_t operand32;
-  uint64_t operand64;
-  jasRegOperandType_t reg;
-} jasUntaggedOperand_t;
-
-/**
- * @author cheng-alvin
- * @since v0.0.1
- *
- * Struct for representing the tagged operand. This is used to store
- * the tagged operand using the `jasOperandType_t` enum. This allows
- * untagged generic unions to be identified by their type. Since
- * C does not provide a way to index them.
- */
-
-typedef struct {
-  jasOperandType_t type;
-  jasUntaggedOperand_t operand;
-} jasTaggedOperand_t;
-
-/**
- * @author cheng-alvin
- * @since v0.0.1
- *
- * Helper function for constructing the tagged operand. This is used
- * to construct the tagged operand using the `jasOperandType_t` enum,
- * without having messy syntax and inlines throughout.
- *
- * @param value The value to be stored within the operand.
- * @param type The type of the operand.
- *
- * @returns The tagged operand.
- */
-
-jasTaggedOperand_t jasConstructOperand(void *value, jasOperandType_t type);
-
-/**
- * @author cheng-alvin
- * @since v0.0.1
- *
- * Helper to check if the operand is a register that requires the REX
- * prefix byte. The REX prefix byte allows override of the registers
- * allowing for more options such as the r8b-r15b registers.
- *
- * @param x The tagged operand to be checked.
- *
- * @returns Whether the operand is a register that requires the REX
- * prefix in a boolean form.
- *
- * @note Once again, I recommend reading the software guides of x86
- * just to get down the basics of the assembly language and it's
- * encoding and what REX prefixes are.
- */
-
-bool jasRexExpectedInRegisterEncoding(jasTaggedOperand_t x);
-
-// TODO Docs.
-uint8_t jasGetRegField(uint8_t x);
-
-/**
- * @author cheng-alvin
- * @since v0.0.1
- *
- * Since intel instructions DO NOT support using the high registers
- * while another register is being used with a REX prefix, this
- * function is used for checking if the higher registers are encodable.
- *
- * @see Intel® 64 and IA-32 Architectures (Volume 2A) - 3.1.1.1
- *
- * (As usual, if you are interested in writing assembler code, please
- * go ahead and read the Intel manuals.)
- *
- * @param op1 The first operand to be checked.
- * @param op2 The second operand to be checked.
- * @returns The error code if the high registers are invalid or not
- */
-
-bool jasCheckIfHighRegistersAreValidUnderRexPrefix(jasTaggedOperand_t op1, jasTaggedOperand_t op2);
-
+#ifdef __cplusplus
+}
 #endif

@@ -23,39 +23,43 @@
  * @see `LICENSE`
  */
 
-#ifndef ERROR_H
-#define ERROR_H
+#ifndef BUFFER_H
+#define BUFFER_H
+
+#include <stddef.h>
+#include <stdint.h>
+
+typedef struct {
+  uint8_t *data; /* Buffer data */
+  size_t len;    /* Length of buffer */
+} buffer_t;
 
 /**
- * Type wrapper for a void dictated function pointer that
- * takes a const char pointer as an argument; Which represents
- * the function that would be used to handle errors in the jas
- * library.
- */
-typedef void (*err_callback_t)(const char *msg);
-
-/**
- * Definition for exposing the error callback function pointer
- * (or handler) to the rest of the library.
+ * Writes data to the buffer struct with the `data_len` bytes
+ * while reallocating and allocating the buffer if necessary.
  *
- * @note Should not be set directly, use `err_add_callback` instead.
+ * @param buf The pointer to the buffer struct
+ * @param data The pointer to the data to write
+ * @param data_len The length of the data to write
  */
-extern err_callback_t err_callback;
+void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len);
 
 /**
- * Function to throw errors in the jas library. and hand-balls it
- * to the function pointer handler by the user.
+ * Removes an element from the buffer struct at the specified index.
  *
- * @param msg The error message to be thrown.
+ * @param buf The pointer to the buffer struct
+ * @param elem The index of the element to remove
  */
-inline __attribute((always_inline)) void err(const char *msg);
+void buf_remove(buffer_t *buf, const size_t elem);
 
 /**
- * Function to add a callback function to the error handler.
+ * Removes a chunk of elements from the buffer struct starting from the
+ * `start` index to the `end` index.
  *
- * @param input The function pointer to the error handler.
- * @see `err_callback_t`
+ * @param buf The pointer to the buffer struct
+ * @param start The starting index of the chunk to remove
+ * @param end The ending index of the chunk to remove
  */
-inline __attribute((always_inline)) void err_add_callback(err_callback_t input);
+void buf_remove_chunk(buffer_t *buf, const size_t start, const size_t end);
 
 #endif
