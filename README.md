@@ -6,7 +6,8 @@
 <img src='https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square' />
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <img alt='PRs Welcome' src='https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=shields'/>
-  <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/cheng-alvin/jas"/>
+  <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/cheng-alvin/jas">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/cheng-alvin/jas">
   <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/cheng-alvin/jas"/>
 </p>
 
