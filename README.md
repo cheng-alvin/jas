@@ -25,7 +25,10 @@ All the code under the Jas assembler project repository is licensed under the [M
 *No warranty of any kind is provided, please double check offical sources before deploying code to production*
 
 ### ❤️ Contributing
-For developers interested and passionate about assemblers and low-level programming, please see the [contributing guide](https://github.com/cheng-alvin/jas/blob/a02fea10d9d398ef63a9fc9419ce54d8b406c3a5/CONTRIBUTING.txt) in the home directory for more information on how to contribute code to the repository! No matter how big or small your changes are, you're in for a treat!
+For developers interested and passionate about assemblers and low-level programming, please see the [contributing guide](https://github.com/cheng-alvin/jas/blob/a02fea10d9d398ef63a9fc9419ce54d8b406c3a5/CONTRIBUTING.txt) in the home directory for more information on how to contribute code to the repository! All changes are welcome, matter how big or small your changes are :-)
+
+### 🔒 Security issues
+No software is perfect,
 
 ### 📃 Going deeper
 For the developers, users and even randos on the internet who wants to learn more about the Jas assembler, x86 assembly or even the basics of computer science; for the people who just want to go beyond simply using an assembler, we have written a comprehensive guide, explaining the ins and outs of the assembler and how an assembler is written [here](https://github.com/cheng-alvin/jas/blob/44aac9cb3f99ec6ab401f9bb2a2e6a2155d05bc0/LEARN.md)
