@@ -15,7 +15,7 @@ jas: clean
 	$(MAKE) -C libjas
 
 format:
-	@clang-format -i $(shell find . -name '*.c' -o -name '*.h') --verbose
+	@clang-format -i $(shell find . -regex '.*/.*\.\(c\|cpp\|h\)$') --verbose
  
 clean:
 	find . -name "*.o" -type f -delete

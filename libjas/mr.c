@@ -30,10 +30,8 @@
 #include <stdint.h>
 
 void mr(
-  const operand_t *op_arr, 
-  const buffer_t *buf, __attribute__((__unused)) 
-  const instr_encode_table_t *instr_ref
-) {
+    const operand_t *op_arr,
+    const buffer_t *buf, __attribute__((__unused)) const instr_encode_table_t *instr_ref) {
   const uint8_t *reg = op_arr[0].data;
   const uint8_t *rm = op_arr[1].data;
 
