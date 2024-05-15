@@ -29,8 +29,8 @@
 /**
  * Macros for defining the REX byte values. These values
  * are used to override operand sizes when using long mode.
- * A letter is followed after the `REX_` prefix to dictate the 
- * prefix type used in the situation, and can be `|`ed 
+ * A letter is followed after the `REX_` prefix to dictate the
+ * prefix type used in the situation, and can be `|`ed
  * together as well!
  *
  * @see https://wiki.osdev.org/X86-64_Instruction_Encoding#REX_prefix
