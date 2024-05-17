@@ -189,6 +189,15 @@ typedef struct {
 } operand_t;
 
 /**
+ * Function for setting the prefix of the operand based on the
+ * size of the operand.
+ *
+ * @param buf The buffer to write the prefix to
+ * @param op_arr The operand array to check the size of
+ */
+void op_set_prefix(buffer_t *buf, const enum operands op);
+
+/**
  * Function for identifying the operand identity, created using
  * a large c++ unordered_map.
  *
@@ -196,6 +205,24 @@ typedef struct {
  * @return The operand identity enumeration
  */
 enum op_ident op_ident_identify(enum operands *input);
+
+/**
+ * Function for finding the size of the operand type in bits, very
+ * similar to the `sizeof` operator in C99. Used to determine
+ * the size of the operand in the instruction.
+ *
+ * @see https://en.cppreference.com/w/c/types/sizeof
+ * @see `enum operands`
+ *
+ * @param input The operand identifier in enum form
+ * @return The size of the operand in bits
+ *
+ * @note returns 0 if the operand size is not recognized
+ *
+ * @note This function checks for the size of the OPERAND TYPE
+ * NOT THE OPERAND DATA ITSELF!
+ */
+uint8_t op_sizeof(enum operands input);
 
 #endif
 

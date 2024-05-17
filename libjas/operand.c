@@ -24,6 +24,7 @@
  */
 
 #include "operand.h"
+#include "rex.h"
 #include <stdint.h>
 
 op_ident_hash_t op_hash(enum operands input) {
@@ -46,4 +47,43 @@ op_ident_hash_t op_hash(enum operands input) {
     return OP_HASH_ACC;
 
   return 0b11111111;
+}
+
+uint8_t op_sizeof(enum operands input) {
+  if (op_byte(input))
+    return 8;
+
+  if (op_word(input))
+    return 16;
+
+  if (op_dword(input))
+    return 32;
+
+  if (op_qword(input))
+    return 64;
+
+  return 0;
+}
+
+void op_set_prefix(buffer_t *buf, const enum operands op) {
+  switch (op_sizeof(op)) {
+  case 8:
+    buf_write(buf, 0x0F, 1);
+    break;
+
+  case 16:
+    buf_write(buf, OP_WORD_OVERRIDE, 1);
+    break;
+
+  case 32:
+    break;
+
+  case 64:
+    buf_write(buf, REX_W, 1);
+    break;
+
+  default:
+    err("Invalid operand size.");
+    return;
+  }
 }
