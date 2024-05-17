@@ -141,10 +141,11 @@ typedef struct {
  * @param op_arr The array of operands to encode
  * @param buf The buffer to write the encoded instruction to
  * @param instr_ref The instruction reference table
+ * @param mode The operating mode of the instruction
  *
  * @note All encoder functions will conform to this signature.
  */
-typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref);
+typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 
 /**
  * Lookup table for the different instruction class encoders.
