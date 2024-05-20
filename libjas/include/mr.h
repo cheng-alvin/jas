@@ -28,6 +28,7 @@
 
 #include "buffer.h"
 #include "instruction.h"
+#include "mode.h"
 
 /**
  * Dumb encoder function to encode based on the `mr` identity.
@@ -45,6 +46,6 @@
  * @note For notes on the arguments see `instr_encoder_t`.
  * @extends instr_encoder_t
  */
-void mr(const operand_t *op_arr, const buffer_t *buf, __attribute__((__unused)) const instr_encode_table_t *instr_ref);
+void mr(const operand_t *op_arr, const buffer_t *buf, const instr_encode_table_t *instr_ref, const enum modes mode);
 
 #endif
