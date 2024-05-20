@@ -22,25 +22,40 @@
  *
  * @see `LICENSE`
  */
-
 #include "mr.h"
 #include "buffer.h"
 #include "error.h"
 #include "mode.h"
 #include "operand.h"
+#include "register.h"
+#include "rex.h"
 #include <stdint.h>
 
 void mr(const operand_t *op_arr, const buffer_t *buf, const instr_encode_table_t *instr_ref, const enum modes mode) {
+
+  const uint8_t *reg = reg_lookup_val(op_arr[0].data);
+  const uint8_t *rm = op_arr[1].data;
+
   if (op_sizeof(op_arr[0].type) != op_sizeof(op_arr[1].type)) {
     err("Invalid operand sizes.");
     return;
   }
 
-  // TODO strange 1st parameter behavior
   op_set_prefix(buf, op_arr[0].type);
 
-  const uint8_t *reg = op_arr[0].data;
-  const uint8_t *rm = op_arr[1].data;
+  if (reg_needs_rex(op_arr[0].data)) {
+    if (mode == MODE_LONG)
+      buf->data[buf->len - 1] = buf->data[buf->len - 1] | REX_R;
+
+    buf_write(buf, REX_B, 1);
+  }
+
+  if (instr_ref->should_fallback_support) {
+    if (mode_valid(mode, instr_ref->support)) {
+      err("Invalid operating mode.");
+      return;
+    }
+  }
 
   uint8_t mr_mode;
 
