@@ -29,13 +29,17 @@
 #include <stdbool.h>
 
 /**
- * Function for checking if an instruction is
- * allowed in a given mode by checking if a
- * bit is set in the support field.
+ * Function for checking if an instruction is allowed in a given mode
+ * by checking if a bit is set in the support field.
+ *
+ * @note Please ensure the `should_fallback_support` field is checked
+ * before calling this function, this function DOES NOT check for for
+ * this feature, and will give incorrect results if the field is not
+ * checked PRIOR.
  *
  * @param mode The mode to check.
  * @param support The support field of the instruction.
- * @return True if the mode is allowed, false otherwise.
+ * @return True if the mode is matched, otherwise false.
  *
  * @see instr_support_t
  */
