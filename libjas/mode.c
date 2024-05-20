@@ -27,7 +27,6 @@
 #include "instruction.h"
 #include <stdbool.h>
 
-// TODO Write the fucking test case!
 bool mode_valid(const enum modes mode, const instr_support_t support) {
   /**
    * @brief
