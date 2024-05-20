@@ -228,6 +228,6 @@ uint8_t reg_lookup_val(enum registers input);
  * @return bool true if register needs REX.B
  * @see `registers` enum
  */
-inline __attribute((always_inline)) bool reg_needs_rex(enum registers input);
+ bool reg_needs_rex(enum registers input);
 
 #endif
