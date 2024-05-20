@@ -190,10 +190,17 @@ typedef struct {
 
 /**
  * Function for setting the prefix of the operand based on the
- * size of the operand.
+ * size of the reference operand (See below).
  *
  * @param buf The buffer to write the prefix to
  * @param op_arr The operand array to check the size of
+ *
+ * @note The reference operand shall not be confused with the
+ * normal operand, the reference operand is the operand the
+ * specific operand the instruction is based upon. On the contrary,
+ * the normal operand is any other operand the instruction uses.
+ *
+ * 🤠
  */
 void op_set_prefix(buffer_t *buf, const enum operands op);
 
