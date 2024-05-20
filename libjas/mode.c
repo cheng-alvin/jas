@@ -29,5 +29,13 @@
 
 // TODO Write the fucking test case!
 bool mode_valid(const enum modes mode, const instr_support_t support) {
-  return (support & (1 << (int)mode)) != 0; /* TODO What the? */
+  /**
+   * @brief
+   * Checks is the position (or `mode`) is set in the 8-bit integer
+   * bit field, against the `support` variable. similar functionality
+   * the c++ `std:bitset` function.
+   *
+   * @see https://stackoverflow.com/questions/523724/c-c-check-if-one-bit-is-set-in-i-e-int-variable
+   */
+  return !(support & (1 << (int)mode));
 }
