@@ -50,3 +50,4 @@ buffer_t *codegen(enum modes mode, instruction_t *instr_arr) {
   for (int i = 0; i < sizeof(instr_arr); i++) {
     const instr_encode_table_t *instr = instr_table[instr_arr[i].instr];
   }
+}
