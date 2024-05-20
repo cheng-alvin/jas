@@ -24,7 +24,6 @@
  */
 
 #include "error.h"
-#include "null.h"
 
 err_callback_t err_callback;
 
