@@ -22,6 +22,7 @@
  *
  * @see `LICENSE`
  */
+
 #include "mr.h"
 #include "buffer.h"
 #include "error.h"
@@ -30,6 +31,10 @@
 #include "register.h"
 #include "rex.h"
 #include <stdint.h>
+
+// TODO Refactor code 
+// It's f---ing ugly
+
 
 void mr(const operand_t *op_arr, const buffer_t *buf, const instr_encode_table_t *instr_ref, const enum modes mode) {
 
