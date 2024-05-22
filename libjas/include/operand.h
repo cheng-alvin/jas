@@ -192,8 +192,8 @@ typedef struct {
  * Function for setting the prefix of the operand based on the
  * size of the reference operand (See below).
  *
- * @param buf The buffer to write the prefix to
- * @param op_arr The operand array to check the size of
+ * @param buf The buffer to write the prefix to.
+ * @param op The reference operand to revolve around.
  *
  * @note The reference operand shall not be confused with the
  * normal operand, the reference operand is the operand the
