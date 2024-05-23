@@ -117,64 +117,6 @@ enum operands {
 #define op_rm(x) (op_r(x) || op_m(x))
 
 /**
- * Type wrapper for an unsigned char that represents the
- * hash of an operand identifier. Used as a value for comparison
- * against the operand identity encoder lookup table. The individual
- * bits of the byte represent the type of operands within the
- * operand identifier as follows:
- *
- * 0: Relative operand (rel8/16/32/64)
- * 1: Register operand (r8/16/32/64)
- * 2: Immediate operand (imm8/16/32/64)
- * 3: Memory operand (m8/16/32/64)
- * 4: Segment register operand (seg_reg)
- * 5: Accumulator register operand (acc8/16/32/64)
- *
- * 6-7: Reserved for future use
- *
- * A bit set to 1 indicates that the operand is of the corresponding
- * type, while a bit set to 0 indicates that the operand is not of the
- * corresponding type.
- *
- * @note Not to be confused with the operand types (`enum operands`)
- *
- * Also, there are macros below to help you!
- */
-typedef uint8_t op_ident_hash_t;
-
-/**
- * Function for hashing the operand identifier.
- * Used to compare against the operand identity encoder lookup table.
- * (Based on the operand types like REL, R, IMM, etc.)
- *
- * @param input The operand identifier in enum form
- * @return The operand hash value
- *
- * @see `op_ident_hash_t`
- * @see `op_ident_identify`
- *
- * @note returns 0b11111111 if the operand combinations
- * is not recognized
- */
-op_ident_hash_t op_hash(enum operands input);
-
-/**
- * Macro definitions for the different operand hash values.
- * Used to compare against the operand identity encoder lookup table.
- *
- * @see `op_ident_hash_t`
- *
- * ? Could be overcomplicated?
- */
-
-#define OP_HASH_REL 0b00000001
-#define OP_HASH_R 0b00000010
-#define OP_HASH_IMM 0b00000100
-#define OP_HASH_M 0b00001000
-#define OP_HASH_SEG 0b00010000
-#define OP_HASH_ACC 0b00100000
-
-/**
  * Enumeration for the different operand identifiers.
  * Used to lookup the operand encoder functions.
  */

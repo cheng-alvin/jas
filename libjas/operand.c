@@ -27,28 +27,6 @@
 #include "rex.h"
 #include <stdint.h>
 
-op_ident_hash_t op_hash(enum operands input) {
-  if (op_rel(input))
-    return OP_HASH_REL;
-
-  if (op_r(input))
-    return OP_HASH_R;
-
-  if (op_imm(input))
-    return OP_HASH_IMM;
-
-  if (op_m(input))
-    return OP_HASH_M;
-
-  if (op_seg(input))
-    return OP_HASH_SEG;
-
-  if (op_acc(input))
-    return OP_HASH_ACC;
-
-  return 0b11111111;
-}
-
 uint8_t op_sizeof(enum operands input) {
   if (op_byte(input))
     return 8;
