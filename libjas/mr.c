@@ -33,8 +33,6 @@
 #include <stdint.h>
 
 // TODO Refactor code
-// It's f---ing ugly
-
 void mr(const operand_t *op_arr, const buffer_t *buf, const instr_encode_table_t *instr_ref, const enum modes mode) {
 
   const uint8_t *reg = reg_lookup_val(op_arr[0].data);
@@ -55,7 +53,7 @@ void mr(const operand_t *op_arr, const buffer_t *buf, const instr_encode_table_t
   }
 
   if (instr_ref->should_fallback_support) {
-    if (mode_valid(mode, instr_ref->support)) {
+    if (mode_valid(mode, instr_ref->support)) { /* IDK why my language server is complaining */
       err("Invalid operating mode.");
       return;
     }
