@@ -26,7 +26,7 @@
 #ifndef OPERAND_HPP
 #define OPERAND_HPP
 
-#include<stdint.h>
+#include <stdint.h>
 
 /**
  * Type wrapper for an unsigned char that represents the
