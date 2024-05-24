@@ -27,7 +27,6 @@
 #include "error.h"
 #include "instruction.h"
 #include "mode.h"
-#include "null.h"
 #include "register.h"
 #include <stddef.h>
 

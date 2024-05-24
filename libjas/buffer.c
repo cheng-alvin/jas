@@ -24,9 +24,9 @@
  */
 
 #include "buffer.h"
-#include "null.h"
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len) {
   buf->data = (uint8_t *)(buf->data == NULL ? malloc(data_len) : realloc(buf->data, buf->len + data_len));

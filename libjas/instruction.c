@@ -25,10 +25,10 @@
 
 #include "instruction.h"
 #include "mr.h"
-#include "null.h"
 #include "operand.h"
 #include "rm.h"
 #include <stdbool.h>
+#include <stddef.h>
 
 instr_encode_table_t mov[] = {
     {

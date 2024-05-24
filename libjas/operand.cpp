@@ -24,7 +24,7 @@
  */
 
 #include "operand.h"
-#include "null.h"
+#include <cstddef>
 #include <cstdint>
 #include <unordered_map>
 #include "operand.hpp"
