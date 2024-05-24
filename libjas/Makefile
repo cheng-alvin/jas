@@ -1,4 +1,4 @@
-CC = clang
+CC = gcc
 LD = ld
 DB = lldb
 
@@ -11,7 +11,7 @@ HOME = ..
 
 all: libjas.o
 
-libjas.o: CFLAGS = $(CFLAGS_COMMON) -Ofast
+libjas.o: CFLAGS = $(CFLAGS_COMMON) 
 libjas.o: $(OBJ) 
 	$(LD) -r $^ -o $(BUILD)/$@ 
 
