@@ -26,6 +26,7 @@
 #ifndef MODE_H
 #define MODE_H
 
+#include "instruction.h"
 #include <stdbool.h>
 
 /**
