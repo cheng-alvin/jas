@@ -29,6 +29,17 @@
 #include <stdbool.h>
 
 /**
+ * Enums representing the operating modes of
+ * the x86 processor as defined by the Intel
+ * manual.
+ */
+enum modes {
+  MODE_REAL,
+  MODE_PROTECTED,
+  MODE_LONG,
+};
+
+/**
  * Function for checking if an instruction is allowed in a given mode
  * by checking if a bit is set in the support field.
  *
@@ -44,16 +55,5 @@
  * @see instr_support_t
  */
 bool mode_valid(const enum modes mode, const instr_support_t support);
-
-/**
- * Enums representing the operating modes of
- * the x86 processor as defined by the Intel
- * manual.
- */
-enum modes {
-  MODE_REAL,
-  MODE_PROTECTED,
-  MODE_LONG,
-};
 
 #endif
