@@ -111,12 +111,13 @@ typedef uint8_t instr_support_t;
 #define INSTR_SUPPORT_64BIT 0b00000100
 #define INSTR_SUPPORT_ALL 0b00000111
 
+// ?? Why allocate 4 bytes?
 typedef struct {
   enum op_ident ident;          /* Operand encoding identity */
   uint8_t opcode_ext;           /* Opcode extension */
-  uint8_t *opcode;              /* Opcode of the instruction */
+  uint8_t opcode[4];            /* Opcode of the instruction */
   instr_support_t support;      /* Support status of the instruction (Optional, defaults to operand ident provided status) */
-  uint8_t *byte_instr_opcode;   /* 8 bit opcode fallback of the instruction */
+  uint8_t byte_instr_opcode[4]; /* 8 bit opcode fallback of the instruction */
   bool should_fallback_support; /* If the encode needs to use the `support` */
 } instr_encode_table_t;
 
