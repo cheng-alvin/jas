@@ -36,6 +36,9 @@ void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len) {
 
   buf->len += data_len;
 }
+void buf_write_byte(buffer_t *buf, const uint8_t data) {
+  buf_write(buf, (uint8_t[]){data}, 1);
+}
 
 void buf_remove(buffer_t *buf, const size_t elem) {
   if (buf->len == 0)

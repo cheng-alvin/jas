@@ -45,6 +45,15 @@ typedef struct {
 void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len);
 
 /**
+ * Writes a one byte buffer into the dynamic buffer array .
+ * while reallocating and allocating the buffer if necessary.
+ *
+ * @param buf The pointer to the buffer struct
+ * @param data The data to write
+ */
+void buf_write_byte(buffer_t *buf, const uint8_t data);
+
+/**
  * Removes an element from the buffer struct at the specified index.
  *
  * @param buf The pointer to the buffer struct
