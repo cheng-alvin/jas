@@ -46,18 +46,18 @@ uint8_t op_sizeof(enum operands input) {
 void op_set_prefix(buffer_t *buf, const enum operands op) {
   switch (op_sizeof(op)) {
   case 8:
-    buf_write(buf, 0x0F, 1);
+    buf_write_byte(buf, 0x0F);
     break;
 
   case 16:
-    buf_write(buf, OP_WORD_OVERRIDE, 1);
+    buf_write_byte(buf, OP_WORD_OVERRIDE);
     break;
 
   case 32:
     break;
 
   case 64:
-    buf_write(buf, REX_W, 1);
+    buf_write_byte(buf, REX_W);
     break;
 
   default:

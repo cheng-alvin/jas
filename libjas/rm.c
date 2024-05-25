@@ -42,7 +42,7 @@ void rm(const operand_t *op_arr, const buffer_t *buf, __attribute__((__unused)) 
   if (mode == -1)
     return;
 
-  buf_write(buf, mode << 6 | *reg << 3 | *rm, 1);
+  buf_write_byte(buf, mode << 6 | *reg << 3 | *rm);
 }
 
 static int8_t operand_mode(const operand_t *op_arr) {

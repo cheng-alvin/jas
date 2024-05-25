@@ -49,7 +49,7 @@ void mr(const operand_t *op_arr, const buffer_t *buf, const instr_encode_table_t
     if (mode == MODE_LONG)
       buf->data[buf->len - 1] = buf->data[buf->len - 1] | REX_R;
 
-    buf_write(buf, REX_B, 1);
+    buf_write_byte(buf, REX_B);
   }
 
   if (instr_ref->should_fallback_support) {
@@ -71,5 +71,5 @@ void mr(const operand_t *op_arr, const buffer_t *buf, const instr_encode_table_t
     return;
   }
 
-  buf_write(buf, mr_mode << 6 | *reg << 3 | *rm, 1);
+  buf_write_byte(buf, mr_mode << 6 | *reg << 3 | *rm);
 }
