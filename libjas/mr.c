@@ -45,7 +45,7 @@ void mr(const operand_t *op_arr, const buffer_t *buf, const instr_encode_table_t
 
   op_set_prefix(buf, op_arr[0].type);
 
-  if (reg_needs_rex(op_arr[0].data)) {
+  if (reg_needs_rex((enum registers)op_arr[0].data)) {
     if (mode == MODE_LONG)
       buf->data[buf->len - 1] = buf->data[buf->len - 1] | REX_R;
 
