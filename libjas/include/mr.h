@@ -46,6 +46,6 @@
  * @note For notes on the arguments see `instr_encoder_t`.
  * @extends instr_encoder_t
  */
-void mr(const operand_t *op_arr, const buffer_t *buf, const instr_encode_table_t *instr_ref, const enum modes mode);
+void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 
 #endif
