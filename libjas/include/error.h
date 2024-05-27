@@ -31,6 +31,11 @@
  * takes a const char pointer as an argument; Which represents
  * the function that would be used to handle errors in the jas
  * library.
+ *
+ * This function takes in an error message as a string and passes
+ * it into the handler from the `err()` function.
+ *
+ * @param msg A string that represents the error message.
  */
 typedef void (*err_callback_t)(const char *msg);
 
