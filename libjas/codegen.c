@@ -25,7 +25,6 @@
 
 #include "buffer.h"
 #include "error.h"
-#include "instruction.h"
 #include "mode.h"
 #include "register.h"
 #include <stddef.h>

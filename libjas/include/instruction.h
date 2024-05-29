@@ -26,7 +26,6 @@
 #ifndef INSTRUCTION_H
 #define INSTRUCTION_H
 
-#include "mode.h"
 #include "operand.h"
 #include <stdbool.h>
 #include <stdint.h>
