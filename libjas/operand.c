@@ -43,7 +43,7 @@ uint8_t op_sizeof(enum operands input) {
   return 0;
 }
 
-void op_set_prefix(buffer_t *buf, const enum operands op) {
+void op_write_prefix(buffer_t *buf, const enum operands op) {
   switch (op_sizeof(op)) {
   case 8:
     buf_write_byte(buf, 0x0F);

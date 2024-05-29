@@ -144,7 +144,7 @@ typedef struct {
  *
  * 🤠
  */
-void op_set_prefix(buffer_t *buf, const enum operands op);
+void op_write_prefix(buffer_t *buf, const enum operands op);
 
 /**
  * Function for identifying the operand identity, created using
