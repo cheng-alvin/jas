@@ -24,10 +24,10 @@
  */
 
 #include "operand.h"
+#include "operand.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <unordered_map>
-#include "operand.hpp"
 
 static constexpr uint32_t __combine__(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
   return ((a) << 24 | (b) << 16 | (c) << 8 | (d));
