@@ -23,37 +23,13 @@
  * @see `LICENSE`
  */
 
-#ifndef REX_H
-#define REX_H
+#include "rex.h"
+#include "buffer.h"
+#include <stdint.h>
 
-/**
- * Macros for defining the REX byte values. These values
- * are used to override operand sizes when using long mode.
- * A letter is followed after the `REX_` prefix to dictate the
- * prefix type used in the situation, and can be `|`ed
- * together as well!
- *
- * @see https://wiki.osdev.org/X86-64_Instruction_Encoding#REX_prefix
- */
+void rex_insert(buffer_t *buf, const uint8_t rex) {
+  if (buf->data[buf->len - 1] > REX_DEFAULT)
+    buf->data[buf->len - 1] = buf->data[buf->len - 1] | rex;
 
-#define REX_W 0x48
-#define REX_R 0x44
-#define REX_X 0x42
-#define REX_B 0x41
-
-#define REX_DEFAULT 0b01000000
-
-/**
- * Function for inserting a REX byte into the instruction buffer,
- * dynamically. (Wow fancy!) This function will just simply check
- * if there is another old REX byte in the buffer, and if there is,
- * it will just create a new one!
- *
- * @param buf The buffer to insert the REX byte into.
- * @param rex The REX byte to insert into the buffer.
- *
- * :)
- */
-void rex_insert(buffer_t *buf, const uint8_t rex);
-
-#endif
+  buf_write_byte(buf, rex);
+}
