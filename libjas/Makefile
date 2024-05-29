@@ -5,7 +5,7 @@ DB = lldb
 CFLAGS_COMMON = -I include  -I ./ -Wall -Wextra -std=c99 
 CFLAGS = $(CFLAGS_COMMON)
 
-OBJ = buffer.o codegen.o error.o instruction.o mode.o mr.o operand.o register.o rm.o operand_cpp.o
+OBJ = buffer.o error.o instruction.o mode.o mr.o operand.o register.o operand_cpp.o
 BUILD = ../build
 HOME = ..
 
