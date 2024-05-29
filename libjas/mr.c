@@ -43,19 +43,10 @@ void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
 
   op_write_prefix(buf, op_arr[0].type);
 
-  if (reg_needs_rex((enum registers)op_arr[0].data)) {
-    if (mode == MODE_LONG)
-      buf->data[buf->len - 1] = buf->data[buf->len - 1] | REX_R;
+  op_check_mode(mode, instr_ref->support);
 
-    buf_write_byte(buf, REX_B);
-  }
-
-  if (instr_ref->should_fallback_support) {
-    if (mode_valid(mode, instr_ref->support)) {
-      err("Invalid operating mode.");
-      return;
-    }
-  }
+  if (reg_needs_rex((enum registers)op_arr[0].data))
+    rex_insert(buf, REX_B);
 
   uint8_t mr_mode;
 
