@@ -32,7 +32,6 @@
 #include "rex.h"
 #include <stdint.h>
 
-// TODO Refactor code
 void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
 
   const uint8_t *reg = reg_lookup_val((enum registers)op_arr[0].data);
@@ -53,7 +52,7 @@ void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   }
 
   if (instr_ref->should_fallback_support) {
-    if (mode_valid(mode, instr_ref->support)) { /* IDK why my language server is complaining */
+    if (mode_valid(mode, instr_ref->support)) {
       err("Invalid operating mode.");
       return;
     }
