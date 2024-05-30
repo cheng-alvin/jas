@@ -151,9 +151,9 @@ typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_t
 /**
  * Lookup table for the different instruction class encoders.
  *
- * @param input The operand identity
- * @return The operand encoder function pointer
+ * @param input The instruction encoding identity
+ * @return The instruction encoder function pointer
  */
-instr_encoder_t op_encode_func(enum op_ident input);
+instr_encoder_t instr_encode_func(enum op_ident input);
 
 #endif
