@@ -145,6 +145,8 @@ typedef struct {
  * @param mode The operating mode of the instruction
  *
  * @note All encoder functions will conform to this signature.
+ *
+ * ? why is instruction mode a pointer instead of a plain variable?
  */
 typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 
