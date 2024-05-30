@@ -25,27 +25,28 @@
 
 #include "buffer.h"
 #include "error.h"
+#include "instruction.h"
 #include "mode.h"
-#include "register.h"
 #include <stddef.h>
 
-// TODO Remember to note that NULL is when there's an error
+buffer_t codegen(enum modes mode, instruction_t *instr_arr) {
+  buffer_t buf;
+  buf.data = NULL;
 
-buffer_t *codegen(enum modes mode, instruction_t *instr_arr) {
-  /**
-   * Implementation:
-   * @brief takes an array of instructions and spits
-   * out an array of binary values corresponding to
-   * the imported instructions.
-   *
-   * TODO items (Tick when completed)
-   * - Loop through the instruction array ✅
-   * - Check and validate the instructions (责任交给了identity) ✅
-   * - Dump opcodes & prefixes
-   * - Dump returned operand encoding
-   */
+  for (size_t i = 0; i < sizeof(instr_arr); i++) {
+    instruction_t current = instr_arr[i];
+    enum op_ident ident = op_ident_identify(current.operands);
+    const instr_encode_table_t ref = instr_table[instr_arr[i].instr][ident];
 
-  for (int i = 0; i < sizeof(instr_arr); i++) {
-    const instr_encode_table_t *instr = instr_table[instr_arr[i].instr];
+    if (ref.opcode == NULL) {
+      err("Instruction opcode not found. (Suggests an invalid instruction)");
+      free(buf.data);
+      return (buffer_t){.data = NULL};
+    }
+
+    // Encoder function - quick and simple :)
+    instr_encode_func(ident)(current.operands, &buf, &ref, mode);
   }
+
+  return buf;
 }
