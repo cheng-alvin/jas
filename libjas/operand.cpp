@@ -24,6 +24,7 @@
  */
 
 #include "operand.h"
+#include "error.h"
 #include "operand.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -75,6 +76,11 @@ extern "C" enum op_ident op_ident_identify(enum operands *input) {
 
   for (uint8_t i = 0; i < sizeof(hash); i++)
     hash_key |= ((uint32_t)hash[i]) << (24 - i * 8);
+
+  if (op::lookup.find(hash_key) == op::lookup.end()) {
+    err("Operand identifier not found.");
+    return;
+  }
 
   return (enum op_ident)op::lookup[hash_key];
 }
