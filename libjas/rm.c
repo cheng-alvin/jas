@@ -26,33 +26,39 @@
 #include "rm.h"
 #include "buffer.h"
 #include "error.h"
+#include "mode.h"
 #include "operand.h"
+#include "register.h"
+#include "rex.h"
 #include <stdint.h>
 
-// TODO Test code, no unit provided.
-
-// Static definitions
-static int8_t operand_mode(const operand_t *op_arr);
-
-void rm(const operand_t *op_arr, const buffer_t *buf, __attribute__((__unused)) const instr_encode_table_t *instr_ref) {
-  const uint8_t *reg = op_arr[1].data;
+void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  const uint8_t reg = reg_lookup_val((enum registers)op_arr[1].data);
   const uint8_t *rm = op_arr[0].data;
-  const int8_t mode = operand_mode(op_arr);
 
-  if (mode == -1)
+  if (op_sizeof(op_arr[0].type) != op_sizeof(op_arr[1].type)) {
+    err("Invalid operand sizes.");
     return;
+  }
 
-  buf_write_byte(buf, mode << 6 | *reg << 3 | *rm);
-}
+  op_write_prefix(buf, op_arr[1].type);
 
-static int8_t operand_mode(const operand_t *op_arr) {
+  op_check_mode(mode, instr_ref->support);
+
+  if (reg_needs_rex((enum registers)op_arr[1].data))
+    rex_insert(buf, REX_B);
+
+  uint8_t mr_mode;
+
   if (op_r(op_arr[1].type))
-    return OP_MODRM_REG;
+    mr_mode = OP_MODRM_REG;
   else if (op_m(op_arr[1].type))
-    return OP_MODRM_INDIRECT;
+    mr_mode = OP_MODRM_INDIRECT;
 
   else {
     err("Operand identity mismatch. (hint: displacements are not supported yet)");
-    return -1;
+    return;
   }
+
+  buf_write_byte(buf, mr_mode << 6 | reg << 3 | *rm);
 }
