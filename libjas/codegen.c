@@ -28,12 +28,13 @@
 #include "instruction.h"
 #include "mode.h"
 #include <stddef.h>
+#include <stdlib.h>
 
-buffer_t codegen(enum modes mode, instruction_t *instr_arr) {
+buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
   buffer_t buf;
   buf.data = NULL;
 
-  for (size_t i = 0; i < sizeof(instr_arr); i++) {
+  for (size_t i = 0; i < arr_size; i++) {
     instruction_t current = instr_arr[i];
     enum op_ident ident = op_ident_identify(current.operands);
     const instr_encode_table_t ref = instr_table[instr_arr[i].instr][ident];
