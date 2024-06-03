@@ -69,6 +69,7 @@ namespace op {
 extern "C" enum op_ident op_ident_identify(enum operands *input) {
   op_ident_hash_t hash[4];
 
+  // TODO: (note) Git could have not updated, a change was published for a size.
   for (auto i = 0; i < sizeof(input); i++)
     hash[i] = op_hash(input[i]);
 
