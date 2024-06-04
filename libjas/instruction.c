@@ -38,6 +38,7 @@ instr_encode_table_t mov[] = {
         .support = NULL,
         .byte_instr_opcode = {0x88},
         .should_fallback_support = false,
+        .opcode_size = 1,
     },
 };
 

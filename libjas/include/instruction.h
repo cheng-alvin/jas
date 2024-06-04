@@ -119,6 +119,7 @@ typedef struct {
   instr_support_t support;      /* Support status of the instruction (Optional, defaults to operand ident provided status) */
   uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
   bool should_fallback_support; /* If the encode needs to use the `support` */
+  uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
 } instr_encode_table_t;
 
 /**
