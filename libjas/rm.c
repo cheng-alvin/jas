@@ -45,6 +45,10 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
 
   op_check_mode(mode, instr_ref->support);
 
+  // if (op_sizeof(op_arr[0].type) == 8) {
+  //   buf_write(buf, instr_ref->opcode)
+  // }
+
   if (reg_needs_rex((enum registers)op_arr[1].data))
     rex_insert(buf, REX_B);
 
