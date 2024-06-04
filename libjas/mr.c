@@ -42,8 +42,9 @@ void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   }
 
   op_write_prefix(buf, op_arr[0].type);
-
   op_check_mode(mode, instr_ref->support);
+  const uint8_t opcode[3] = op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode;
+  buf_write(buf, opcode, instr_ref->opcode_size);
 
   if (reg_needs_rex(*reg))
     rex_insert(buf, REX_B);
