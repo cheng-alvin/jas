@@ -33,8 +33,8 @@
 #include <stdint.h>
 
 void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  const uint8_t reg = reg_lookup_val((enum registers)op_arr[1].data);
-  const uint8_t *rm = op_arr[0].data;
+  const enum registers *reg = (enum registers *)op_arr[0].data;
+  const uint8_t *rm = op_arr[1].data;
 
   if (op_sizeof(op_arr[0].type) != op_sizeof(op_arr[1].type)) {
     err("Invalid operand sizes.");
@@ -49,7 +49,7 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   //   buf_write(buf, instr_ref->opcode)
   // }
 
-  if (reg_needs_rex((enum registers)op_arr[1].data))
+  if (reg_needs_rex(*reg))
     rex_insert(buf, REX_B);
 
   uint8_t mr_mode;
@@ -64,5 +64,5 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
     return;
   }
 
-  buf_write_byte(buf, mr_mode << 6 | reg << 3 | *rm);
+  buf_write_byte(buf, mr_mode << 6 | *reg << 3 | *rm);
 }
