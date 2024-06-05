@@ -16,7 +16,6 @@
 
 This is the official source tree for the Jas assembler. Jas is a MIT licensed, free and open-source x86 assembler capable of generating ELF files designed to run on on linux systems. Please note that this is an experimental project designed to be a educational project for myself and others to study and use. I want this assembler to be a programable system that allows people to whip up their own compilers and generate executable x86 code without self-developing their little assemblers.
 
-### ☝️ Motivation
 Assemblers are heavy duty software normally written by those people who know their stuff, the Jas project aims to be a open-source assembler that's not just limited to compiling code into machine code, but to educate novices like me on the vast world of assembly language and assembler encodings. We will always aim to be as transparent and open as possible to the world! 
 
 ### 📝 Licensing 
@@ -24,10 +23,9 @@ All the code under the Jas assembler project repository is licensed under the [M
 
 *No warranty of any kind is provided, please double check offical sources before deploying code to production*
 
-### ❤️ Contributing
+### ❤️ Contributing / Security issues
 For developers interested and passionate about assemblers and low-level programming, please see the [contributing guide](https://github.com/cheng-alvin/jas/blob/a02fea10d9d398ef63a9fc9419ce54d8b406c3a5/CONTRIBUTING.txt) in the home directory for more information on how to contribute code to the repository! All changes are welcome, matter how big or small your changes are :-)
 
-### 🔒 Security issues
 No software is perfect, nor is Jas. As the assembler is written in C, many secuity issues may arise, causing issues across the program. It's a shared responsibility to safeguard Jas of all developers, contributers and users alike. Please report all secuity concerns in a timely manner via email or the means provided [here](https://github.com/cheng-alvin/jas/blob/dev/SECURITY.md). 
 
 Thank you for your part in helping to safeguard Jas from potential attacks.
