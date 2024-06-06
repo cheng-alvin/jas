@@ -85,14 +85,17 @@ As you've already forseen, there's way more registers than 7! We have both 32-bi
 We all know that assemblers are normally just a command line tool like `nasm` or `as`. Some assemblers are also libraries that can be used in other programs, just like Jas. As briefly stated above, the Jas assembler is organized into structs and functions and can be called directly. The behavior for the encoding of the instruction and it's operands are packaged inside the function. This allows the user to not worry about the syntax rules of the instruction and allows them to focus on the assembly code itself. 
 
 ### Entry point
-The Jas assembler (mainly `libjas`), is NOT a program, it's a library that generates assembler output from structs passed into a single function, `codegen()` in `codegen.c`. After being parsed and compiled into a set of structs, the `codegen()` assembler function loops through the instructions array and maps it to one of the operand identities where more processing gets completed (See content below). 
+The Jas assembler (mainly `libjas`), is NOT a program, it's a library that generates assembler output from structs passed into a single function, `codegen()` in `codegen.c`. The `libjas` library also contains many sub-modules responsible for different utility functions like buffers, registers and operand checking. After being parsed and compiled into a set of structs, the `codegen()` assembler function loops through the instructions array and maps it to one of the operand identities where more processing gets completed (See content below). 
 
 ### Operand identities
 Many instructions share lots of operand encoding logic that can be encapsulated. Each operand encoding identities have a certain order of operand types, allowing code to be shared among instructions who have similar operand inputs. 
 
-In Jas, we have organized these functions as codes like `MR`, `RM` or `Z` in which it corrisponds to a certain combination of operands types (or classes if your fancy) within an instruction. However, to make the process a bit easier, Jas has incorpreated the prefixes and opcodes within the identies, allowing easier encoding where functions can be packaged together. All of the operand identites are packaged in a function named with the operand identity's identifier (e.g `mr()` for `MR`), placed within a file similarly named by the identity's code (e.g `mr.c` for `MR`).
+In Jas, we have organized these functions as codes like `MR`, `RM` or `Z` in which it corresponds to a certain combination of operands types (or classes if your fancy) within an instruction. However, tOnce an instruction struct is mapped to one of the operand identities, the assembler has narrowed down the instruction to a small set of possibilities allowing it to encode more efficiently. Each identity will, based on the instruction struct, encode the instruction into machine code, since every instruction in the operand identity has a similar encoding format.
 
-*As always, the Intel manual is the best place to find more information, infact, the operand identities are official "guidelines" of operand combinations Intel has placed out; you can find it below the opcode encoder table*
+
+*As always, the Intel manual is the best place to find more information, in fact, the operand identities are official "guidelines" of operand combinations Intel has placed out; you can find it below the opcode encoder table*
 
 ### What an identity does
-Once an instruction struct is mapped to one of the operand identities, the assembler has narrowed down the instruction to a small set of possibilities allowing it to encode more efficiently.
+Once an instruction struct is mapped to one of the operand identities, the assembler has narrowed down the instruction to a small set of possibilities allowing it to encode more efficiently. Each identity will, based on the instruction struct, encode the instruction into machine code, since every instruction in the operand identity has a similar encoding format.
+
+
