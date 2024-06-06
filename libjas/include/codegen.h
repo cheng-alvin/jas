@@ -1,6 +1,6 @@
 /**
  * MIT License
- * Copyright (c) 2023 Alvin Cheng (eventide1029@gmail.com)
+ * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,9 @@
  * @see `LICENSE`
  */
 
-#include "codegen.h"
+#ifndef CODEGEN_H
+#define CODEGEN_H
+
 #include "buffer.h"
 #include "error.h"
 #include "instruction.h"
@@ -31,24 +33,9 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
-  buffer_t buf;
-  buf.data = NULL;
+/**
+ *
+ */
+buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size);
 
-  for (size_t i = 0; i < arr_size; i++) {
-    instruction_t current = instr_arr[i];
-    enum op_ident ident = op_ident_identify(current.operands);
-    const instr_encode_table_t ref = instr_table[instr_arr[i].instr][ident];
-
-    if (ref.opcode == NULL) {
-      err("Instruction opcode not found. (Suggests an invalid instruction)");
-      free(buf.data);
-      return (buffer_t){.data = NULL};
-    }
-
-    // Encoder function - quick and simple :)
-    instr_encode_func(ident)(current.operands, &buf, &ref, mode);
-  }
-
-  return buf;
-}
+#endif
