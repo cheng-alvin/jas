@@ -34,7 +34,18 @@
 #include <stdlib.h>
 
 /**
+ * Codegen function that generates the machine code from the
+ * instruction array. Basically a wrapper for a bunch of lib-
+ * jas sub-modules function.
  *
+ * @param mode The mode to generate the machine code in
+ * @param instr_arr The instruction array to generate the code from
+ * @param arr_size The size of the instruction array
+ *
+ * @return The buffer struct containing the machine code
+ *
+ * @see `buffer.h`
+ * @see `instruction.h`
  */
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size);
 
