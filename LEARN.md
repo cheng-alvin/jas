@@ -87,15 +87,18 @@ We all know that assemblers are normally just a command line tool like `nasm` or
 ### Entry point
 The Jas assembler (mainly `libjas`), is NOT a program, it's a library that generates assembler output from structs passed into a single function, `codegen()` in `codegen.c`. The `libjas` library also contains many sub-modules responsible for different utility functions like buffers, registers and operand checking. After being parsed and compiled into a set of structs, the `codegen()` assembler function loops through the instructions array and maps it to one of the operand identities where more processing gets completed (See content below). 
 
-### Operand identities
+### "Old assembler" issues
+the jas assembler is organized in sub-modules along with operand identites, as mentioned below. Allowing the `libjas` library to utilize the famous "Pay for only the things you use", thus, not only slashing code size but also compilation/execution times drastically. Other assemblers such as the [StandfordPL](https://github.com/StanfordPL/x64asm) assembler has opted for a very large csv file containing the logic for assembling code and writing a script to automatically generate code. Even though that this can be efficent in the development and maintainence of the assembler, as stated in the `README`; the inevitable reliability issues, uncaught instruction-sepcific fall-through error cases or extremely large static library sizes brought on requires us to explore a new solution to this "assembler mayhem". This is exactly what jas solves.
+
+### The solution - Operand identities
 Many instructions share lots of operand encoding logic that can be encapsulated. Each operand encoding identities have a certain order of operand types, allowing code to be shared among instructions who have similar operand inputs. 
 
 In Jas, we have organized these functions as codes like `MR`, `RM` or `Z` in which it corresponds to a certain combination of operands types (or classes if your fancy) within an instruction. However, tOnce an instruction struct is mapped to one of the operand identities, the assembler has narrowed down the instruction to a small set of possibilities allowing it to encode more efficiently. Each identity will, based on the instruction struct, encode the instruction into machine code, since every instruction in the operand identity has a similar encoding format.
 
+(Or, if you're struggling to understand me, it's a bit like the quadratics identites we used in high school, remember DOTS?)
 
 *As always, the Intel manual is the best place to find more information, in fact, the operand identities are official "guidelines" of operand combinations Intel has placed out; you can find it below the opcode encoder table*
 
-### What an identity does
-Once an instruction struct is mapped to one of the operand identities, the assembler has narrowed down the instruction to a small set of possibilities allowing it to encode more efficiently. Each identity will, based on the instruction struct, encode the instruction into machine code, since every instruction in the operand identity has a similar encoding format.
-
+### The benefits of identities
+Once an instruction struct is mapped to one of the operand identities, the assembler has narrowed down the instruction to a small set of possibilities allowing it to encode more efficiently. Each identity will, based on the instruction struct, encode the instruction into machine code, since every instruction in the operand identity has a similar encoding format. The operand identites eliminates the large code size, improves and removed many performance overheads and improves reliability by packing everything in a function for encoding.
 
