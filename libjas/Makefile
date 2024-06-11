@@ -2,7 +2,7 @@ CC = gcc
 LD = ld
 DB = lldb
 
-CFLAGS_COMMON = -I include  -I ./ -Wall -Wextra -std=c99 
+CFLAGS_COMMON = -I include  -I ./ -Wall -Wextra 
 CFLAGS = $(CFLAGS_COMMON)
 
 OBJ = buffer.o error.o instruction.o mode.o mr.o operand.o register.o operand_cpp.o
@@ -21,7 +21,10 @@ libjas.dylib: CFLAGS = $(CFLAGS_COMMON) -Ofast
 libjas.dylib: $(OBJ) 
 	$(CC) $^ -o $(BUILD)/$@ -dynamiclib  
 
-# Individual object files rules:
+libjas_debug.o: CFLAGS = $(CFLAGS_COMMON) -g
+libjas_debug.o: $(OBJ)
+	$(LD) -r $^ -o $(BUILD)/libjas_debug.o
 
+# Individual object files rules:
 operand_cpp.o: operand.cpp
 	$(CC) $(CFLAGS) -c $< -o $(BUILD)/$@	
