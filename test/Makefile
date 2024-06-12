@@ -10,13 +10,13 @@ HOME = ..
 
 EXE = # Add tests here 
 
-all: libjas.o libjas
+all: libjas_debug.o libjas
 
-libjas.o:
-	$(MAKE) -C ../libjas debug
+libjas_debug.o:
+	$(MAKE) -C ../libjas libjas_debug.o
 
-libjas: CFLAGS = $(CFLAGS_COMMON)
-libjas: $(EXE)
+test: CFLAGS = $(CFLAGS_COMMON)
+test: $(EXE)
 	@clear
 	@for exe in $(EXE); do \
 		$(CC) $$exe $(BUILD)/debug -o $(BUILD)/test/libjas/$${exe%.o}; \
