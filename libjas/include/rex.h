@@ -26,6 +26,9 @@
 #ifndef REX_H
 #define REX_H
 
+#include "buffer.h"
+#include <stdint.h>
+
 /**
  * Macros for defining the REX byte values. These values
  * are used to override operand sizes when using long mode.

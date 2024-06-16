@@ -31,7 +31,6 @@ extern "C" {
 #define OPERAND_H
 
 #include "buffer.h"
-#include "instruction.h"
 
 /**
  * Definitions to the macros used in the operand encoder functions.

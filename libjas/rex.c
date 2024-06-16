@@ -24,8 +24,6 @@
  */
 
 #include "rex.h"
-#include "buffer.h"
-#include <stdint.h>
 
 void rex_insert(buffer_t *buf, const uint8_t rex) {
   if (buf->data[buf->len - 1] > REX_DEFAULT)

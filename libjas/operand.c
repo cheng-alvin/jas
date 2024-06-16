@@ -24,6 +24,7 @@
  */
 
 #include "operand.h"
+#include "error.h"
 #include "rex.h"
 #include <stdint.h>
 

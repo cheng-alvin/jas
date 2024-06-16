@@ -23,12 +23,11 @@
  * @see `LICENSE`
  */
 
-// TODO Review and revise header
-
 #ifndef RM_H
 #define RM_H
 
 #include "buffer.h"
+#include "instruction.h"
 #include "operand.h"
 
 /**

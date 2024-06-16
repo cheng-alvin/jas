@@ -26,8 +26,8 @@
 #ifndef MODE_H
 #define MODE_H
 
-#include "instruction.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 /**
  * Enums representing the operating modes of
@@ -39,6 +39,43 @@ enum modes {
   MODE_PROTECTED,
   MODE_LONG,
 };
+
+/**
+ * Type wrapper for an unsigned char that represents the
+ * support status of an instruction in different intel x86
+ * operation modes, like 64, 32 and 16 bit modes. The individual
+ * bits of the byte represent the support status of the instruction
+ * in the different operation modes. The bits are ordered from
+ * least significant to most significant as follows:
+ *
+ * 0: 16 bit mode encoding support status
+ * 1: 32 bit mode encoding support status
+ * 2: 64 bit mode encoding support status
+ *
+ * 3-7: Reserved for future use
+ *
+ * A bit set to 1 indicates that the instruction is supported
+ * in the corresponding operation mode, while a bit set to 0
+ * indicates that the instruction is not supported in the
+ * corresponding operation mode.
+ *
+ * 🤠
+ *
+ * There are some macros defined below to help you as well!
+ */
+typedef uint8_t mode_support_t;
+
+/**
+ * Macros for defining the different support status of an
+ * instruction in the different intel x86 operation modes.
+ *
+ * You can just simply `|` them together to combine it!
+ */
+
+#define MODE_SUPPORT_16BIT 0b00000001
+#define MODE_SUPPORT_32BIT 0b00000010
+#define MODE_SUPPORT_64BIT 0b00000100
+#define MODE_SUPPORT_ALL 0b00000111
 
 /**
  * Function for checking if an instruction is allowed in a given mode
@@ -53,8 +90,8 @@ enum modes {
  * @param support The support field of the instruction.
  * @return True if the mode is matched, otherwise false.
  *
- * @see instr_support_t
+ * @see mode_support_t
  */
-bool mode_valid(const enum modes mode, const instr_support_t support);
+bool mode_valid(const enum modes mode, const mode_support_t support);
 
 #endif
