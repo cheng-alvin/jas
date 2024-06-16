@@ -47,6 +47,5 @@
  * @note For notes on the arguments see `instr_encoder_t`.
  * @extends instr_encoder_t
  */
-void rm(const operand_t *op_arr, const buffer_t *buf, __attribute__((__unused)) const instr_encode_table_t *instr_ref);
-
+void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 #endif
