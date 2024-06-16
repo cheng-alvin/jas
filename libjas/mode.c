@@ -24,10 +24,9 @@
  */
 
 #include "mode.h"
-#include "instruction.h"
 #include <stdbool.h>
 
-bool mode_valid(const enum modes mode, const instr_support_t support) {
+bool mode_valid(const enum modes mode, const mode_support_t support) {
   /**
    * @brief
    * Checks is the position (or `mode`) is set in the 8-bit integer
