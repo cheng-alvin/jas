@@ -56,20 +56,21 @@ static op_ident_hash_t op_hash(enum operands input) {
   return 0b11111111;
 }
 
+#define OP_NULL (uint32_t)0
 namespace op {
   static std::unordered_map<uint32_t, enum op_ident> lookup = {
-      {__combine__(OP_HASH_R, OP_HASH_R, NULL, NULL), OP_MR},
-      {__combine__(OP_HASH_M, OP_HASH_R, NULL, NULL), OP_MR},
+      {__combine__(OP_HASH_R, OP_HASH_R, OP_NULL, OP_NULL), OP_MR},
+      {__combine__(OP_HASH_M, OP_HASH_R, OP_NULL, OP_NULL), OP_MR},
 
-      {__combine__(OP_HASH_R, OP_HASH_R, NULL, NULL), OP_RM},
-      {__combine__(OP_HASH_R, OP_HASH_M, NULL, NULL), OP_RM},
+      {__combine__(OP_HASH_R, OP_HASH_R, OP_NULL, OP_NULL), OP_RM},
+      {__combine__(OP_HASH_R, OP_HASH_M, OP_NULL, OP_NULL), OP_RM},
   };
 }
 
 extern "C" enum op_ident op_ident_identify(enum operands *input) {
   op_ident_hash_t hash[4];
 
-  for (auto i = 0; i < sizeof(input); i++)
+  for (auto i = 0; i < 4; i++)
     hash[i] = op_hash(input[i]);
 
   uint32_t hash_key = 0;
