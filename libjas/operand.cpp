@@ -79,7 +79,7 @@ extern "C" enum op_ident op_ident_identify(enum operands *input) {
 
   if (op::lookup.find(hash_key) == op::lookup.end()) {
     err("Operand identifier not found.");
-    return;
+    return (enum op_ident)0;
   }
 
   return (enum op_ident)op::lookup[hash_key];
