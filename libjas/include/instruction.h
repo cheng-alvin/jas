@@ -26,6 +26,7 @@
 #ifndef INSTRUCTION_H
 #define INSTRUCTION_H
 
+#include "mode.h"
 #include "operand.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -74,48 +75,11 @@ enum instructions {
   INSTR_SYSCALL,
 };
 
-/**
- * Type wrapper for an unsigned char that represents the
- * support status of an instruction in different intel x86
- * operation modes, like 64, 32 and 16 bit modes. The individual
- * bits of the byte represent the support status of the instruction
- * in the different operation modes. The bits are ordered from
- * least significant to most significant as follows:
- *
- * 0: 16 bit mode encoding support status
- * 1: 32 bit mode encoding support status
- * 2: 64 bit mode encoding support status
- *
- * 3-7: Reserved for future use
- *
- * A bit set to 1 indicates that the instruction is supported
- * in the corresponding operation mode, while a bit set to 0
- * indicates that the instruction is not supported in the
- * corresponding operation mode.
- *
- * 🤠
- *
- * There are some macros defined below to help you as well!
- */
-typedef uint8_t instr_support_t;
-
-/**
- * Macros for defining the different support status of an
- * instruction in the different intel x86 operation modes.
- *
- * You can just simply `|` them together to combine it!
- */
-
-#define INSTR_SUPPORT_16BIT 0b00000001
-#define INSTR_SUPPORT_32BIT 0b00000010
-#define INSTR_SUPPORT_64BIT 0b00000100
-#define INSTR_SUPPORT_ALL 0b00000111
-
 typedef struct {
   enum op_ident ident;          /* Operand encoding identity */
   uint8_t opcode_ext;           /* Opcode extension */
   uint8_t opcode[3];            /* Opcode of the instruction */
-  instr_support_t support;      /* Support status of the instruction (Optional, defaults to operand ident provided status) */
+  mode_support_t support;       /* Support status of the instruction (Optional, defaults to operand ident provided status) */
   uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
   bool should_fallback_support; /* If the encode needs to use the `support` */
   uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
@@ -145,8 +109,6 @@ typedef struct {
  * @param mode The operating mode of the instruction
  *
  * @note All encoder functions will conform to this signature.
- *
- * ? why is instruction mode a pointer instead of a plain variable?
  */
 typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 
