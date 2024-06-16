@@ -42,7 +42,7 @@ instr_encode_table_t mov[] = {
     },
 };
 
-instr_encode_table_t *instr_table[] = {mov};
+instr_encode_table_t *instr_table[] = {mov}; //? Unsure of random language server error here :(
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
   instr_encoder_t lookup[] = {&mr, &rm};
