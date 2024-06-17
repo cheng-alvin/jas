@@ -56,8 +56,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
       free(buf.data);
       return (buffer_t){.data = NULL};
     }
-
-    // Encoder function - quick and simple :)
+    
     instr_encode_func(ident)(current.operands, &buf, &ref, (enum modes)mode);
   }
 
