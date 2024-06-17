@@ -1,3 +1,5 @@
+# TODO: Update to CodeQL version 3 before december 2024
+
 name: "CodeQL"
 
 on:
