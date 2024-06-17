@@ -40,6 +40,15 @@ instr_encode_table_t mov[] = {
         .should_fallback_support = false,
         .opcode_size = 1,
     },
+    {
+        .ident = OP_RM,
+        .opcode_ext = NULL,
+        .opcode = {0x8B},
+        .support = NULL,
+        .byte_instr_opcode = {0x8A},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+    },
 };
 
 instr_encode_table_t *instr_table[] = {mov}; //? Unsure of random language server error here :(
