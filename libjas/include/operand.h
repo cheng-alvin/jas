@@ -172,23 +172,6 @@ enum op_ident op_ident_identify(enum operands *input);
  */
 uint8_t op_sizeof(enum operands input);
 
-/**
- * Wrapper macro in support of the `mode_valid` function.
- * As suggested in the `mode_valid()`, the function does not
- * check for the validity if the fallback flag is set in favour
- * for flexibility.
- *
- * @note This macro is tailored for internal usage ONLY
- * otherwise some variables and parts may be undefined.
- *
- * @see `instruction.h`
- */
-#define op_check_mode(x, y)                                      \
-  if (instr_ref->should_fallback_support && !mode_valid(x, y)) { \
-    err("Invalid operating mode.");                              \
-    return;                                                      \
-  }
-
 #endif
 
 #ifdef __cplusplus

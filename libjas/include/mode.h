@@ -94,4 +94,21 @@ typedef uint8_t mode_support_t;
  */
 bool mode_valid(const enum modes mode, const mode_support_t support);
 
+/**
+ * Wrapper macro in support of the `mode_valid` function.
+ * As suggested in the `mode_valid()`, the function does not
+ * check for the validity if the fallback flag is set in favour
+ * for flexibility.
+ *
+ * @note This macro is tailored for internal usage ONLY
+ * otherwise some variables and parts may be undefined.
+ *
+ * @see `instruction.h`
+ */
+#define op_check_mode(x, y)                                      \
+  if (instr_ref->should_fallback_support && !mode_valid(x, y)) { \
+    err("Invalid operating mode.");                              \
+    return;                                                      \
+  }
+
 #endif
