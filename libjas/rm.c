@@ -44,7 +44,7 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   }
 
   op_write_prefix(buf, op_arr[1].type);
-  op_check_mode(mode, instr_ref->support);
+  check_mode(mode, instr_ref->support);
   buf_write(buf, OPCODE_HELPER, instr_ref->opcode_size);
 
   if (reg_needs_rex(*reg))

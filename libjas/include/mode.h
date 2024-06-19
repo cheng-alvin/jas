@@ -105,7 +105,7 @@ bool mode_valid(const enum modes mode, const mode_support_t support);
  *
  * @see `instruction.h`
  */
-#define op_check_mode(x, y)                                      \
+#define check_mode(x, y)                                         \
   if (instr_ref->should_fallback_support && !mode_valid(x, y)) { \
     err("Invalid operating mode.");                              \
     return;                                                      \
