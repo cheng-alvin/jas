@@ -36,7 +36,11 @@ extern "C" {
  * Definitions to the macros used in the operand encoder functions.
  * to represent the addressing modes of the ModR/M byte.
  *
- * It's a very hard encoding thing to understand, therefore:
+ * Basically, the ModR/M byte, in a nutshell is a byte that gives
+ * the addressing mode of the operand, register and/or memory
+ * data associated with the current operation.
+ *
+ * They definitely did a way better job explaining it here:
  * @see https://wiki.osdev.org/X86-64_Instruction_Encoding#ModR.2FM_Byte
  */
 
