@@ -50,17 +50,16 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   if (reg_needs_rex(*reg))
     rex_insert(buf, REX_B);
 
-  uint8_t mr_mode;
+  uint8_t mr_mode = OP_MODRM_REG;
 
-  if (op_r(op_arr[1].type))
-    mr_mode = OP_MODRM_REG;
-  else if (op_m(op_arr[1].type))
+  // Experimental:
+  if (op_m(op_arr[1].type) && op_arr[1].offset == 0)
     mr_mode = OP_MODRM_INDIRECT;
-
-  else {
-    err("Operand identity mismatch. (hint: displacements are not supported yet)");
-    return;
-  }
+  else if (op_arr[1].offset != 0)
+    mr_mode = OP_MODRM_DISP8;
 
   buf_write_byte(buf, mr_mode << 6 | *reg << 3 | *rm);
+
+  if (op_arr[1].offset != 0)
+    buf_write_byte(buf, op_arr[1].offset);
 }
