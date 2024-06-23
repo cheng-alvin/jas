@@ -131,6 +131,7 @@ enum op_ident {
 typedef struct {
   void *data;         /* Data in the operand */
   enum operands type; /* Type tied to the void pointer*/
+  size_t offset;      /* The offset applied to the data (if applicable) */
 } operand_t;
 
 /**
