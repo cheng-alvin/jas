@@ -47,5 +47,4 @@
  * @extends instr_encoder_t
  */
 void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-
 #endif
