@@ -30,7 +30,7 @@
 
 // TODO Double check functionality for endian
 uint8_t *endian(uint8_t *data, size_t data_size) {
-  uint8_t *result = (uint8_t *)malloc(data_size * sizeof(uint8_t));
+  uint8_t *result = (uint8_t *)malloc(data_size);
 
   for (size_t i = data_size; i > 0; i--)
     result[data_size - i] = data[i - 1];
