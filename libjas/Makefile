@@ -1,4 +1,4 @@
-CC = gcc
+CC = clang
 LD = ld
 DB = lldb
 
