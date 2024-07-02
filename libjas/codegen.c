@@ -26,7 +26,6 @@
 #include "codegen.h"
 #include "buffer.h"
 #include "error.h"
-#include "instruction.h"
 #include "mode.h"
 #include <stddef.h>
 #include <stdlib.h>
@@ -48,13 +47,23 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
     };
 
     enum op_ident ident = op_ident_identify(operand_list);
-    const instr_encode_table_t ref = instr_table[instr_arr[i].instr][ident];
+    instr_encode_table_t ref;
+
+    unsigned int j = 0;
+    while (instr_table[instr_arr[i].instr][j].ident != NULL) {
+      if (instr_table[instr_arr[i].instr][j].ident == ident) {
+        ref = instr_table[instr_arr[i].instr][j];
+        break;
+      }
+
+      j++;
+    }
 
     // TODO Please check if this NULL pointer conditional expression is correct :)
     if (ref.opcode == NULL) {
       err("Instruction opcode not found. (Suggests an invalid instruction)");
       free(buf.data);
-      return (buffer_t){.data = NULL};
+      return (buffer_t){NULL};
     }
 
     instr_encode_func(ident)(current.operands, &buf, &ref, (enum modes)mode);
