@@ -30,7 +30,6 @@
 #include "register.h"
 #include "rex.h"
 
-// TODO test identity & add instruction identity
 void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const enum registers *reg = (enum registers *)op_arr[1].data;
 
