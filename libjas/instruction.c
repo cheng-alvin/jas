@@ -25,10 +25,13 @@
 
 #include "instruction.h"
 #include "mr.h"
+#include "oi.h"
 #include "operand.h"
 #include "rm.h"
 #include <stdbool.h>
 #include <stddef.h>
+
+//! All arrays must be null terminated
 
 instr_encode_table_t mov[] = {
     {
@@ -49,11 +52,23 @@ instr_encode_table_t mov[] = {
         .should_fallback_support = false,
         .opcode_size = 1,
     },
+    {
+        .ident = OP_OI,
+        .opcode_ext = NULL,
+        .opcode = {0xB8},
+        .support = NULL,
+        .byte_instr_opcode = {0xB0},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+    },
+
+    NULL // Terminator
+
 };
 
 instr_encode_table_t *instr_table[] = {mov}; //? Unsure of random language server error here :(
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
-  instr_encoder_t lookup[] = {&mr, &rm};
+  instr_encoder_t lookup[] = {&mr, &rm, &oi};
   return lookup[(size_t)input];
 }
