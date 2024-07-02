@@ -42,6 +42,10 @@
  * - IMM denotes an immediate integer value ranging from byte to
  * quad-word sizes.
  *
+ * @note This instruction identity is very special in the sense that it
+ * has an inital opcode with an encoded register value added together
+ * for performance optimizations.
+ *
  * @note For notes on the arguments see `instr_encoder_t`.
  * @extends instr_encoder_t
  */
