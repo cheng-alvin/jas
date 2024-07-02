@@ -126,6 +126,7 @@ enum operands {
 enum op_ident {
   OP_MR,
   OP_RM,
+  OP_OI,
 };
 
 typedef struct {
