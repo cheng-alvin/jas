@@ -51,11 +51,12 @@ extern "C" {
 
 /**
  * Macro definition for the 16-bit operand override byte for supporting
- * word-sized operands in the x86 family.
+ * word-sized operands and addresses in the x86 family.
  *
  * @see https://stackoverflow.com/questions/74954166/
  */
 #define OP_WORD_OVERRIDE 0x66
+#define OP_ADDR_OVERRIDE 0x67
 
 /**
  * Enumeration for the different types of operands and

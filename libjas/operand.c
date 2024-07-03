@@ -51,6 +51,7 @@ void op_write_prefix(buffer_t *buf, const enum operands op) {
 
   case 16:
     buf_write_byte(buf, OP_WORD_OVERRIDE);
+    buf_write_byte(buf, OP_ADDR_OVERRIDE);
     break;
 
   case 32:
