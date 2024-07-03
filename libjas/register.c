@@ -25,7 +25,6 @@
 
 #include "register.h"
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
 
 uint8_t reg_lookup_val(enum registers input) {
