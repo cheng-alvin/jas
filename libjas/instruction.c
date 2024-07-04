@@ -24,6 +24,7 @@
  */
 
 #include "instruction.h"
+#include "mi.h"
 #include "mr.h"
 #include "oi.h"
 #include "operand.h"
@@ -61,6 +62,15 @@ instr_encode_table_t mov[] = {
         .should_fallback_support = false,
         .opcode_size = 1,
     },
+    {
+        .ident = OP_MI,
+        .opcode_ext = 0,
+        .opcode = {0xC7},
+        .support = NULL,
+        .byte_instr_opcode = {0xC6},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+    }
 
     NULL // Terminator
 
@@ -69,6 +79,6 @@ instr_encode_table_t mov[] = {
 instr_encode_table_t *instr_table[] = {mov};
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
-  instr_encoder_t lookup[] = {&mr, &rm, &oi};
+  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi};
   return lookup[(size_t)input];
 }
