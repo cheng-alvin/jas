@@ -35,9 +35,9 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
   buf.data = NULL;
 
   for (size_t i = 0; i < arr_size; i++) {
-    instruction_t current = instr_arr[i];
+    const instruction_t current = instr_arr[i];
 
-    enum operands operand_list[4] = {
+    const enum operands operand_list[4] = {
 
         current.operands[0].type,
         current.operands[1].type,
