@@ -32,8 +32,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-//! All arrays must be null terminated
-
 instr_encode_table_t mov[] = {
     {
         .ident = OP_MR,
