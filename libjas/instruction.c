@@ -70,7 +70,7 @@ instr_encode_table_t mov[] = {
         .byte_instr_opcode = {0xC6},
         .should_fallback_support = false,
         .opcode_size = 1,
-    }
+    },
 
     NULL // Terminator
 
