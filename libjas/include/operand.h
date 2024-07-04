@@ -123,11 +123,14 @@ enum operands {
 /**
  * Enumeration for the different operand identifiers.
  * Used to lookup the operand encoder functions.
+ *
+ * ? Why is this not moved over to `instruction.h`?!?!?!
  */
 enum op_ident {
   OP_MR,
   OP_RM,
   OP_OI,
+  OP_MI,
 };
 
 typedef struct {
