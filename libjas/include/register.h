@@ -214,11 +214,11 @@ enum registers {
  * Lookup table wrapper for finding register values
  * given the register enum value.
  *
- * @param input enum registers value
+ * @param input enum registers' pointer value
  * @return uint8_t register value
  * @see `registers` enum
  */
-uint8_t reg_lookup_val(enum registers input);
+uint8_t reg_lookup_val(enum registers *input);
 
 /**
  * Function for checking wether a register needs to

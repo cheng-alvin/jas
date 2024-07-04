@@ -27,7 +27,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-uint8_t reg_lookup_val(enum registers input) {
+uint8_t reg_lookup_val(enum registers *input) {
   uint8_t lookup[] = {
       REG_VALUE_AL, REG_VALUE_CL, REG_VALUE_DL, REG_VALUE_BL, REG_VALUE_AH,
       REG_VALUE_CH, REG_VALUE_DH, REG_VALUE_BH, REG_VALUE_AX, REG_VALUE_CX, REG_VALUE_DX,
@@ -43,7 +43,7 @@ uint8_t reg_lookup_val(enum registers input) {
       REG_VALUE_BPL, REG_VALUE_SIL, REG_VALUE_DIL, REG_VALUE_ES, REG_VALUE_CS, REG_VALUE_SS,
       REG_VALUE_DS, REG_VALUE_FS, REG_VALUE_GS};
 
-  return lookup[(unsigned int)input];
+  return lookup[(unsigned int)*input];
 }
 
 bool reg_needs_rex(enum registers input) {
