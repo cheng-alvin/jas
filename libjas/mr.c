@@ -34,7 +34,7 @@
 
 void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const enum registers *reg = (enum registers *)op_arr[1].data;
-  const uint8_t *rm = reg_lookup_val(op_arr[0].data);
+  const uint8_t rm = reg_lookup_val(op_arr[0].data);
 
   if (op_sizeof(op_arr[0].type) != op_sizeof(op_arr[1].type)) {
     err("Invalid operand sizes.");
@@ -57,7 +57,7 @@ void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   else if (op_arr[0].offset != 0)
     mr_mode = OP_MODRM_DISP8;
 
-  buf_write_byte(buf, mr_mode << 6 | *reg << 3 | *rm);
+  buf_write_byte(buf, mr_mode << 6 | *reg << 3 | rm);
 
   if (op_arr[0].offset != 0)
     buf_write_byte(buf, op_arr[0].offset);
