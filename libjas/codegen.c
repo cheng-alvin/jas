@@ -35,7 +35,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
   buf.data = NULL;
 
   for (size_t i = 0; i < arr_size; i++) {
-    const instruction_t current = instr_arr[i];
+    instruction_t current = instr_arr[i];
 
     const enum operands operand_list[4] = {
 
@@ -59,12 +59,14 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
       j++;
     }
 
-    // TODO Please check if this NULL pointer conditional expression is correct :)
     if (ref.opcode == NULL) {
       err("Instruction opcode not found. (Suggests an invalid instruction)");
       free(buf.data);
       return (buffer_t){NULL};
     }
+
+    if (ref.pre != NULL)
+      ref.pre(current.operands, &buf, &ref, (enum modes)mode);
 
     instr_encode_func(ident)(current.operands, &buf, &ref, (enum modes)mode);
   }
