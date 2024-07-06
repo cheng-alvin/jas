@@ -89,9 +89,9 @@ enum instructions {
  *
  * @note All encoder functions will conform to this signature.
  */
-typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, struct instr_encode_table *instr_ref, enum modes mode);
 
-typedef struct {
+typedef struct instr_encode_table {
   enum op_ident ident;          /* Operand encoding identity */
   uint8_t opcode_ext;           /* Opcode extension */
   uint8_t opcode[3];            /* Opcode of the instruction */
