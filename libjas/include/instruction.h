@@ -75,27 +75,6 @@ enum instructions {
   INSTR_SYSCALL,
 };
 
-typedef struct {
-  enum op_ident ident;          /* Operand encoding identity */
-  uint8_t opcode_ext;           /* Opcode extension */
-  uint8_t opcode[3];            /* Opcode of the instruction */
-  mode_support_t support;       /* Support status of the instruction (Optional, defaults to operand ident provided status) */
-  uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
-  bool should_fallback_support; /* If the encode needs to use the `support` */
-  uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
-} instr_encode_table_t;
-
-/**
- * The lookup table using the `instructions_t` enum as the index
- * to get the corresponding instruction operand encoder structs.
- */
-extern instr_encode_table_t *instr_table[];
-
-typedef struct {
-  enum instructions instr; /* Type of instruction */
-  operand_t *operands;     /* Operands of the instruction */
-} instruction_t;
-
 /**
  * Type wrapper for the instruction encoder function pointer. Where
  * each operand encoder function takes an array of operands and
@@ -111,6 +90,28 @@ typedef struct {
  * @note All encoder functions will conform to this signature.
  */
 typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+
+typedef struct {
+  enum op_ident ident;          /* Operand encoding identity */
+  uint8_t opcode_ext;           /* Opcode extension */
+  uint8_t opcode[3];            /* Opcode of the instruction */
+  mode_support_t support;       /* Support status of the instruction (Optional, defaults to operand ident provided status) */
+  uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
+  bool should_fallback_support; /* If the encode needs to use the `support` */
+  uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
+  instr_encoder_t pre;          /* Pre-encoder processor function (Optional, null if not applicable) */
+} instr_encode_table_t;
+
+/**
+ * The lookup table using the `instructions_t` enum as the index
+ * to get the corresponding instruction operand encoder structs.
+ */
+extern instr_encode_table_t *instr_table[];
+
+typedef struct {
+  enum instructions instr; /* Type of instruction */
+  operand_t *operands;     /* Operands of the instruction */
+} instruction_t;
 
 /**
  * Lookup table for the different instruction class encoders.
