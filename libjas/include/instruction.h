@@ -31,6 +31,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+// Forward declaration - see instr_encode_table
+typedef struct instr_encode_table instr_encode_table_t;
+
 /**
  * Enumeration for the different types of instructions
  * supported by the jas assembler.
@@ -89,9 +92,9 @@ enum instructions {
  *
  * @note All encoder functions will conform to this signature.
  */
-typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, struct instr_encode_table *instr_ref, enum modes mode);
+typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 
-typedef struct instr_encode_table {
+struct instr_encode_table {
   enum op_ident ident;          /* Operand encoding identity */
   uint8_t opcode_ext;           /* Opcode extension */
   uint8_t opcode[3];            /* Opcode of the instruction */
@@ -100,7 +103,7 @@ typedef struct instr_encode_table {
   bool should_fallback_support; /* If the encode needs to use the `support` */
   uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
   instr_encoder_t pre;          /* Pre-encoder processor function (Optional, null if not applicable) */
-} instr_encode_table_t;
+};
 
 /**
  * The lookup table using the `instructions_t` enum as the index
