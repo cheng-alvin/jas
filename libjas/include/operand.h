@@ -168,7 +168,7 @@ enum op_ident op_ident_identify(enum operands *input);
  * Helper macro for determining the opcode of the instruction, either
  * the byte sized version or larger/conventional opcode versions.
  */
-#define OP_OPCODE_HELPER op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode
+#define OP_OPCODE_HELPER (op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode)
 
 /**
  * Function for finding the size of the operand type in bits, very
