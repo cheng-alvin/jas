@@ -80,10 +80,10 @@ enum operands {
   OP_M32,
   OP_M64,
   OP_SEG_REG,
-  OP_ACC8,
-  OP_ACC16,
-  OP_ACC32,
-  OP_ACC64,
+  // OP_ACC8,
+  // OP_ACC16,
+  // OP_ACC32,
+  // OP_ACC64,
 };
 
 /**
@@ -105,7 +105,7 @@ enum operands {
 #define op_imm(x) ((x) <= OP_IMM64 && (x) >= OP_IMM8)
 #define op_m(x) ((x) <= OP_M64 && (x) >= OP_M8)
 #define op_seg(x) ((x) == OP_SEG_REG)
-#define op_acc(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
+// #define op_acc(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
 
 // --
 
