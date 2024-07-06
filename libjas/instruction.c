@@ -24,6 +24,7 @@
  */
 
 #include "instruction.h"
+#include "error.h"
 #include "mi.h"
 #include "mr.h"
 #include "oi.h"
