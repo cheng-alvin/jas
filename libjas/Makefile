@@ -2,7 +2,7 @@ CC = clang
 LD = ld
 DB = lldb
 
-CFLAGS_COMMON = -I include  -I ./ -Wall -Wextra 
+CFLAGS_COMMON = -I include  -I ./ -Wall -Wextra -Wno-int-conversion -Wno-unused-parameter
 CFLAGS = $(CFLAGS_COMMON)
 
 OBJ = buffer.o codegen.o endian.o error.o i.o instruction.o mi.o mode.o mr.o oi.o operand.o operand_cpp.o register.o rex.o rm.o
