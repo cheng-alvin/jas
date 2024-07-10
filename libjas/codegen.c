@@ -30,6 +30,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+#define CURR_TABLE instr_table[instr_arr[i].instr][j]
+
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
   buffer_t buf;
   buf.data = NULL;
@@ -50,16 +52,16 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
     instr_encode_table_t ref;
 
     unsigned int j = 0;
-    while (instr_table[instr_arr[i].instr][j].ident != NULL) {
-      if (instr_table[instr_arr[i].instr][j].ident == ident) {
-        ref = instr_table[instr_arr[i].instr][j];
+    while (CURR_TABLE.opcode_size != NULL) {
+      if (CURR_TABLE.ident == ident) {
+        ref = CURR_TABLE;
         break;
       }
 
       j++;
     }
 
-    if (ref.opcode == NULL) {
+    if (ref.opcode_size == NULL) {
       err("Instruction opcode not found. (Suggests an invalid instruction)");
       free(buf.data);
       return (buffer_t){NULL};
