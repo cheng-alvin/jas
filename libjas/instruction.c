@@ -67,7 +67,7 @@ instr_encode_table_t mov[] = {
     },
     {
         .ident = OP_MI,
-        .opcode_ext = 0b10000000,
+        .opcode_ext = 0b10000000, // Prevents a false null reading, it gets shifted anyways ;)
         .opcode = {0xC7},
         .support = NULL,
         .byte_instr_opcode = {0xC6},
@@ -76,7 +76,7 @@ instr_encode_table_t mov[] = {
         .pre = NULL,
     },
 
-    NULL // Terminator
+    INSTR_TERMINATOR
 
 };
 
@@ -100,6 +100,9 @@ instr_encode_table_t lea[] = {
         .opcode_size = 1,
         .pre = &pre_lea,
     },
+
+    INSTR_TERMINATOR
+
 };
 
 instr_encode_table_t *instr_table[] = {mov, lea};
