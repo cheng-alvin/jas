@@ -124,4 +124,16 @@ typedef struct {
  */
 instr_encoder_t instr_encode_func(enum op_ident input);
 
+#define INSTR_TERMINATOR              \
+  (instr_encode_table_t) {            \
+    .ident = NULL,                    \
+    .opcode_ext = NULL,               \
+    .opcode = {NULL},                 \
+    .support = NULL,                  \
+    .byte_instr_opcode = {NULL},      \
+    .should_fallback_support = false, \
+    .opcode_size = NULL,              \
+    .pre = NULL,                      \
+  }
+
 #endif
