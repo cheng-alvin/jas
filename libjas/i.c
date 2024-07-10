@@ -25,6 +25,7 @@
 
 #include "i.h"
 #include "buffer.h"
+#include "endian.h"
 #include "error.h"
 #include "mode.h"
 #include "operand.h"
