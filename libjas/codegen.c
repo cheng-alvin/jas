@@ -64,7 +64,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
     if (ref.opcode_size == NULL) {
       err("Instruction opcode not found. (Suggests an invalid instruction)");
       free(buf.data);
-      return (buffer_t){NULL};
+      return BUF_NULL;
     }
 
     if (ref.pre != NULL)

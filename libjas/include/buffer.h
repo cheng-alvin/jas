@@ -61,6 +61,12 @@ void buf_write_byte(buffer_t *buf, const uint8_t data);
  */
 void buf_remove(buffer_t *buf, const size_t elem);
 
+#define BUF_NULL  \
+  (buffer_t) {    \
+    .data = NULL, \
+    .len = NULL   \
+  }
+
 /**
  * Removes a chunk of elements from the buffer struct starting from the
  * `start` index to the `end` index.
