@@ -36,12 +36,13 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   const enum registers *reg = (enum registers *)op_arr[0].data;
   const uint8_t rm = reg_lookup_val(op_arr[1].data);
 
+  // TODO Remove?
   if (op_sizeof(op_arr[0].type) != op_sizeof(op_arr[1].type)) {
     err("Invalid operand sizes.");
     return;
   }
 
-  op_write_prefix(buf, op_arr[1].type);
+  op_write_prefix(buf, op_arr);
   check_mode(mode, instr_ref->support);
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
 

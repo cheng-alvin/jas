@@ -39,7 +39,7 @@ void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
     return;
   }
 
-  op_write_prefix(buf, op_arr[0].type);
+  op_write_prefix(buf, op_arr);
   check_mode(mode, instr_ref->support);
 
   buf_write(buf, (OP_OPCODE_HELPER) + (uint8_t)*reg, instr_ref->opcode_size);
