@@ -33,6 +33,22 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+// TODO Potentially relocate all preprocessor to `pre.c` or equivalent
+static void pre_default(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  if (op_sizeof(op_arr[0].type) != op_sizeof(op_arr[1].type))
+    err("Invalid operand sizes.");
+}
+
+static void pre_mov(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  if (op_sizeof(op_arr[0].type) != 64) {
+    pre_default(op_arr, buf, instr_ref, mode);
+    return;
+  }
+
+  if (op_arr[1].type != OP_IMM32)
+    err("Invalid operand sizes.");
+}
+
 instr_encode_table_t mov[] = {
     {
         .ident = OP_MR,
@@ -42,7 +58,7 @@ instr_encode_table_t mov[] = {
         .byte_instr_opcode = {0x88},
         .should_fallback_support = false,
         .opcode_size = 1,
-        .pre = NULL,
+        .pre = &pre_default,
     },
     {
         .ident = OP_RM,
@@ -52,7 +68,7 @@ instr_encode_table_t mov[] = {
         .byte_instr_opcode = {0x8A},
         .should_fallback_support = false,
         .opcode_size = 1,
-        .pre = NULL,
+        .pre = &pre_default,
     },
     {
         .ident = OP_OI,
@@ -62,8 +78,7 @@ instr_encode_table_t mov[] = {
         .byte_instr_opcode = {0xB0},
         .should_fallback_support = false,
         .opcode_size = 1,
-        .pre = NULL,
-
+        .pre = &pre_default,
     },
     {
         .ident = OP_MI,
@@ -73,7 +88,7 @@ instr_encode_table_t mov[] = {
         .byte_instr_opcode = {0xC6},
         .should_fallback_support = false,
         .opcode_size = 1,
-        .pre = NULL,
+        .pre = &pre_mov,
     },
 
     INSTR_TERMINATOR
