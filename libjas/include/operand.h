@@ -145,16 +145,9 @@ typedef struct {
  * size of the reference operand (See below).
  *
  * @param buf The buffer to write the prefix to.
- * @param op The reference operand to revolve around.
- *
- * @note The reference operand shall not be confused with the
- * normal operand, the reference operand is the operand the
- * specific operand the instruction is based upon. On the contrary,
- * the normal operand is any other operand the instruction uses.
- *
- * 🤠
+ * @param op The passed-in operand array.
  */
-void op_write_prefix(buffer_t *buf, const enum operands op);
+void op_write_prefix(buffer_t *buf, const operand_t *op_arr);
 
 /**
  * Function for identifying the operand identity, created using

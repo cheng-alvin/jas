@@ -26,6 +26,7 @@
 #include "operand.h"
 #include "error.h"
 #include "rex.h"
+#include <stdbool.h>
 #include <stdint.h>
 
 uint8_t op_sizeof(enum operands input) {
@@ -44,25 +45,40 @@ uint8_t op_sizeof(enum operands input) {
   return 0;
 }
 
-void op_write_prefix(buffer_t *buf, const enum operands op) {
-  switch (op_sizeof(op)) {
-  case 8:
-    break;
+void op_write_prefix(buffer_t *buf, const operand_t *op_arr) {
+  bool word_set = false;
+  bool qword_set = false;
 
-  case 16:
-    buf_write_byte(buf, OP_WORD_OVERRIDE);
-    buf_write_byte(buf, OP_ADDR_OVERRIDE);
-    break;
+  for (uint8_t i = 0; i < 4; i++) {
+    const uint8_t size = op_sizeof(op_arr[i].type);
 
-  case 32:
-    break;
+    switch (size) {
+    case 8:
+      break;
 
-  case 64:
-    buf_write_byte(buf, REX_W);
-    break;
+    case 16:
+      if (word_set)
+        break;
 
-  default:
-    err("Invalid operand size.");
-    return;
+      word_set = true;
+      buf_write_byte(buf, OP_WORD_OVERRIDE);
+      buf_write_byte(buf, OP_ADDR_OVERRIDE);
+      break;
+
+    case 32:
+      break;
+
+    case 64:
+      if (qword_set)
+        break;
+
+      qword_set = true;
+      buf_write_byte(buf, REX_W);
+      break;
+
+    default:
+      err("Invalid operand size.");
+      return;
+    }
   }
 }
