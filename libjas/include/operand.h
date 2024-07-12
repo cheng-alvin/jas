@@ -131,6 +131,7 @@ enum op_ident {
   OP_RM,
   OP_OI,
   OP_MI,
+  OP_I
 };
 
 typedef struct {
