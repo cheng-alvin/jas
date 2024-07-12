@@ -66,7 +66,11 @@ namespace op {
       {__combine__(OP_HASH_R, OP_HASH_M, OP_NULL, OP_NULL), OP_RM},
 
       {__combine__(OP_HASH_R, OP_HASH_IMM, OP_NULL, OP_NULL), OP_OI},
-  };
+
+      {__combine__(OP_HASH_R, OP_HASH_IMM, OP_NULL, OP_NULL), OP_MI},
+      {__combine__(OP_HASH_M, OP_HASH_IMM, OP_NULL, OP_NULL), OP_MI},
+
+      {__combine__(OP_HASH_ACC, OP_HASH_IMM, OP_NULL, OP_NULL), OP_I}};
 }
 
 extern "C" enum op_ident op_ident_identify(enum operands *input) {
