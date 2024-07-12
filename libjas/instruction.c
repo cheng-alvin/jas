@@ -82,6 +82,7 @@ instr_encode_table_t mov[] = {
 
 // Experimental
 static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  // Note: Intentionally left with different operand positions.
   if (op_m(op_arr[0].type) || op_r(op_arr[1].type))
     err("Invalid operands type for LEA instruction.");
 
@@ -99,6 +100,52 @@ instr_encode_table_t lea[] = {
         .should_fallback_support = false,
         .opcode_size = 1,
         .pre = &pre_lea,
+    },
+
+    INSTR_TERMINATOR
+
+};
+
+instr_encode_table_t add[] = {
+    {
+        .ident = OP_RM,
+        .opcode_ext = NULL,
+        .opcode = {0x03},
+        .support = NULL,
+        .byte_instr_opcode = {0x02},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+        .pre = NULL,
+    },
+    {
+        .ident = OP_MR,
+        .opcode_ext = NULL,
+        .opcode = {0x01},
+        .support = NULL,
+        .byte_instr_opcode = {0x00},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+        .pre = NULL,
+    },
+    {
+        .ident = OP_MI,
+        .opcode_ext = NULL,
+        .opcode = {0x81},
+        .support = NULL,
+        .byte_instr_opcode = {0x80},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+        .pre = NULL,
+    },
+    {
+        .ident = OP_I,
+        .opcode_ext = NULL,
+        .opcode = {0x03},
+        .support = NULL,
+        .byte_instr_opcode = {0x02},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+        .pre = NULL,
     },
 
     INSTR_TERMINATOR
