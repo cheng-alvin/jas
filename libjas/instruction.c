@@ -80,7 +80,6 @@ instr_encode_table_t mov[] = {
 
 };
 
-// Experimental
 static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   // Note: Intentionally left with different operand positions.
   if (op_m(op_arr[0].type) || op_r(op_arr[1].type))
@@ -106,6 +105,7 @@ instr_encode_table_t lea[] = {
 
 };
 
+// TODO: experimental, please double check arithmetic instructions! :)
 instr_encode_table_t add[] = {
     {
         .ident = OP_RM,
