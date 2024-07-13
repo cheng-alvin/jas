@@ -24,6 +24,7 @@
  */
 
 #include "buffer.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -58,4 +59,12 @@ void buf_remove_chunk(buffer_t *buf, const size_t start, const size_t end) {
 
   for (size_t i = start; i < end; i++)
     buf_remove(buf, i);
+}
+
+bool buf_element_exists(buffer_t *buf, const uint8_t elem) {
+  for (size_t i = 0; i < buf->len; i++)
+    if (buf->data[i] == elem)
+      return true;
+
+  return false;
 }

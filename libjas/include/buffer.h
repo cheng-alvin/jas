@@ -77,4 +77,13 @@ void buf_remove(buffer_t *buf, const size_t elem);
  */
 void buf_remove_chunk(buffer_t *buf, const size_t start, const size_t end);
 
+/**
+ * Checks if an element exists in the buffer struct.
+ *
+ * @param buf The pointer to the buffer struct
+ * @param elem The element to check for
+ * @return True if the element exists, false otherwise
+ */
+bool buf_element_exists(buffer_t *buf, const uint8_t elem);
+
 #endif
