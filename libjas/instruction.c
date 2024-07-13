@@ -23,6 +23,7 @@
  * @see `LICENSE`
  */
 
+#include "i.h"
 #include "instruction.h"
 #include "error.h"
 #include "mi.h"
@@ -170,6 +171,6 @@ instr_encode_table_t add[] = {
 instr_encode_table_t *instr_table[] = {mov, lea};
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
-  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi};
+  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i};
   return lookup[(size_t)input];
 }
