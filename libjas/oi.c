@@ -34,7 +34,10 @@
 void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const enum registers *reg = (enum registers *)op_arr[1].data;
 
-  op_write_prefix(buf, op_arr);
+  const buffer_t prefixes = op_write_prefix(op_arr);
+  buf_write(buf, prefixes.data, prefixes.len);
+  free(prefixes.data);
+
   check_mode(mode, instr_ref->support);
 
   buf_write(buf, (OP_OPCODE_HELPER) + (uint8_t)*reg, instr_ref->opcode_size);
