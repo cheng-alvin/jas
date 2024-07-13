@@ -46,17 +46,4 @@
 
 #define REX_DEFAULT 0b01000000
 
-/**
- * Function for inserting a REX byte into the instruction buffer,
- * dynamically. (Wow fancy!) This function will just simply check
- * if there is another old REX byte in the buffer, and if there is,
- * it will just create a new one!
- *
- * @param buf The buffer to insert the REX byte into.
- * @param rex The REX byte to insert into the buffer.
- *
- * :)
- */
-void rex_insert(buffer_t *buf, const uint8_t rex);
-
 #endif
