@@ -23,9 +23,9 @@
  * @see `LICENSE`
  */
 
-#include "i.h"
 #include "instruction.h"
 #include "error.h"
+#include "i.h"
 #include "mi.h"
 #include "mr.h"
 #include "oi.h"
