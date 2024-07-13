@@ -25,6 +25,7 @@
 
 #include "operand.h"
 #include "error.h"
+#include "register.h"
 #include "rex.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -47,9 +48,13 @@ uint8_t op_sizeof(enum operands input) {
 
 buffer_t op_write_prefix(const operand_t *op_arr) {
   buffer_t prefix = BUF_NULL;
+  uint8_t rex = REX_DEFAULT;
 
   for (uint8_t i = 0; i < 4; i++) {
     const uint8_t size = op_sizeof(op_arr[i].type);
+
+    if (op_rm(op_arr[i].type))
+      rex |= reg_needs_rex(op_arr[i].data) ? REX_B : 0;
 
     switch (size) {
     case 16:
@@ -60,7 +65,7 @@ buffer_t op_write_prefix(const operand_t *op_arr) {
 
     case 64:
       if (!buf_element_exists(&prefix, REX_W))
-        buf_write_byte(&prefix, REX_W);
+        rex |= REX_W;
       break;
 
     default:
@@ -68,5 +73,6 @@ buffer_t op_write_prefix(const operand_t *op_arr) {
     }
   }
 
+  buf_write_byte(&prefix, rex);
   return prefix;
 }
