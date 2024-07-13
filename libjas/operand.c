@@ -45,40 +45,28 @@ uint8_t op_sizeof(enum operands input) {
   return 0;
 }
 
-void op_write_prefix(buffer_t *buf, const operand_t *op_arr) {
-  bool word_set = false;
-  bool qword_set = false;
+buffer_t op_write_prefix(const operand_t *op_arr) {
+  buffer_t prefix = BUF_NULL;
 
   for (uint8_t i = 0; i < 4; i++) {
     const uint8_t size = op_sizeof(op_arr[i].type);
 
     switch (size) {
-    case 8:
-      break;
-
     case 16:
-      if (word_set)
-        break;
-
-      word_set = true;
-      buf_write_byte(buf, OP_WORD_OVERRIDE);
-      buf_write_byte(buf, OP_ADDR_OVERRIDE);
-      break;
-
-    case 32:
+      uint8_t override = op_m(op_arr[i].type) ? OP_ADDR_OVERRIDE : OP_WORD_OVERRIDE;
+      if (!buf_element_exists(&prefix, override))
+        buf_write_byte(&prefix, override);
       break;
 
     case 64:
-      if (qword_set)
-        break;
-
-      qword_set = true;
-      buf_write_byte(buf, REX_W);
+      if (!buf_element_exists(&prefix, REX_W))
+        buf_write_byte(&prefix, REX_W);
       break;
 
     default:
-      err("Invalid operand size.");
-      return;
+      break;
     }
   }
+
+  return prefix;
 }
