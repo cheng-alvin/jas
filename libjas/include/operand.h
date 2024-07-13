@@ -145,7 +145,7 @@ typedef struct {
  * size of the reference operand array, and writes it into a
  * "child" buffer.
  *
- * @param buf The buffer to write the prefix to.
+ * @param op_arr The operand array to base the prefixes from.
  * @return The "child" buffer containing the written prefixes.
  */
 buffer_t op_write_prefix(const operand_t *op_arr);
