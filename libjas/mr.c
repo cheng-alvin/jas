@@ -44,9 +44,6 @@ void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
 
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
 
-  if (reg_needs_rex(*reg))
-    rex_insert(buf, REX_B);
-
   // Experimental, basically moved from rm.c
 
   uint8_t mr_mode = OP_MODRM_REG;
