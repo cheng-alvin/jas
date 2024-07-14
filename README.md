@@ -39,4 +39,6 @@ Jas and its members respect and welcome all developers regardless of age, visibl
 *Please report all community conduct violations via email at: eventide1029+jas@gmail.com.*
 
 ---
-*Have a great day! Made with love by Alvin / the Jas crew and contributors ❤️ .* 
+*Made with love by Alvin / the Jas crew and contributors ❤️ .* 
+
+* Jas is under development and is **NOT STABLE** for use. Please make sure it's NOT used for production purposes!! Please verify all generated code with official sources before deploying to production!
