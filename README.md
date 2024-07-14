@@ -41,4 +41,4 @@ Jas and its members respect and welcome all developers regardless of age, visibl
 ---
 *Made with love by Alvin / the Jas crew and contributors ❤️ .* 
 
-^ Jas is under development and is **NOT STABLE** for use. Please make sure it's NOT used for production purposes!! Please verify all generated code with official sources before deploying to production!
+^ Jas is **NOT STABLE** for commerical use. DO NOT use for production purposes!! Please verify all generated code with official sources before deploying to production settings of any kind!
