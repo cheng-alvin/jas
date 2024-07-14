@@ -29,6 +29,7 @@
 #include "operand.h"
 #include "register.h"
 #include "rex.h"
+#include <stdlib.h>
 
 void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const uint8_t opcode_extend = instr_ref->opcode_ext << 3; // Should be 0

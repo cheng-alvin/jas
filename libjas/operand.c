@@ -52,13 +52,13 @@ buffer_t op_write_prefix(const operand_t *op_arr) {
 
   for (uint8_t i = 0; i < 4; i++) {
     const uint8_t size = op_sizeof(op_arr[i].type);
+    uint8_t override = op_m(op_arr[i].type) ? OP_ADDR_OVERRIDE : OP_WORD_OVERRIDE;
 
     if (op_rm(op_arr[i].type))
       rex |= reg_needs_rex(op_arr[i].data) ? REX_B : 0;
 
     switch (size) {
     case 16:
-      uint8_t override = op_m(op_arr[i].type) ? OP_ADDR_OVERRIDE : OP_WORD_OVERRIDE;
       if (!buf_element_exists(&prefix, override))
         buf_write_byte(&prefix, override);
       break;
