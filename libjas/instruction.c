@@ -121,7 +121,6 @@ instr_encode_table_t lea[] = {
 
 };
 
-// TODO: experimental, please double check arithmetic instructions! :)
 instr_encode_table_t add[] = {
     {
         .ident = OP_RM,
