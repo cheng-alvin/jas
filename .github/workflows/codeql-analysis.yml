@@ -33,6 +33,9 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
+      - name: Clean directory
+        run: make clean
+
       - name: Build project
         run: make -C libjas/
 
