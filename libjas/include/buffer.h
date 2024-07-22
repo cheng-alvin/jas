@@ -65,7 +65,7 @@ void buf_remove(buffer_t *buf, const size_t elem);
 #define BUF_NULL  \
   (buffer_t) {    \
     .data = NULL, \
-    .len = NULL   \
+    .len = 0      \
   }
 
 /**
