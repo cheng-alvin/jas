@@ -65,18 +65,8 @@ void buf_remove(buffer_t *buf, const size_t elem);
 #define BUF_NULL  \
   (buffer_t) {    \
     .data = NULL, \
-    .len = 0      \
+    .len = NULL   \
   }
-
-/**
- * Removes a chunk of elements from the buffer struct starting from the
- * `start` index to the `end` index.
- *
- * @param buf The pointer to the buffer struct
- * @param start The starting index of the chunk to remove
- * @param end The ending index of the chunk to remove
- */
-void buf_remove_chunk(buffer_t *buf, const size_t start, const size_t end);
 
 /**
  * Checks if an element exists in the buffer struct.

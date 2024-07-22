@@ -53,14 +53,6 @@ void buf_remove(buffer_t *buf, const size_t elem) {
   buf->data = realloc(buf->data, buf->len);
 }
 
-void buf_remove_chunk(buffer_t *buf, const size_t start, const size_t end) {
-  if (buf->len == 0)
-    return;
-
-  for (size_t i = start; i < end; i++)
-    buf_remove(buf, i);
-}
-
 bool buf_element_exists(buffer_t *buf, const uint8_t elem) {
   for (size_t i = 0; i < buf->len; i++)
     if (buf->data[i] == elem)
