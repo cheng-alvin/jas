@@ -57,7 +57,7 @@ void err(const char *msg);
 /**
  * Function to add a callback function to the error handler, a bit
  * like a setter function for the very *object orientated* C
- * language haha. :)
+ * language :)
  *
  * @param input The function pointer to the error handler.
  * @see `err_callback_t`
