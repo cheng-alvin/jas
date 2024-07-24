@@ -3,7 +3,7 @@ CC = arch -x86_64 clang
 CFLAGS_COMMON = -I ../libjas/include -lcriterion -lstdc++
 CFLAGS = $(CFLAGS_COMMON)
 
-TESTS = buffer endian 
+TESTS = buffer endian error
 
 all: CFLAGS = $(CFLAGS_COMMON)
 all: $(TESTS)
