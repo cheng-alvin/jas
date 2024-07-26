@@ -28,7 +28,7 @@ Test(operand, construct_operand) {
   cr_assert_eq(*(unsigned char *)byte.data, 0xFF);
 }
 
-Test(operand, size_of) {
+Test(operand, sizeof) {
   cr_assert_eq(op_sizeof(OP_IMM8), 8);
   cr_assert_eq(op_sizeof(OP_IMM16), 16);
   cr_assert_eq(op_sizeof(OP_IMM32), 32);
