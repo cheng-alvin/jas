@@ -50,6 +50,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
 
     enum op_ident ident = op_ident_identify(operand_list);
     instr_encode_table_t ref;
+    ref.opcode_size = NULL; // Initalized to guarantee a NULL value
 
     unsigned int j = 0;
     while (CURR_TABLE.opcode_size != NULL) {
@@ -61,6 +62,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
       j++;
     }
 
+    // Referencing the guaranteed NULL value
     if (ref.opcode_size == NULL) {
       err("Instruction opcode not found. (Suggests an invalid instruction)");
       free(buf.data);
@@ -70,8 +72,11 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
     if (ref.pre != NULL)
       ref.pre(current.operands, &buf, &ref, (enum modes)mode);
 
+    // TODO Potentially add error checking??!?!
     instr_encode_func(ident)(current.operands, &buf, &ref, (enum modes)mode);
   }
 
   return buf;
 }
+
+// UwU
