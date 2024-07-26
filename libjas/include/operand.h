@@ -183,6 +183,22 @@ enum op_ident op_ident_identify(enum operands *input);
  */
 uint8_t op_sizeof(enum operands input);
 
+/**
+ * Function for constructing an operand struct with the given
+ * type, offset and data. Therefore, prevents the temptation
+ * to make things difficult by using the struct initializer
+ * as well as mangling around with void pointers.
+ *
+ * @param type The type of the operand
+ * @param offset The offset of the operand
+ * @param data The data of the operand
+ * @return The constructed operand struct
+ *
+ * @note Operands and parameter types are based on `operand_t`
+ * @see `operand_t`
+ */
+operand_t op_construct_operand(enum operands type, size_t offset, void *data);
+
 #endif
 
 #ifdef __cplusplus

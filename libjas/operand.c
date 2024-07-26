@@ -76,3 +76,11 @@ buffer_t op_write_prefix(const operand_t *op_arr) {
   buf_write_byte(&prefix, rex);
   return prefix;
 }
+
+operand_t op_construct_operand(enum operands type, size_t offset, void *data) {
+  return (operand_t){
+      .type = type,
+      .offset = offset,
+      .data = data,
+  };
+}
