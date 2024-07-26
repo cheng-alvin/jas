@@ -27,3 +27,22 @@ Test(operand, construct_operand) {
   cr_assert_eq(byte.offset, 0);
   cr_assert_eq(*(unsigned char *)byte.data, 0xFF);
 }
+
+Test(operand, size_of) {
+  cr_assert_eq(op_sizeof(OP_IMM8), 8);
+  cr_assert_eq(op_sizeof(OP_IMM16), 16);
+  cr_assert_eq(op_sizeof(OP_IMM32), 32);
+  cr_assert_eq(op_sizeof(OP_IMM64), 64);
+
+  cr_assert_eq(op_sizeof(OP_R8), 8);
+  cr_assert_eq(op_sizeof(OP_R16), 16);
+  cr_assert_eq(op_sizeof(OP_R32), 32);
+  cr_assert_eq(op_sizeof(OP_R64), 64);
+
+  cr_assert_eq(op_sizeof(OP_M8), 8);
+  cr_assert_eq(op_sizeof(OP_M16), 16);
+  cr_assert_eq(op_sizeof(OP_M32), 32);
+  cr_assert_eq(op_sizeof(OP_M64), 64);
+
+  cr_assert_eq(op_sizeof(OP_NULL), 0);
+}
