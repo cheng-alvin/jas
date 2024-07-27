@@ -46,3 +46,11 @@ Test(operand, sizeof) {
 
   cr_assert_eq(op_sizeof(OP_NULL), 0);
 }
+
+Test(operand, ident_identify) {
+  const enum operands input[] = {OP_R8, OP_R16, OP_NULL, OP_NULL};
+  const enum operands input2[] = {OP_R8, OP_M16, OP_NULL, OP_NULL};
+
+  cr_assert_eq(op_ident_identify(input), OP_MR);
+  cr_assert_eq(op_ident_identify(input2), OP_RM);
+}
