@@ -1,6 +1,6 @@
 CC = arch -x86_64 clang
 
-CFLAGS_COMMON = -I ../libjas/include -lcriterion -lstdc++
+CFLAGS_COMMON = -I ../libjas/include -lcriterion -lstdc++ -g
 CFLAGS = $(CFLAGS_COMMON)
 
 TESTS = buffer endian error operand
@@ -21,3 +21,6 @@ $(TESTS): %: %.o
 
 libjas.o: 
 	$(MAKE) -C ../libjas libjas.o
+
+clean:
+	@rm -r $(TESTS)
