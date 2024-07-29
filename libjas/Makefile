@@ -1,5 +1,4 @@
 CC = clang
-LD = ld
 
 CFLAGS_COMMON = -I include  -I ./ -Wall -Wextra -Wno-int-conversion -Wno-unused-parameter
 CFLAGS = $(CFLAGS_COMMON)
@@ -9,15 +8,14 @@ BUILD = ../build
 
 all: libjas.o
 
-libjas.o: CFLAGS = $(CFLAGS_COMMON) -Ofast -std=c99
-libjas.o: $(OBJ) 
-	$(LD) -r $^ -o $(BUILD)/$@ 
+libjas.a: $(OBJ) 
+	ar rcs $(BUILD)/$@ $^ 
 
 # Please set `DYLD_LIBRARY_PATH` for dynamic library to work as well!
 
-libjas.dylib: CFLAGS = $(CFLAGS_COMMON) -Ofast -std=c99
+libjas.dylib: CFLAGS = $(CFLAGS_COMMON) -Ofast -std=c99 -dynamiclib  
 libjas.dylib: $(OBJ) 
-	$(CC) $^ -o $(BUILD)/$@ -dynamiclib  
+	$(CC) $^ -o $(BUILD)/$@ 
 
 libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -std=c99
 libjas_debug.a: $(OBJ)
