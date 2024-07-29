@@ -6,7 +6,7 @@ CFLAGS = $(CFLAGS_COMMON)
 OBJ = buffer.o codegen.o endian.o error.o i.o instruction.o mi.o mode.o mr.o oi.o operand.o operand_cpp.o register.o rm.o
 BUILD = ../build
 
-all: libjas.o
+all: libjas.a libjas.dylb
 
 libjas.a: $(OBJ) 
 	ar rcs $(BUILD)/$@ $^ 
@@ -19,7 +19,7 @@ libjas.dylib: $(OBJ)
 
 libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -std=c99
 libjas_debug.a: $(OBJ)
-	$(LD) -r $^ -o $(BUILD)/$@
+	ar rcs $(BUILD)/$@ $^
 
 # Individual object files rules:
 operand_cpp.o: CFLAGS = $(CFLAGS_COMMON) -std=c++11
