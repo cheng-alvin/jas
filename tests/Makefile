@@ -1,4 +1,4 @@
-CC = arch -x86_64 clang
+CC = clang
 
 CFLAGS_COMMON = -I ../libjas/include -lcriterion -lstdc++ -g
 CFLAGS = $(CFLAGS_COMMON)
@@ -12,15 +12,17 @@ all: $(TESTS)
 	done
 	@rm -r $(TESTS)
 
-$(TESTS): libjas.o
+$(TESTS): libjas_debug.a
 $(TESTS): %: %.o 
-	$(CC) -o $@ $< ../build/libjas.o $(CFLAGS)
+	$(CC) -o $@ $< ../build/libjas_debug.a $(CFLAGS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
-libjas.o: 
-	$(MAKE) -C ../libjas libjas.o
+libjas_debug.a: 
+	$(MAKE) -C ../libjas libjas_debug.a
 
 clean:
-	@rm -r $(TESTS)
+	@rm -rf $(TESTS)
+
+.PHONY: all clean
