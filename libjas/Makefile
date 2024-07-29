@@ -19,9 +19,9 @@ libjas.dylib: CFLAGS = $(CFLAGS_COMMON) -Ofast -std=c99
 libjas.dylib: $(OBJ) 
 	$(CC) $^ -o $(BUILD)/$@ -dynamiclib  
 
-libjas_debug.o: CFLAGS = $(CFLAGS_COMMON) -g -std=c99
-libjas_debug.o: $(OBJ)
-	$(LD) -r $^ -o $(BUILD)/libjas_debug.o
+libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -std=c99
+libjas_debug.a: $(OBJ)
+	$(LD) -r $^ -o $(BUILD)/$@
 
 # Individual object files rules:
 operand_cpp.o: CFLAGS = $(CFLAGS_COMMON) -std=c++11
