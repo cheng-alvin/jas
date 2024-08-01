@@ -1,18 +1,42 @@
 #include "error.h"
-#include <criterion/criterion.h>
+#include "helper.h"
+#include <check.h>
+#include <stdlib.h>
+#include <string.h>
 
 void test_callback(const char *msg) {
-  cr_assert_str_eq(msg, "msg", "Error callback function was not called correctly.");
+  ck_assert_msg(
+      !strcmp(msg, "msg"),
+      "Error callback function was not called correctly.");
 }
 
-Test(error, add_callback) {
+START_TEST(_add_callback) {
   err_add_callback(test_callback);
 
-  cr_assert_not_null(err_callback);
-  cr_assert(err_callback == test_callback);
+  ck_assert(err_callback);
+  ck_assert(err_callback == test_callback);
 }
+END_TEST
 
-Test(error, err) {
+START_TEST(_err) {
   err_add_callback(test_callback);
   err("msg");
 }
+END_TEST
+
+Suite *_error(void) {
+  Suite *s;
+  TCase *tc_core;
+
+  s = suite_create("_error");
+  tc_core = tcase_create("Core");
+
+  tcase_add_test(tc_core, _add_callback);
+  tcase_add_test(tc_core, _err);
+
+  suite_add_tcase(s, tc_core);
+
+  return s;
+}
+
+RUN_TEST_SUITE(_error)
