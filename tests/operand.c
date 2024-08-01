@@ -56,8 +56,8 @@ START_TEST(_ident_identify) {
   const enum operands input[] = {OP_R8, OP_R16, OP_NULL, OP_NULL};
   const enum operands input2[] = {OP_R8, OP_M16, OP_NULL, OP_NULL};
 
-  //   ck_assert(op_ident_identify(input), OP_MR);
-  //   ck_assert(op_ident_identify(input2), OP_RM);
+  ck_assert(op_ident_identify(input) == OP_MR);
+  ck_assert(op_ident_identify(input2) == OP_RM);
 }
 END_TEST
 
