@@ -1,12 +1,13 @@
 CC = clang
 
-CFLAGS_COMMON = -I ../libjas/include -lcriterion -lstdc++ -g
+CFLAGS_COMMON = -I ../libjas/include -lstdc++ -g
 CFLAGS = $(CFLAGS_COMMON)
 
 TESTS = buffer endian error operand
 
 all: CFLAGS = $(CFLAGS_COMMON)
 all: $(TESTS)
+	@echo "---"
 	@for test in $(TESTS); do \
 		./$$test; \
 	done
