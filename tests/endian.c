@@ -1,5 +1,5 @@
 #include "endian.h"
-#include <criterion/criterion.h>
+#include "test.h"
 
 Test(endian, endian) {
   uint8_t data[] = {0xBE, 0xEF};
@@ -7,8 +7,15 @@ Test(endian, endian) {
 
   uint8_t *result = endian(data, sizeof(data));
 
-  cr_assert(result[0] == expected[0]);
-  cr_assert(result[1] == expected[1]);
+  assert(result[0] == expected[0]);
+  assert(result[1] == expected[1]);
 
   free(result);
+}
+
+int main(void) {
+  TestSuite(endian);
+  RunTest(endian, endian);
+
+  return 0;
 }
