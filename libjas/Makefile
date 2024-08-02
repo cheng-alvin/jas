@@ -16,7 +16,7 @@ libjas_debug.a: $(OBJ)
 	ar rcs $(BUILD)/$@ $^
 
 # Individual object files rules:
-operand_cpp.o: CFLAGS = $(CFLAGS_COMMON) -std=c++11
+operand_cpp.o: CFLAGS = $(CFLAGS_COMMON) -std=c++11 -g # Remove -g later
 operand_cpp.o: operand.cpp
 	$(CC) $(CFLAGS) -c $< -o $@	
 
