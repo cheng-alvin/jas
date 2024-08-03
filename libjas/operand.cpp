@@ -29,6 +29,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <unordered_map>
+#define OP_NONE (uint32_t)0b11111111
 
 static constexpr uint32_t __combine__(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
   return ((a) << 24 | (b) << 16 | (c) << 8 | (d));
@@ -53,23 +54,22 @@ static op_ident_hash_t op_hash(enum operands input) {
   if (op_acc(input))
     return OP_HASH_ACC;
 
-  return 0b11111111;
+  return OP_NONE;
 }
 
-#define OP_NULL (uint32_t)0
 namespace op {
   static std::unordered_map<uint32_t, enum op_ident> lookup = {
-      {__combine__(OP_HASH_R, OP_HASH_R, OP_NULL, OP_NULL), OP_MR},
-      {__combine__(OP_HASH_M, OP_HASH_R, OP_NULL, OP_NULL), OP_MR},
+      {__combine__(OP_HASH_R, OP_HASH_R, OP_NONE, OP_NONE), OP_MR},
+      {__combine__(OP_HASH_M, OP_HASH_R, OP_NONE, OP_NONE), OP_MR},
 
-      {__combine__(OP_HASH_R, OP_HASH_M, OP_NULL, OP_NULL), OP_RM},
+      {__combine__(OP_HASH_R, OP_HASH_M, OP_NONE, OP_NONE), OP_RM},
 
-      {__combine__(OP_HASH_R, OP_HASH_IMM, OP_NULL, OP_NULL), OP_OI},
+      {__combine__(OP_HASH_R, OP_HASH_IMM, OP_NONE, OP_NONE), OP_OI},
 
-      {__combine__(OP_HASH_R, OP_HASH_IMM, OP_NULL, OP_NULL), OP_MI},
-      {__combine__(OP_HASH_M, OP_HASH_IMM, OP_NULL, OP_NULL), OP_MI},
+      {__combine__(OP_HASH_R, OP_HASH_IMM, OP_NONE, OP_NONE), OP_MI},
+      {__combine__(OP_HASH_M, OP_HASH_IMM, OP_NONE, OP_NONE), OP_MI},
 
-      {__combine__(OP_HASH_ACC, OP_HASH_IMM, OP_NULL, OP_NULL), OP_I}};
+      {__combine__(OP_HASH_ACC, OP_HASH_IMM, OP_NONE, OP_NONE), OP_I}};
 }
 
 extern "C" enum op_ident op_ident_identify(enum operands *input) {
@@ -81,7 +81,7 @@ extern "C" enum op_ident op_ident_identify(enum operands *input) {
   uint32_t hash_key = 0;
 
   for (uint8_t i = 0; i < sizeof(hash); i++)
-    hash_key |= ((uint32_t)hash[i]) << (24 - i * 8);
+    hash_key |= (uint32_t)hash[i] << (24 - i * 8);
 
   if (op::lookup.find(hash_key) == op::lookup.end()) {
     err("Operand identifier not found.");
