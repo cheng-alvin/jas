@@ -43,39 +43,39 @@ static inline void test_printf(const char *fmt, ...) {
   va_end(args);
 }
 
-#define assert_not_null(x)                                 \
-  if ((x) == NULL) {                                       \
-    test_printf("\n\nAssertion failed: %s is NULL\n", #x); \
-    exit(1);                                               \
+#define assert_not_null(x)                               \
+  if ((x) == NULL) {                                     \
+    test_printf("\nAssertion failed: %s is NULL\n", #x); \
+    exit(1);                                             \
   }
 
 #define RunTest(name, func) \
   test_##name##_##func();   \
   test_printf("  L Test `%s::%s` passed.\n", #name, #func);
 
-#define assert(x)                                              \
-  if (!(x)) {                                                  \
-    test_printf("\n\nAssertion failed: %s is not true\n", #x); \
-    exit(1);                                                   \
+#define assert(x)                                            \
+  if (!(x)) {                                                \
+    test_printf("\nAssertion failed: %s is not true\n", #x); \
+    exit(1);                                                 \
   }
 
-#define assert_eq(x, y)                                      \
-  if ((x) != (y)) {                                          \
-    test_printf("\n\nAssertion failed: %s != %s\n", #x, #y); \
-    exit(1);                                                 \
+#define assert_eq(x, y)                                    \
+  if ((x) != (y)) {                                        \
+    test_printf("\nAssertion failed: %s != %s\n", #x, #y); \
+    exit(1);                                               \
   }
 
 #define assert_str_eq(x, y, message) \
   if (strcmp((x), (y)) != 0) {       \
-    test_printf("\n\n%s", message);  \
+    test_printf("\n%s", message);    \
     exit(1);                         \
   }
 
 #define Test(name, func) \
   void test_##name##_##func()
 
-#define fail(message)                            \
-  test_printf("\n\nTest failed: %s\n", message); \
+#define fail(message)                          \
+  test_printf("\nTest failed: %s\n", message); \
   exit(1);
 
 #define TestSuite(name) \
