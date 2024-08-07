@@ -1,10 +1,10 @@
 BUILD = build
 
+include libjas/libjas.mk
+include tests/test.mk
+
 all: 
 	$(MAKE) -C libjas libjas.a
-
-test:
-	$(MAKE) -C tests
 
 format:
 	@find ./ -type f \( -name "*.cpp" -o -name "*.c" -o -name "*.h" \) -exec clang-format --verbose -i {} +

@@ -16,9 +16,6 @@ $(TESTS): %: %.o
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
-libjas_debug.a: 
-	$(MAKE) -C ../libjas libjas_debug.a
-
 clean:
 	@rm -rf $(TESTS)
 

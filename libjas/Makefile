@@ -8,8 +8,6 @@ OBJ = $(patsubst %.c, %.o, $(SRC)) operand_cpp.o # Individual C++ rule, add if r
 
 BUILD = ../build
 
-all: libjas.a
-
 libjas.a: $(OBJ) 
 	echo $(OBJ)
 	ar rcs $(BUILD)/$@ $^ 
