@@ -1,8 +1,5 @@
 BUILD = build
 
-include libjas/libjas.mk
-include tests/test.mk
-
 all: 
 	$(MAKE) -C libjas libjas.a
 
