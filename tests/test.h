@@ -98,4 +98,8 @@ static operand_t imm16 = (operand_t){.type = OP_IMM16, .offset = 0, .data = &(un
 static operand_t imm32 = (operand_t){.type = OP_IMM32, .offset = 0, .data = &(unsigned int){0xFFFFFFFF}};
 static operand_t imm64 = (operand_t){.type = OP_IMM64, .offset = 0, .data = &(unsigned long){0xFFFFFFFFFFFFFFFF}};
 
+static void test_error_handler(const char *msg) {
+  fail(msg);
+}
+
 #endif
