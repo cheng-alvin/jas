@@ -197,7 +197,7 @@ uint8_t op_sizeof(enum operands input);
  * @note Operands and parameter types are based on `operand_t`
  * @see `operand_t`
  */
-inline operand_t op_construct_operand(enum operands type, size_t offset, void *data);
+operand_t op_construct_operand(enum operands type, size_t offset, void *data);
 
 #define OP_NONE      \
   (operand_t) {      \

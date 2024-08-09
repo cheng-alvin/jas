@@ -82,7 +82,7 @@ buffer_t op_write_prefix(const operand_t *op_arr) {
   return prefix;
 }
 
-inline operand_t op_construct_operand(enum operands type, size_t offset, void *data) {
+operand_t op_construct_operand(enum operands type, size_t offset, void *data) {
   return (operand_t){
       .type = type,
       .offset = offset,
