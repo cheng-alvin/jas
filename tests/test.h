@@ -26,6 +26,10 @@
  * testing the assembler's instruction encoding and other
  * chores. Feel free to copy and modify this for your own
  * testing and programming purposes. :)
+ *
+ * @note There are also some jas-specific stuff (if you will)
+ * therefore, you are also welcome to modify and remove them
+ * as you deem fit. (Or leave them in for now )
  */
 
 #ifndef TEST_H
@@ -81,3 +85,8 @@ static inline void test_printf(const char *fmt, ...) {
 #define TestSuite(name) \
   test_printf("Running test suite: `%s`\n", #name);
 #endif
+
+// Some jas-specific stuff: (Work in progress, for now)
+
+#define TEST_OPERAND(x, y, z) \
+  op_construct_operand(x, y, &(unsigned char){z})
