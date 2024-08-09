@@ -199,6 +199,13 @@ uint8_t op_sizeof(enum operands input);
  */
 inline operand_t op_construct_operand(enum operands type, size_t offset, void *data);
 
+#define OP_NONE      \
+  (operand_t) {      \
+    .data = NULL,    \
+    .type = OP_NULL, \
+    .offset = 0,     \
+  }
+
 #endif
 
 #ifdef __cplusplus
