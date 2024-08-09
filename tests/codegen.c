@@ -14,9 +14,14 @@ Test(codegen, mov) {
       },
   }};
 
+  err_add_callback(&test_error_handler);
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr) / sizeof(instruction_t));
 
-  err_add_callback(&test_error_handler);
+  assert_not_null(buf.data);
+
+  assert(buf.data[0] == 0x88);
+  assert(buf.data[1] == 0x40);
+  assert(buf.data[2] == 0xFF);
 
   free(buf.data);
 }
