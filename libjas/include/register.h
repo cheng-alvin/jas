@@ -120,7 +120,7 @@ enum registers {
  * These are the values that are used in the
  * instruction encoding, unlike the enum values.
  *
- * @note Not to be confused with `register`
+ * @note Not to be confused with the enum `registers`
  */
 
 #define REG_VALUE_AL 0
