@@ -31,12 +31,14 @@
 #ifndef TEST_H
 #define TEST_H
 
+#include "operand.h"
+#include "register.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-static inline void test_printf(const char *fmt, ...) {
+static inline void test_printf(char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
   vprintf(fmt, args);
@@ -80,4 +82,20 @@ static inline void test_printf(const char *fmt, ...) {
 
 #define TestSuite(name) \
   test_printf("Running test suite: `%s`\n", #name);
+
+static operand_t r8 = (operand_t){.type = OP_R8, .offset = 0, .data = &(enum registers){REG_AL}};
+static operand_t r16 = (operand_t){.type = OP_R16, .offset = 0, .data = &(enum registers){REG_AX}};
+static operand_t r32 = (operand_t){.type = OP_R32, .offset = 0, .data = &(enum registers){REG_EAX}};
+static operand_t r64 = (operand_t){.type = OP_R64, .offset = 0, .data = &(enum registers){REG_RAX}};
+
+static operand_t m8 = (operand_t){.type = OP_M8, .offset = 0xff, .data = &(enum registers){REG_AL}};
+static operand_t m16 = (operand_t){.type = OP_M16, .offset = 0xff, .data = &(enum registers){REG_AX}};
+static operand_t m32 = (operand_t){.type = OP_M32, .offset = 0xff, .data = &(enum registers){REG_EAX}};
+static operand_t m64 = (operand_t){.type = OP_M64, .offset = 0xff, .data = &(enum registers){REG_RAX}};
+
+static operand_t imm8 = (operand_t){.type = OP_IMM8, .offset = 0, .data = &(unsigned char){0xFF}};
+static operand_t imm16 = (operand_t){.type = OP_IMM16, .offset = 0, .data = &(unsigned short){0xFFFF}};
+static operand_t imm32 = (operand_t){.type = OP_IMM32, .offset = 0, .data = &(unsigned int){0xFFFFFFFF}};
+static operand_t imm64 = (operand_t){.type = OP_IMM64, .offset = 0, .data = &(unsigned long){0xFFFFFFFFFFFFFFFF}};
+
 #endif

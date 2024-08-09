@@ -4,12 +4,7 @@
 #include "test.h"
 
 Test(operand, write_prefix) {
-  const operand_t byte = op_construct_operand(OP_IMM8, 0, &(unsigned char){0xFF});
-  const operand_t word = op_construct_operand(OP_IMM16, 0, &(unsigned short){0xFFFF});
-  const operand_t dword = op_construct_operand(OP_IMM32, 0, &(unsigned int){0xFFFFFFFF});
-  const operand_t qword = op_construct_operand(OP_IMM64, 0, &(unsigned long){0xFFFFFFFFFFFFFFFF});
-
-  const operand_t op_arr[] = {byte, word, dword, qword};
+  const operand_t op_arr[] = {imm8, imm16, imm32, imm64};
 
   buffer_t prefix = op_write_prefix(op_arr);
 
