@@ -21,4 +21,4 @@ jobs:
       run: make -C tests tests
     
     - name : Run unit tests
-      run: ./tests/test.sh
+      run: cd tests && ./test.sh
