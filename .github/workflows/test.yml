@@ -1,0 +1,24 @@
+name: Run unit tests
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Clean project
+      run: make clean
+      
+    - name: Build unit tests with `make`
+      run: make -C tests tests
+    
+    - name : Run unit tests
+      run: ./tests/test.sh
