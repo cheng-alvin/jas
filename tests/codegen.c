@@ -22,6 +22,9 @@ Test(codegen, mov) {
   assert(buf.data[0] == 0x88);
   assert(buf.data[1] == 0x40);
   assert(buf.data[2] == 0xFF);
+  printf("buf.data[0]: %x\n", buf.data[0]);
+  printf("buf.data[1]: %x\n", buf.data[1]);
+  printf("buf.data[2]: %x\n", buf.data[2]);
 
   free(buf.data);
 }
