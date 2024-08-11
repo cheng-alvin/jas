@@ -1,6 +1,6 @@
 CC = clang
 
-CFLAGS_COMMON = -I ../libjas/include -lstdc++ -g
+CFLAGS_COMMON = -I ../libjas/include -I ../libjas/ -lstdc++ -g
 CFLAGS = $(CFLAGS_COMMON)
 
 TESTS = buffer codegen endian error operand 
