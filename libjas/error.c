@@ -25,7 +25,7 @@
 
 #include "error.h"
 
-err_callback_t err_callback;
+static err_callback_t err_callback;
 
 void err_add_callback(err_callback_t input) {
   err_callback = input;

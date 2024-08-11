@@ -43,8 +43,6 @@ extern "C" {
  */
 typedef void (*err_callback_t)(const char *msg);
 
-extern err_callback_t err_callback;
-
 /**
  * Function to throw errors in the jas library. and hand-balls it
  * to the function pointer handler by the user's own call back
