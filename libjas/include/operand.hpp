@@ -35,7 +35,7 @@
  * bits of the byte represent the type of operands within the
  * operand identifier as follows:
  *
- * 0: Relative operand (rel8/16/32/64)
+ * 0: Relative operand (rel8/16/32)
  * 1: Register operand (r8/16/32/64)
  * 2: Immediate operand (imm8/16/32/64)
  * 3: Memory operand (m8/16/32/64)
