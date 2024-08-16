@@ -26,6 +26,7 @@
 #include "instruction.h"
 #include "error.h"
 #include "i.h"
+#include "m.h"
 #include "mi.h"
 #include "mr.h"
 #include "oi.h"
@@ -216,6 +217,6 @@ instr_encode_table_t sub[] = {
 instr_encode_table_t *instr_table[] = {mov, lea, add, sub};
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
-  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i};
+  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m};
   return lookup[(size_t)input];
 }
