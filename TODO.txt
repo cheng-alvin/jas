@@ -12,8 +12,6 @@ CALL, RET: Subroutine call and return.
 CMP: Compare values (used with conditional jumps).
 Stack Instructions:
 PUSH, POP: Push onto and pop from the stack.
-String Instructions:
-MOVS, LODS, STOS, CMPS, SCAS: String manipulation instructions.
 Input/Output Instructions:
 IN, OUT: Input/output operations.
 Flag Control Instructions:
