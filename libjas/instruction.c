@@ -144,7 +144,7 @@ instr_encode_table_t add[] = {
     },
     {
         .ident = OP_MI,
-        .opcode_ext = NULL,
+        .opcode_ext = 0b10000000, // Prevents a false null reading, it gets shifted anyways ;)
         .opcode = {0x81},
         .support = MODE_SUPPORT_ALL,
         .byte_instr_opcode = {0x80},
@@ -167,7 +167,53 @@ instr_encode_table_t add[] = {
 
 };
 
-instr_encode_table_t *instr_table[] = {mov, lea};
+instr_encode_table_t sub[] = {
+    {
+        .ident = OP_RM,
+        .opcode_ext = NULL,
+        .opcode = {0x2B},
+        .support = MODE_SUPPORT_ALL,
+        .byte_instr_opcode = {0x2A},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+        .pre = NULL,
+    },
+    {
+        .ident = OP_MR,
+        .opcode_ext = NULL,
+        .opcode = {0x28},
+        .support = MODE_SUPPORT_ALL,
+        .byte_instr_opcode = {0x29},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+        .pre = NULL,
+    },
+    {
+        .ident = OP_MI,
+        .opcode_ext = 5,
+        .opcode = {0x80},
+        .support = MODE_SUPPORT_ALL,
+        .byte_instr_opcode = {0x81},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+        .pre = NULL,
+    },
+    {
+        .ident = OP_I,
+        .opcode_ext = NULL,
+        .opcode = {0x2C},
+        .support = MODE_SUPPORT_ALL,
+        .byte_instr_opcode = {0x2D},
+        .should_fallback_support = false,
+        .opcode_size = 1,
+        .pre = NULL,
+    },
+
+    INSTR_TERMINATOR
+
+};
+
+instr_encode_table_t *instr_table[] = {mov, lea, add, sub};
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
   instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i};
