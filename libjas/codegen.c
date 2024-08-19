@@ -50,7 +50,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
 
     enum op_ident ident = op_ident_identify(operand_list);
     instr_encode_table_t ref;
-    ref.opcode_size = NULL; // Initalized to guarantee a NULL value
 
     unsigned int j = 0;
     while (CURR_TABLE.opcode_size != NULL) {
@@ -79,4 +78,3 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
   return buf;
 }
 
-// UwU
