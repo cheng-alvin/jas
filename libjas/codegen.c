@@ -70,7 +70,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
     if (ref.pre != NULL)
       ref.pre(current.operands, &buf, &ref, (enum modes)mode);
 
-    // TODO Potentially add error checking??!?!
     instr_encode_func(ident)(current.operands, &buf, &ref, (enum modes)mode);
   }
 
