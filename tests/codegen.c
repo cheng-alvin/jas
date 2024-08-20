@@ -3,19 +3,18 @@
 #include "register.h"
 #include "test.h"
 
-Test(codegen, mov) {
-  const instruction_t instr[] = {(instruction_t){
-      .instr = INSTR_MOV,
-      .operands = (operand_t[]){
-          m8,
-          r8,
-          OP_NONE,
-          OP_NONE,
-      },
+#define INIT(x, op1, op2, op3, op4)                  \
+  {(instruction_t){                                  \
+      .instr = x,                                    \
+      .operands = (operand_t[]){op1, op2, op3, op4}, \
   }};
 
+Test(codegen, mov) {
+  const instruction_t instr[] =
+      INIT(INSTR_MOV, m8, r8, OP_NONE, OP_NONE);
+
   err_add_callback(&test_error_handler);
-  buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr) / sizeof(instruction_t));
+  buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
 
   assert_not_null(buf.data);
 
