@@ -34,7 +34,7 @@
 #include <stdlib.h>
 
 void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  const enum registers *reg = (enum registers *)op_arr[0].data;
+  const enum registers reg = reg_lookup_val(op_arr[0].data);
   const uint8_t rm = reg_lookup_val(op_arr[1].data);
 
   const buffer_t prefixes = op_write_prefix(op_arr);
@@ -50,7 +50,7 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   else if (op_arr[1].offset != 0)
     mr_mode = OP_MODRM_DISP8;
 
-  buf_write_byte(buf, mr_mode | *reg << 3 | rm);
+  buf_write_byte(buf, mr_mode | reg << 3 | rm);
 
   if (op_arr[1].offset != 0)
     buf_write_byte(buf, op_arr[1].offset);

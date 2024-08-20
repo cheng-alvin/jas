@@ -33,7 +33,7 @@
 #include <stdlib.h>
 
 void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  const enum registers *reg = (enum registers *)op_arr[1].data;
+  const enum registers reg = reg_lookup_val(op_arr[0].data);
 
   const buffer_t prefixes = op_write_prefix(op_arr);
   buf_write(buf, prefixes.data, prefixes.len);
@@ -41,7 +41,7 @@ void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
 
   check_mode(mode, instr_ref->support);
 
-  buf_write(buf, (OP_OPCODE_HELPER) + (uint8_t)*reg, instr_ref->opcode_size);
+  buf_write(buf, (OP_OPCODE_HELPER) + (uint8_t)reg, instr_ref->opcode_size);
 
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
   uint8_t *imm = endian(op_arr[1].data, imm_size);
