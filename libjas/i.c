@@ -34,7 +34,7 @@
 
 void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
 
-  // TODO Prevent fall-throughs for R8 registers using REX.B (Could use `reg_needs_rex`?? Potentially?)
+  // TODO Prevent fall-through for R8 registers using REX.B (Could use `reg_needs_rex`?? Potentially?)
   if (reg_lookup_val(op_arr[0].data) != 0) { // For some reason Intel does not want to have AH
     err("Instruction identity must use an \"A\" register!");
     return;
