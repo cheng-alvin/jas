@@ -33,6 +33,7 @@
 #define CURR_TABLE instr_table[instr_arr[i].instr][j]
 
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
+  arr_size /= sizeof(instruction_t);
   buffer_t buf = BUF_NULL;
 
   for (size_t i = 0; i < arr_size; i++) {
