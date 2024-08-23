@@ -37,23 +37,12 @@ static constexpr uint32_t __combine__(uint32_t a, uint32_t b, uint32_t c, uint32
 }
 
 static op_ident_hash_t op_hash(enum operands input) {
-  if (op_rel(input))
-    return OP_HASH_REL;
-
-  if (op_r(input))
-    return OP_HASH_R;
-
-  if (op_imm(input))
-    return OP_HASH_IMM;
-
-  if (op_m(input))
-    return OP_HASH_M;
-
-  if (op_seg(input))
-    return OP_HASH_SEG;
-
-  if (op_acc(input))
-    return OP_HASH_ACC;
+  if (op_rel(input)) return OP_HASH_REL;
+  if (op_r(input)) return OP_HASH_R;
+  if (op_imm(input)) return OP_HASH_IMM;
+  if (op_m(input)) return OP_HASH_M;
+  if (op_seg(input)) return OP_HASH_SEG;
+  if (op_acc(input)) return OP_HASH_ACC;
 
   return OP_HASH_NONE;
 }
