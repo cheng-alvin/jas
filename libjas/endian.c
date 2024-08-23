@@ -27,7 +27,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
-
+// TODO review every instance of calling this function, usage may be incorrect!!!!
 uint8_t *endian(uint8_t *data, size_t data_size) {
   uint8_t *result = (uint8_t *)malloc(data_size);
 
