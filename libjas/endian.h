@@ -43,33 +43,4 @@
  */
 uint8_t *endian(uint8_t *data, size_t data_size);
 
-/**
- * Wrapper function for `endian` to convert a custom
- * integer to the opposite endian mode with the same
- * output format as the traditional `endian` function.
- *
- * (Since the assembler accepts the quad-word-sized
- * data for operand offsets or immediate values etc)
- *
- * @param data The input integer to convert.
- * @param data_size The size of the integer (data).
- *
- * @note `data_size` shall not be confused with the
- * array size as per `endian` function, it's the size
- * of the integer in bytes as opposed to the array size.
- * (e.g 8 bytes for quad-word)
- *
- * @return The converted byte array.
- *
- * @note Array was returned using allocated memory,
- * therefore, must the freed after usage! (and it's
- * ur responsibility to free it, don't forget!)
- *
- * @note No error handling is implemented in this function.
- * (e.g. if the data_size is incorrect, it will do anything
- * you throw at it, throwing some garbage back at you or a
- * segfault, so be careful!)
- */
-uint8_t *sized_endian(void *data, uint8_t data_size);
-
 #endif

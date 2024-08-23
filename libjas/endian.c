@@ -36,15 +36,3 @@ uint8_t *endian(uint8_t *data, size_t data_size) {
 
   return result;
 }
-
-// TODO Unit test
-// Potentially works fuck it who knows?!?!?
-uint8_t *sized_endian(void *data, uint8_t data_size) {
-  uint8_t arr[data_size];
-
-  for (uint8_t i = 0; i < data_size; i++) {
-    arr[i] = ((uint8_t *)data)[i];
-  }
-
-  return endian(arr, data_size);
-}
