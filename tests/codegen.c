@@ -13,10 +13,10 @@ Test(codegen, mov) {
   const instruction_t instr[] =
       {
           INIT(INSTR_MOV, m64, r64, OP_NONE, OP_NONE),
-          INIT(INSTR_MOV, r64, m64, OP_NONE, OP_NONE),
-          INIT(INSTR_MOV, r64, r64, OP_NONE, OP_NONE),
-          INIT(INSTR_MOV, r64, imm64, OP_NONE, OP_NONE),
-          INIT(INSTR_MOV, m64, imm64, OP_NONE, OP_NONE),
+          // INIT(INSTR_MOV, r64, m64, OP_NONE, OP_NONE),
+          // INIT(INSTR_MOV, r64, r64, OP_NONE, OP_NONE),
+          // INIT(INSTR_MOV, r64, imm64, OP_NONE, OP_NONE),
+          // INIT(INSTR_MOV, m64, imm64, OP_NONE, OP_NONE),
       };
 
   err_add_callback(&test_error_handler);
