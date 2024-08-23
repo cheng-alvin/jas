@@ -34,12 +34,8 @@ uint8_t op_modrm_mode(operand_t input) {
   if (op_m(input.type) && input.offset == 0)
     return OP_MODRM_INDIRECT;
 
-  else if (input.offset != 0) {
-    if (op_sizeof(input.type) == 8)
-      return OP_MODRM_DISP8;
-
+  else if (input.offset != 0)
     return OP_MODRM_DISP32;
-  }
 
   return OP_MODRM_REG;
 }
