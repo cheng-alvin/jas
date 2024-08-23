@@ -50,7 +50,7 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   else if (op_arr[1].offset != 0)
     mr_mode = OP_MODRM_DISP8;
 
-  buf_write_byte(buf, mr_mode | reg << 3 | rm);
+  buf_write_byte(buf, op_modrm_mode(op_arr[1]) | reg << 3 | rm);
 
   if (op_arr[1].offset != 0)
     buf_write_byte(buf, op_arr[1].offset);

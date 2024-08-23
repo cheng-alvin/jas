@@ -45,15 +45,7 @@ void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
 
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
 
-  // Experimental, basically moved from rm.c
-
-  uint8_t mr_mode = OP_MODRM_REG;
-  if (op_m(op_arr[0].type) && op_arr[0].offset == 0)
-    mr_mode = OP_MODRM_INDIRECT;
-  else if (op_arr[0].offset != 0)
-    mr_mode = OP_MODRM_DISP8;
-
-  buf_write_byte(buf, mr_mode | reg << 3 | rm);
+  buf_write_byte(buf, op_modrm_mode(op_arr[0]) | reg << 3 | rm);
 
   if (op_arr[0].offset != 0)
     buf_write_byte(buf, op_arr[0].offset);
