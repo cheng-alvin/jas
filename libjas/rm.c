@@ -43,13 +43,6 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   check_mode(mode, instr_ref->support);
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
 
-  uint8_t mr_mode = OP_MODRM_REG;
-
-  if (op_m(op_arr[1].type) && op_arr[1].offset == 0)
-    mr_mode = OP_MODRM_INDIRECT;
-  else if (op_arr[1].offset != 0)
-    mr_mode = OP_MODRM_DISP8;
-
   buf_write_byte(buf, op_modrm_mode(op_arr[1]) | reg << 3 | rm);
 
   if (op_arr[1].offset != 0)
