@@ -34,10 +34,6 @@
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
 
-/**
- * Enumeration for the different types of instructions
- * supported by the jas assembler.
- */
 enum instructions {
   INSTR_MOV,
   INSTR_LEA,
