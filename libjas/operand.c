@@ -45,17 +45,10 @@ uint8_t op_modrm_mode(operand_t input) {
 }
 
 uint8_t op_sizeof(enum operands input) {
-  if (op_byte(input))
-    return 8;
-
-  if (op_word(input))
-    return 16;
-
-  if (op_dword(input))
-    return 32;
-
-  if (op_qword(input))
-    return 64;
+  if (op_byte(input)) return 8;
+  if (op_word(input)) return 16;
+  if (op_dword(input)) return 32;
+  if (op_qword(input)) return 64;
 
   return 0;
 }
