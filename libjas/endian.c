@@ -27,7 +27,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
-// TODO review every instance of calling this function, usage may be incorrect!!!!
+
 uint8_t *endian(uint8_t *data, size_t data_size) {
   uint8_t *result = (uint8_t *)malloc(data_size);
 
@@ -35,4 +35,16 @@ uint8_t *endian(uint8_t *data, size_t data_size) {
     result[data_size - i] = data[i - 1];
 
   return result;
+}
+
+// TODO Unit test
+// Potentially works fuck it who knows?!?!?
+uint8_t *sized_endian(void *data, uint8_t data_size) {
+  uint8_t arr[data_size];
+
+  for (uint8_t i = 0; i < data_size; i++) {
+    arr[i] = ((uint8_t *)data)[i];
+  }
+
+  return endian(arr, data_size);
 }
