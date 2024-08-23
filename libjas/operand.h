@@ -139,7 +139,7 @@ enum op_ident {
 typedef struct {
   void *data;         /* Data in the operand */
   enum operands type; /* Type tied to the void pointer*/
-  uint64_t offset;    /* The offset applied to the data (if applicable) */
+  uint32_t offset;    /* The offset applied to the data (if applicable) */
 } operand_t;
 
 /**
@@ -160,6 +160,18 @@ buffer_t op_write_prefix(const operand_t *op_arr);
  * @return The operand identity enumeration
  */
 enum op_ident op_ident_identify(enum operands *input);
+
+/**
+ * Simple function for determining the ModR/M mode based on the
+ * operand type and offset provided by the operand struct.
+ * (As defined below)
+ *
+ * @param input The operand struct to determine the mode from
+ * @return The ModR/M mode
+ *
+ * @see `operand_t`
+ */
+uint8_t op_modrm_mode(operand_t input);
 
 /**
  * Helper macro for determining the opcode of the instruction, either
