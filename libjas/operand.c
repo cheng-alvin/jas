@@ -45,6 +45,9 @@ uint8_t op_modrm_mode(operand_t input) {
 }
 
 uint8_t op_sizeof(enum operands input) {
+  // TODO Review if M64 means 64 bit offset or indirect inclusive
+  if (input == OP_M64) return 32;
+
   if (op_byte(input)) return 8;
   if (op_word(input)) return 16;
   if (op_dword(input)) return 32;
