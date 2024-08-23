@@ -31,6 +31,7 @@ extern "C" {
 #define OPERAND_H
 
 #include "buffer.h"
+#include <stdint.h>
 
 /**
  * Definitions to the macros used in the operand encoder functions.
@@ -138,7 +139,7 @@ enum op_ident {
 typedef struct {
   void *data;         /* Data in the operand */
   enum operands type; /* Type tied to the void pointer*/
-  size_t offset;      /* The offset applied to the data (if applicable) */
+  uint64_t offset;      /* The offset applied to the data (if applicable) */
 } operand_t;
 
 /**
