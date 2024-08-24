@@ -44,7 +44,7 @@ void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   buf_write_byte(buf, op_modrm_mode(op_arr[0]) | opcode_extend | rm);
 
   if (op_arr[0].offset != 0)
-    buf_write(buf, sized_endian(op_arr[0].offset, 4), 4);
+    buf_write(buf, (uint8_t *)&op_arr[0].offset, 4);
 
   // ---
 
@@ -54,6 +54,6 @@ void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   }
 
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
-  uint8_t *imm = sized_endian(op_arr[1].data, imm_size);
+  uint8_t *imm = endian((uint8_t *)&op_arr[1].data, imm_size);
   buf_write(buf, imm, imm_size);
 }

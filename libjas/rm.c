@@ -47,5 +47,5 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   buf_write_byte(buf, op_modrm_mode(op_arr[1]) | reg << 3 | rm);
 
   if (op_arr[1].offset != 0)
-    buf_write(buf, sized_endian(op_arr[1].offset, 4), 4);
+    buf_write(buf, (uint8_t *)&op_arr[1].offset, 4);
 }
