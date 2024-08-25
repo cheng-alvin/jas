@@ -38,7 +38,7 @@ void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   const enum registers reg = reg_lookup_val(op_arr[1].data);
   const uint8_t rm = reg_lookup_val(op_arr[0].data);
 
-  const buffer_t prefixes = op_write_prefix(op_arr);
+  const buffer_t prefixes = op_write_prefix(op_arr, mode);
   buf_write(buf, prefixes.data, prefixes.len);
   free(prefixes.data);
 

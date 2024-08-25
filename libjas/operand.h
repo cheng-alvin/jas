@@ -31,6 +31,7 @@ extern "C" {
 #define OPERAND_H
 
 #include "buffer.h"
+#include "mode.h"
 #include <stdint.h>
 
 /**
@@ -148,9 +149,11 @@ typedef struct {
  * "child" buffer.
  *
  * @param op_arr The operand array to base the prefixes from.
+ * @param mode The current operating mode of the instruction
+ *
  * @return The "child" buffer containing the written prefixes.
  */
-buffer_t op_write_prefix(const operand_t *op_arr);
+buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode);
 
 /**
  * Function for identifying the operand identity, created using

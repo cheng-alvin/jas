@@ -52,7 +52,20 @@ uint8_t op_sizeof(enum operands input) {
   return 0;
 }
 
-buffer_t op_write_prefix(const operand_t *op_arr) {
+buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
+  /**
+   * @brief
+   * The 0x66 and 0x67 hex prefixes are the operand and address size
+   * overrides respectively. They are used to change the size of the operand
+   * or address in the instruction. Basically, if there's no prefix, the op-
+   * erand as well as the address size is the same as the mode's bit size.
+   * So long mode is 64 and so on.
+   *
+   * However, the override prefixes can change the size of the operand or
+   * address to 16 bits in protected mode, or 32 bits in real mode. This is
+   * useful for instructions that require a specific operand size.
+   */
+
   buffer_t prefix = BUF_NULL;
   uint8_t rex = REX_DEFAULT;
 
@@ -68,8 +81,25 @@ buffer_t op_write_prefix(const operand_t *op_arr) {
 
     switch (size) {
     case 16:
+      if (mode == MODE_REAL) break;
+      if (mode == MODE_LONG && op_m(op_arr->type)) {
+        if (!buf_element_exists(&prefix, OP_WORD_OVERRIDE))
+          buf_write_byte(&prefix, OP_WORD_OVERRIDE);
+      }
+
       if (!buf_element_exists(&prefix, override))
         buf_write_byte(&prefix, override);
+      break;
+
+    case 32:
+      if (mode == MODE_REAL) goto override_write;
+      if (override != OP_ADDR_OVERRIDE && mode != MODE_PROTECTED) break;
+
+    // TODO isolate in buffer
+    override_write: // NOT THS :D
+      if (!buf_element_exists(&prefix, override))
+        buf_write_byte(&prefix, override);
+
       break;
 
     case 64:
