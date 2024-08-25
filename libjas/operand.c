@@ -82,7 +82,7 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
     switch (size) {
     case 16:
       if (mode == MODE_REAL) break;
-      if (mode == MODE_LONG && op_m(op_arr->type)) {
+      if (mode == MODE_LONG && op_m(op_arr[i].type)) {
         if (!buf_element_exists(&prefix, OP_WORD_OVERRIDE))
           buf_write_byte(&prefix, OP_WORD_OVERRIDE);
       }
