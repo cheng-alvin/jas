@@ -1,5 +1,5 @@
-#include "codegen.h"
 #include "buffer.h"
+#include "codegen.h"
 #include "register.h"
 #include "test.h"
 
@@ -9,14 +9,13 @@
     .operands = (operand_t[]){op1, op2, op3, op4}, \
   }
 
-Test(codegen, mov) {
+Test(mov, mr) {
   const instruction_t instr[] =
       {
           INIT(INSTR_MOV, m64, r64, OP_NONE, OP_NONE),
-          // INIT(INSTR_MOV, r64, m64, OP_NONE, OP_NONE),
-          // INIT(INSTR_MOV, r64, r64, OP_NONE, OP_NONE),
-          // INIT(INSTR_MOV, r64, imm64, OP_NONE, OP_NONE),
-          // INIT(INSTR_MOV, m64, imm64, OP_NONE, OP_NONE),
+          INIT(INSTR_MOV, m32, r32, OP_NONE, OP_NONE),
+          INIT(INSTR_MOV, m16, r16, OP_NONE, OP_NONE),
+          INIT(INSTR_MOV, m8, r8, OP_NONE, OP_NONE),
       };
 
   err_add_callback(&test_error_handler);
@@ -36,6 +35,6 @@ Test(codegen, mov) {
 }
 
 int main(void) {
-  TestSuite(codegen);
-  RunTest(codegen, mov);
+  TestSuite(mov);
+  RunTest(mov, mr);
 }
