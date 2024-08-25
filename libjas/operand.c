@@ -93,7 +93,7 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
 
     case 32:
       if (mode == MODE_REAL) goto override_write;
-      if (override != OP_ADDR_OVERRIDE && mode == MODE_PROTECTED) break;
+      if (override != OP_ADDR_OVERRIDE || mode == MODE_PROTECTED) break;
 
     // TODO isolate in buffer
     override_write: // NOT THS :D
