@@ -30,16 +30,18 @@
 #include <stdint.h>
 
 /**
- * Function for converting a byte array from one endian
- * to the opposite endian mode.
+ * Stupid little function for converting a byte array from one
+ * endian to the opposite endian mode. (Big to little, little to big)
+ * Endian basically is a reversed array that's used for immediate va-
+ * lues, especially in x86
  *
  * @param data The byte array to convert.
  * @param data_size The size of the byte array.
  *
  * @return The converted byte array.
  *
- * @note Array was returned using `malloc`ed memory,
- * therefore, must the freed after usage!
+ * @note Array was returned using `malloc`ed memory, therefore,
+ * the returned memory must the freed after usage!
  */
 uint8_t *endian(uint8_t *data, size_t data_size);
 
