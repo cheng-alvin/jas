@@ -27,6 +27,7 @@
 #define CODEGEN_H
 
 #include "buffer.h"
+#include "instruction.h"
 #include "mode.h"
 #include <stddef.h>
 #include <stdlib.h>

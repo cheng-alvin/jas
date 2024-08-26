@@ -1,5 +1,6 @@
 #include "buffer.h"
 #include "codegen.h"
+#include "error.h"
 #include "instruction.h"
 #include "register.h"
 #include "test.h"
