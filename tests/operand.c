@@ -3,17 +3,37 @@
 #include "rex.h"
 #include "test.h"
 
-// TODO fix test
 Test(operand, write_prefix) {
-  return; // Note dead QWQ TODO
-
   const operand_t op_arr[] = {imm8, imm16, imm32, imm64};
 
-  buffer_t prefix; // op_write_prefix(op_arr, mode);
+  // Sample function call
+  // `buffer_t prefix = op_write_prefix(op_arr, mode);`
 
-  assert(buf_element_exists(&prefix, OP_WORD_OVERRIDE));
-  assert(buf_element_exists(&prefix, REX_W));
-  assert(!buf_element_exists(&prefix, OP_ADDR_OVERRIDE));
+ /**  
+  * TODO test following conditions:
+  *
+ * mode | size    | output
+ * -----------------------------
+ * real | 32      | 0x66
+ * real | 32 addr | 0x67
+ * prot | 16      | 0x66
+ * prot | 16 addr | 0x67
+ * long | 16      | 0x66
+ * long | 32 addr | 0x67
+ * long | 16 addr | 0x67 + 0x66
+ * 
+ * long | 64      | REX.W
+ * 
+ * Additional: Register REX prefix for REX.B
+ * 
+ * @note (Potentially drop support for 16-bit operands 
+ * in long mode)
+ * 
+ * @note Note that when a 16 bit operand override is 
+ * used in an instruction, all of the operands in the
+ * instruction will be changed to that particular si-
+ * ze and will be override.
+ */
 
   free(prefix.data);
 }
