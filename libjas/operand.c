@@ -64,6 +64,21 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
    * However, the override prefixes can change the size of the operand or
    * address to 16 bits in protected mode, or 32 bits in real mode. This is
    * useful for instructions that require a specific operand size.
+   *
+   * mode | size    | output
+   * -----------------------------
+   * real | 32      | 0x66
+   * real | 32 addr | 0x67
+   * prot | 16      | 0x66
+   * prot | 16 addr | 0x67
+   * long | 16      | 0x66
+   * long | 32 addr | 0x67
+   * long | 16 addr | 0x67 + 0x66
+   *
+   * long | 64      | REX.W
+   *
+   * Additional: Register REX prefix for REX.B
+   *
    */
 
   buffer_t prefix = BUF_NULL;
