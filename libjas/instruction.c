@@ -35,56 +35,25 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-// TODO Potentially relocate all preprocessor to `pre.c` or equivalent
 static void pre_default(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) != op_sizeof(op_arr[1].type))
     err("Invalid operand sizes.");
 }
 
+static void pre_imm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  if (op_sizeof(op_arr[0].type) != 64) {
+    pre_default(op_arr, buf, instr_ref, mode);
+    return;
+  }
+}
+
 instr_encode_table_t mov[] = {
-    {
-        .ident = OP_MR,
-        .opcode_ext = NULL,
-        .opcode = {0x89},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x88},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = &pre_default,
-    },
-    {
-        .ident = OP_RM,
-        .opcode_ext = NULL,
-        .opcode = {0x8B},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x8A},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = &pre_default,
-    },
-    {
-        .ident = OP_OI,
-        .opcode_ext = NULL,
-        .opcode = {0xB8},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0xB0},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = &pre_default,
-    },
-    {
-        .ident = OP_MI,
-        .opcode_ext = 0b10000000, // Prevents a false null reading, it gets shifted anyways ;)
-        .opcode = {0xC7},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0xC6},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = &pre_default,
-    },
+    {OP_MR, NULL, {0x89}, MODE_SUPPORT_ALL, {0x88}, false, 1, &pre_default},
+    {OP_RM, NULL, {0x8B}, MODE_SUPPORT_ALL, {0x8A}, false, 1, &pre_default},
+    {OP_OI, NULL, {0xB8}, MODE_SUPPORT_ALL, {0xB0}, false, 1, &pre_imm},
+    {OP_MI, 0b10000000, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, false, 1, &pre_imm},
 
-    INSTR_TERMINATOR
-
+    INSTR_TERMINATOR,
 };
 
 static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
@@ -96,108 +65,25 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 }
 
 instr_encode_table_t lea[] = {
-    {
-        .ident = OP_RM,
-        .opcode_ext = NULL,
-        .opcode = {0x8D},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x8D},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = &pre_lea,
-    },
-
-    INSTR_TERMINATOR
-
+    {OP_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, false, 1, &pre_lea},
+    INSTR_TERMINATOR,
 };
 
 instr_encode_table_t add[] = {
-    {
-        .ident = OP_RM,
-        .opcode_ext = NULL,
-        .opcode = {0x03},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x02},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = &pre_default,
-    },
-    {
-        .ident = OP_MR,
-        .opcode_ext = NULL,
-        .opcode = {0x01},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x00},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = &pre_default,
-    },
-    {
-        .ident = OP_MI,
-        .opcode_ext = 0b10000000, // Prevents a false null reading, it gets shifted anyways ;)
-        .opcode = {0x81},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x80},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = NULL,
-    },
-    {
-        .ident = OP_I,
-        .opcode_ext = NULL,
-        .opcode = {0x03},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x02},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = NULL,
-    },
+    {OP_RM, NULL, {0x03}, MODE_SUPPORT_ALL, {0x02}, false, 1, &pre_default},
+    {OP_MR, NULL, {0x01}, MODE_SUPPORT_ALL, {0x00}, false, 1, &pre_default},
+    {OP_MI, 0b10000000, {0x81}, MODE_SUPPORT_ALL, {0x80}, false, 1, &pre_imm},
+    {OP_I, NULL, {0x03}, MODE_SUPPORT_ALL, {0x02}, false, 1, &pre_imm},
 
     INSTR_TERMINATOR
 
 };
 
 instr_encode_table_t sub[] = {
-    {
-        .ident = OP_RM,
-        .opcode_ext = NULL,
-        .opcode = {0x2B},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x2A},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = NULL,
-    },
-    {
-        .ident = OP_MR,
-        .opcode_ext = NULL,
-        .opcode = {0x28},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x29},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = NULL,
-    },
-    {
-        .ident = OP_MI,
-        .opcode_ext = 5,
-        .opcode = {0x80},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x81},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = NULL,
-    },
-    {
-        .ident = OP_I,
-        .opcode_ext = NULL,
-        .opcode = {0x2C},
-        .support = MODE_SUPPORT_ALL,
-        .byte_instr_opcode = {0x2D},
-        .should_fallback_support = false,
-        .opcode_size = 1,
-        .pre = NULL,
-    },
+    {OP_RM, NULL, {0x2B}, MODE_SUPPORT_ALL, {0x2A}, false, 1, &pre_default},
+    {OP_MR, NULL, {0x28}, MODE_SUPPORT_ALL, {0x29}, false, 1, &pre_default},
+    {OP_MI, 5, {0x80}, MODE_SUPPORT_ALL, {0x81}, false, 1, &pre_imm},
+    {OP_I, NULL, {0x2C}, MODE_SUPPORT_ALL, {0x2D}, false, 1, &pre_imm},
 
     INSTR_TERMINATOR
 
