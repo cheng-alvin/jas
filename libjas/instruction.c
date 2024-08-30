@@ -42,6 +42,7 @@ static void pre_default(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *
 }
 
 static void pre_mov(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  // TODO only applies to imm32
   if (op_sizeof(op_arr[0].type) != 64) {
     pre_default(op_arr, buf, instr_ref, mode);
     return;
