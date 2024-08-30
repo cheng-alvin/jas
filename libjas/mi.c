@@ -32,11 +32,6 @@
 #include <stdlib.h>
 
 void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  if (op_arr[1].type == OP_IMM64) {
-    err("Invalid immediate value.");
-    return;
-  }
-
   const uint8_t opcode_extend = instr_ref->opcode_ext << 3;
   const uint8_t rm = reg_lookup_val(op_arr[0].data);
 
