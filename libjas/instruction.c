@@ -64,10 +64,7 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
     err("Byte operands cannot be used with the LEA instruction.");
 }
 
-instr_encode_table_t lea[] = {
-    {OP_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, false, 1, &pre_lea},
-    INSTR_TERMINATOR,
-};
+instr_encode_table_t lea[] = {{OP_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, false, 1, &pre_lea}, INSTR_TERMINATOR};
 
 instr_encode_table_t add[] = {
     {OP_RM, NULL, {0x03}, MODE_SUPPORT_ALL, {0x02}, false, 1, &pre_default},
@@ -88,7 +85,43 @@ instr_encode_table_t sub[] = {
     INSTR_TERMINATOR,
 };
 
-instr_encode_table_t *instr_table[] = {mov, lea, add, sub};
+instr_encode_table_t mul[] = {{OP_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, false, 1, &pre_default}, INSTR_TERMINATOR};
+instr_encode_table_t div[] = {{OP_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, false, 1, &pre_default}, INSTR_TERMINATOR};
+
+instr_encode_table_t and[] = {
+    {OP_RM, NULL, {0x23}, MODE_SUPPORT_ALL, {0x22}, false, 1, &pre_default},
+    {OP_MR, NULL, {0x21}, MODE_SUPPORT_ALL, {0x20}, false, 1, &pre_default},
+    {OP_MI, 4, {0x81}, MODE_SUPPORT_ALL, {0x80}, false, 1, &pre_imm},
+    {OP_I, NULL, {0x25}, MODE_SUPPORT_ALL, {0x24}, false, 1, &pre_imm},
+
+    INSTR_TERMINATOR,
+};
+
+instr_encode_table_t or [] = {
+    {OP_RM, NULL, {0x0B}, MODE_SUPPORT_ALL, {0x0A}, false, 1, &pre_default},
+    {OP_MR, NULL, {0x09}, MODE_SUPPORT_ALL, {0x08}, false, 1, &pre_default},
+    {OP_MI, 1, {0x81}, MODE_SUPPORT_ALL, {0x80}, false, 1, &pre_imm},
+    {OP_I, NULL, {0x0D}, MODE_SUPPORT_ALL, {0x0C}, false, 1, &pre_imm},
+
+    INSTR_TERMINATOR,
+};
+
+// TODO !!! Write a way for pre-processors to take over identities !!!
+// Hence, Ensure XOR r/m16/32/64, imm8 is allowed. (0x83 w/ ext. 6)
+
+instr_encode_table_t xor [] = {
+    {OP_RM, NULL, {0x33}, MODE_SUPPORT_ALL, {0x32}, false, 1, &pre_default},
+    {OP_MR, NULL, {0x31}, MODE_SUPPORT_ALL, {0x30}, false, 1, &pre_default},
+    {OP_MI, 6, {0x81}, MODE_SUPPORT_ALL, {0x80}, false, 1, &pre_imm},
+    {OP_I, NULL, {0x35}, MODE_SUPPORT_ALL, {0x34}, false, 1, &pre_imm},
+
+    INSTR_TERMINATOR,
+};
+
+instr_encode_table_t _not[] = {{OP_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, false, 1, &pre_default}, INSTR_TERMINATOR};
+
+instr_encode_table_t *instr_table[] =
+    {mov, lea, add, sub, mul, div, and, or, xor, _not};
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
   instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m};
