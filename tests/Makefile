@@ -3,7 +3,7 @@ CC = clang
 CFLAGS_COMMON = -I ../libjas/include -I ../libjas/ -lstdc++ -g
 CFLAGS = $(CFLAGS_COMMON)
 
-TESTS = buffer endian error operand mov
+TESTS = $(patsubst %.c, %, $(wildcard *.c)) 
 
 tests: CFLAGS = $(CFLAGS_COMMON)
 tests: $(TESTS)
