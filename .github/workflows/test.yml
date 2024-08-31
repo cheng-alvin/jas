@@ -18,7 +18,7 @@ jobs:
       run: make clean
       
     - name: Build unit tests with `make`
-      run: make -C tests
+      run: make tests
     
     - name : Run unit tests
-      run: cd tests && ./test.sh
+      run: ./test
