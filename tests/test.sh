@@ -9,3 +9,5 @@ for file in $(ls); do
         fi
     fi
 done
+
+make clean
