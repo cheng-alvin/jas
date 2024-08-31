@@ -21,5 +21,6 @@ libjas_debug.a:
 
 clean:
 	@rm -rf $(TESTS)
+	$(MAKE) -C .. clean
 
 .PHONY: all clean
