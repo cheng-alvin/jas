@@ -75,7 +75,7 @@ instr_encode_table_t add[] = {
     {OP_MI, 0b10000000, {0x81}, MODE_SUPPORT_ALL, {0x80}, false, 1, &pre_imm},
     {OP_I, NULL, {0x03}, MODE_SUPPORT_ALL, {0x02}, false, 1, &pre_imm},
 
-    INSTR_TERMINATOR
+    INSTR_TERMINATOR,
 
 };
 
@@ -85,8 +85,7 @@ instr_encode_table_t sub[] = {
     {OP_MI, 5, {0x80}, MODE_SUPPORT_ALL, {0x81}, false, 1, &pre_imm},
     {OP_I, NULL, {0x2C}, MODE_SUPPORT_ALL, {0x2D}, false, 1, &pre_imm},
 
-    INSTR_TERMINATOR
-
+    INSTR_TERMINATOR,
 };
 
 instr_encode_table_t *instr_table[] = {mov, lea, add, sub};
