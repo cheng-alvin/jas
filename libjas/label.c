@@ -25,6 +25,7 @@
 
 #include "label.h"
 #include <stdlib.h>
+#include <string.h>
 
 // TODO write tests
 // WARNING: This is a stub implementation
