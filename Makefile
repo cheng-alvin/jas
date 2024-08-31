@@ -13,4 +13,7 @@ clean:
 	rm -r -f $(BUILD)
 	mkdir -p $(BUILD)
 
-.PHONY: all test format clean
+tests: 
+	$(MAKE) -C tests
+	
+.PHONY: all tests format clean

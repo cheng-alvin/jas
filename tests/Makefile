@@ -8,7 +8,6 @@ TESTS = buffer endian error operand mov
 tests: CFLAGS = $(CFLAGS_COMMON)
 tests: $(TESTS)
 
-
 $(TESTS): libjas_debug.a
 $(TESTS): %: %.o 
 	$(CC) -o $@ $< ../build/libjas_debug.a $(CFLAGS)
@@ -22,4 +21,4 @@ libjas_debug.a:
 clean:
 	@rm -rf $(TESTS)
 
-.PHONY: all clean
+.PHONY: all clean tests
