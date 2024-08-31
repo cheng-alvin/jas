@@ -15,5 +15,5 @@ clean:
 
 tests: 
 	$(MAKE) -C tests
-	
+
 .PHONY: all tests format clean
