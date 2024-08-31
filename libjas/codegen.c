@@ -55,7 +55,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
       if (CURR_TABLE.ident == ident) {
         ref = CURR_TABLE;
         break;
-      }
+      
 
       j++;
     }
