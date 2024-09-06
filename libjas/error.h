@@ -43,19 +43,11 @@ extern "C" {
  */
 typedef void (*err_callback_t)(const char *msg);
 
-/**
- * Function to throw errors in the jas library. and hand-balls it
- * to the function pointer handler by the user's own call back
- * function as specified in the `err_callback_t` type.
- *
- * @param msg The error message to be thrown.
- */
 void err(const char *msg);
 
 /**
- * Function to add a callback function to the error handler, a bit
- * like a setter function for the very *object orientated* C
- * language :)
+ * Function to add a callback function to the error handler, a bit like
+ * a setter function for the very *object orientated* C language :)
  *
  * @param input The function pointer to the error handler.
  * @see `err_callback_t`
