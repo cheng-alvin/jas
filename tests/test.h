@@ -53,7 +53,7 @@ static inline void test_printf(char *fmt, ...) {
 
 #define RunTest(name, func) \
   test_##name##_##func();   \
-  test_printf("  L Test `%s::%s` passed.\n", #name, #func);
+  test_printf("[ \033[32mOK\033[0m ] %s::%s\n", #name, #func);
 
 #define assert(x)                                            \
   if (!(x)) {                                                \
@@ -80,8 +80,7 @@ static inline void test_printf(char *fmt, ...) {
   test_printf("\nTest failed: %s\n", message); \
   exit(1);
 
-#define TestSuite(name) \
-  test_printf("Running test suite: `%s`\n", #name);
+#define TestSuite(name)
 
 static operand_t r8 = (operand_t){.type = OP_R8, .offset = 0, .data = &(enum registers){REG_AL}};
 static operand_t r16 = (operand_t){.type = OP_R16, .offset = 0, .data = &(enum registers){REG_AX}};
