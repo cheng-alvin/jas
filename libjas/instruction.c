@@ -88,6 +88,8 @@ instr_encode_table_t sub[] = {
 instr_encode_table_t mul[] = {{OP_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, false, 1, &pre_default}, INSTR_TERMINATOR};
 instr_encode_table_t div[] = {{OP_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, false, 1, &pre_default}, INSTR_TERMINATOR};
 
+// Note all or, and and xor instructions have a imm8 which is not supported
+
 instr_encode_table_t and[] = {
     {OP_RM, NULL, {0x23}, MODE_SUPPORT_ALL, {0x22}, false, 1, &pre_default},
     {OP_MR, NULL, {0x21}, MODE_SUPPORT_ALL, {0x20}, false, 1, &pre_default},
@@ -106,9 +108,6 @@ instr_encode_table_t or [] = {
     INSTR_TERMINATOR,
 };
 
-// TODO !!! Write a way for pre-processors to take over identities !!!
-// Hence, Ensure XOR r/m16/32/64, imm8 is allowed. (0x83 w/ ext. 6)
-
 instr_encode_table_t xor [] = {
     {OP_RM, NULL, {0x33}, MODE_SUPPORT_ALL, {0x32}, false, 1, &pre_default},
     {OP_MR, NULL, {0x31}, MODE_SUPPORT_ALL, {0x30}, false, 1, &pre_default},
@@ -117,6 +116,8 @@ instr_encode_table_t xor [] = {
 
     INSTR_TERMINATOR,
 };
+
+// ---
 
 instr_encode_table_t _not[] = {{OP_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, false, 1, &pre_default}, INSTR_TERMINATOR};
 
