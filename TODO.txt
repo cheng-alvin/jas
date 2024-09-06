@@ -23,6 +23,7 @@ INT: Software interrupt.
 
 
 Extra:
+SYSCALL: for long mode interrupts
 MOVZX: Move with zero-extension (padding)
 
 https://docs.google.com/document/d/1bm9lxVyAk2qogOF9ujERyRcSwXkpKxLW8IWVU8FuMyE/edit?usp=sharing
