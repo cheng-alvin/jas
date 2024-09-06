@@ -35,31 +35,8 @@ typedef struct {
   size_t len;    /* Length of buffer */
 } buffer_t;
 
-/**
- * Writes data to the buffer struct with the `data_len` bytes
- * while reallocating and allocating the buffer if necessary.
- *
- * @param buf The pointer to the buffer struct
- * @param data The pointer to the data to write
- * @param data_len The length of the data to write
- */
 void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len);
-
-/**
- * Writes a one byte buffer into the dynamic buffer array .
- * while reallocating and allocating the buffer if necessary.
- *
- * @param buf The pointer to the buffer struct
- * @param data The data to write
- */
 void buf_write_byte(buffer_t *buf, const uint8_t data);
-
-/**
- * Removes an element from the buffer struct at the specified index.
- *
- * @param buf The pointer to the buffer struct
- * @param elem The index of the element to remove
- */
 void buf_remove(buffer_t *buf, const size_t elem);
 
 #define BUF_NULL  \
@@ -68,13 +45,6 @@ void buf_remove(buffer_t *buf, const size_t elem);
     .len = 0      \
   }
 
-/**
- * Checks if an element exists in the buffer struct.
- *
- * @param buf The pointer to the buffer struct
- * @param elem The element to check for
- * @return True if the element exists, false otherwise
- */
 bool buf_element_exists(buffer_t *buf, const uint8_t elem);
 
 #endif
