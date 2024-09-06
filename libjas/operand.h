@@ -176,12 +176,6 @@ enum op_ident op_ident_identify(enum operands *input);
  */
 uint8_t op_modrm_mode(operand_t input);
 
-/**
- * Helper macro for determining the opcode of the instruction, either
- * the byte sized version or larger/conventional opcode versions.
- *
- * TODO !!! Check if operand sizes impacts opcodes !!!
- */
 #define OP_OPCODE_HELPER (op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode)
 
 /**
