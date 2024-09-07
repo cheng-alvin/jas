@@ -35,5 +35,5 @@ bool mode_valid(const enum modes mode, const mode_support_t support) {
    *
    * @see https://stackoverflow.com/questions/523724/c-c-check-if-one-bit-is-set-in-i-e-int-variable
    */
-  return !(support & (1 << (int)mode));
+  return (support & (1 << (int)mode));
 }
