@@ -64,58 +64,29 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
     err("Byte operands cannot be used with the LEA instruction.");
 }
 
+// clang-format off
+
+#define INSTR_GENERAL(rm, rm_byte, mr, mr_byte,i, i_byte, mi_ext, mi, mi_byte)  \
+      {OP_MR, NULL, {mr}, MODE_SUPPORT_ALL, {mr_byte}, 1, &pre_default},        \
+      {OP_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &pre_default},        \
+      {OP_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm},          \
+      {OP_I, NULL, {i}, MODE_SUPPORT_ALL, {i_byte}, 1, &pre_imm},               \
+      INSTR_TERMINATOR,
+
+// clang-format on
+
 instr_encode_table_t lea[] = {{OP_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, 1, &pre_lea}, INSTR_TERMINATOR};
 
-instr_encode_table_t add[] = {
-    {OP_RM, NULL, {0x03}, MODE_SUPPORT_ALL, {0x02}, 1, &pre_default},
-    {OP_MR, NULL, {0x01}, MODE_SUPPORT_ALL, {0x00}, 1, &pre_default},
-    {OP_MI, 0b10000000, {0x81}, MODE_SUPPORT_ALL, {0x80}, 1, &pre_imm},
-    {OP_I, NULL, {0x03}, MODE_SUPPORT_ALL, {0x02}, 1, &pre_imm},
-
-    INSTR_TERMINATOR,
-
-};
-
-instr_encode_table_t sub[] = {
-    {OP_RM, NULL, {0x2B}, MODE_SUPPORT_ALL, {0x2A}, 1, &pre_default},
-    {OP_MR, NULL, {0x28}, MODE_SUPPORT_ALL, {0x29}, 1, &pre_default},
-    {OP_MI, 5, {0x80}, MODE_SUPPORT_ALL, {0x81}, 1, &pre_imm},
-    {OP_I, NULL, {0x2C}, MODE_SUPPORT_ALL, {0x2D}, 1, &pre_imm},
-
-    INSTR_TERMINATOR,
-};
-
+instr_encode_table_t add[] = {INSTR_GENERAL(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, 0b10000000, 0x81, 0x80)};
+instr_encode_table_t sub[] = {INSTR_GENERAL(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x80, 0x81)};
 instr_encode_table_t mul[] = {{OP_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
 instr_encode_table_t div[] = {{OP_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
 
 // Note all or, and and xor instructions have a imm8 which is not supported
 
-instr_encode_table_t and[] = {
-    {OP_RM, NULL, {0x23}, MODE_SUPPORT_ALL, {0x22}, 1, &pre_default},
-    {OP_MR, NULL, {0x21}, MODE_SUPPORT_ALL, {0x20}, 1, &pre_default},
-    {OP_MI, 4, {0x81}, MODE_SUPPORT_ALL, {0x80}, 1, &pre_imm},
-    {OP_I, NULL, {0x25}, MODE_SUPPORT_ALL, {0x24}, 1, &pre_imm},
-
-    INSTR_TERMINATOR,
-};
-
-instr_encode_table_t or [] = {
-    {OP_RM, NULL, {0x0B}, MODE_SUPPORT_ALL, {0x0A}, 1, &pre_default},
-    {OP_MR, NULL, {0x09}, MODE_SUPPORT_ALL, {0x08}, 1, &pre_default},
-    {OP_MI, 1, {0x81}, MODE_SUPPORT_ALL, {0x80}, 1, &pre_imm},
-    {OP_I, NULL, {0x0D}, MODE_SUPPORT_ALL, {0x0C}, 1, &pre_imm},
-
-    INSTR_TERMINATOR,
-};
-
-instr_encode_table_t xor [] = {
-    {OP_RM, NULL, {0x33}, MODE_SUPPORT_ALL, {0x32}, 1, &pre_default},
-    {OP_MR, NULL, {0x31}, MODE_SUPPORT_ALL, {0x30}, 1, &pre_default},
-    {OP_MI, 6, {0x81}, MODE_SUPPORT_ALL, {0x80}, 1, &pre_imm},
-    {OP_I, NULL, {0x35}, MODE_SUPPORT_ALL, {0x34}, 1, &pre_imm},
-
-    INSTR_TERMINATOR,
-};
+instr_encode_table_t and[] = {INSTR_GENERAL(0x23, 0x22, 0x21, 0x20, 0x25, 0x24, 4, 0x81, 0x80)};
+instr_encode_table_t or [] = {INSTR_GENERAL(0x0B, 0x0A, 0x09, 0x08, 0x0D, 0x0C, 1, 0x81, 0x80)};
+instr_encode_table_t xor [] = {INSTR_GENERAL(0x33, 0x32, 0x31, 0x30, 0x35, 0x34, 6, 0x81, 0x80)};
 
 // ---
 
