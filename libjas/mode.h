@@ -81,11 +81,6 @@ typedef uint8_t mode_support_t;
  * Function for checking if an instruction is allowed in a given mode
  * by checking if a bit is set in the support field.
  *
- * @note Please ensure the `should_fallback_support` field is checked
- * before calling this function, this function DOES NOT check for for
- * this feature, and will give incorrect results if the field is not
- * checked PRIOR.
- *
  * @param mode The mode to check.
  * @param support The support field of the instruction.
  * @return True if the mode is matched, otherwise false.
@@ -105,10 +100,10 @@ bool mode_valid(const enum modes mode, const mode_support_t support);
  *
  * @see `instruction.h`
  */
-#define check_mode(x, y)                                         \
-  if (instr_ref->should_fallback_support && !mode_valid(x, y)) { \
-    err("Invalid operating mode.");                              \
-    return;                                                      \
+#define check_mode(x, y)            \
+  if (!mode_valid(x, y)) {          \
+    err("Invalid operating mode."); \
+    return;                         \
   }
 
 #endif

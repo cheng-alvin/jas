@@ -97,7 +97,6 @@ struct instr_encode_table {
   uint8_t opcode[3];            /* Opcode of the instruction */
   mode_support_t support;       /* Support status of the instruction (Optional, Would be set to "all" if not used) */
   uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
-  bool should_fallback_support; /* If the encode needs to use the `support` */
   uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
   instr_encoder_t pre;          /* Pre-encoder processor function (Optional, null if not applicable) */
 };
@@ -121,16 +120,15 @@ typedef struct {
  */
 instr_encoder_t instr_encode_func(enum op_ident input);
 
-#define INSTR_TERMINATOR              \
-  (instr_encode_table_t) {            \
-    .ident = NULL,                    \
-    .opcode_ext = NULL,               \
-    .opcode = {NULL},                 \
-    .support = MODE_SUPPORT_ALL,      \
-    .byte_instr_opcode = {NULL},      \
-    .should_fallback_support = false, \
-    .opcode_size = NULL,              \
-    .pre = NULL,                      \
+#define INSTR_TERMINATOR         \
+  (instr_encode_table_t) {       \
+    .ident = NULL,               \
+    .opcode_ext = NULL,          \
+    .opcode = {NULL},            \
+    .support = MODE_SUPPORT_ALL, \
+    .byte_instr_opcode = {NULL}, \
+    .opcode_size = NULL,         \
+    .pre = NULL,                 \
   }
 
 #endif
