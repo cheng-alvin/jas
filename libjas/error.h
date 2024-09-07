@@ -44,13 +44,13 @@ extern "C" {
 typedef void (*err_callback_t)(const char *msg);
 
 /**
- * Function for throwing an error into this "error pipeline", and 
+ * Function for throwing an error into this "error pipeline", and
  * finally hand-balling it into the user-defined error callback,
  * registered using `err_add_callback`. (For the caller to handle
  * the error accordingly)
  *
  * @param msg The error message to be passed down to the callback.
- * 
+ *
  * @see `err_callback_t` For error callback type information/formats
  * @see `err_add_callback`
  */

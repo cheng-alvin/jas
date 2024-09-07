@@ -33,10 +33,8 @@ void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len) {
   if (data_len < 1)
     return;
 
-  buf->data = 
-  (uint8_t *)(buf->data == NULL ? 
-  malloc(data_len) : 
-  realloc(buf->data, buf->len + data_len));
+  buf->data =
+      (uint8_t *)(buf->data == NULL ? malloc(data_len) : realloc(buf->data, buf->len + data_len));
 
   for (size_t i = 0; i < data_len; i++)
     buf->data[buf->len + i] = data[i];
