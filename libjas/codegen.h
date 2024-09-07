@@ -39,7 +39,7 @@
  *
  * @param mode The mode to generate the machine code in
  * @param instr_arr The instruction array to generate the code from
- * @param arr_size The size of the instruction array
+ * @param arr_size The size of the instruction array (in bytes)
  *
  * @return The buffer struct containing the machine code
  *
