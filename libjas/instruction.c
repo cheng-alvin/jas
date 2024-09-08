@@ -50,7 +50,7 @@ static void pre_imm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 instr_encode_table_t mov[] = {
     {OP_MR, NULL, {0x89}, MODE_SUPPORT_ALL, {0x88}, 1, &pre_default},
     {OP_RM, NULL, {0x8B}, MODE_SUPPORT_ALL, {0x8A}, 1, &pre_default},
-    {OP_OI, NULL, {0xB8}, MODE_SUPPORT_ALL, {0xB0}, 1, &pre_imm},
+    {OP_OI, NULL, {0xB8}, MODE_SUPPORT_ALL, {0xB0}, 1, &pre_default},
     {OP_MI, 0b10000000, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, 1, &pre_imm},
 
     INSTR_TERMINATOR,
