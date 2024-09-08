@@ -54,10 +54,10 @@ namespace op {
 
       {__combine__(OP_HASH_R, OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE), OP_RM},
 
-      {__combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), OP_OI},
-
       {__combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), OP_MI},
       {__combine__(OP_HASH_M, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), OP_MI},
+
+      {__combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), OP_OI},
 
       {__combine__(OP_HASH_ACC, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), OP_I}};
 }
@@ -77,6 +77,10 @@ extern "C" enum op_ident op_ident_identify(enum operands *input) {
     err("Operand identifier not found.");
     return (enum op_ident)0;
   }
+
+  // TODO HARD-CODED at the moment
+  if (hash_key == __combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE))
+    if (input[1] == OP_IMM64) return OP_OI;
 
   return (enum op_ident)op::lookup[hash_key];
 }
