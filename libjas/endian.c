@@ -29,11 +29,10 @@
 #include <stdlib.h>
 
 uint8_t *endian(uint8_t *data, size_t data_size) {
-  // // uint8_t *result = (uint8_t *)malloc(data_size);
+  uint8_t *result = (uint8_t *)malloc(data_size);
 
-  // // for (size_t i = data_size; i > 0; i--)
-  // // result[data_size - i] = data[i - 1];
+  for (size_t i = data_size; i > 0; i--)
+    result[data_size - i] = data[i - 1];
 
-  // // return result;
-  return data;
+  return result;
 }
