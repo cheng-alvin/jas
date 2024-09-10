@@ -78,6 +78,10 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
    * long | 64      | REX.W
    *
    * Additional: Register REX prefix for REX.B
+   * 
+   * @note 64-bit operands are not allowed in anymodes other than long mode
+   * hence, if a 64-bit operand is present throw an error if other than 
+   * long mode
    *
    */
 
