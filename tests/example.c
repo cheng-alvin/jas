@@ -45,6 +45,23 @@ Test(example, example) {
               OP_NONE,
           },
       },
+
+      // mov eax, 1
+      (instruction_t){
+          .instr = INSTR_MOV,
+          .operands = (operand_t[]){
+              (operand_t){
+                  .type = OP_R32,
+                  .data = &(enum registers){REG_EAX},
+              },
+              (operand_t){
+                  .type = OP_IMM32,
+                  .data = &(uint32_t){0x01},
+              },
+              OP_NONE,
+              OP_NONE,
+          },
+      },
   };
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
