@@ -122,6 +122,9 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
       break;
 
     case 64:
+      if (mode != MODE_LONG)
+        err("64-bit operands are prohibited in modes other than long mode.");
+
       if (!buf_element_exists(&prefix, REX_W))
         rex |= REX_W;
       break;
