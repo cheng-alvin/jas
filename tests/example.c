@@ -12,52 +12,44 @@ Test(example, example) {
   err_add_callback(error_callback);
 
   instruction_t instr[] = (instruction_t[]){
-      // mov rdx, 0x6000da
+      // mov rax, 60
       (instruction_t){
           .instr = INSTR_MOV,
           .operands = (operand_t[]){
               (operand_t){
                   .type = OP_R64,
-                  .data = &(enum registers){REG_RDX},
+                  .data = &(enum registers){REG_RAX},
               },
               (operand_t){
                   .type = OP_IMM64,
-                  .data = &(uint64_t){0x00000000006000da},
+                  .data = &(uint64_t){60},
               },
               OP_NONE,
               OP_NONE,
           },
       },
-
-      // mov rbx, 0x01
+      // mov rdi, 0
+        (instruction_t){
+            .instr = INSTR_MOV,
+            .operands = (operand_t[]){
+                (operand_t){
+                    .type = OP_R64,
+                    .data = &(enum registers){REG_RDI},
+                },
+                (operand_t){
+                    .type = OP_IMM64,
+                    .data = &(uint64_t){0},
+                },
+                OP_NONE,
+                OP_NONE,
+            },
+        },
+      // syscall
       (instruction_t){
-          .instr = INSTR_MOV,
+          .instr = INSTR_SYSCALL,
           .operands = (operand_t[]){
-              (operand_t){
-                  .type = OP_R64,
-                  .data = &(enum registers){REG_RBX},
-              },
-              (operand_t){
-                  .type = OP_IMM64,
-                  .data = &(uint64_t){0x01},
-              },
               OP_NONE,
               OP_NONE,
-          },
-      },
-
-      // mov eax, 1
-      (instruction_t){
-          .instr = INSTR_MOV,
-          .operands = (operand_t[]){
-              (operand_t){
-                  .type = OP_R32,
-                  .data = &(enum registers){REG_EAX},
-              },
-              (operand_t){
-                  .type = OP_IMM32,
-                  .data = &(uint32_t){0x01},
-              },
               OP_NONE,
               OP_NONE,
           },
