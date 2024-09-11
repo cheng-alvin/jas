@@ -47,6 +47,9 @@ enum instructions {
   INSTR_NOT,
   INSTR_INC,
   INSTR_DEC,
+  // Temp:
+  INSTR_SYSCALL,
+  //
   INSTR_JMP,
   INSTR_JE,
   INSTR_JNE,
@@ -72,7 +75,7 @@ enum instructions {
   INSTR_NOP,
   INSTR_HLT,
   INSTR_INT,
-  INSTR_SYSCALL,
+  // INSTR_SYSCALL,
 };
 
 /**
