@@ -29,21 +29,21 @@ Test(example, example) {
           },
       },
       // mov rdi, 0
-        (instruction_t){
-            .instr = INSTR_MOV,
-            .operands = (operand_t[]){
-                (operand_t){
-                    .type = OP_R64,
-                    .data = &(enum registers){REG_RDI},
-                },
-                (operand_t){
-                    .type = OP_IMM64,
-                    .data = &(uint64_t){0},
-                },
-                OP_NONE,
-                OP_NONE,
-            },
-        },
+      (instruction_t){
+          .instr = INSTR_MOV,
+          .operands = (operand_t[]){
+              (operand_t){
+                  .type = OP_R64,
+                  .data = &(enum registers){REG_RDI},
+              },
+              (operand_t){
+                  .type = OP_IMM64,
+                  .data = &(uint64_t){0},
+              },
+              OP_NONE,
+              OP_NONE,
+          },
+      },
       // syscall
       (instruction_t){
           .instr = INSTR_SYSCALL,
