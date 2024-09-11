@@ -32,6 +32,7 @@
 #include "oi.h"
 #include "operand.h"
 #include "rm.h"
+#include "zo.h"
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -95,10 +96,14 @@ instr_encode_table_t _not[] = {{OP_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &p
 instr_encode_table_t inc[] = {{OP_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
 instr_encode_table_t dec[] = {{OP_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
 
+// ...  (Some instructions are missing)
+
+instr_encode_table_t syscall[] = {{OP_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {0x00, 0x00}, 2, &pre_default}, INSTR_TERMINATOR};
+
 instr_encode_table_t *instr_table[] =
-    {mov, lea, add, sub, mul, div, and, or, xor, _not, inc, dec};
+    {mov, lea, add, sub, mul, div, and, or, xor, _not, inc, dec, syscall};
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
-  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m};
+  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m, &zo};
   return lookup[(size_t)input];
 }
