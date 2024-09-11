@@ -24,8 +24,9 @@
  */
 
 #include "zo.h"
+#include "error.h"
 
 void zo(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   check_mode(mode, instr_ref->support);
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
+  buf_write(buf, instr_ref->opcode, instr_ref->opcode_size);
 }
