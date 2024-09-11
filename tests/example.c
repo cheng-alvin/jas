@@ -28,17 +28,17 @@ Test(example, example) {
               OP_NONE,
           },
       },
-      // mov rdi, 0
+      // xor rdi, rdi
       (instruction_t){
-          .instr = INSTR_MOV,
+          .instr = INSTR_XOR,
           .operands = (operand_t[]){
               (operand_t){
                   .type = OP_R64,
                   .data = &(enum registers){REG_RDI},
               },
               (operand_t){
-                  .type = OP_IMM64,
-                  .data = &(uint64_t){0},
+                  .type = OP_R64,
+                  .data = &(enum registers){REG_RDI},
               },
               OP_NONE,
               OP_NONE,
