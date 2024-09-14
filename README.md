@@ -14,7 +14,7 @@
 |⚠️ | Jas is under development and is **NOT STABLE** for use. Please make sure it's NOT used for production purposes!! **NO WARRANTY WILL BE PROVIDED AS PER THE LICENSE**|
 | -------- | ------- |
 
-This is the official source tree for the Jas assembler. Jas is a MIT licensed, free and open-source x86 assembler capable of generating ELF files designed to run on on linux systems.
+This is the official source tree for the Jas assembler. Jas is a minimalist, MIT licensed x86/64 assembler capable of generating ELF files designed to run on on linux systems.
 
 Assemblers are heavy duty software normally written by those people who know their stuff, the Jas project aims to be a open-source assembler that's not just limited to compiling code into machine code, but to educate novices like me on the vast world of assembly language and assembler encodings. We will always aim to be as transparent and open as possible to the world! 
 
