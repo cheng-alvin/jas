@@ -106,13 +106,6 @@ enum registers {
   REG_BPL,
   REG_SIL,
   REG_DIL,
-
-  REG_ES,
-  REG_CS,
-  REG_SS,
-  REG_DS,
-  REG_FS,
-  REG_GS,
 };
 
 /**
@@ -201,14 +194,6 @@ enum registers {
 #define REG_VALUE_BPL 5
 #define REG_VALUE_SIL 6
 #define REG_VALUE_DIL 7
-
-// Segment registers: (But not dictated by REX.B)
-#define REG_VALUE_ES 0
-#define REG_VALUE_CS 1
-#define REG_VALUE_SS 2
-#define REG_VALUE_DS 3
-#define REG_VALUE_FS 4
-#define REG_VALUE_GS 5
 
 /**
  * Lookup table wrapper for finding register values

@@ -40,14 +40,13 @@ uint8_t reg_lookup_val(enum registers *input) {
       REG_VALUE_R15W, REG_VALUE_R8D, REG_VALUE_R9D, REG_VALUE_R10D, REG_VALUE_R11D, REG_VALUE_R12D,
       REG_VALUE_R13D, REG_VALUE_R14D, REG_VALUE_R15D, REG_VALUE_R8, REG_VALUE_R9, REG_VALUE_R10,
       REG_VALUE_R11, REG_VALUE_R12, REG_VALUE_R13, REG_VALUE_R14, REG_VALUE_R15, REG_VALUE_SPL,
-      REG_VALUE_BPL, REG_VALUE_SIL, REG_VALUE_DIL, REG_VALUE_ES, REG_VALUE_CS, REG_VALUE_SS,
-      REG_VALUE_DS, REG_VALUE_FS, REG_VALUE_GS};
+      REG_VALUE_BPL, REG_VALUE_SIL, REG_VALUE_DIL};
 
   return lookup[(unsigned int)*input];
 }
 
 bool reg_needs_rex(enum registers input) {
-  if (input > REG_RDI && input < REG_ES)
+  if (input > REG_RDI && input < REG_DIL)
     return true;
 
   return false;

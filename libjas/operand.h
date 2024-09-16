@@ -81,7 +81,6 @@ enum operands {
   OP_M16,
   OP_M32,
   OP_M64,
-  OP_SEG_REG,
   OP_ACC8,
   OP_ACC16,
   OP_ACC32,
@@ -90,7 +89,7 @@ enum operands {
 
 /**
  * Definitions for the different macros responsible of checking
- * if the operand is a relative, register, immediate, memory, segment
+ * if the operand is a relative, register, immediate, memory,
  * depending on it's specific enumeration.
  *
  * (In other words, it just "generalizes" the specific operand enums)
@@ -106,7 +105,6 @@ enum operands {
 #define op_r(x) ((x) <= OP_R64 && (x) >= OP_R8)
 #define op_imm(x) ((x) <= OP_IMM64 && (x) >= OP_IMM8)
 #define op_m(x) ((x) <= OP_M64 && (x) >= OP_M8)
-#define op_seg(x) ((x) == OP_SEG_REG)
 #define op_acc(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
 
 // --
@@ -115,8 +113,6 @@ enum operands {
 #define op_word(x) (x == OP_REL16 || x == OP_R16 || x == OP_IMM16 || x == OP_M16 || x == OP_ACC16)
 #define op_dword(x) (x == OP_REL32 || x == OP_R32 || x == OP_IMM32 || x == OP_M32 || x == OP_ACC32)
 #define op_qword(x) (x == OP_R64 || x == OP_IMM64 || x == OP_M64 || x == OP_ACC64)
-
-#define op_misc(x) (x == OP_SEG_REG || x == OP_NULL)
 
 // --
 

@@ -39,7 +39,7 @@
  * 1: Register operand (r8/16/32/64)
  * 2: Immediate operand (imm8/16/32/64)
  * 3: Memory operand (m8/16/32/64)
- * 4: Segment register operand (seg_reg)
+ * 4: -- Reserved for future use --
  * 5: Accumulator register operand (acc8/16/32/64)
  *
  * 6-7: Reserved for future use
@@ -65,7 +65,6 @@ typedef uint8_t op_ident_hash_t;
 #define OP_HASH_R 0b00000010
 #define OP_HASH_IMM 0b00000100
 #define OP_HASH_M 0b00001000
-#define OP_HASH_SEG 0b00010000
 #define OP_HASH_ACC 0b00100000
 
 #endif
