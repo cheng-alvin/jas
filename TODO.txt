@@ -1,10 +1,10 @@
-Data Movement Instructions:
-MOV: Move data between registers or between memory and registers.
-LEA: Load effective address.
+Data Movement Instructions: - ✅
+MOV: Move data between registers or between memory and registers.  - ✅
+LEA: Load effective address. - ✅
 Arithmetic and Logic Instructions:
-ADD, SUB, MUL, DIV: Basic arithmetic operations.
-AND, OR, XOR, NOT: Logical operations.
-INC, DEC: Increment and decrement.
+ADD, SUB, MUL, DIV: Basic arithmetic operations. - ✅
+AND, OR, XOR, NOT: Logical operations. - ✅
+INC, DEC: Increment and decrement. - ✅
 Control Flow Instructions:
 JMP: Unconditional jump.
 JE, JNE, JZ, JNZ: Conditional jumps.
@@ -23,8 +23,10 @@ INT: Software interrupt.
 
 
 Extra:
-SYSCALL: for long mode interrupts
-MOVZX: Move with zero-extension (padding)
+SYSCALL: for long mode interrupts. - ✅
+PUSHA: Pushing all general purpose registers onto the stack
+POPA: Pop counterpart of PUSHA, popping all general purpose registers
+MOVZX: Move with zero-extension (padding).
 
 https://docs.google.com/document/d/1bm9lxVyAk2qogOF9ujERyRcSwXkpKxLW8IWVU8FuMyE/edit?usp=sharing
 
