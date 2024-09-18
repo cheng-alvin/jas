@@ -2,7 +2,9 @@
 #include "test.h"
 
 void test_callback(const char *msg) {
-  assert_str_eq(msg, "msg", "Error callback function was not called correctly.");
+  assert_str_eq(
+      msg, "msg",
+      "Error callback function was not called correctly.");
 }
 
 Test(error, err) {
@@ -12,7 +14,6 @@ Test(error, err) {
 
 int main(void) {
   TestSuite(error);
-
   RunTest(error, err);
 
   return 0;
