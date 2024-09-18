@@ -29,12 +29,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-typedef struct label {
-  char *name;     /* Name of the label in a string format */
-  bool exported;  /* Boolean for whether the label is exported to the linker table or not */
-  size_t address; /* Address of the label entry, can use `buf.len` */
-} label_t;
-
 /**
  * Function for creating a new label with the given name and address
  * as mentioned in the `label_t` struct, storing it in an internal
@@ -54,6 +48,13 @@ typedef struct label {
  * entries to be freed by the `label_destroy` function.
  */
 void *label_create(char *name, size_t address);
+
+typedef struct {
+  char *name;     /* Name of the label in a string format */
+  bool exported;  /* Boolean for whether the label is exported to the linker table or not */
+  bool ext;       /* Boolean for whether the label is external or not (If a relocation table should be created) */
+  size_t address; /* Address of the label entry, can use `buf.len` */
+} label_t;
 
 /**
  * Function for destroying the label table, freeing the memory
