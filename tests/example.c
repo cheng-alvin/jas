@@ -57,9 +57,7 @@ Test(example, example) {
   };
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
-  for (uint8_t i = 0; i < buf.len; i++) {
-    printf("%02x ", buf.data[i]);
-  }
+  free(buf.data);
 }
 
 int main(void) {
