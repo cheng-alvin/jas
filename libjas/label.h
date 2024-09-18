@@ -42,10 +42,6 @@
  * the `buffer.h`, or many times the `buf` variable. Therefore,
  * allowing the relative addressing of the label to be calculated
  * on the fly.
- *
- * @note All strings must be allocated using `malloc` or `calloc`
- * and must be able to be freed using `free`, allowing the label
- * entries to be freed by the `label_destroy` function.
  */
 void *label_create(char *name, size_t address);
 
