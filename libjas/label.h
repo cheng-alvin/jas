@@ -36,6 +36,8 @@
  *
  * @param name The name of the label.
  * @param address The address of the label.
+ * @param exported Boolean for whether the label is exported or not.
+ * @param ext Boolean for whether the label is external or not.
  *
  * @note The address depicts a position in the buffer, and can be
  * obtained using `buf.len` after encoding the instruction from
@@ -43,7 +45,7 @@
  * allowing the relative addressing of the label to be calculated
  * on the fly.
  */
-void *label_create(char *name, size_t address);
+void label_create(char *name, bool exported, bool ext, size_t address);
 
 typedef struct {
   char *name;     /* Name of the label in a string format */
@@ -76,5 +78,13 @@ void label_destroy_all();
  * @return The pointer to the label entry if found, otherwise `NULL`
  */
 label_t *label_lookup(char *name);
+
+/**
+ * Function for dumping all the labels in the label table, and
+ * returning the pointer to the label table to the caller.
+ *
+ * @return The pointer to the label table if found, otherwise `NULL`
+ */
+label_t *label_dump_all();
 
 #endif

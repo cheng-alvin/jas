@@ -24,6 +24,7 @@
  */
 
 #include "label.h"
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -33,20 +34,15 @@
 static label_t *label_table = NULL;
 static size_t label_table_size = 0;
 
-void *label_create(char *name, size_t address) {
-  label_t *label = (label_t *)malloc(sizeof(label_t));
-  label->name = name;
-  label->address = address;
+void label_create(char *name, bool exported, bool ext, size_t address) {
+  label_t label = {.name = name, .exported = exported, .ext = ext, .address = address};
 
   label_table_size++;
   label_table = (label_t *)realloc(label_table, label_table_size * sizeof(label_t));
-  label_table[label_table_size - 1] = *label;
+  label_table[label_table_size - 1] = label;
 }
 
 void label_destroy_all() {
-  for (size_t i = 0; i < label_table_size; i++)
-    free(label_table[i].name);
-
   free(label_table);
 
   label_table = NULL;
@@ -59,4 +55,8 @@ label_t *label_lookup(char *name) {
       return &label_table[i];
 
   return NULL;
+}
+
+label_t *label_dump_all() {
+  return label_table;
 }
