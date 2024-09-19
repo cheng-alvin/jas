@@ -34,6 +34,8 @@ Test(operand, write_prefix) {
    * instruction will be changed to that particular si-
    * ze and will be override.
    */
+
+  // Allow test to pass
 }
 
 Test(operand, construct_operand) {
