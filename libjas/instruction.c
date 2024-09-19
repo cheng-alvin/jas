@@ -96,12 +96,43 @@ instr_encode_table_t _not[] = {{OP_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &p
 instr_encode_table_t inc[] = {{OP_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
 instr_encode_table_t dec[] = {{OP_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
 
-// ...  (Some instructions are missing)
+instr_encode_table_t jmp[] = {{}};
+instr_encode_table_t je[] = {{}};
+instr_encode_table_t jne[] = {{}};
+instr_encode_table_t jz[] = {{}};
+instr_encode_table_t jnz[] = {{}};
 
+instr_encode_table_t call[] = {{}};
+instr_encode_table_t ret[] = {{}};
+
+instr_encode_table_t cmp[] = {{}};
+
+instr_encode_table_t push[] = {{}};
+instr_encode_table_t pop[] = {{}};
+
+instr_encode_table_t in[] = {{}};
+instr_encode_table_t out[] = {{}};
+
+instr_encode_table_t clc[] = {{}};
+instr_encode_table_t stc[] = {{}};
+instr_encode_table_t cli[] = {{}};
+instr_encode_table_t sti[] = {{}};
+
+instr_encode_table_t nop[] = {{}};
+instr_encode_table_t hlt[] = {{}};
+instr_encode_table_t _int[] = {{}};
 instr_encode_table_t syscall[] = {{OP_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {0x00, 0x00}, 2, &pre_default}, INSTR_TERMINATOR};
 
+// clang-format off
+
 instr_encode_table_t *instr_table[] =
-    {mov, lea, add, sub, mul, div, and, or, xor, _not, inc, dec, syscall};
+    {
+        mov, lea, add, sub, mul, div, and, or, xor, _not, inc,
+        dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
+        in, out, clc, stc, cli, sti, nop, hlt, _int, syscall,
+    };
+
+// clang-format on
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
   instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m, &zo};
