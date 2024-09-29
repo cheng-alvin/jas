@@ -24,6 +24,7 @@
  */
 
 #include "instruction.h"
+#include "d.h"
 #include "error.h"
 #include "i.h"
 #include "m.h"
@@ -135,6 +136,6 @@ instr_encode_table_t *instr_table[] =
 // clang-format on
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
-  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m, &zo};
+  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m, &zo, &d};
   return lookup[(size_t)input];
 }

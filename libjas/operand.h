@@ -132,6 +132,7 @@ enum op_ident {
   OP_I,
   OP_M,
   OP_ZO,
+  OP_D,
 };
 
 typedef struct {
