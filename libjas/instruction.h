@@ -131,4 +131,7 @@ instr_encoder_t instr_encode_func(enum op_ident input);
     .pre = NULL,                 \
   }
 
+#define INSTR_NULL \
+  (instruction_t) { .instr = NULL, .operands = NULL }
+
 #endif
