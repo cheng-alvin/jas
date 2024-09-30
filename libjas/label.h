@@ -54,6 +54,9 @@ typedef struct {
   size_t address; /* Address of the label entry, can use `buf.len` */
 } label_t;
 
+extern label_t *label_table = NULL;
+extern size_t label_table_size = 0;
+
 /**
  * Function for destroying the label table, freeing the memory
  * allocated for the label names and the label entries itself.
@@ -78,13 +81,5 @@ void label_destroy_all();
  * @return The pointer to the label entry if found, otherwise `NULL`
  */
 label_t *label_lookup(char *name);
-
-/**
- * Function for dumping all the labels in the label table, and
- * returning the pointer to the label table to the caller.
- *
- * @return The pointer to the label table if found, otherwise `NULL`
- */
-label_t *label_dump_all();
 
 #endif

@@ -28,8 +28,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-static label_t *label_table = NULL;
-static size_t label_table_size = 0;
+label_t *label_table = NULL;
+size_t label_table_size = 0;
 
 void label_create(char *name, bool exported, bool ext, size_t address) {
   label_t label = {.name = name, .exported = exported, .ext = ext, .address = address};
@@ -52,8 +52,4 @@ label_t *label_lookup(char *name) {
       return &label_table[i];
 
   return NULL;
-}
-
-label_t *label_dump_all() {
-  return label_table;
 }
