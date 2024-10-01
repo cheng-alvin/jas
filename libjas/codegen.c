@@ -27,17 +27,34 @@
 #include "buffer.h"
 #include "error.h"
 #include "instruction.h"
+#include "label.h"
 #include "mode.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
 
 #define CURR_TABLE instr_table[instr_arr[i].instr][j]
 
+// TODO Fix the stupid hack
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
+  assemble(mode, instr_arr, arr_size, true);
+  return assemble(mode, instr_arr, arr_size, false);
+}
+
+static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre) {
   arr_size /= sizeof(instruction_t);
   buffer_t buf = BUF_NULL;
 
   for (size_t i = 0; i < arr_size; i++) {
+    if (instr_arr[i].instr == NULL && instr_arr[i].operands == NULL) {
+      if (!pre) continue;
+
+      for (size_t k = 0; k < label_table_size; k++) {
+        if (label_table[k].instr_index == i)
+          label_table[k].address = buf.len;
+      }
+    }
+
     instruction_t current = instr_arr[i];
 
     const enum operands operand_list[4] = {
