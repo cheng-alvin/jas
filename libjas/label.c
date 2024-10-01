@@ -31,8 +31,18 @@
 label_t *label_table = NULL;
 size_t label_table_size = 0;
 
-void label_create(char *name, bool exported, bool ext, size_t address) {
-  label_t label = {.name = name, .exported = exported, .ext = ext, .address = address};
+void label_create(char *name, bool exported, bool ext, size_t address, size_t instr_index) {
+  if (label_lookup(name) != NULL) {
+    err("Label conflict detected, a duplicate cannot be created.");
+    return;
+  }
+
+  if (instr_index == NULL && address == NULL) {
+    err("Either `instr_index` or `address` must be set, we cannot infer without both entries.");
+    return;
+  }
+
+  label_t label = {.name = name, .exported = exported, .ext = ext, .address = address, .instr_index = instr_index};
 
   label_table_size++;
   label_table = (label_t *)realloc(label_table, label_table_size * sizeof(label_t));

@@ -35,23 +35,31 @@
  * table as a label entry.
  *
  * @param name The name of the label.
- * @param address The address of the label.
  * @param exported Boolean for whether the label is exported or not.
  * @param ext Boolean for whether the label is external or not.
+ * @param address The address of the label.
+ * @param instr_index The index to slip the label in the instruction array.
  *
+ * @note EITHER `instr_index` or `address` fields can be set as `NULL`, the
+ * assembler will infer the `address` field from the `instr_index` field if
+ * no explict `address` field is provided, however, if an explicit `address`
+ * field is provided, the `instr_index` field will be ignored.
+ *
+ * A `
  * @note The address depicts a position in the buffer, and can be
  * obtained using `buf.len` after encoding the instruction from
  * the `buffer.h`, or many times the `buf` variable. Therefore,
  * allowing the relative addressing of the label to be calculated
  * on the fly.
  */
-void label_create(char *name, bool exported, bool ext, size_t address);
+void label_create(char *name, bool exported, bool ext, size_t address, size_t instr_index);
 
 typedef struct {
-  char *name;     /* Name of the label in a string format */
-  bool exported;  /* Boolean for whether the label is exported to the linker table or not */
-  bool ext;       /* Boolean for whether the label is external or not (If a relocation table should be created) */
-  size_t address; /* Address of the label entry, can use `buf.len` */
+  char *name;         /* Name of the label in a string format */
+  bool exported;      /* Boolean for whether the label is exported to the linker table or not */
+  bool ext;           /* Boolean for whether the label is external or not (If a relocation table should be created) */
+  size_t address;     /* Address of the label entry, can use `buf.len` */
+  size_t instr_index; /* Index to slip the label in the instruction array */
 } label_t;
 
 extern label_t *label_table = NULL;
