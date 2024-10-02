@@ -97,7 +97,7 @@ instr_encode_table_t _not[] = {{OP_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &p
 instr_encode_table_t inc[] = {{OP_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
 instr_encode_table_t dec[] = {{OP_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
 
-instr_encode_table_t jmp[] = {{OP_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, &pre_default}, INSTR_TERMINATOR};
+instr_encode_table_t jmp[] = {{OP_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL}, INSTR_TERMINATOR};
 instr_encode_table_t je[] = {{}};
 instr_encode_table_t jne[] = {{}};
 instr_encode_table_t jz[] = {{}};
