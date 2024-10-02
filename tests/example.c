@@ -70,7 +70,7 @@ Test(example, example) {
               OP_NONE,
           },
       },
-      (instruction_t){.instr = NULL, .operands = NULL},
+      (instruction_t){.instr = (enum instructions)NULL, .operands = NULL},
   };
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
