@@ -69,8 +69,9 @@ Test(example, example) {
               OP_NONE,
               OP_NONE,
           },
-          (instruction_t){.instr = NULL, .operands = NULL},
-      }};
+      },
+      (instruction_t){.instr = NULL, .operands = NULL},
+  };
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
 
