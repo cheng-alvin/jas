@@ -55,6 +55,6 @@ void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
     return;
   }
 
-  ptrdiff_t rel_offset = label->address - (buf->len + 1);
+  ptrdiff_t rel_offset = label->address - buf->len;
   buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
 }
