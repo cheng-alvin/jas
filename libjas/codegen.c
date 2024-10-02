@@ -35,7 +35,7 @@
 
 #define CURR_TABLE instr_table[instr_arr[i].instr][j]
 
-// TODO Fix the stupid hack
+static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre); // TODO Fix the stupid hack
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
   assemble(mode, instr_arr, arr_size, true);
   return assemble(mode, instr_arr, arr_size, false);
@@ -48,11 +48,12 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
   for (size_t i = 0; i < arr_size; i++) {
     if (instr_arr[i].instr == NULL && instr_arr[i].operands == NULL) {
       if (!pre) continue;
-
       for (size_t k = 0; k < label_table_size; k++) {
         if (label_table[k].instr_index == i)
-          label_table[k].address = buf.len;
+          label_table[k].address = buf.len - 1;
       }
+
+      continue;
     }
 
     instruction_t current = instr_arr[i];
