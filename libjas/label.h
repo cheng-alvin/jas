@@ -30,6 +30,7 @@
 #include <stddef.h>
 
 /**
+
  * Function for creating a new label with the given name and address
  * as mentioned in the `label_t` struct, storing it in an internal
  * table as a label entry.
@@ -62,8 +63,8 @@ typedef struct {
   size_t instr_index; /* Index to slip the label in the instruction array */
 } label_t;
 
-extern label_t *label_table = NULL;
-extern size_t label_table_size = 0;
+extern label_t *label_table;
+extern size_t label_table_size;
 
 /**
  * Function for destroying the label table, freeing the memory
