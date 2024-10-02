@@ -3,6 +3,8 @@
 #include "instruction.h"
 #include "test.h"
 
+#include "label.h"
+
 void error_callback(const char *msg) {
   printf("%s\n", msg);
   exit(1);
@@ -10,6 +12,8 @@ void error_callback(const char *msg) {
 
 Test(example, example) {
   err_add_callback(error_callback);
+
+  label_create("label", false, false, NULL, 4);
 
   instruction_t instr[] = (instruction_t[]){
       // mov rax, 60
@@ -54,9 +58,26 @@ Test(example, example) {
               OP_NONE,
           },
       },
-  };
+      (instruction_t){
+          .instr = INSTR_JMP,
+          .operands = (operand_t[]){
+              (operand_t){
+                  .type = OP_REL8,
+                  .data = &(char[]){"label"},
+              },
+              OP_NONE,
+              OP_NONE,
+              OP_NONE,
+          },
+          (instruction_t){.instr = NULL, .operands = NULL},
+      }};
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
+
+  for (size_t i = 0; i < buf.len; i++) {
+    printf("%02X ", buf.data[i]);
+  }
+
   free(buf.data);
 }
 
