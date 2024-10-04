@@ -119,8 +119,8 @@ instr_encode_table_t stc[] = {{}};
 instr_encode_table_t cli[] = {{}};
 instr_encode_table_t sti[] = {{}};
 
-instr_encode_table_t nop[] = {{}};
-instr_encode_table_t hlt[] = {{}};
+instr_encode_table_t nop[] = {{OP_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {0x90}, 1, &pre_default}, INSTR_TERMINATOR};
+instr_encode_table_t hlt[] = {{OP_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, &pre_default}, INSTR_TERMINATOR};
 
 static void pre_int(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) != 8)
