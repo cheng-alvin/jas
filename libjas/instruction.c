@@ -121,7 +121,13 @@ instr_encode_table_t sti[] = {{}};
 
 instr_encode_table_t nop[] = {{}};
 instr_encode_table_t hlt[] = {{}};
-instr_encode_table_t _int[] = {{}};
+
+static void pre_int(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  if (op_sizeof(op_arr[0].type) != 8)
+    err("Invalid operand size for INT instruction.");
+}
+
+instr_encode_table_t _int[] = {{OP_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {0xCD}, 1, &pre_int}, INSTR_TERMINATOR};
 instr_encode_table_t syscall[] = {{OP_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {0x00, 0x00}, 2, &pre_default}, INSTR_TERMINATOR};
 
 // clang-format off
