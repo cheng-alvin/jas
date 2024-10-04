@@ -17,9 +17,9 @@ IN, OUT: Input/output operations.
 Flag Control Instructions:
 CLC, STC, CLI, STI: Control flags.
 Miscellaneous Instructions:
-NOP: No operation.
-HLT: Halt the processor.
-INT: Software interrupt.
+NOP: No operation. - ✅
+HLT: Halt the processor. - ✅
+INT: Software interrupt. - ✅
 
 
 Extra:
