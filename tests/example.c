@@ -13,7 +13,7 @@ void error_callback(const char *msg) {
 Test(example, example) {
   err_add_callback(error_callback);
 
-  label_create("label", false, false, NULL, 4);
+  label_create("label", false, false, 0, 4);
 
   instruction_t instr[] = (instruction_t[]){
       // mov rax, 60
