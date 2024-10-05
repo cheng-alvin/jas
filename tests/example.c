@@ -58,6 +58,7 @@ Test(example, example) {
               OP_NONE,
           },
       },
+      // jmp label
       (instruction_t){
           .instr = INSTR_JMP,
           .operands = (operand_t[]){
