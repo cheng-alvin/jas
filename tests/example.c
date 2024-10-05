@@ -71,6 +71,8 @@ Test(example, example) {
               OP_NONE,
           },
       },
+
+      // label:
       (instruction_t){.instr = (enum instructions)NULL, .operands = NULL},
   };
 
