@@ -97,6 +97,11 @@ instr_encode_table_t _not[] = {{OP_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &p
 instr_encode_table_t inc[] = {{OP_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
 instr_encode_table_t dec[] = {{OP_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
 
+static void pre_jcc_no_byte(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  if (op_sizeof(op_arr[0].type) == 8)
+    err("Byte operands cannot be used with this instruction.");
+}
+
 instr_encode_table_t jmp[] = {{OP_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL}, INSTR_TERMINATOR};
 instr_encode_table_t je[] = {{}};
 instr_encode_table_t jne[] = {{}};
