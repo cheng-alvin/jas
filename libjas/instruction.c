@@ -109,7 +109,17 @@ instr_encode_table_t jz[] = {{OP_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x00,
 instr_encode_table_t jnz[] = {{OP_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x90, 0x75}, 2, NULL}, INSTR_TERMINATOR};
 
 instr_encode_table_t call[] = {{}};
-instr_encode_table_t ret[] = {{}};
+
+static void pre_ret(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  if (op_sizeof(op_arr[0].type) != 16)
+    err("Other operand sizes cannot be used with this instruction.");
+}
+
+// TODO / note far jumps, calls and returns are not supported (yet)
+instr_encode_table_t ret[] = {{
+    {OP_ZO, NULL, {0xC3}, MODE_SUPPORT_ALL, {0xC3}, 1, &pre_default},
+    {OP_I, NULL, {0xC2}, MODE_SUPPORT_ALL, {0xC2}, 1, &pre_ret},
+}};
 
 instr_encode_table_t cmp[] = {{}};
 
