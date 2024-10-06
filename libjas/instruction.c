@@ -103,10 +103,10 @@ static void pre_jcc_no_byte(operand_t *op_arr, buffer_t *buf, instr_encode_table
 }
 
 instr_encode_table_t jmp[] = {{OP_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL}, INSTR_TERMINATOR};
-instr_encode_table_t je[] = {{}};
-instr_encode_table_t jne[] = {{}};
-instr_encode_table_t jz[] = {{}};
-instr_encode_table_t jnz[] = {{}};
+instr_encode_table_t je[] = {{OP_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x090, 0x74}, 2, NULL}, INSTR_TERMINATOR};
+instr_encode_table_t jne[] = {{OP_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
+instr_encode_table_t jz[] = {{OP_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
+instr_encode_table_t jnz[] = {{OP_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x90, 0x75}, 2, NULL}, INSTR_TERMINATOR};
 
 instr_encode_table_t call[] = {{}};
 instr_encode_table_t ret[] = {{}};
