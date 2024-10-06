@@ -33,7 +33,7 @@ void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
    * @brief This opcode identity should:
    *   1. Write the opcode to the buffer ✅
    *   2. Calculate the relative offset of the label ✅
-   *   3. Write the relative offset to the buffer
+   *   3. Write the relative offset to the buffer - kinda ✅
    */
 
   // IN BYTES!!!
