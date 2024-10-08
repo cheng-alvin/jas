@@ -108,7 +108,7 @@ instr_encode_table_t jne[] = {{OP_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x00
 instr_encode_table_t jz[] = {{OP_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
 instr_encode_table_t jnz[] = {{OP_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x90, 0x75}, 2, NULL}, INSTR_TERMINATOR};
 
-instr_encode_table_t call[] = {{}};
+instr_encode_table_t call[] = {{}}; //!
 
 static void pre_ret(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) != 16)
