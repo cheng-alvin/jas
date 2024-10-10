@@ -44,6 +44,6 @@ void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
   }
 
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
-  uint8_t *imm = (uint8_t* )op_arr[1].data;
+  uint8_t *imm = (uint8_t *)op_arr[1].data;
   buf_write(buf, imm, imm_size);
 }
