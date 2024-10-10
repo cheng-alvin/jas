@@ -122,7 +122,7 @@ instr_encode_table_t ret[] = {
     INSTR_TERMINATOR,
 };
 
-instr_encode_table_t cmp[] = {INSTR_GENERAL(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)}
+instr_encode_table_t cmp[] = {INSTR_GENERAL(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)};
 
 instr_encode_table_t push[] = {{}};
 instr_encode_table_t pop[] = {{}};
