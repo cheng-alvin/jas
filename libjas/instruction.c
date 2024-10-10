@@ -116,10 +116,11 @@ static void pre_ret(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 }
 
 // TODO / note far jumps, calls and returns are not supported (yet)
-instr_encode_table_t ret[] = {{
+instr_encode_table_t ret[] = {
     {OP_ZO, NULL, {0xC3}, MODE_SUPPORT_ALL, {0xC3}, 1, &pre_default},
     {OP_I, NULL, {0xC2}, MODE_SUPPORT_ALL, {0xC2}, 1, &pre_ret},
-}};
+    INSTR_TERMINATOR,
+};
 
 instr_encode_table_t cmp[] = {{}};
 
