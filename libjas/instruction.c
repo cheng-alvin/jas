@@ -131,7 +131,7 @@ instr_encode_table_t out[] = {{}};
 
 instr_encode_table_t clc[] = {{}};
 instr_encode_table_t stc[] = {{}};
-instr_encode_table_t cli[] = {{}};
+instr_encode_table_t cli[] = {{OP_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {0xFA}, 1, &pre_default}, INSTR_TERMINATOR};
 instr_encode_table_t sti[] = {{}};
 
 instr_encode_table_t nop[] = {{OP_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {0x90}, 1, &pre_default}, INSTR_TERMINATOR};
