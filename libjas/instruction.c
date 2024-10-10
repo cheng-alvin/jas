@@ -130,10 +130,10 @@ instr_encode_table_t pop[] = {{}};
 instr_encode_table_t in[] = {{}};
 instr_encode_table_t out[] = {{}};
 
-instr_encode_table_t clc[] = {{}};
-instr_encode_table_t stc[] = {{}};
+instr_encode_table_t clc[] = {{OP_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {0xF8}, 1, &pre_default}, INSTR_TERMINATOR};
+instr_encode_table_t stc[] = {{OP_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {0xF9}, 1, &pre_default}, INSTR_TERMINATOR};
 instr_encode_table_t cli[] = {{OP_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {0xFA}, 1, &pre_default}, INSTR_TERMINATOR};
-instr_encode_table_t sti[] = {{}};
+instr_encode_table_t sti[] = {{OP_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {0xFB}, 1, &pre_default}, INSTR_TERMINATOR};
 
 instr_encode_table_t nop[] = {{OP_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {0x90}, 1, &pre_default}, INSTR_TERMINATOR};
 instr_encode_table_t hlt[] = {{OP_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, &pre_default}, INSTR_TERMINATOR};
