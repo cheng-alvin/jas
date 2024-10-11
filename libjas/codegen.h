@@ -30,7 +30,6 @@
 #include "instruction.h"
 #include "mode.h"
 #include <stddef.h>
-#include <stdlib.h>
 
 /**
  * Codegen function that generates the machine code from the
