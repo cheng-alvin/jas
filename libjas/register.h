@@ -109,9 +109,9 @@ enum registers {
 };
 
 /**
- * Macro definition of the register values.
- * These are the values that are used in the
- * instruction encoding, unlike the enum values.
+ * Macro definition of the register values. These are the values that
+ * are used in the instruction encoding, unlike the enum values which
+ * serves as a 'marker', or a key value pair.
  *
  * @note Not to be confused with the enum `registers`
  */
