@@ -24,7 +24,7 @@ Perquisites:
 - LLVM Debugger (LLDB) (optional, only needed for debugging when running `make debug`)
 
 The Jas assembler is written in C and can be built using the GNU C Compiler (GCC). The assembler can be built
-running `make` inside the `src/` directory. The assembler can be cleaned, debugged and tested as per the `Makefile` in the `src/` directory.
+running `make` inside the home directory. The assembler can be cleaned, debugged and tested as per the `Makefile` in the home directory.
 
 ### What now?
 After reading the instructions here, you should have a good understanding of how to contribute
