@@ -23,6 +23,7 @@ Jas is a minimal, fast and simple zero-dependdency assembler for the x64 family 
 
 int main(void) {
   instruction_t instr[] = (instruction_t[]) {
+
       // mov rax, 60
       (instruction_t){
           .instr = INSTR_MOV,
@@ -39,6 +40,7 @@ int main(void) {
               OP_NONE,
           },
       },
+
   };
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
