@@ -23,17 +23,22 @@ Jas is a minimal, fast and simple zero-dependdency assembler for the x64 family 
 
 int main(void) {
   instruction_t instr[] = (instruction_t[]) {
-
-    // mov rax, 60
-    (instruction_t) {
-      .instr = INSTR_MOV,
-      .operands = (operand_t[]) {
-      (operand_t) {
-        .type = OP_R64,
-        .data = &(enum registers) {REG_RAX},
+      // mov rax, 60
+      (instruction_t){
+          .instr = INSTR_MOV,
+          .operands = (operand_t[]){
+              (operand_t){
+                  .type = OP_R64,
+                  .data = &(enum registers){REG_RAX},
+              },
+              (operand_t){
+                  .type = OP_IMM64,
+                  .data = &(uint64_t){60},
+              },
+              OP_NONE,
+              OP_NONE,
+          },
       },
-    },
-
   };
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
