@@ -38,7 +38,6 @@ int main(void) {
 
       buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
       free(buf.data);
-    }
 }
 ```
 
