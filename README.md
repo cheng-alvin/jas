@@ -22,54 +22,23 @@ Jas is a minimal, fast and simple zero-dependdency assembler for the x64 family 
 #include <codegen.h>
 
 int main(void) {
-  instruction_t instr[] = (instruction_t[]) {
-
-    // label:
-    (instruction_t) {
-      .instr = (enum instructions) NULL, .operands = NULL
-    },
-
-    // mov rax, 60
-    (instruction_t) {
-      .instr = INSTR_MOV,
-        .operands = (operand_t[]) {
-          (operand_t) {
-            .type = OP_R64,
-              .data = & (enum registers) {
-                REG_RAX
-              },
+    instruction_t instr[] = (instruction_t[]) {
+      // mov rax, 60
+      (instruction_t) {
+        .instr = INSTR_MOV,
+          .operands = (operand_t[]) {
+            (operand_t) {
+              .type = OP_R64,
+                .data = & (enum registers) {
+                  REG_RAX
+                },
+            },
           },
-          (operand_t) {
-            .type = OP_IMM64,
-              .data = & (uint64_t) {
-                60
-              },
-          },
-          OP_NONE,
-          OP_NONE,
-        },
-    },
+      };
 
-    // jmp label
-    (instruction_t) {
-      .instr = INSTR_JMP,
-        .operands = (operand_t[]) {
-          (operand_t) {
-            .type = OP_REL8,
-              .data = & (char[]) {
-                "label"
-              },
-          },
-          OP_NONE,
-          OP_NONE,
-          OP_NONE,
-        },
-    },
-  };
-
-  buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
-  free(buf.data);
-}
+      buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
+      free(buf.data);
+    }
 ```
 
 Yeah! that's it! Seriously! Also remember to install/link against the binary releases **[add link]** or build it from source with following the instructions [here](https://github.com/cheng-alvin/jas/blob/dev/CONTRIBUTING.md)
