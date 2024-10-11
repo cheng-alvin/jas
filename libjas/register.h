@@ -196,22 +196,23 @@ enum registers {
 #define REG_VALUE_DIL 7
 
 /**
- * Lookup table wrapper for finding register values
- * given the register enum value.
+ * Lookup table wrapper for finding register values from a single
+ * centralized enumeration value, as per above's enum `registers`.
  *
  * @param input enum registers' pointer value
  * @return uint8_t register value
- * @see `registers` enum
  */
 uint8_t reg_lookup_val(enum registers *input);
 
 /**
- * Function for checking wether a register needs to
- * have a REX.B prefix provided.
+ * Function for checking wether a register needs to have a REX.B
+ * prefix before the opcode, the REX.B prefix is used to access
+ * more general-purpose registers such as the higher 8 registers
+ * in 64-bit mode.
  *
  * @param input enum registers value
- * @return bool true if register needs REX.B
- * @see `registers` enum
+ * @return Whether the register needs a REX.B prefix when encoded
+ * @see `registers` and rex.h
  */
 bool reg_needs_rex(enum registers input);
 
