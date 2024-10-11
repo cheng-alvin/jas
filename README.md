@@ -39,6 +39,7 @@ int main(void) {
       buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
       free(buf.data);
     }
+}
 ```
 
 Yeah! that's it! Seriously! Also remember to install/link against the binary releases **[add link]** or build it from source with following the instructions [here](https://github.com/cheng-alvin/jas/blob/dev/CONTRIBUTING.md)
