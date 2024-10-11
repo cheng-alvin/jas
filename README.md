@@ -14,9 +14,7 @@
 |⚠️ | Jas is under development and is **NOT STABLE** for use. Please make sure it's NOT used for production purposes!! **NO WARRANTY WILL BE PROVIDED AS PER THE LICENSE**|
 | -------- | ------- |
 
-This is the official source tree for the Jas assembler. Jas is a minimalist, MIT licensed x86/64 assembler capable of generating ELF files designed to run on on linux systems.
-
-Assemblers are heavy duty software normally written by those people who know their stuff, the Jas project aims to be a open-source assembler that's not just limited to compiling code into machine code, but to educate novices like me on the vast world of assembly language and assembler encodings. We will always aim to be as transparent and open as possible to the world! 
+Jas is a minimal, fast and simple zero-dependdency assembler for the x64 family of processors, jas not only aims to be fast and simple when using it but also aims to be a learning reasource for others to learn about low-level system programming and the x64 instruction set.
 
 ### 📝 Licensing 
 All the code under the Jas assembler project repository is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License) which is a popular open-source license for projects like this! Please see [LICENSE](https://github.com/cheng-alvin/jas/blob/main/LICENSE) for the details.
@@ -30,15 +28,5 @@ However, for developers interested and passionate about assemblers and low-level
 
 All changes and reports are welcome, no matter how big or small your changes are :-)
 
-### 📃 Going deeper
-For the developers, users and even "randos" on the internet who wants to learn more about the Jas assembler, x86 assembly or even the basics of computer science; for the people who just want to go beyond simply using an assembler, we have written a comprehensive guide, explaining the ins and outs of the assembler and how an assembler is written [here](https://github.com/cheng-alvin/jas/blob/44aac9cb3f99ec6ab401f9bb2a2e6a2155d05bc0/LEARN.md)
-
-### 🤝 Respect and commmunity conduct 
-Jas and its members respect and welcome all developers regardless of age, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation. No tolerence will be given to any discriminative or disrespectful behaviour. See [here for more information](https://github.com/cheng-alvin/jas/blob/dev/CODE_OF_CONDUCT.md)
-
-*Please report all community conduct violations via email at: eventide1029+jas@gmail.com.*
-
 ---
 *Made with love by Alvin / the Jas crew and contributors ❤️ .* 
-
-^ Jas is **NOT STABLE** for commerical use. DO NOT use for production purposes!! Please verify all generated code with official sources before deploying to production settings of any kind!
