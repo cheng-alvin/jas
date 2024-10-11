@@ -148,7 +148,7 @@ static instr_encode_table_t syscall[] = {{OP_ZO, NULL, {0x0F, 0x05}, MODE_SUPPOR
 
 // clang-format off
 
-static instr_encode_table_t *instr_table[] =
+instr_encode_table_t *instr_table[] =
     {
         mov, lea, add, sub, mul, div, and, or, xor, _not, inc,
         dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
