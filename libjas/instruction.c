@@ -49,7 +49,7 @@ static void pre_imm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
   }
 }
 
-instr_encode_table_t mov[] = {
+static instr_encode_table_t mov[] = {
     {OP_MR, NULL, {0x89}, MODE_SUPPORT_ALL, {0x88}, 1, &pre_default},
     {OP_RM, NULL, {0x8B}, MODE_SUPPORT_ALL, {0x8A}, 1, &pre_default},
     {OP_OI, NULL, {0xB8}, MODE_SUPPORT_ALL, {0xB0}, 1, &pre_default},
@@ -77,38 +77,38 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 
 // clang-format on
 
-instr_encode_table_t lea[] = {{OP_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, 1, &pre_lea}, INSTR_TERMINATOR};
+static instr_encode_table_t lea[] = {{OP_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, 1, &pre_lea}, INSTR_TERMINATOR};
 
-instr_encode_table_t add[] = {INSTR_GENERAL(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, 0b10000000, 0x81, 0x80)};
-instr_encode_table_t sub[] = {INSTR_GENERAL(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x80, 0x81)};
-instr_encode_table_t mul[] = {{OP_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
-instr_encode_table_t div[] = {{OP_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t add[] = {INSTR_GENERAL(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, 0b10000000, 0x81, 0x80)};
+static instr_encode_table_t sub[] = {INSTR_GENERAL(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x80, 0x81)};
+static instr_encode_table_t mul[] = {{OP_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t div[] = {{OP_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
 
 // Note all or, and and xor instructions have a imm8 which is not supported
 
-instr_encode_table_t and[] = {INSTR_GENERAL(0x23, 0x22, 0x21, 0x20, 0x25, 0x24, 4, 0x81, 0x80)};
-instr_encode_table_t or [] = {INSTR_GENERAL(0x0B, 0x0A, 0x09, 0x08, 0x0D, 0x0C, 1, 0x81, 0x80)};
-instr_encode_table_t xor [] = {INSTR_GENERAL(0x33, 0x32, 0x31, 0x30, 0x35, 0x34, 6, 0x81, 0x80)};
+static instr_encode_table_t and[] = {INSTR_GENERAL(0x23, 0x22, 0x21, 0x20, 0x25, 0x24, 4, 0x81, 0x80)};
+static instr_encode_table_t or [] = {INSTR_GENERAL(0x0B, 0x0A, 0x09, 0x08, 0x0D, 0x0C, 1, 0x81, 0x80)};
+static instr_encode_table_t xor [] = {INSTR_GENERAL(0x33, 0x32, 0x31, 0x30, 0x35, 0x34, 6, 0x81, 0x80)};
 
 // ---
 
-instr_encode_table_t _not[] = {{OP_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t _not[] = {{OP_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
 
-instr_encode_table_t inc[] = {{OP_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
-instr_encode_table_t dec[] = {{OP_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t inc[] = {{OP_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t dec[] = {{OP_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
 
 static void pre_jcc_no_byte(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) == 8)
     err("Byte operands cannot be used with this instruction.");
 }
 
-instr_encode_table_t jmp[] = {{OP_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL}, INSTR_TERMINATOR};
-instr_encode_table_t je[] = {{OP_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x090, 0x74}, 2, NULL}, INSTR_TERMINATOR};
-instr_encode_table_t jne[] = {{OP_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
-instr_encode_table_t jz[] = {{OP_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
-instr_encode_table_t jnz[] = {{OP_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x90, 0x75}, 2, NULL}, INSTR_TERMINATOR};
+static instr_encode_table_t jmp[] = {{OP_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL}, INSTR_TERMINATOR};
+static instr_encode_table_t je[] = {{OP_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x090, 0x74}, 2, NULL}, INSTR_TERMINATOR};
+static instr_encode_table_t jne[] = {{OP_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
+static instr_encode_table_t jz[] = {{OP_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
+static instr_encode_table_t jnz[] = {{OP_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x90, 0x75}, 2, NULL}, INSTR_TERMINATOR};
 
-instr_encode_table_t call[] = {{OP_D, NULL, {0xE8}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL}, INSTR_TERMINATOR};
+static instr_encode_table_t call[] = {{OP_D, NULL, {0xE8}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL}, INSTR_TERMINATOR};
 
 static void pre_ret(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) != 16)
@@ -116,39 +116,39 @@ static void pre_ret(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 }
 
 // TODO / note far jumps, calls and returns are not supported (yet)
-instr_encode_table_t ret[] = {
+static instr_encode_table_t ret[] = {
     {OP_ZO, NULL, {0xC3}, MODE_SUPPORT_ALL, {0xC3}, 1, &pre_default},
     {OP_I, NULL, {0xC2}, MODE_SUPPORT_ALL, {0xC2}, 1, &pre_ret},
     INSTR_TERMINATOR,
 };
 
-instr_encode_table_t cmp[] = {INSTR_GENERAL(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)};
+static instr_encode_table_t cmp[] = {INSTR_GENERAL(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)};
 
-instr_encode_table_t push[] = {{}};
-instr_encode_table_t pop[] = {{}};
+static instr_encode_table_t push[] = {{}};
+static instr_encode_table_t pop[] = {{}};
 
-instr_encode_table_t in[] = {{}};
-instr_encode_table_t out[] = {{}};
+static instr_encode_table_t in[] = {{}};
+static instr_encode_table_t out[] = {{}};
 
-instr_encode_table_t clc[] = {{OP_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {0xF8}, 1, &pre_default}, INSTR_TERMINATOR};
-instr_encode_table_t stc[] = {{OP_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {0xF9}, 1, &pre_default}, INSTR_TERMINATOR};
-instr_encode_table_t cli[] = {{OP_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {0xFA}, 1, &pre_default}, INSTR_TERMINATOR};
-instr_encode_table_t sti[] = {{OP_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {0xFB}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t clc[] = {{OP_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {0xF8}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t stc[] = {{OP_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {0xF9}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t cli[] = {{OP_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {0xFA}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t sti[] = {{OP_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {0xFB}, 1, &pre_default}, INSTR_TERMINATOR};
 
-instr_encode_table_t nop[] = {{OP_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {0x90}, 1, &pre_default}, INSTR_TERMINATOR};
-instr_encode_table_t hlt[] = {{OP_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t nop[] = {{OP_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {0x90}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t hlt[] = {{OP_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, &pre_default}, INSTR_TERMINATOR};
 
 static void pre_int(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) != 8)
     err("Invalid operand size for INT instruction.");
 }
 
-instr_encode_table_t _int[] = {{OP_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {0xCD}, 1, &pre_int}, INSTR_TERMINATOR};
-instr_encode_table_t syscall[] = {{OP_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {0x00, 0x00}, 2, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t _int[] = {{OP_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {0xCD}, 1, &pre_int}, INSTR_TERMINATOR};
+static instr_encode_table_t syscall[] = {{OP_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {0x00, 0x00}, 2, &pre_default}, INSTR_TERMINATOR};
 
 // clang-format off
 
-instr_encode_table_t *instr_table[] =
+static instr_encode_table_t *instr_table[] =
     {
         mov, lea, add, sub, mul, div, and, or, xor, _not, inc,
         dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
