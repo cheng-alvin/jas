@@ -1,9 +1,5 @@
-#include "codegen.h"
-#include "error.h"
-#include "instruction.h"
+#include "jas.h"
 #include "test.h"
-
-#include "label.h"
 
 void error_callback(const char *msg) {
   printf("%s\n", msg);
