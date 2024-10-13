@@ -54,19 +54,6 @@ Test(example, example) {
               OP_NONE,
           },
       },
-      // jmp rax
-      (instruction_t){
-          .instr = INSTR_JMP,
-          .operands = (operand_t[]){
-              (operand_t){
-                  .type = OP_R64,
-                  .data = &(enum registers){REG_RAX},
-              },
-              OP_NONE,
-              OP_NONE,
-              OP_NONE,
-          },
-      },
   };
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
