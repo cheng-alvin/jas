@@ -2,7 +2,7 @@
 #include "test.h"
 
 Test(label, create) {
-  label_create("label", false, false, 0xFFFF, NULL);
+  label_create("label", false, false, 0xFFFF, 0);
 
   assert_str_eq(
       label_table[0].name, "label",
