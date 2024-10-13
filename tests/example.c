@@ -59,8 +59,8 @@ Test(example, example) {
           .instr = INSTR_JMP,
           .operands = (operand_t[]){
               (operand_t){
-                  .type = OP_REL8,
-                  .data = &(char[]){"label"},
+                  .type = OP_R64,
+                  .data = &(enum registers){REG_RAX},
               },
               OP_NONE,
               OP_NONE,
