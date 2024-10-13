@@ -19,7 +19,7 @@ Jas is a minimal, fast and simple zero-dependdency assembler for the x64 family 
 ### 🏗️ Basic usage
 
 ```c
-#include <codegen.h>
+#include <jas.h>
 
 int main(void) {
   instruction_t instr[] = (instruction_t[]) {
