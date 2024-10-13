@@ -39,8 +39,16 @@
 #include <stddef.h>
 
 static void pre_default(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  if (op_sizeof(op_arr[0].type) != op_sizeof(op_arr[1].type))
-    err("Invalid operand sizes.");
+  const uint8_t ref = op_sizeof(op_arr[0].type);
+
+  for (uint8_t i = 0; i < 4; i++) {
+    if (op_arr[i].type == OP_NULL) continue;
+
+    if (op_sizeof(op_arr[i].type) != ref) {
+      err("Invalid operand sizes.");
+      break;
+    }
+  }
 }
 
 static void pre_imm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
