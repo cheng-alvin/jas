@@ -30,6 +30,7 @@
 #include "m.h"
 #include "mi.h"
 #include "mr.h"
+#include "o.h"
 #include "oi.h"
 #include "operand.h"
 #include "rm.h"
@@ -158,6 +159,6 @@ instr_encode_table_t *instr_table[] =
 // clang-format on
 
 instr_encoder_t instr_encode_func(enum op_ident input) {
-  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m, &zo, &d};
+  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m, &zo, &d, &o};
   return lookup[(size_t)input];
 }
