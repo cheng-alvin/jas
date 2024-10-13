@@ -31,7 +31,7 @@
 #include "register.h"
 #include <stdlib.h>
 
-void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const uint8_t reg = reg_lookup_val(op_arr[0].data);
 
   const buffer_t prefixes = op_write_prefix(op_arr, mode);
