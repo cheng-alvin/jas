@@ -54,7 +54,7 @@ Test(example, example) {
               OP_NONE,
           },
       },
-      // jmp label
+      // jmp rax
       (instruction_t){
           .instr = INSTR_JMP,
           .operands = (operand_t[]){
@@ -67,9 +67,6 @@ Test(example, example) {
               OP_NONE,
           },
       },
-
-      // label:
-      (instruction_t){.instr = (enum instructions)NULL, .operands = NULL},
   };
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
