@@ -25,6 +25,7 @@
 
 #include "o.h"
 #include "endian.h"
+#include "error.h"
 #include "instruction.h"
 #include "operand.h"
 #include "register.h"
