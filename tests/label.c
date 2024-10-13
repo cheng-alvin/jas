@@ -16,7 +16,7 @@ Test(label, create) {
 }
 
 Test(label, lookup) {
-  label_create("label", false, false, 0xFFFF, NULL);
+  label_create("label", false, false, 0xFFFF, 0);
   label_t *label = label_lookup("label");
 
   assert_str_eq(
