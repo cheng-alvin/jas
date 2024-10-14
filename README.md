@@ -22,7 +22,6 @@
 
 int main(void) {
   instruction_t instr[] = (instruction_t[]) {
-      // mov rax, 60
       (instruction_t){
           .instr = INSTR_MOV,
           .operands = (operand_t[]){
@@ -32,7 +31,7 @@ int main(void) {
               },
               (operand_t){
                   .type = OP_IMM64,
-                  .data = &(uint64_t){60},
+                  .data = &(uint64_t){0},
               },
               OP_NONE,
               OP_NONE,
@@ -49,7 +48,7 @@ int main(void) {
 }
 ```
 
-Yeah! that's it! Seriously! It's that simple, this little snippet of code generates and encodes a  `mov rax, 60` instruction.
+Yeah! that's it! Seriously! It's that simple, this little snippet of code generates and encodes a  `mov rax, 0` instruction.
 
 > Also remember to install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases) or build it from source with following the instructions [here](https://github.com/cheng-alvin/jas/blob/dev/CONTRIBUTING.md)
 
