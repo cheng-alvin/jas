@@ -14,10 +14,9 @@
 |⚠️ | Jas is under development and is **NOT STABLE** for use. Please make sure it's NOT used for production purposes!! **NO WARRANTY WILL BE PROVIDED AS PER THE LICENSE**|
 | -------- | ------- |
 
-Jas is a minimal, fast and simple zero-dependdency assembler for the x64 family of processors, jas not only aims to be fast and simple when using it but also aims to be a learning reasource for others to learn about low-level system programming and the x64 instruction set.
+<p align="center" padding="10px"> Jas is a minimal, fast and simple zero-dependdency assembler for the x64 family of processors, jas not only aims to be fast and simple when using it but also aims to be a learning reasource for others to learn about low-level system programming and the x64 instruction set. Useful for implementing into compilers, operating systems and JIT interpreters and other types of utilites that need compilation to ELF or just a plain enocded buffer. </p>
 
-### 🏗️ Basic usage
-
+### ⚡Quick start
 ```c
 #include <jas.h>
 
@@ -48,7 +47,9 @@ int main(void) {
 }
 ```
 
-Yeah! that's it! Seriously! Also remember to install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases) or build it from source with following the instructions [here](https://github.com/cheng-alvin/jas/blob/dev/CONTRIBUTING.md)
+Yeah! that's it! Seriously! It's that simple, this little snippet of code generates and encodes a  `mov rax, 60` instruction.
+
+> Also remember to install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases) or build it from source with following the instructions [here](https://github.com/cheng-alvin/jas/blob/dev/CONTRIBUTING.md)
 
 ### 📝 Licensing 
 All the code under the Jas assembler project repository is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License) which is a popular open-source license for projects like this! Please see [LICENSE](https://github.com/cheng-alvin/jas/blob/main/LICENSE) for the details.
