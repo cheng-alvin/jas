@@ -17,6 +17,7 @@
 <p align="center" padding="10px"> Jas is a minimal, fast and simple zero-dependdency assembler for the x64 family of processors, jas not only aims to be fast and simple when using it but also aims to be a learning reasource for others to learn about low-level system programming and the x64 instruction set. Useful for implementing into compilers, operating systems and JIT interpreters and other types of utilites that need compilation to ELF or just a plain enocded buffer. </p>
 
 ### ⚡Quick start
+Jas takes instructions in an array in a struct form defined in [instruction.h]https://github.com/cheng-alvin/jas/blob/0faa905be7cb1238796af46552b3271a11b4e2dd/libjas/instruction.h#L110-L113) 
 ```c
 #include <jas.h>
 
