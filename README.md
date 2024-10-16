@@ -51,6 +51,8 @@ int main(void) {
 
 Yeah! that's it! Seriously! It's that simple, this little snippet of code generates and encodes a  `mov rax, 0` instruction.
 
+> Since the returned buffer is in the form of a dynamically allocated pointer, care must be taken to `free` and manage the block of memory.
+
 ### 📝 Licensing 
 All the code under the Jas assembler project repository is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License) which is a popular open-source license for projects like this! Please see [LICENSE](https://github.com/cheng-alvin/jas/blob/main/LICENSE) for the details.
 
