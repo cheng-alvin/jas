@@ -40,7 +40,7 @@ int main(void) {
       },
   };
 
-  buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr));
+  buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr), CODEGEN_RAW);
 
   /* Do something to `buf` */
 
