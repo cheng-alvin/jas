@@ -49,7 +49,7 @@ void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
 
   // Calculate the relative offset of the label
 
-  label_t *label = label_lookup((char *)op_arr[0].data);
+  label_t *label = label_lookup((char *)op_arr[0].label);
   if (!label) {
     err("Referenced label was not found.");
     return;
