@@ -53,6 +53,6 @@ enum codegen_modes {
  * @see `instruction.h`
  * @see `codegen_modes`
  */
-buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_mode exec_mode);
+buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode);
 
 #endif
