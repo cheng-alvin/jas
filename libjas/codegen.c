@@ -57,7 +57,6 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
     }
 
     instruction_t current = instr_arr[i];
-
     const enum operands operand_list[4] = {
         current.operands[0].type,
         current.operands[1].type,
@@ -66,8 +65,8 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
     };
 
     enum op_ident ident = op_ident_identify(operand_list);
-    instr_encode_table_t ref;
 
+    instr_encode_table_t ref;
     unsigned int j = 0;
     while (CURR_TABLE.opcode_size != NULL) {
       if (CURR_TABLE.ident == ident) {
@@ -78,14 +77,12 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
     }
 
     if (ref.opcode_size == NULL) {
-      err("Instruction opcode not found. (Suggests an invalid instruction)");
+      err("No corrsponding instruction opcode found.");
       free(buf.data);
       return BUF_NULL;
     }
 
-    if (ref.pre != NULL)
-      ref.pre(current.operands, &buf, &ref, (enum modes)mode);
-
+    if (ref.pre != NULL) ref.pre(current.operands, &buf, &ref, (enum modes)mode);
     instr_encode_func(ident)(current.operands, &buf, &ref, (enum modes)mode);
   }
 
