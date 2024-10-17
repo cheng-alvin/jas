@@ -31,6 +31,11 @@
 #include "mode.h"
 #include <stddef.h>
 
+enum codegen_modes {
+  CODEGEN_RAW,
+  CODEGEN_ELF,
+};
+
 /**
  * Codegen function that generates the machine code from the
  * instruction array. Basically a wrapper for a bunch of lib-
