@@ -44,12 +44,15 @@ enum codegen_modes {
  * @param mode The mode to generate the machine code in
  * @param instr_arr The instruction array to generate the code from
  * @param arr_size The size of the instruction array (in bytes)
+ * @param exec_mode The output mode of the codegen function
+ * (i.e raw code or elf)
  *
  * @return The buffer struct containing the machine code
  *
  * @see `buffer.h`
  * @see `instruction.h`
+ * @see `codegen_modes`
  */
-buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size);
+buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_mode exec_mode);
 
 #endif
