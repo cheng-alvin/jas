@@ -36,9 +36,19 @@
 #define CURR_TABLE instr_table[instr_arr[i].instr][j]
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre); // TODO Fix the stupid hack
-buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
+
+buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
   assemble(mode, instr_arr, arr_size, true);
-  return assemble(mode, instr_arr, arr_size, false);
+  const buffer_t out = assemble(mode, instr_arr, arr_size, false);
+
+  if (exec_mode == CODEGEN_RAW) return out;
+  if (mode != MODE_LONG) {
+    err("Only 64-bit ELF formats supported for object code generation.");
+    free(out.data);
+    return BUF_NULL;
+  }
+
+  /* Generate ELF */
 }
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre) {
