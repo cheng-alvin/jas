@@ -140,7 +140,7 @@ typedef struct {
   void *data;         /* Data in the operand */
   enum operands type; /* Type tied to the void pointer*/
   uint32_t offset;    /* The offset applied to the data (if applicable) */
-  char* label;        /* The name of a referenced label (if applicable) */ 
+  char *label;        /* The name of a referenced label (if applicable) */
 } operand_t;
 
 /**
