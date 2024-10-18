@@ -106,6 +106,10 @@ enum registers {
   REG_BPL,
   REG_SIL,
   REG_DIL,
+
+  REG_IP,
+  REG_EIP,
+  REG_RIP,
 };
 
 /**
@@ -194,6 +198,11 @@ enum registers {
 #define REG_VALUE_BPL 5
 #define REG_VALUE_SIL 6
 #define REG_VALUE_DIL 7
+
+// Misc and instruction pointer registers:
+#define REG_VALUE_IP 5
+#define REG_VALUE_EIP 5
+#define REG_VALUE_RIP 5
 
 /**
  * Lookup table wrapper for finding register values from a single
