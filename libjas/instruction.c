@@ -24,7 +24,6 @@
  */
 
 #include "instruction.h"
-#include "encoder.h"
 #include "error.h"
 #include "operand.h"
 #include <stdbool.h>
