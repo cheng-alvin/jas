@@ -118,24 +118,6 @@ enum operands {
 
 #define op_rm(x) (op_r(x) || op_m(x))
 
-/**
- * Enumeration for the different operand identifiers.
- * Used to lookup the operand encoder functions.
- *
- * ? Why is this not moved over to `instruction.h`?!?!?!
- */
-enum op_ident {
-  OP_MR,
-  OP_RM,
-  OP_OI,
-  OP_MI,
-  OP_I,
-  OP_M,
-  OP_ZO,
-  OP_D,
-  OP_O,
-};
-
 typedef struct {
   void *data;         /* Data in the operand */
   enum operands type; /* Type tied to the void pointer*/
