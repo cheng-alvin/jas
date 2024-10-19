@@ -26,7 +26,9 @@
 #ifndef OPERAND_HPP
 #define OPERAND_HPP
 
-#include <stdint.h>
+#include <cstdint>
+
+using namespace std;
 
 /**
  * Type wrapper for an unsigned char that represents the
