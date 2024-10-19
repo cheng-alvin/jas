@@ -33,6 +33,19 @@
 #include "register.h"
 #include <stdlib.h>
 
+static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
+  const uint8_t rel_sz = op_sizeof(op_arr[index].type) / 8;
+
+  label_t *label = label_lookup((char *)op_arr[index].label);
+  if (!label) {
+    err("Referenced label was not found.");
+    return;
+  }
+
+  ptrdiff_t rel_offset = label->address - (buf->len + rel_sz - 1);
+  buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
+}
+
 void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   /**
    * @brief This opcode identity should:
@@ -53,18 +66,11 @@ void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
 
   // Calculate the relative offset of the label
-
-  label_t *label = label_lookup((char *)op_arr[0].label);
-  if (!label) {
-    err("Referenced label was not found.");
-    return;
-  }
-
-  ptrdiff_t rel_offset = label->address - (buf->len + rel_sz - 1);
-  buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
+  ref_label(op_arr, buf, 0);
 }
 
 void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  //  Error checking - A register only & only 8, 16, 32 bit-sized operands
   if (reg_lookup_val(op_arr[0].data) != 0 && !reg_needs_rex(op_arr[0].data)) {
     err("Instruction identity must use an \"A\" register!");
     return;
@@ -75,10 +81,11 @@ void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
     return;
   }
 
+  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
+
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
   uint8_t *imm = (uint8_t *)op_arr[1].data;
 
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
   buf_write(buf, imm, imm_size);
 }
 
