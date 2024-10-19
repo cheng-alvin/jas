@@ -24,9 +24,12 @@
  */
 
 #include "encoder.h"
+#include "buffer.h"
 #include "endian.h"
 #include "error.h"
+#include "instruction.h"
 #include "label.h"
+#include "mode.h"
 #include "register.h"
 #include <stdlib.h>
 

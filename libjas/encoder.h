@@ -26,9 +26,6 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-#include "instruction.h"
-#include "mode.h"
-#include "operand.h"
 #include <stddef.h>
 
 /* !!! Please note - some components are yet to be migrated here !!! */
@@ -51,28 +48,5 @@ enum enc_ident {
   OP_D,
   OP_O,
 };
-
-/**
- * @brief
- * The encoder function signature for the different operand
- * identifiers. The encoder functions are used to encode the
- * operands into machine code while incorporating the opcodes
- * and all other necessary information based off lookup tables
- * from `instruction.h` and the corresponding `instruction.c`.
- */
-
-void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-
-void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-
-void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-
-void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-
-void zo(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 
 #endif
