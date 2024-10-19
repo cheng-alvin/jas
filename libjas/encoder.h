@@ -40,7 +40,7 @@
  * @note See identities and their corresponding encoder
  * methods in the main source file - `encoder.c`.
  */
-enum op_ident {
+enum enc_ident {
   OP_MR,
   OP_RM,
   OP_OI,

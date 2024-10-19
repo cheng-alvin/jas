@@ -92,7 +92,7 @@ enum instructions {
 typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 
 struct instr_encode_table {
-  enum op_ident ident;          /* Operand encoding identity */
+  enum enc_ident ident;         /* Operand encoding identity */
   uint8_t opcode_ext;           /* Opcode extension */
   uint8_t opcode[3];            /* Opcode of the instruction */
   mode_support_t support;       /* Support status of the instruction (Optional, Would be set to "all" if not used) */
@@ -118,7 +118,7 @@ typedef struct {
  * @param input The instruction encoding identity
  * @return The instruction encoder function pointer
  */
-instr_encoder_t instr_encode_func(enum op_ident input);
+instr_encoder_t instr_encode_func(enum enc_ident input);
 
 #define INSTR_TERMINATOR         \
   (instr_encode_table_t) {       \

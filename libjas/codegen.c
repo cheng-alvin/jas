@@ -74,7 +74,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
         current.operands[3].type,
     };
 
-    enum op_ident ident = op_ident_identify(operand_list);
+    enum enc_ident ident = op_ident_identify(operand_list);
 
     instr_encode_table_t ref;
     unsigned int j = 0;

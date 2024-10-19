@@ -47,7 +47,7 @@ static op_ident_hash_t op_hash(enum operands input) {
 }
 
 namespace op {
-  static std::unordered_map<uint32_t, enum op_ident> lookup = {
+  static std::unordered_map<uint32_t, enum enc_ident> lookup = {
       {__combine__(OP_HASH_R, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE), OP_MR},
       {__combine__(OP_HASH_M, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE), OP_MR},
 
@@ -66,7 +66,7 @@ namespace op {
       {__combine__(OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), OP_M},
   };
 }
-extern "C" enum op_ident op_ident_identify(enum operands *input) {
+extern "C" enum enc_ident op_ident_identify(enum operands *input) {
   op_ident_hash_t hash[4];
 
   for (auto i = 0; i < 4; i++)
@@ -79,12 +79,12 @@ extern "C" enum op_ident op_ident_identify(enum operands *input) {
 
   if (op::lookup.find(hash_key) == op::lookup.end()) {
     err("Operand identifier not found.");
-    return (enum op_ident)0;
+    return (enum enc_ident)0;
   }
 
   // TODO HARD-CODED at the moment
   if (hash_key == __combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE))
     if (input[1] == OP_IMM64) return OP_OI;
 
-  return (enum op_ident)op::lookup[hash_key];
+  return (enum enc_ident)op::lookup[hash_key];
 }

@@ -144,7 +144,7 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode);
  * @param input The input operand list
  * @return The operand identity enumeration
  */
-enum op_ident op_ident_identify(enum operands *input);
+enum enc_ident op_ident_identify(enum operands *input);
 
 /**
  * Simple function for determining the ModR/M mode based on the
