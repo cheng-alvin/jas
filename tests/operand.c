@@ -1,5 +1,6 @@
 #include "operand.h"
 #include "buffer.h"
+#include "encoder.h"
 #include "rex.h"
 #include "test.h"
 

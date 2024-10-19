@@ -24,6 +24,7 @@
  */
 
 #include "operand.h"
+#include "encoder.h"
 #include "error.h"
 #include "operand.hpp"
 #include <cstddef>
