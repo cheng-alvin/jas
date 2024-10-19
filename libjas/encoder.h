@@ -31,6 +31,36 @@
 #include "operand.h"
 #include <stddef.h>
 
+/* !!! Please note - some components are yet to be migrated here !!! */
+
+/**
+ * Enumeration for the different operand identifiers.
+ * Used to lookup the operand encoder functions.
+ *
+ * @note See identities and their corresponding encoder
+ * methods in the main source file - `encoder.c`.
+ */
+enum op_ident {
+  OP_MR,
+  OP_RM,
+  OP_OI,
+  OP_MI,
+  OP_I,
+  OP_M,
+  OP_ZO,
+  OP_D,
+  OP_O,
+};
+
+/**
+ * @brief
+ * The encoder function signature for the different operand
+ * identifiers. The encoder functions are used to encode the
+ * operands into machine code while incorporating the opcodes
+ * and all other necessary information based off lookup tables
+ * from `instruction.h` and the corresponding `instruction.c`.
+ */
+
 void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
