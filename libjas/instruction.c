@@ -24,17 +24,9 @@
  */
 
 #include "instruction.h"
-#include "d.h"
+#include "encoder.h"
 #include "error.h"
-#include "i.h"
-#include "m.h"
-#include "mi.h"
-#include "mr.h"
-#include "o.h"
-#include "oi.h"
 #include "operand.h"
-#include "rm.h"
-#include "zo.h"
 #include <stdbool.h>
 #include <stddef.h>
 

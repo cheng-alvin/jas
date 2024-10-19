@@ -23,31 +23,22 @@
  * @see `LICENSE`
  */
 
-#include "mr.h"
-#include "buffer.h"
-#include "endian.h"
-#include "error.h"
+#ifndef ENCODER_H
+#define ENCODER_H
+
+#include "instruction.h"
 #include "mode.h"
 #include "operand.h"
-#include "register.h"
-#include "rex.h"
-#include <stdint.h>
-#include <stdlib.h>
+#include <stddef.h>
 
-void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  const uint8_t reg = reg_lookup_val(op_arr[1].data);
-  const uint8_t rm = reg_lookup_val(op_arr[0].data);
+void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+void zo(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 
-  const buffer_t prefixes = op_write_prefix(op_arr, mode);
-  buf_write(buf, prefixes.data, prefixes.len);
-  free(prefixes.data);
-
-  check_mode(mode, instr_ref->support);
-
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
-
-  buf_write_byte(buf, op_modrm_mode(op_arr[0]) | reg << 3 | rm);
-
-  if (op_arr[0].offset != 0)
-    buf_write(buf, (uint8_t *)&op_arr[0].offset, 4);
-}
+#endif
