@@ -28,7 +28,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-buffer_t exe_header(size_t entry, size_t sect_start, uint16_t sect_count, uint16_t sect_count_str) {
+buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_str) {
   buffer_t ret = BUF_NULL;
   size_t long_pad = 0;
   int int_pad = 0;
@@ -56,7 +56,7 @@ buffer_t exe_header(size_t entry, size_t sect_start, uint16_t sect_count, uint16
 
   buf_write(&ret, endian(&(uint8_t *){0x00, 0x00, 0x00, 0x01}, 4), 4); // ELF version
 
-  buf_write(&ret, (uint8_t *)&entry, 8);      // Entry point
+  buf_write(&ret, (uint8_t *)&long_pad, 8);   // Entry point
   buf_write(&ret, (uint8_t *)&long_pad, 8);   // Program header table offset
   buf_write(&ret, (uint8_t *)&sect_start, 8); // Section header table offset
 
