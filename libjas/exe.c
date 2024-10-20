@@ -28,6 +28,20 @@
 #include <stddef.h>
 #include <stdint.h>
 
+/**
+ * @brief File with functions for generating the parts of the
+ * ELF executable file format. Jas is only implementing x64
+ * linux ELF files, which will be implemented in the following
+ * order:
+ *
+ * - ELF header
+ * - Section headers
+ * - String table
+ * - Text section
+ * - Symbol table
+ * - Relocation table
+ */
+
 buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_str) {
   buffer_t ret = BUF_NULL;
   size_t long_pad = 0;
