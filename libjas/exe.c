@@ -46,11 +46,11 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
   buf_write_byte(&ret, 1);    // Endian-ness
   buf_write_byte(&ret, 1);    // ELF version
   buf_write_byte(&ret, 0x03); // Target ABI
-  buf_write_byte(&ret, 0);    // ABI version - Not used
+  buf_write_byte(&ret, 0);    // ABI version
 
   buf_write(&ret, &(uint8_t *){0, 0, 0, 0, 0, 0, 0}, 7); // Padding
 
-  const uint8_t type[] = endian(&(uint8_t *){0x00, 0x03}, 2);
+  const uint8_t type[] = endian(&(uint8_t *){0x00, 0x01}, 2);
   buf_write(&ret, type, sizeof(type)); // Executable type type
   buf_write(&ret, type, sizeof(type)); // Machine ISA
 
