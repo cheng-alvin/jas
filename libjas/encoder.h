@@ -26,8 +26,6 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-#include <stddef.h>
-
 /* !!! Please note - some components are yet to be migrated here !!! */
 
 /**
