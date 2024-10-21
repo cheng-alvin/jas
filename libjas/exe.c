@@ -96,3 +96,9 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
 
   return ret;
 }
+
+// buffer_t exe_sect_header(uint32_t str_offset){
+// buf_write((uint8_t*)&str_offset, 4); // String table name offset
+// buf_write()
+// }
+
