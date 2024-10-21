@@ -25,6 +25,7 @@
 
 #include "buffer.h"
 #include "endian.h"
+#include <stdlib.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -62,20 +63,22 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
   buf_write_byte(&ret, 0x03); // Target ABI
   buf_write_byte(&ret, 0);    // ABI version
 
-  buf_write(&ret, &(uint8_t *){0, 0, 0, 0, 0, 0, 0}, 7); // Padding
+  buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0}, 7); // Padding - 7 byte
 
-  const uint8_t type[] = endian(&(uint8_t *){0x00, 0x01}, 2);
+  const uint8_t* type = endian((uint8_t[]){0x00, 0x01}, 2);
   buf_write(&ret, type, sizeof(type)); // Executable type type
   buf_write(&ret, type, sizeof(type)); // Machine ISA
 
-  buf_write(&ret, endian(&(uint8_t *){0x00, 0x00, 0x00, 0x01}, 4), 4); // ELF version
+  free((void*)type);
+
+  buf_write(&ret, endian((uint8_t[]){0x00, 0x00, 0x00, 0x01}, 4), 4); // ELF version
 
   buf_write(&ret, (uint8_t *)&long_pad, 8);   // Entry point
   buf_write(&ret, (uint8_t *)&long_pad, 8);   // Program header table offset
   buf_write(&ret, (uint8_t *)&sect_start, 8); // Section header table offset
 
-  buf_write(&ret, (uint8_t *)&int_pad, 4);                 // Flags - Not used
-  buf_write(&ret, endian(&(uint8_t *){0x40, 0x40}, 2), 2); // ELF header size
+  buf_write(&ret, (uint8_t *)&int_pad, 4);                // Flags - Not used
+  buf_write(&ret, endian((uint8_t[]){0x40, 0x40}, 2), 2); // ELF header size
 
   /**
    * @note The program header table is not used in this implementation of the ELF
@@ -85,9 +88,10 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
 
   buf_write(&ret, (uint8_t *)&int_pad, 4); // Program header table entry size and count - Combined not used
 
-  buf_write(&ret, endian(&(uint8_t *){0x00, 0x40}, 2), 2); // Section header table entry size
-  buf_write(&ret, (uint8_t *)&sect_count, 2);              // Section header table count
-  buf_write(&ret, (uint8_t *)&sect_count_str, 2);          // Section header table string table index
+  //! Note: In small endian form, HARD CODED at this time
+  buf_write(&ret, (uint8_t []){0x40, 0x00}, 2); // Section header table entry size
+  buf_write(&ret, (uint8_t *)&sect_count, 2);       // Section header table count
+  buf_write(&ret, (uint8_t *)&sect_count_str, 2);   // Section header table string table index
 
   return ret;
 }
