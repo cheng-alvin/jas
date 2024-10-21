@@ -20,6 +20,8 @@
 First of all, install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases) or build it from source with following the instructions [here](https://github.com/cheng-alvin/jas/blob/dev/CONTRIBUTING.md) Jas takes instructions in an array in a struct form defined in [instruction.h](https://github.com/cheng-alvin/jas/blob/0faa905be7cb1238796af46552b3271a11b4e2dd/libjas/instruction.h) and passes it to a `codegen()` function which generates the the actual buffer of an array of `uint8_t` for you to process.
 ```c
 #include <jas.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 int main(void) {
   instruction_t instr[] = (instruction_t[]) {
