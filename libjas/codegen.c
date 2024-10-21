@@ -56,7 +56,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
   buffer_t buf = BUF_NULL;
 
   for (size_t i = 0; i < arr_size; i++) {
-    if (instr_arr[i].instr == NULL && instr_arr[i].operands == NULL) {
+    if (instr_arr[i].instr == (enum instructions)NULL && instr_arr[i].operands == NULL) {
       if (!pre) continue;
       for (size_t k = 0; k < label_table_size; k++) {
         if (label_table[k].instr_index == i)
