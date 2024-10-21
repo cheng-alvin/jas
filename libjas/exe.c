@@ -35,11 +35,12 @@
  * linux ELF files, which will be implemented in the following
  * order:
  *
- * - ELF header
+ * - ELF header - ✅
  * - Section headers
  * - String table
  * - Text section
  * - Symbol table
+ *
  * - Relocation table
  */
 
