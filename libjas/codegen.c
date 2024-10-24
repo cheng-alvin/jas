@@ -24,13 +24,9 @@
  */
 
 #include "codegen.h"
-#include "buffer.h"
 #include "error.h"
-#include "instruction.h"
 #include "label.h"
-#include "mode.h"
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdlib.h>
 
 #define CURR_TABLE instr_table[instr_arr[i].instr][j]
