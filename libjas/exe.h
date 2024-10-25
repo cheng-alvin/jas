@@ -29,9 +29,8 @@
 
 /**
  * Function for generating the ELF header, targeted only towards x64
- * 64-bit ELF relocatable executables. This function is used to
- * generate only the header of the file and subsequently section
- * headers and tables can be found below.
+ * 64-bit ELF relocatable executables. Generates only the header of
+ * the file and subsequent stuff can be found below.
  *
  * @param sect_start The starting address of the section
  * @param sect_count The number of sections in the ELF file
