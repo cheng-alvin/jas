@@ -34,7 +34,7 @@
  *
  * @param sect_start The starting address of the section
  * @param sect_count The number of sections in the ELF file
- * @param sect_count_str The number of sections in the string table
+ * @param sect_count_str The index of the string table section
  *
  * @return The buffer containing the ELF header
  */
