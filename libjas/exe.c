@@ -36,7 +36,7 @@
  * order:
  *
  * - ELF header - ✅
- * - Section headers
+ * - Section headers - ✅
  * - String table
  * - Text section
  * - Symbol table
