@@ -23,11 +23,9 @@
  * @see `LICENSE`
  */
 
-#include "buffer.h"
 #include "endian.h"
-#include <stddef.h>
-#include <stdint.h>
 #include <stdlib.h>
+#include "exe.h"
 
 /**
  * @brief File with functions for generating the parts of the
