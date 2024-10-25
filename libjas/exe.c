@@ -89,7 +89,6 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
 
   buf_write(&ret, (uint8_t *)&int_pad, 4); // Program header table entry size and count - Combined not used
 
-  //! Note: In small endian form, HARD CODED at this time
   buf_write(&ret, (uint8_t[]){0x40, 0x00}, 2);    // Section header table entry size
   buf_write(&ret, (uint8_t *)&sect_count, 2);     // Section header table count
   buf_write(&ret, (uint8_t *)&sect_count_str, 2); // Section header table string table index
@@ -97,8 +96,24 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
   return ret;
 }
 
-// buffer_t exe_sect_header(uint32_t str_offset){
-// buf_write((uint8_t*)&str_offset, 4); // String table name offset
-// buf_write()
-// }
+buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uint64_t off, uint64_t sect_sz) {
+  buffer_t ret = BUF_NULL;
+  buf_write(&ret, (uint8_t *)&str_offset, 4); // String table name offset
+  buf_write(&ret, (uint8_t *)&type, 4);       // Section type
+  buf_write(&ret, (uint8_t *)&flags, 8);      // Section flags
 
+  buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0, 0}, 8); // Section address
+
+  buf_write(&ret, (uint8_t *)&off, 8);     // Section file offset
+  buf_write(&ret, (uint8_t *)&sect_sz, 8); // Section size
+
+  int int_pad = 0;
+
+  // Unused fields:
+  buf_write(&ret, (uint8_t *)&int_pad, 4);                 // Section link
+  buf_write(&ret, (uint8_t *)&int_pad, 4);                 // Section info
+  buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0, 0}, 8); // Section address alignment
+  buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0, 0}, 8); // Section entry size
+
+  return ret;
+}
