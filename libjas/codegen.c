@@ -25,6 +25,7 @@
 
 #include "codegen.h"
 #include "error.h"
+#include "exe.h"
 #include "label.h"
 #include <stdbool.h>
 #include <stdlib.h>
@@ -35,7 +36,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
   assemble(mode, instr_arr, arr_size, true);
-  const buffer_t out = assemble(mode, instr_arr, arr_size, false);
+  buffer_t out = assemble(mode, instr_arr, arr_size, false);
 
   if (exec_mode == CODEGEN_RAW) return out;
   if (mode != MODE_LONG) {
@@ -44,7 +45,10 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
     return BUF_NULL;
   }
 
-  /* Generate ELF */
+  buffer_t header = exe_header(0x40, 3, 0);
+  // buffer_t code_sect = exe_sect_header(0, )
+
+  return out;
 }
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre) {
