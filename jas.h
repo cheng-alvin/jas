@@ -47,14 +47,14 @@ namespace jas {
   extern "C" {
 #endif
 
-#include "buffer.h"
-#include "codegen.h"
-#include "error.h"
-#include "instruction.h"
-#include "label.h"
-#include "mode.h"
-#include "operand.h"
-#include "register.h"
+#include "libjas/buffer.h"
+#include "libjas/codegen.h"
+#include "libjas/error.h"
+#include "libjas/instruction.h"
+#include "libjas/label.h"
+#include "libjas/mode.h"
+#include "libjas/operand.h"
+#include "libjas/register.h"
 
 #ifdef __cplusplus
   }
