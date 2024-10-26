@@ -64,9 +64,9 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
    */
 
   buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, 5 * 0x40, sizeof(shstrtab));
-  buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0, 5 * 0x40 + sizeof(shstrtab), sizeof(strtab));
-  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0, 5 * 0x40 + sizeof(shstrtab) + sizeof(strtab), 0); /* TODO generate symbol table */
-  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0, 5 * 0x40 + sizeof(shstrtab) + sizeof(strtab) /* + Symbol table size */, out.len);
+  buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, 5 * 0x40 + sizeof(shstrtab), sizeof(strtab));
+  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, 5 * 0x40 + sizeof(shstrtab) + sizeof(strtab), 0); /* TODO generate symbol table */
+  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x6, 5 * 0x40 + sizeof(shstrtab) + sizeof(strtab) /* + Symbol table size */, out.len);
 
   return out;
 }
