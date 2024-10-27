@@ -77,7 +77,7 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
   buf_write(&ret, (uint8_t *)&sect_start, 8); // Section header table offset
 
   buf_write(&ret, (uint8_t *)&int_pad, 4);                // Flags - Not used
-  buf_write(&ret, endian((uint8_t[]){0x40, 0x40}, 2), 2); // ELF header size
+  buf_write(&ret, endian((uint8_t[]){0x00, 0x40}, 2), 2); // ELF header size
 
   /**
    * @note The program header table is not used in this implementation of the ELF
