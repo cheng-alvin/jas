@@ -68,7 +68,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
    * file offset of the section header table. as we need some space for the data
    * itself for the section.
    */
-  const int base = 5 * 0x40;
+  const int base = 4 * 0x40;
 
   char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
   buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, base, sizeof(shstrtab));
