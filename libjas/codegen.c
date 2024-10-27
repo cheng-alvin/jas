@@ -68,8 +68,8 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
   buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, base, sizeof(shstrtab));
 
-  buffer_t symtab = BUF_NULL;
   buffer_t strtab = BUF_NULL;
+  buffer_t symtab = BUF_NULL;
 
   buf_write_byte(&strtab, 0);
   for (size_t i = 0; i < label_table_size; i++) {
@@ -97,6 +97,11 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   free(strtab_sect_head.data);
   free(symtab_sect_head.data);
   free(text_sect_head.data);
+
+  buf_concat(&out, 3, &shstrtab, &strtab, &symtab);
+
+  free(strtab.data);
+  free(symtab.data);
 
   return out;
 }
