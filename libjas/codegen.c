@@ -36,7 +36,7 @@
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre); // TODO Fix the stupid hack
 
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
-  assemble(mode, instr_arr, arr_size, true);
+  free(assemble(mode, instr_arr, arr_size, true).data);
   buffer_t out = assemble(mode, instr_arr, arr_size, false);
 
   if (exec_mode == CODEGEN_RAW) return out;
@@ -47,6 +47,9 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   }
 
   buffer_t header = exe_header(0x40, 4, 0);
+  buf_concat(&out, 1, &header);
+
+  free(header.data);
 
   /**
    * @note
@@ -88,7 +91,13 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, base + sizeof(shstrtab) + strtab.len, strtab.len);
   buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x6, base + sizeof(shstrtab) + strtab.len + symtab.len, out.len);
 
-  buf_concat(&out, 4, &header, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
+  buf_concat(&out, 3, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
+
+  free(shstrtab_sect_head.data);
+  free(strtab_sect_head.data);
+  free(symtab_sect_head.data);
+  free(text_sect_head.data);
+
   return out;
 }
 
