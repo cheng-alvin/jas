@@ -35,15 +35,15 @@
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre); // TODO Fix the stupid hack
 
-buffer_t *codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
+buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
   assemble(mode, instr_arr, arr_size, true);
   buffer_t out = assemble(mode, instr_arr, arr_size, false);
 
-  if (exec_mode == CODEGEN_RAW) return &out;
+  if (exec_mode == CODEGEN_RAW) return out;
   if (mode != MODE_LONG) {
     err("Only 64-bit ELF formats supported for object code generation.");
     free(out.data);
-    return &BUF_NULL;
+    return BUF_NULL;
   }
 
   buffer_t header = exe_header(0x40, 4, 0);
@@ -89,7 +89,7 @@ buffer_t *codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, en
   buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x6, base + sizeof(shstrtab) + strtab.len + symtab.len, out.len);
 
   buf_concat(&out, 4, &header, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
-  return &out;
+  return out;
 }
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre) {
