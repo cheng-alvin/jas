@@ -46,5 +46,6 @@ void buf_remove(buffer_t *buf, const size_t elem);
   }
 
 bool buf_element_exists(buffer_t *buf, const uint8_t elem);
+void buf_concat(buffer_t *buf, size_t count, ...);
 
 #endif

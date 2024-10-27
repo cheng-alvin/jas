@@ -24,6 +24,7 @@
  */
 
 #include "buffer.h"
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -63,4 +64,16 @@ bool buf_element_exists(buffer_t *buf, const uint8_t elem) {
       return true;
 
   return false;
+}
+
+void buf_concat(buffer_t *buf, size_t count, ...) {
+  va_list args;
+  va_start(args, count);
+
+  for (size_t i = 0; i < count; i++) {
+    buffer_t *other = va_arg(args, buffer_t *);
+    buf_write(buf, other->data, other->len);
+  }
+
+  va_end(args);
 }
