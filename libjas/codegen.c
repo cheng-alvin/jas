@@ -103,7 +103,8 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   free(symtab_sect_head.data);
   free(text_sect_head.data);
 
-  buf_concat(&out, 3, &shstrtab, &strtab, &symtab);
+  buf_write(&out, shstrtab, sizeof(shstrtab));
+  buf_concat(&out, 2, &strtab, &symtab);
 
   free(strtab.data);
   free(symtab.data);
