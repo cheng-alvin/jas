@@ -40,10 +40,15 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buffer_t out = assemble(mode, instr_arr, arr_size, false);
 
   if (exec_mode == CODEGEN_RAW) return out;
+
+  const buffer_t code = out;
+
+  free(out.data);
+  out = BUF_NULL;
+
   if (mode != MODE_LONG) {
     err("Only 64-bit ELF formats supported for object code generation.");
-    free(out.data);
-    return BUF_NULL;
+    return out;
   }
 
   buffer_t header = exe_header(0x40, 4, 0);
@@ -102,6 +107,10 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   free(strtab.data);
   free(symtab.data);
+
+  buf_write(&out, &code, code.len);
+
+  free(code.data);
 
   return out;
 }
