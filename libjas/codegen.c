@@ -29,6 +29,7 @@
 #include "label.h"
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define CURR_TABLE instr_table[instr_arr[i].instr][j]
 
@@ -45,9 +46,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
     return BUF_NULL;
   }
 
-  char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
-  char strtab[] = "\0";
-
   buffer_t header = exe_header(0x40, 4, 0);
 
   /**
@@ -62,11 +60,33 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
    * file offset of the section header table. as we need some space for the data
    * itself for the section.
    */
+  const int base = 5 * 0x40;
 
-  buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, 5 * 0x40, sizeof(shstrtab));
-  buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, 5 * 0x40 + sizeof(shstrtab), sizeof(strtab));
-  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, 5 * 0x40 + sizeof(shstrtab) + sizeof(strtab), 0); /* TODO generate symbol table */
-  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x6, 5 * 0x40 + sizeof(shstrtab) + sizeof(strtab) /* + Symbol table size */, out.len);
+  char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
+  buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, base, sizeof(shstrtab));
+
+  buffer_t symtab = BUF_NULL;
+  buffer_t strtab = BUF_NULL;
+
+  buf_write_byte(&strtab, 0);
+  for (size_t i = 0; i < label_table_size; i++) {
+    if (label_table[i].ext) {
+
+      buf_write(&symtab, strtab.len, 2);             // Name offset
+      buf_write(&symtab, label_table[i].address, 8); // Value
+      buf_write(&symtab, (uint16_t[]){0}, 2);        // Size
+      buf_write_byte(&symtab, 0);                    // Info
+      buf_write_byte(&symtab, 0);                    // Other
+      buf_write(&symtab, &(uint64_t){3}, 8);         // Section index
+
+      // TODO Check if a terminating null byte is needed
+      buf_write(&strtab, label_table[i].name, strlen(label_table[i].name) + 1);
+    }
+  }
+
+  buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, base + sizeof(shstrtab), strtab.len);
+  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, base + sizeof(shstrtab) + strtab.len, strtab.len);
+  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x6, base + sizeof(shstrtab) + strtab.len + symtab.len, out.len);
 
   return out;
 }
