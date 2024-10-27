@@ -23,9 +23,9 @@
  * @see `LICENSE`
  */
 
+#include "exe.h"
 #include "endian.h"
 #include <stdlib.h>
-#include "exe.h"
 
 /**
  * @brief File with functions for generating the parts of the
@@ -65,8 +65,8 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
   buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0}, 7); // Padding - 7 byte
 
   const uint8_t *type = endian((uint8_t[]){0x00, 0x01}, 2);
-  buf_write(&ret, type, sizeof(type)); // Executable type type
-  buf_write(&ret, type, sizeof(type)); // Machine ISA
+  buf_write(&ret, type, 2); // Executable type type
+  buf_write(&ret, type, 2); // Machine ISA
 
   free((void *)type);
 
