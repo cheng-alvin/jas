@@ -54,11 +54,15 @@ Test(example, example) {
       },
   };
 
-  buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr), CODEGEN_RAW);
+  buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr), CODEGEN_ELF);
 
   for (size_t i = 0; i < buf.len; i++) {
     printf("%02X ", buf.data[i]);
   }
+
+  FILE *file = fopen("a.out", "wb");
+  size_t written = fwrite(buf.data, sizeof(uint8_t), buf.len, file);
+  fclose(file);
 
   free(buf.data);
 }
