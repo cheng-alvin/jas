@@ -78,7 +78,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   buf_write_byte(&strtab, 0);
   for (size_t i = 0; i < label_table_size; i++) {
-    if (label_table[i].ext) {
+    if (label_table[i].exported) {
 
       buf_write(&symtab, strtab.len, 2);             // Name offset
       buf_write(&symtab, label_table[i].address, 8); // Value

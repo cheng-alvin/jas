@@ -9,7 +9,10 @@ void error_callback(const char *msg) {
 Test(example, example) {
   err_add_callback(error_callback);
 
+  label_create("label", true, false, 0, 0);
   instruction_t instr[] = (instruction_t[]){
+      (instruction_t){.instr = (enum instructions)NULL, .operands = NULL},
+
       // mov rax, 60
       (instruction_t){
           .instr = INSTR_MOV,
