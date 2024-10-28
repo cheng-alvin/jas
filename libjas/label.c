@@ -38,11 +38,6 @@ void label_create(char *name, bool exported, bool ext, size_t address, size_t in
     return;
   }
 
-  if (instr_index == NULL && address == NULL) {
-    err("Either `instr_index` or `address` must be set, we cannot infer without both entries.");
-    return;
-  }
-
   label_t label = {.name = name, .exported = exported, .ext = ext, .address = address, .instr_index = instr_index};
 
   label_table_size++;
