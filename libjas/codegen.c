@@ -36,19 +36,15 @@
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre); // TODO Fix the stupid hack
 
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
-  free(assemble(mode, instr_arr, arr_size, true).data);
-  buffer_t out = assemble(mode, instr_arr, arr_size, false);
-
-  if (exec_mode == CODEGEN_RAW) return out;
-
-  const buffer_t code = out;
-
-  free(out.data);
-  out = BUF_NULL;
+  buffer_t out = BUF_NULL;
+  if (exec_mode == CODEGEN_RAW) {
+    assemble(mode, instr_arr, arr_size, true);
+    return assemble(mode, instr_arr, arr_size, false);
+  }
 
   if (mode != MODE_LONG) {
     err("Only 64-bit ELF formats supported for object code generation.");
-    return out;
+    return BUF_NULL;
   }
 
   buffer_t header = exe_header(0x40 - 1, 4, 0);
@@ -94,6 +90,10 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, base + sizeof(shstrtab), strtab.len);
   buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, base + sizeof(shstrtab) + strtab.len, strtab.len);
+
+  const buffer_t code = assemble(mode, instr_arr, arr_size, false);
+  free(assemble(mode, instr_arr, arr_size, true).data);
+
   buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x6, base + sizeof(shstrtab) + strtab.len + symtab.len, code.len);
 
   buf_concat(&out, 3, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
@@ -106,12 +106,11 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buf_write(&out, shstrtab, sizeof(shstrtab));
   buf_concat(&out, 2, &strtab, &symtab);
 
+  buf_write(&out, code.data, code.len);
+  free(code.data);
+
   free(strtab.data);
   free(symtab.data);
-
-  buf_write(&out, &code, code.len);
-
-  free(code.data);
 
   return out;
 }
