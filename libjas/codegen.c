@@ -96,7 +96,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x6, base + sizeof(shstrtab) + strtab.len + symtab.len, code.len);
 
-  buf_concat(&out, 3, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
+  buf_concat(&out, 4, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
 
   free(shstrtab_sect_head.data);
   free(strtab_sect_head.data);
