@@ -80,12 +80,12 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   for (size_t i = 0; i < label_table_size; i++) {
     if (label_table[i].exported) {
 
-      buf_write(&symtab, strtab.len, 2);             // Name offset
-      buf_write(&symtab, label_table[i].address, 8); // Value
-      buf_write(&symtab, (uint16_t[]){0}, 2);        // Size
-      buf_write_byte(&symtab, 0);                    // Info
-      buf_write_byte(&symtab, 0);                    // Other
-      buf_write(&symtab, &(uint64_t){3}, 8);         // Section index
+      buf_write(&symtab, &strtab.len, 2);             // Name offset
+      buf_write(&symtab, &label_table[i].address, 8); // Value
+      buf_write(&symtab, (uint16_t[]){0}, 2);         // Size
+      buf_write_byte(&symtab, 0);                     // Info
+      buf_write_byte(&symtab, 0);                     // Other
+      buf_write(&symtab, &(uint64_t){3}, 8);          // Section index
 
       // TODO Check if a terminating null byte is needed
       buf_write(&strtab, label_table[i].name, strlen(label_table[i].name) + 1);
