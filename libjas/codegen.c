@@ -89,7 +89,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   }
 
   buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, base + sizeof(shstrtab), strtab.len);
-  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, base + sizeof(shstrtab) + strtab.len, strtab.len);
+  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, base + sizeof(shstrtab) + strtab.len, symtab.len);
 
   const buffer_t code = assemble(mode, instr_arr, arr_size, false);
   free(assemble(mode, instr_arr, arr_size, true).data);
