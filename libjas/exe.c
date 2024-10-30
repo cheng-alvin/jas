@@ -114,7 +114,11 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
   else
     buf_write(&ret, (uint8_t *)&int_pad, 4); // Section link
 
-  buf_write(&ret, (uint8_t *)&int_pad, 4);                 // Section info
+  if (type == 0x02)
+    buf_write(&ret, &(uint32_t){6}, 4); // Section info
+  else
+    buf_write(&ret, (uint8_t *)&int_pad, 4); // Section info
+
   buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0, 0}, 8); // Section address alignment
 
   if (type != 0x02)
