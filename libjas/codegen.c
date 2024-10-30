@@ -66,7 +66,9 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
    */
   const int base = 6 * 0x40;
 
-  buf_write(&out, malloc(0x40), 0x40); // Padding
+  const uint8_t *pad = calloc(0x40, 1);
+  buf_write(&out, pad, 0x40); // Padding
+  free(pad);
 
   char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
   buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0x2, base, sizeof(shstrtab));
