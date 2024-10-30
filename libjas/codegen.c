@@ -77,6 +77,11 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buffer_t symtab = BUF_NULL;
 
   buf_write_byte(&strtab, 0);
+
+  uint8_t *sym_pad = calloc(0x18, 1);
+  buf_write(&symtab, sym_pad, 0x18);
+  free(sym_pad);
+
   for (size_t i = 0; i < label_table_size; i++) {
     if (label_table[i].exported) {
 
