@@ -107,19 +107,24 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
 
   int int_pad = 0;
 
-  // If section is a ".symtab" section, link section header differently
-  if (type == 0x02) {
-    buf_write(&ret, &(uint32_t){2}, 4);    // Section link
-    buf_write(&ret, &(uint32_t){1}, 4);    // Section info
-    buf_write(&ret, &(uint64_t){0x18}, 8); // Section address alignment
-
-    return ret;
-  }
-
+  // TODO format
   // Unused fields:
-  buf_write(&ret, (uint8_t *)&int_pad, 4);                 // Section link
-  buf_write(&ret, (uint8_t *)&int_pad, 4);                 // Section info
+  if (type == 0x02)
+    buf_write(&ret, &(uint32_t){2}, 4);
+  else
+    buf_write(&ret, (uint8_t *)&int_pad, 4); // Section link
+
+  if (type == 0x02)
+    buf_write(&ret, &(uint32_t){1}, 4); // Section info
+  else
+    buf_write(&ret, (uint8_t *)&int_pad, 4); // Section info
+
   buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0, 0}, 8); // Section address alignment
+
+  if (type != 0x02)
+    buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0, 0}, 8);
+  else
+    buf_write(&ret, &(uint64_t){0x18}, 8);
 
   return ret;
 }
