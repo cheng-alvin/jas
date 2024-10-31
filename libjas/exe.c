@@ -100,31 +100,26 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
   buf_write(&ret, (uint8_t *)&type, 4);       // Section type
   buf_write(&ret, (uint8_t *)&flags, 8);      // Section flags
 
-  buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0, 0}, 8); // Section address
+  buf_write(&ret, &(uint64_t){0}, 8); // Section address
 
   buf_write(&ret, (uint8_t *)&off, 8);     // Section file offset
   buf_write(&ret, (uint8_t *)&sect_sz, 8); // Section size
 
   int int_pad = 0;
 
-  // TODO format
-  // Unused fields:
-  if (type == 0x02)
-    buf_write(&ret, &(uint32_t){2}, 4);
-  else
-    buf_write(&ret, (uint8_t *)&int_pad, 4); // Section link
+  if (type == 0x02) {
+    buf_write(&ret, &(uint32_t){2}, 4);    // Section link
+    buf_write(&ret, &(uint32_t){1}, 4);    // Section info
+    buf_write(&ret, &(uint64_t){0}, 8);    // Section address alignment
+    buf_write(&ret, &(uint64_t){0x18}, 8); // Section entry size
 
-  if (type == 0x02)
-    buf_write(&ret, &(uint32_t){1}, 4); // Section info
-  else
-    buf_write(&ret, (uint8_t *)&int_pad, 4); // Section info
+    return ret;
+  }
 
-  buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0, 0}, 8); // Section address alignment
-
-  if (type != 0x02)
-    buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0, 0}, 8);
-  else
-    buf_write(&ret, &(uint64_t){0x18}, 8);
+  buf_write(&ret, (uint8_t *)&int_pad, 4); // Section link
+  buf_write(&ret, (uint8_t *)&int_pad, 4); // Section info
+  buf_write(&ret, &(uint64_t){0}, 8);      // Section address alignment
+  buf_write(&ret, &(uint64_t){0}, 8);      // Section entry size
 
   return ret;
 }
