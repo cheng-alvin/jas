@@ -103,7 +103,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   const buffer_t code = assemble(mode, instr_arr, arr_size, false);
   free(assemble(mode, instr_arr, arr_size, true).data);
 
-  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x6, base + sizeof(shstrtab) + strtab.len + symtab.len, code.len);
+  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x7, base + sizeof(shstrtab) + strtab.len + symtab.len, code.len);
 
   buf_concat(&out, 4, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
 
