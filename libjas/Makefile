@@ -18,5 +18,3 @@ libjas_debug.a: $(OBJ)
 operand_cpp.o: CFLAGS = $(CFLAGS_COMMON) -std=c++11
 operand_cpp.o: operand.cpp
 	$(CC) $(CFLAGS) -c $< -o $@	
-
-.PHONY: all

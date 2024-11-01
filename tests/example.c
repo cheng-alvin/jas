@@ -1,4 +1,4 @@
-#include "../jas.h"
+#include "jas.h"
 #include "test.h"
 
 void error_callback(const char *msg) {

@@ -12,13 +12,7 @@ $(TESTS): libjas_debug.a
 $(TESTS): %: %.o 
 	$(CC) -o $@ $< ../build/libjas_debug.a $(CFLAGS)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $<
-
 libjas_debug.a: 
 	$(MAKE) -C ../libjas libjas_debug.a
 
-clean:
-	@rm -rf $(TESTS)
-
-.PHONY: all clean tests
+.PHONY: clean tests
