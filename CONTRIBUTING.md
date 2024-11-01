@@ -23,7 +23,7 @@ with contributing to Jas (especially for those who are not familiar with Git).
 Perquisites:
 - LLVM C Compiler (CLANG)
 - GNU Make
-- LLVM Debugger (LLDB) (optional, only needed for debugging when running `make debug`)
+- LLVM Debugger (LLDB) (optional, only needed for debugging when buidling `libjas_debug.a`)
 
 The Jas assembler is written in C and can be built using the GNU C Compiler (GCC). The assembler can be built
 running `make` inside the home directory. The assembler can be cleaned, debugged and tested as per the `Makefile` in the home directory.
