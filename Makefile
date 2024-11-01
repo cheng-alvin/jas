@@ -9,7 +9,6 @@ format:
 clean:
 	@find . -name "*.o" -type f -delete
 	@find . -name "*.a" -type f -delete
-	@$(MAKE) -C tests clean
 	@rm -r -f $(BUILD)
 	@mkdir -p $(BUILD)
 

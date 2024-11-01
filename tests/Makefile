@@ -15,4 +15,10 @@ $(TESTS): %: %.o
 libjas_debug.a: 
 	$(MAKE) -C ../libjas libjas_debug.a
 
+clean:
+	@find . -name "*.o" -type f -delete
+	@find . -name "*.a" -type f -delete
+	@rm -r -f $(BUILD)
+	@mkdir -p $(BUILD)
+
 .PHONY: clean tests
