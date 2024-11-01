@@ -1,6 +1,6 @@
 CC = clang
 
-CFLAGS_COMMON = -I ../ -I ../libjas/ -lstdc++ -g
+CFLAGS_COMMON = -I ../libjas/include -I ../libjas/ -lstdc++ -g
 CFLAGS = $(CFLAGS_COMMON)
 
 TESTS = $(patsubst %.c, %, $(wildcard *.c)) 
@@ -20,4 +20,4 @@ clean:
 	@find . -name "*.a" -type f -delete
 	@find . -type f -perm +111 -exec rm -f {} \;
 
-.PHONY: clean tests
+.PHONY: clean all
