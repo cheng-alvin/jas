@@ -5,8 +5,8 @@ CFLAGS = $(CFLAGS_COMMON)
 
 TESTS = $(patsubst %.c, %, $(wildcard *.c)) 
 
-tests: CFLAGS = $(CFLAGS_COMMON)
-tests: $(TESTS)
+all: CFLAGS = $(CFLAGS_COMMON)
+all: $(TESTS)
 
 $(TESTS): libjas_debug.a
 $(TESTS): %: %.o 
@@ -18,7 +18,6 @@ libjas_debug.a:
 clean:
 	@find . -name "*.o" -type f -delete
 	@find . -name "*.a" -type f -delete
-	@rm -r -f $(BUILD)
-	@mkdir -p $(BUILD)
+	@find . -type f -perm +111 -exec rm -f {} \;
 
 .PHONY: clean tests
