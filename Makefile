@@ -2,6 +2,10 @@ BUILD = build
 
 all: 
 	$(MAKE) -C libjas libjas.a
+	mkdir -p $(BUILD)/include
+	cp libjas/include/*.h $(BUILD)/include
+	cp README.md $(BUILD)
+	cp LICENSE $(BUILD)
 
 format:
 	@find ./ -type f \( -name "*.cpp" -o -name "*.c" -o -name "*.h" \) -exec clang-format --verbose -i {} +
