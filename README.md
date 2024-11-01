@@ -17,7 +17,7 @@
 <p align="center" padding="10px"> Jas is a minimal, fast and simple zero-dependdency assembler for the x64 family of processors, jas not only aims to be fast and simple when using it but also aims to be a learning reasource for others to learn about low-level system programming and the x64 instruction set. Useful for implementing into compilers, operating systems and JIT interpreters and other types of utilites that need compilation to ELF or just a plain enocded buffer. </p>
 
 ### ⚡Quick start
-First of all, install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases) or build it from source with following the instructions [here](https://github.com/cheng-alvin/jas/blob/dev/CONTRIBUTING.md) Jas takes instructions in an array in a struct form defined in [instruction.h](https://github.com/cheng-alvin/jas/blob/0faa905be7cb1238796af46552b3271a11b4e2dd/libjas/instruction.h) and passes it to a `codegen()` function which generates the the actual buffer of an array of `uint8_t` for you to process.
+First of all, install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases) or build it from source with following the instructions below. Jas takes instructions in an array in a struct form defined in [instruction.h](https://github.com/cheng-alvin/jas/blob/0faa905be7cb1238796af46552b3271a11b4e2dd/libjas/instruction.h) and passes it to a `codegen()` function which generates the the actual buffer of an array of `uint8_t` for you to process.
 ```c
 #include <jas.h>
 #include <stdint.h>
@@ -48,6 +48,29 @@ int main(void) {
 Yeah! that's it! Seriously! It's that simple, this little snippet of code generates and encodes a  `mov rax, 0` instruction.
 
 > Since the returned buffer is in the form of a dynamically allocated pointer, care must be taken to `free` and manage the block of memory.
+
+### 🏗️ Build and install
+The very first step in doing anything with jas is to build and link the library against your application code, since jas is a library. Ensure you have a C99 and C++17 compiler installed (Anything will do, preferably `clang`), and GNU make or something to run makefile while buidling. 
+
+> Since all the build scripts are written in bash, we only support building from POSIX-compliant systems such as Linux or Mac. 
+
+#### Obtaining source code
+To obtain the Jas source files, run:
+``` bash
+git clone https://github.com/cheng-alvin/jas/
+```
+
+Now, you should have a folder named `jas` in your current directory, now you can just simply run `make` within that directory like so:
+
+``` bash
+cd jas # Change into the cloned directory
+make clean # Clean directory and setup
+make # Build source code
+```
+
+> Some directories and folders can be missing, you must run `make clean` before you actually build the library.
+
+Voila! Now you have a built copy of Jas in the `build` folder, just simply copy and link against the archive to start building your dream compiler or assembler frontend!
 
 ### 📝 Licensing 
 All the code under the Jas assembler project repository is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License) which is a popular open-source license for projects like this! Please see [LICENSE](https://github.com/cheng-alvin/jas/blob/main/LICENSE) for the details.
