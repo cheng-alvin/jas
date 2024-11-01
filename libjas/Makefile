@@ -1,6 +1,6 @@
 CC = clang
 
-CFLAGS_COMMON = -Wall -Wextra -Wno-int-conversion -Wno-unused-parameter -I include
+CFLAGS_COMMON = -Wall -Wextra -Wno-int-conversion -Wno-unused-parameter -I include -I ../libjas/
 CFLAGS = $(CFLAGS_COMMON)
 
 C_SRC = $(wildcard *.c) # Includes only C source files
