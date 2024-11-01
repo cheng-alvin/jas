@@ -83,7 +83,6 @@ extern "C" enum enc_ident op_ident_identify(enum operands *input) {
     return (enum enc_ident)0;
   }
 
-  // TODO HARD-CODED at the moment
   if (hash_key == __combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE))
     if (input[1] == OP_IMM64) return OP_OI;
 
