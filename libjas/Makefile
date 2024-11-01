@@ -3,11 +3,9 @@ CC = clang
 CFLAGS_COMMON = -Wall -Wextra -Wno-int-conversion -Wno-unused-parameter
 CFLAGS = $(CFLAGS_COMMON)
 
-SRC = $(wildcard *.c) # Includes only C source files
-OBJ = $(patsubst %.c, %.o, $(SRC)) operand_cpp.o 
+C_SRC = $(wildcard *.c) # Includes only C source files
+OBJ = $(patsubst %.c, %.o, $(C_SRC)) operand_cpp.o 
 BUILD = ../build
-
-all: libjas.a
 
 libjas.a: $(OBJ) 
 	ar rcs $(BUILD)/$@ $^ 
