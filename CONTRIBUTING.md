@@ -10,12 +10,14 @@ For beginners and those who are new to Git and GitHub, please see https://guides
 for a quick tutorial on how to get started with Git and GitHub. Now, please follow the steps below to get started
 with contributing to Jas (especially for those who are not familiar with Git).
 
-1. Fork the Jas repository on GitHub.
-2. Clone your forked repository (not the original one) to your local machine.
-3. Create a new branch for your changes.
-4. Make your changes and commit them to your branch.
-5. Push your changes to your forked repository.
-6. Submit a pull request to the Jas repository on GitHub.
+1. Fork and clone the repository (not the original one) to your local machine.
+2. Create a new branch and commit changes
+3. Submit a pull request to the Jas repository on GitHub.
+
+
+> Please note that branch and commit names shall be as short as possible, branch names should contain a one or
+> two word overview on the changes commited and commit messages shall show the added changes in another couple
+> words with details appearing in the description.
 
 ### Building and testing
 Perquisites:
