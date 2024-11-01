@@ -54,21 +54,19 @@ The very first step in doing anything with jas is to build and link the library 
 
 > Since all the build scripts are written in bash, we only support building from POSIX-compliant systems such as Linux or Mac. 
 
-#### Obtaining source code
 To obtain the Jas source files, run:
 ``` bash
 git clone https://github.com/cheng-alvin/jas/
 ```
 
 Now, you should have a folder named `jas` in your current directory, now you can just simply run `make` within that directory like so:
+(Some directories and folders can be missing, you must run `make clean` before you actually build the library.)
 
 ``` bash
 cd jas # Change into the cloned directory
 make clean # Clean directory and setup
 make # Build source code
 ```
-
-> Some directories and folders can be missing, you must run `make clean` before you actually build the library.
 
 Voila! Now you have a built copy of Jas in the `build` folder, just simply copy and link against the archive to start building your dream compiler or assembler frontend!
 
