@@ -5,7 +5,7 @@ all:
 	cp libjas/include/*.h $(BUILD)/include
 	mv $(BUILD)/libjas.a $(BUILD)/lib/libjas.a
 	cp README.md $(BUILD)
-	cp LICENSE $(BUILD)`
+	cp LICENSE $(BUILD)
 
 format:
 	@find ./ -type f \( -name "*.cpp" -o -name "*.c" -o -name "*.h" \) -exec clang-format --verbose -i {} +
@@ -25,6 +25,8 @@ libjas.deb: all
 	mkdir -p $(BUILD)/usr/include
 	mkdir -p $(BUILD)/usr/lib
 	mv $(BUILD)/* $(BUILD)/usr 	
+	mkdir -p $(BUILD)/DEBIAN
+	cp control $(BUILD)/DEBIAN/control
 	chmod 644 $(BUILD/)DEBIAN/control
 	dpkg-deb --build $(BUILD) $(BUILD)/libjas.deb
 
