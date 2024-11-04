@@ -8,10 +8,18 @@ void error_callback(const char *msg) {
 
 Test(example, example) {
   err_add_callback(error_callback);
-
   label_create("_start", true, false, 0, 0);
   instruction_t instr[] = (instruction_t[]){
-      (instruction_t){.instr = (enum instructions)NULL, .operands = NULL},
+      // global _start:
+      (instruction_t){
+          .instr = INSTR_DIR_GLOBAL_LABEL,
+          .operands = (operand_t[]){
+              (operand_t){.type = OP_MISC, .data = "_start"},
+              OP_NONE,
+              OP_NONE,
+              OP_NONE,
+          },
+      },
 
       // mov rax, 60
       (instruction_t){
