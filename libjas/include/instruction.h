@@ -58,12 +58,6 @@ enum instructions {
   INSTR_CMP,
   INSTR_PUSH,
   INSTR_POP,
-  // String instructions: (Currently not planning to implement)
-  // INSTR_MOVS,
-  // INSTR_LODS,
-  // INSTR_STOS,
-  // INSTR_CMPS,
-  // INSTR_SCAS,
   INSTR_IN,
   INSTR_OUT,
   INSTR_CLC,
@@ -74,6 +68,12 @@ enum instructions {
   INSTR_HLT,
   INSTR_INT,
   INSTR_SYSCALL,
+
+  // Directives:
+  INSTR_DIR_LOCAL_LABEL,
+  INSTR_DIR_GLOBAL_LABEL,
+  INSTR_DIR_EXTERN_LABEL,
+  INSTR_DIR_WRT_BUF, // A buffer_t to write to
 };
 
 /**
