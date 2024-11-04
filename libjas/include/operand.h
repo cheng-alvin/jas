@@ -67,6 +67,7 @@ extern "C" {
  */
 enum operands {
   OP_NULL,
+  OP_MISC,
   OP_REL8,
   OP_REL16,
   OP_REL32,
