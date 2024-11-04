@@ -8,7 +8,7 @@ void error_callback(const char *msg) {
 
 Test(example, example) {
   err_add_callback(error_callback);
-  label_create("_start", true, false, 0, 0);
+
   instruction_t instr[] = (instruction_t[]){
       // global _start:
       (instruction_t){
