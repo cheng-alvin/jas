@@ -34,7 +34,6 @@
 #define CURR_TABLE instr_table[instr_arr[i].instr][j]
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre); // TODO Fix the stupid hack
-
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
   buffer_t out = BUF_NULL;
   if (exec_mode == CODEGEN_RAW) {
@@ -70,6 +69,9 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buf_write(&out, pad, 0x40); // Padding
   free(pad);
 
+  const buffer_t code = assemble(mode, instr_arr, arr_size, false);
+  free(assemble(mode, instr_arr, arr_size, true).data);
+
   char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
   buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, base, sizeof(shstrtab));
 
@@ -100,9 +102,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, base + sizeof(shstrtab), strtab.len);
   buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, base + sizeof(shstrtab) + strtab.len, symtab.len);
 
-  const buffer_t code = assemble(mode, instr_arr, arr_size, false);
-  free(assemble(mode, instr_arr, arr_size, true).data);
-
   buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x7, base + sizeof(shstrtab) + strtab.len + symtab.len, code.len);
 
   buf_concat(&out, 4, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
@@ -129,17 +128,8 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
   buffer_t buf = BUF_NULL;
 
   for (size_t i = 0; i < arr_size; i++) {
-    if (instr_arr[i].instr == (enum instructions)NULL && instr_arr[i].operands == NULL) {
-      if (!pre) continue;
-      for (size_t k = 0; k < label_table_size; k++) {
-        if (label_table[k].instr_index == i)
-          label_table[k].address = buf.len - 1;
-      }
-
-      continue;
-    }
-
     if (instr_arr[i].instr > INSTR_SYSCALL) {
+      if (pre) continue;
       if (instr_arr[i].instr == INSTR_DIR_WRT_BUF) {
         const buffer_t *data = (buffer_t *)instr_arr[i].operands[0].data;
         buf_write(&buf, data->data, data->len);
@@ -148,10 +138,20 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
       label_create(
           instr_arr[i].operands[0].data,
-          instr_arr[i].instr == INSTR_DIR_EXTERN_LABEL,
           instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
+          instr_arr[i].instr == INSTR_DIR_EXTERN_LABEL,
           NULL,
           i);
+
+      continue;
+    }
+
+    if (instr_arr[i].instr == (enum instructions)NULL && instr_arr[i].operands == NULL) {
+      if (!pre) continue;
+      for (size_t k = 0; k < label_table_size; k++) {
+        if (label_table[k].instr_index == i)
+          label_table[k].address = buf.len - 1;
+      }
 
       continue;
     }
