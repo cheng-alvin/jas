@@ -128,15 +128,14 @@ typedef struct {
 
 /**
  * Function for setting the prefix of the operand based on the
- * size of the reference operand array, and writes it into a
- * "child" buffer.
+ * size of the reference operand array, and writes it the
+ * buffer provided in `buf`.
  *
+ * @param buf The pointer to the buffer to write the prefixes to.
  * @param op_arr The operand array to base the prefixes from.
  * @param mode The current operating mode of the instruction
- *
- * @return The "child" buffer containing the written prefixes.
  */
-buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode);
+void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode);
 
 /**
  * Function for identifying the operand identity, created using

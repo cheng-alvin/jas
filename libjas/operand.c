@@ -49,7 +49,7 @@ uint8_t op_sizeof(enum operands input) {
   return 0;
 }
 
-buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
+void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
   /**
    * @brief
    * The 0x66 and 0x67 hex prefixes are the operand and address size
@@ -82,7 +82,6 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
    *
    */
 
-  buffer_t prefix = BUF_NULL;
   uint8_t rex = REX_DEFAULT;
 
   for (uint8_t i = 0; i < 4; i++) {
@@ -99,12 +98,12 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
     case 16:
       if (mode == MODE_REAL) break;
       if (mode == MODE_LONG && op_m(op_arr[i].type)) {
-        if (!buf_element_exists(&prefix, OP_WORD_OVERRIDE))
-          buf_write_byte(&prefix, OP_WORD_OVERRIDE);
+        if (!buf_element_exists(buf, OP_WORD_OVERRIDE))
+          buf_write_byte(buf, OP_WORD_OVERRIDE);
       }
 
-      if (!buf_element_exists(&prefix, override))
-        buf_write_byte(&prefix, override);
+      if (!buf_element_exists(buf, override))
+        buf_write_byte(buf, override);
       break;
 
     case 32:
@@ -113,8 +112,8 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
 
     // TODO isolate in buffer
     override_write: // NOT THS :D
-      if (!buf_element_exists(&prefix, override))
-        buf_write_byte(&prefix, override);
+      if (!buf_element_exists(buf, override))
+        buf_write_byte(buf, override);
 
       break;
 
@@ -122,7 +121,7 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
       if (mode != MODE_LONG)
         err("64-bit operands are prohibited in modes other than long mode.");
 
-      if (!buf_element_exists(&prefix, REX_W))
+      if (!buf_element_exists(buf, REX_W))
         rex |= REX_W;
       break;
 
@@ -132,9 +131,7 @@ buffer_t op_write_prefix(const operand_t *op_arr, enum modes mode) {
   }
 
   if (rex != REX_DEFAULT)
-    buf_write_byte(&prefix, rex);
-
-  return prefix;
+    buf_write_byte(buf, rex);
 }
 
 operand_t op_construct_operand(enum operands type, size_t offset, void *data) {

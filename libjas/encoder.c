@@ -95,9 +95,7 @@ void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
   const uint8_t opcode_extend = instr_ref->opcode_ext << 3;
   const uint8_t rm = reg_lookup_val(op_arr[0].data);
 
-  const buffer_t prefixes = op_write_prefix(op_arr, mode);
-  buf_write(buf, prefixes.data, prefixes.len);
-  free(prefixes.data);
+  op_write_prefix(buf, op_arr, mode);
 
   check_mode(mode, instr_ref->support);
 
@@ -112,9 +110,7 @@ void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   const uint8_t opcode_extend = instr_ref->opcode_ext << 3;
   const uint8_t rm = reg_lookup_val(op_arr[0].data);
 
-  const buffer_t prefixes = op_write_prefix(op_arr, mode);
-  buf_write(buf, prefixes.data, prefixes.len);
-  free(prefixes.data);
+  op_write_prefix(buf, op_arr, mode);
 
   check_mode(mode, instr_ref->support);
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
@@ -138,10 +134,7 @@ void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
 void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const uint8_t reg = reg_lookup_val(op_arr[1].data);
   const uint8_t rm = reg_lookup_val(op_arr[0].data);
-
-  const buffer_t prefixes = op_write_prefix(op_arr, mode);
-  buf_write(buf, prefixes.data, prefixes.len);
-  free(prefixes.data);
+  op_write_prefix(buf, op_arr, mode);
 
   check_mode(mode, instr_ref->support);
 
@@ -155,10 +148,7 @@ void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
 
 void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const uint8_t reg = reg_lookup_val(op_arr[0].data);
-
-  const buffer_t prefixes = op_write_prefix(op_arr, mode);
-  buf_write(buf, prefixes.data, prefixes.len);
-  free(prefixes.data);
+  op_write_prefix(buf, op_arr, mode);
 
   check_mode(mode, instr_ref->support);
 
@@ -177,10 +167,8 @@ void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
 void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const uint8_t reg = reg_lookup_val(op_arr[0].data);
   const uint8_t rm = reg_lookup_val(op_arr[1].data);
+  op_write_prefix(buf, op_arr, mode);
 
-  const buffer_t prefixes = op_write_prefix(op_arr, mode);
-  buf_write(buf, prefixes.data, prefixes.len);
-  free(prefixes.data);
   check_mode(mode, instr_ref->support);
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
 
