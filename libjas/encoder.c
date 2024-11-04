@@ -167,16 +167,7 @@ void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
 }
 
 void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  const uint8_t reg = reg_lookup_val(op_arr[0].data);
-
-  const buffer_t prefixes = op_write_prefix(op_arr, mode);
-  buf_write(buf, prefixes.data, prefixes.len);
-  free(prefixes.data);
-
-  check_mode(mode, instr_ref->support);
-
-  uint8_t *data = &(uint8_t){*(OP_OPCODE_HELPER) + (uint8_t)reg};
-  buf_write(buf, data, instr_ref->opcode_size);
+  o(op_arr, buf, instr_ref, mode);
 
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
   uint8_t *imm = (uint8_t *)op_arr[1].data;
