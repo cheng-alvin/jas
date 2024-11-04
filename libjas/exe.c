@@ -35,9 +35,9 @@
  *
  * - ELF header - ✅
  * - Section headers - ✅
- * - String table
- * - Text section
- * - Symbol table
+ * - String table - ✅
+ * - Text section - ✅
+ * - Symbol table - ✅
  *
  * - Relocation table
  */
