@@ -26,8 +26,6 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-/* !!! Please note - some components are yet to be migrated here !!! */
-
 /**
  * Enumeration for the different operand identifiers.
  * Used to lookup the operand encoder functions.
