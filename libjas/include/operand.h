@@ -159,8 +159,6 @@ enum enc_ident op_ident_identify(enum operands *input);
  */
 uint8_t op_modrm_mode(operand_t input);
 
-#define OP_OPCODE_HELPER (op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode)
-
 /**
  * Function for finding the size of the operand type in bits, very
  * similar to the `sizeof` operator in C99. Used to determine

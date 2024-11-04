@@ -33,6 +33,8 @@
 #include "register.h"
 #include <stdlib.h>
 
+#define OP_OPCODE_HELPER (op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode)
+
 static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
   const uint8_t rel_sz = op_sizeof(op_arr[index].type) / 8;
 
