@@ -33,23 +33,35 @@
 
 #define CURR_TABLE instr_table[instr_arr[i].instr][j]
 
+#define FREE_ALL(...)                                                   \
+  do {                                                                  \
+    void *pointers[] = {__VA_ARGS__};                                   \
+    for (size_t i = 0; i < sizeof(pointers) / sizeof(*pointers); ++i) { \
+      free(pointers[i]);                                                \
+    }                                                                   \
+  } while (0)
+
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre); // TODO Fix the stupid hack
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
-  buffer_t out = BUF_NULL;
-  if (exec_mode == CODEGEN_RAW) {
-    assemble(mode, instr_arr, arr_size, true);
-    return assemble(mode, instr_arr, arr_size, false);
-  }
+  free(assemble(mode, instr_arr, arr_size, true).data);
+  const buffer_t code = assemble(mode, instr_arr, arr_size, false);
+
+  if (exec_mode == CODEGEN_RAW) return code;
 
   if (mode != MODE_LONG) {
     err("Only 64-bit ELF formats supported for object code generation.");
     return BUF_NULL;
   }
 
+  buffer_t strtab, symtab, out;
+
   buffer_t header = exe_header(0x40, 5, 1);
   buf_concat(&out, 1, &header);
-
   free(header.data);
+
+  const uint8_t *pad = calloc(0x40, 1);
+  buf_write(&out, pad, 0x40); // Padding
+  free(pad);
 
   /**
    * @note
@@ -65,18 +77,8 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
    */
   const int base = 6 * 0x40;
 
-  const uint8_t *pad = calloc(0x40, 1);
-  buf_write(&out, pad, 0x40); // Padding
-  free(pad);
-
-  const buffer_t code = assemble(mode, instr_arr, arr_size, false);
-  free(assemble(mode, instr_arr, arr_size, true).data);
-
   char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
   buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, base, sizeof(shstrtab));
-
-  buffer_t strtab = BUF_NULL;
-  buffer_t symtab = BUF_NULL;
 
   buf_write_byte(&strtab, 0);
 
@@ -105,20 +107,15 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x7, base + sizeof(shstrtab) + strtab.len + symtab.len, code.len);
 
   buf_concat(&out, 4, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
-
-  free(shstrtab_sect_head.data);
-  free(strtab_sect_head.data);
-  free(symtab_sect_head.data);
-  free(text_sect_head.data);
+  FREE_ALL(shstrtab_sect_head.data, strtab_sect_head.data, symtab_sect_head.data, text_sect_head.data);
 
   buf_write(&out, shstrtab, sizeof(shstrtab));
+
   buf_concat(&out, 2, &strtab, &symtab);
+  FREE_ALL(strtab.data, symtab.data);
 
   buf_write(&out, code.data, code.len);
   free(code.data);
-
-  free(strtab.data);
-  free(symtab.data);
 
   return out;
 }
