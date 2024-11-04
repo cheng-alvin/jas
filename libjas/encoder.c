@@ -96,7 +96,6 @@ void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
   const uint8_t rm = reg_lookup_val(op_arr[0].data);
 
   op_write_prefix(buf, op_arr, mode);
-
   check_mode(mode, instr_ref->support);
 
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
@@ -107,20 +106,7 @@ void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
 }
 
 void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  const uint8_t opcode_extend = instr_ref->opcode_ext << 3;
-  const uint8_t rm = reg_lookup_val(op_arr[0].data);
-
-  op_write_prefix(buf, op_arr, mode);
-
-  check_mode(mode, instr_ref->support);
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
-  buf_write_byte(buf, op_modrm_mode(op_arr[0]) | opcode_extend | rm);
-
-  if (op_arr[0].offset != 0)
-    buf_write(buf, (uint8_t *)&op_arr[0].offset, 4);
-
-  // ---
-
+  m(op_arr, buf, instr_ref, mode);
   if (op_arr[1].type == OP_IMM64) {
     err("Invalid immediate value.");
     return;
