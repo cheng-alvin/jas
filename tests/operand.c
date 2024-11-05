@@ -5,11 +5,6 @@
 #include "test.h"
 
 Test(operand, write_prefix) {
-  const operand_t op_arr[] = {imm8, imm16, imm32, imm64};
-
-  // Sample function call
-  // `buffer_t prefix = op_write_prefix(op_arr, mode);`
-
   /**
    * TODO test following conditions:
    *
@@ -35,8 +30,6 @@ Test(operand, write_prefix) {
    * instruction will be changed to that particular si-
    * ze and will be override.
    */
-
-  // Allow test to pass
 }
 
 Test(operand, construct_operand) {
