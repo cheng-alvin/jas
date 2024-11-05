@@ -34,7 +34,7 @@ Test(label, destroy_all) {
   label_create("label", false, false, 0xFFFF, 0);
   label_destroy_all();
 
-  assert_not_null(label_table);
+  assert_not_null(!label_table);
   assert(label_table_size == 0);
 }
 
