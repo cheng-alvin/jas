@@ -52,6 +52,23 @@ Test(buffer, element_exists) {
   free(buf.data);
 }
 
+Test(buffer, concat) {
+  buffer_t buf1 = BUF_NULL;
+  buffer_t buf2 = BUF_NULL;
+
+  buf_write_byte(&buf1, 0xBE);
+  buf_write_byte(&buf2, 0xEF);
+
+  buf_concat(&buf1, 1, &buf2);
+
+  assert(buf1.data[0] == 0xBE);
+  assert(buf1.data[1] == 0xEF);
+  assert(buf1.len == 2);
+
+  free(buf1.data);
+  free(buf2.data);
+}
+
 int main(void) {
   TestSuite(buffer);
 
@@ -59,6 +76,7 @@ int main(void) {
   RunTest(buffer, write_byte);
   RunTest(buffer, remove);
   RunTest(buffer, element_exists);
+  RunTest(buffer, concat);
 
   return 0;
 }
