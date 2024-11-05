@@ -30,11 +30,20 @@ Test(label, lookup) {
   label_destroy_all();
 }
 
+Test(label, destroy_all) {
+  label_create("label", false, false, 0xFFFF, 0);
+  label_destroy_all();
+
+  assert_not_null(label_table);
+  assert(label_table_size == 0);
+}
+
 int main(void) {
   TestSuite(label);
 
   RunTest(label, create);
   RunTest(label, lookup);
+  RunTest(label, destroy_all);
 
   return 0;
 }
