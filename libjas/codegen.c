@@ -53,7 +53,9 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
     return BUF_NULL;
   }
 
-  buffer_t strtab, symtab, out;
+  buffer_t strtab = BUF_NULL;
+  buffer_t symtab = BUF_NULL;
+  buffer_t out = BUF_NULL;
 
   buffer_t header = exe_header(0x40, 5, 1);
   buf_concat(&out, 1, &header);
