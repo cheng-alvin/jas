@@ -71,7 +71,7 @@ Test(example, example) {
     printf("%02X ", buf.data[i]);
   }
 
-  FILE *file = fopen("a.out", "wb");
+  FILE *file = fopen("main.o", "wb");
   size_t written = fwrite(buf.data, sizeof(uint8_t), buf.len, file);
   fclose(file);
 
