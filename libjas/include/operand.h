@@ -28,7 +28,6 @@
 
 #include "buffer.h"
 #include "encoder.h"
-#include "instruction.h"
 #include "mode.h"
 #include <stdint.h>
 
