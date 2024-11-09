@@ -23,10 +23,6 @@
  * @see `LICENSE`
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef OPERAND_H
 #define OPERAND_H
 
@@ -200,8 +196,4 @@ operand_t op_construct_operand(enum operands type, size_t offset, void *data);
     .offset = 0,     \
   }
 
-#endif
-
-#ifdef __cplusplus
-}
 #endif
