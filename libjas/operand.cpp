@@ -33,6 +33,7 @@ extern "C" {
 #include "operand.hpp"
 #include <cstddef>
 #include <cstdint>
+#include <unordered_map>
 #include <unordered_set>
 
 #define OP_HASH_NONE (uint32_t)0b11111111
@@ -51,21 +52,8 @@ static op_ident_hash_t op_hash(enum operands input) {
   return OP_HASH_NONE;
 }
 
-static vector<enum enc_ident> getAllEntries(
-    const unordered_multimap<uint32_t, enum enc_ident> &map,
-    const uint32_t key) {
-  vector<enum enc_ident> values;
-
-  auto range = map.equal_range(key);
-  for (auto it = range.first; it != range.second; ++it) {
-    values.push_back(it->second);
-  }
-
-  return values;
-}
-
 namespace op {
-  static unordered_multimap<uint32_t, enum enc_ident> lookup = {
+  static std::unordered_map<uint32_t, enum enc_ident> lookup = {
       {__combine__(OP_HASH_R, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE), OP_MR},
       {__combine__(OP_HASH_M, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE), OP_MR},
 
@@ -84,7 +72,7 @@ namespace op {
       {__combine__(OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), OP_M},
   };
 }
-extern "C" enum enc_ident op_ident_identify(enum operands *input, instr_encode_table *instr_ref) {
+extern "C" enum enc_ident op_ident_identify(enum operands *input) {
   op_ident_hash_t hash[4];
 
   for (auto i = 0; i < 4; i++)
@@ -100,17 +88,5 @@ extern "C" enum enc_ident op_ident_identify(enum operands *input, instr_encode_t
     return (enum enc_ident)0;
   }
 
-  const vector<enum enc_ident> &values = getAllEntries(op::lookup, hash_key);
-
-  for (auto value : values) {
-    while (instr_ref->opcode_size != NULL) {
-      if (instr_ref->ident == value) {
-        return value;
-      }
-      instr_ref++;
-    }
-  }
-
-  err("No corresponding instruction opcode found.");
-  return (enum enc_ident)0;
+  return (enum enc_ident)op::lookup[hash_key];
 }
