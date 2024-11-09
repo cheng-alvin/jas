@@ -23,13 +23,18 @@
  * @see `LICENSE`
  */
 
+extern "C" {
 #include "operand.h"
 #include "encoder.h"
 #include "error.h"
+#include "instruction.h"
+}
+
 #include "operand.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <unordered_map>
+#include <unordered_set>
 
 #define OP_HASH_NONE (uint32_t)0b11111111
 
@@ -82,9 +87,6 @@ extern "C" enum enc_ident op_ident_identify(enum operands *input) {
     err("Operand identifier not found.");
     return (enum enc_ident)0;
   }
-
-  if (hash_key == __combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE))
-    if (input[1] == OP_IMM64) return OP_OI;
 
   return (enum enc_ident)op::lookup[hash_key];
 }
