@@ -165,6 +165,12 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
     enum enc_ident ident = op_ident_identify(operand_list);
 
+    //! HARD CODED
+    if (ident == OP_OI && instr_arr[i].instr != INSTR_MOV)
+      ident = OP_MI;
+    else if (ident == OP_MI && instr_arr[i].instr == INSTR_MOV)
+      ident = OP_OI;
+
     instr_encode_table_t ref;
     unsigned int j = 0;
     while (CURR_TABLE.opcode_size != NULL) {
