@@ -84,7 +84,7 @@ namespace op {
       {__combine__(OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), OP_M},
   };
 }
-extern "C" enum enc_ident op_ident_identify(enum operands *input, enum enc_ident *ident_list) {
+extern "C" enum enc_ident op_ident_identify(enum operands *input, enum enc_ident *ident_list, size_t size) {
   op_ident_hash_t hash[4];
 
   for (auto i = 0; i < 4; i++)
@@ -103,7 +103,7 @@ extern "C" enum enc_ident op_ident_identify(enum operands *input, enum enc_ident
   const vector<enum enc_ident> &values = getAllEntries(op::lookup, hash_key);
 
   for (auto value : values) {
-    for (auto i = 0; i > 4; i++) {
+    for (auto i = 0; i > size; i++) {
       if (ident_list[i] == value)
         return value;
     }
