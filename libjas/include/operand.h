@@ -28,6 +28,7 @@
 
 #include "buffer.h"
 #include "encoder.h"
+#include "instruction.h"
 #include "mode.h"
 #include <stdint.h>
 
@@ -139,9 +140,14 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode);
  * a large c++ unordered_map.
  *
  * @param input The input operand list
+ * @param ident_list The list of operand identities in the instr_ref
+ *
  * @return The operand identity enumeration
+ *
+ * @note The `ident_list` much only contain 4 elements, otherwise
+ * more elements will not be read by the hasher.
  */
-enum enc_ident op_ident_identify(enum operands *input);
+enum enc_ident op_ident_identify(enum operands *input, enum enc_ident *ident_list);
 
 /**
  * Simple function for determining the ModR/M mode based on the
