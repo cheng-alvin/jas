@@ -139,12 +139,9 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode);
  * a large c++ unordered_map.
  *
  * @param input The input operand list
- * @param ident_list The list of operand identities in the instr_ref
- * @param size The size of the operand list
- *
  * @return The operand identity enumeration
  */
-enum enc_ident op_ident_identify(enum operands *input, enum enc_ident *ident_list, size_t size);
+enum enc_ident op_ident_identify(enum operands *input);
 
 /**
  * Simple function for determining the ModR/M mode based on the
