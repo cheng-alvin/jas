@@ -34,6 +34,7 @@
 #include <stdlib.h>
 
 #define OP_OPCODE_HELPER (op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode)
+#define EMPTY_SIB 0x24
 
 static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
   const uint8_t rel_sz = op_sizeof(op_arr[index].type) / 8;
@@ -101,6 +102,9 @@ void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
   buf_write_byte(buf, op_modrm_mode(op_arr[0]) | opcode_extend | rm);
 
+  if (op_m(op_arr[0].type))
+    rm == 4 ? buf_write_byte(buf, EMPTY_SIB) : NULL;
+
   if (op_arr[0].offset != 0)
     buf_write(buf, (uint8_t *)&op_arr[0].offset, 4);
 }
@@ -127,6 +131,9 @@ void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
 
   buf_write_byte(buf, op_modrm_mode(op_arr[0]) | reg << 3 | rm);
+
+  if (op_m(op_arr[0].type))
+    rm == 4 ? buf_write_byte(buf, EMPTY_SIB) : NULL;
 
   if (op_arr[0].offset != 0)
     buf_write(buf, (uint8_t *)&op_arr[0].offset, 4);
@@ -159,6 +166,9 @@ void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
 
   buf_write_byte(buf, op_modrm_mode(op_arr[1]) | reg << 3 | rm);
+
+  if (op_m(op_arr[1].type))
+    rm == 4 ? buf_write_byte(buf, EMPTY_SIB) : NULL;
 
   if (op_arr[1].offset != 0)
     buf_write(buf, (uint8_t *)&op_arr[1].offset, 4);
