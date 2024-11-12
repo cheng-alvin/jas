@@ -1,4 +1,4 @@
-<p align="center">![Jas logo](https://github.com/user-attachments/assets/72ab1c93-7db3-4aa4-a231-a1c1aa2ccfe2)
+<p align="center"><img src="https://github.com/user-attachments/assets/72ab1c93-7db3-4aa4-a231-a1c1aa2ccfe2/" alt="Jas logo"/>
 </p>
 
 <p align="center">
