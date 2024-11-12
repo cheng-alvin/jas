@@ -1,7 +1,7 @@
-<p align="center"><img src="https://github.com/user-attachments/assets/72ab1c93-7db3-4aa4-a231-a1c1aa2ccfe2/" alt="Jas logo"/>
-</p>
-
 <p align="center">
+  <img src="https://github.com/cheng-alvin/jas/blob/0dbc1af19a1a30903ef68ae54814eefb46741e61/logo.png" alt="Jas logo" width="50%" />
+  <br/>
+  <br/>
   <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 <img src='https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square' />
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
