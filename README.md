@@ -1,7 +1,4 @@
 <p align="center">
-  <img src="https://github.com/cheng-alvin/jas/blob/0dbc1af19a1a30903ef68ae54814eefb46741e61/logo.png" alt="Jas logo" width="50%" />
-  <br/>
-  <br/>
   <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 <img src='https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square' />
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -10,9 +7,6 @@
   <img alt="GitHub License" src="https://img.shields.io/github/license/cheng-alvin/jas">
   <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/cheng-alvin/jas"/>
 </p>
-
-|⚠️ | Jas is under development and is **NOT STABLE** for use. Please make sure it's NOT used for production purposes!! **NO WARRANTY WILL BE PROVIDED AS PER THE LICENSE**|
-| -------- | ------- |
 
 <p align="center" padding="10px"> Jas is a minimal, fast and simple zero-dependdency assembler for the x64 family of processors, jas not only aims to be fast and simple when using it but also aims to be a learning reasource for others to learn about low-level system programming and the x64 instruction set. Useful for implementing into compilers, operating systems and JIT interpreters and other types of utilites that need compilation to ELF or just a plain enocded buffer. </p>
 
