@@ -21,14 +21,4 @@ clean:
 tests: 
 	$(MAKE) -C tests
 
-# $(BUILD)/libjas.deb: all
-# 	mkdir -p $(BUILD)/usr
-# 	mkdir -p $(BUILD)/usr/include
-# 	mkdir -p $(BUILD)/usr/lib
-# 	mv $(BUILD)/* $(BUILD)/usr 	
-# 	mkdir -p $(BUILD)/DEBIAN
-# 	cp control $(BUILD)/DEBIAN/control
-# 	chmod 644 $(BUILD/)DEBIAN/control
-# 	dpkg-deb --build $(BUILD) $@
-
 .PHONY: all tests format clean
