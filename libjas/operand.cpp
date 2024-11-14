@@ -23,12 +23,16 @@
  * @see `LICENSE`
  */
 
+// clang-format off
+
 extern "C" {
-#include "operand.h"
-#include "encoder.h"
-#include "error.h"
-#include "instruction.h"
+  #include "operand.h"
+  #include "encoder.h"
+  #include "error.h"
+  #include "instruction.h"
 }
+
+// clang-format on
 
 #include "operand.hpp"
 #include <cstddef>

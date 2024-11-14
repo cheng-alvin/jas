@@ -23,10 +23,6 @@
  * @see `LICENSE`
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef ERROR_H
 #define ERROR_H
 
@@ -65,8 +61,4 @@ void err(const char *msg);
  */
 void err_add_callback(err_callback_t input);
 
-#endif
-
-#ifdef __cplusplus
-}
 #endif
