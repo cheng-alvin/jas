@@ -25,7 +25,6 @@
 
 #include "exe.h"
 #include "endian.h"
-#include "label.h"
 #include <stdlib.h>
 
 /**
@@ -108,29 +107,11 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
 
   int int_pad = 0;
 
-  // Special cases for .symtab and .rela.text sections
   if (type == 0x02) {
-    size_t symtab_count = 0;
-    for (size_t i = 0; i < label_table_size; i++)
-      symtab_count++;
-
-    buf_write(&ret, &(uint32_t){2}, 4);                // Section link
-    buf_write(&ret, &(uint32_t){symtab_count + 1}, 4); // Section info
-    buf_write(&ret, &(uint64_t){0}, 8);                // Section address alignment
-    buf_write(&ret, &(uint64_t){0x18}, 8);             // Section entry size
-
-    return ret;
-  }
-
-  if (type == 0x04) {
-    size_t rela_count = 0;
-    for (size_t i = 0; i < label_table_size; i++)
-      if (label_table[i].ext) rela_count++;
-
-    buf_write(&ret, &(uint32_t){3}, 4);          // Section link
-    buf_write(&ret, &(uint32_t){rela_count}, 4); // Section info
-    buf_write(&ret, &(uint64_t){0}, 8);          // Section address alignment
-    buf_write(&ret, &(uint64_t){24}, 8);         // Section entry size
+    buf_write(&ret, &(uint32_t){2}, 4);    // Section link
+    buf_write(&ret, &(uint32_t){1}, 4);    // Section info
+    buf_write(&ret, &(uint64_t){0}, 8);    // Section address alignment
+    buf_write(&ret, &(uint64_t){0x18}, 8); // Section entry size
 
     return ret;
   }

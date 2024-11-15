@@ -33,7 +33,7 @@ label_t *label_table = NULL;
 size_t label_table_size = 0;
 
 void label_create(char *name, bool exported, bool ext, size_t address, size_t instr_index) {
-  if (label_lookup(name) != NULL && !ext) {
+  if (label_lookup(name) != NULL) {
     err("Label conflict detected, a duplicate cannot be created.");
     return;
   }
@@ -54,7 +54,7 @@ void label_destroy_all() {
 
 label_t *label_lookup(char *name) {
   for (size_t i = 0; i < label_table_size; i++)
-    if (strcmp(label_table[i].name, name) == 0 && !label_table[i].ext)
+    if (strcmp(label_table[i].name, name) == 0)
       return &label_table[i];
 
   return NULL;

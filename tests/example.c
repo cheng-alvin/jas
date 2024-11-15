@@ -10,11 +10,11 @@ Test(example, example) {
   err_add_callback(error_callback);
 
   instruction_t instr[] = (instruction_t[]){
-      // nop
+      // global _start:
       (instruction_t){
-          .instr = INSTR_NOP,
+          .instr = INSTR_DIR_GLOBAL_LABEL,
           .operands = (operand_t[]){
-              OP_NONE,
+              (operand_t){.type = OP_MISC, .data = "_start"},
               OP_NONE,
               OP_NONE,
               OP_NONE,
@@ -53,16 +53,6 @@ Test(example, example) {
               OP_NONE,
           },
       },
-      // global _start:
-      (instruction_t){
-          .instr = INSTR_DIR_GLOBAL_LABEL,
-          .operands = (operand_t[]){
-              (operand_t){.type = OP_MISC, .data = "_start"},
-              OP_NONE,
-              OP_NONE,
-              OP_NONE,
-          },
-      },
       // syscall
       (instruction_t){
           .instr = INSTR_SYSCALL,
@@ -73,7 +63,6 @@ Test(example, example) {
               OP_NONE,
           },
       },
-
   };
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr), CODEGEN_ELF);
