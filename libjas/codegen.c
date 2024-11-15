@@ -106,7 +106,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
       buf_write(&rela, (uint64_t *)&label_table[i].address, 8);                        // Offset
       buf_write(&rela, &(uint64_t){((symtab.len / 24) << 32) + (2 & 0xffffffffL)}, 8); // Info
       buf_write(&rela, &(uint64_t){4}, 8);                                             // Addend
-      label_table[i].address = 0;
     }
 
     buf_write(&symtab, (uint32_t *)&strtab.len, 4);             // Name offset

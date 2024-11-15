@@ -55,7 +55,7 @@ Test(example, example) {
       },
       // global _start:
       (instruction_t){
-          .instr = INSTR_DIR_EXTERN_LABEL,
+          .instr = INSTR_DIR_GLOBAL_LABEL,
           .operands = (operand_t[]){
               (operand_t){.type = OP_MISC, .data = "_start"},
               OP_NONE,
@@ -68,20 +68,6 @@ Test(example, example) {
           .instr = INSTR_SYSCALL,
           .operands = (operand_t[]){
               OP_NONE,
-              OP_NONE,
-              OP_NONE,
-              OP_NONE,
-          },
-      },
-
-      // jmp _start
-      (instruction_t){
-          .instr = INSTR_JMP,
-          .operands = (operand_t[]){
-              (operand_t){
-                  .type = OP_REL32,
-                  .label = "_start",
-              },
               OP_NONE,
               OP_NONE,
               OP_NONE,
