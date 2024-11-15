@@ -63,7 +63,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   const uint8_t *pad = calloc(0x40, 1);
   buf_write(&out, pad, 0x40); // Padding
-  free(pad);
+  free((void *)pad);
 
   /**
    * @note
@@ -99,7 +99,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
       buf_write(&symtab, &(uint64_t){0}, 8);                      // Size
 
       // TODO Check if a terminating null byte is needed
-      buf_write(&strtab, label_table[i].name, strlen(label_table[i].name) + 1);
+      buf_write(&strtab, (uint8_t *)label_table[i].name, strlen(label_table[i].name) + 1);
     }
   }
 
@@ -111,7 +111,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buf_concat(&out, 4, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
   FREE_ALL(shstrtab_sect_head.data, strtab_sect_head.data, symtab_sect_head.data, text_sect_head.data);
 
-  buf_write(&out, shstrtab, sizeof(shstrtab));
+  buf_write(&out, (uint8_t *)shstrtab, sizeof(shstrtab));
 
   buf_concat(&out, 2, &strtab, &symtab);
   FREE_ALL(strtab.data, symtab.data);
@@ -145,7 +145,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
       continue;
     }
 
-    if (instr_arr[i].instr == (enum instructions)NULL && instr_arr[i].operands == NULL) {
+    if (instr_arr[i].operands == NULL) {
       if (!pre) continue;
       for (size_t k = 0; k < label_table_size; k++) {
         if (label_table[k].instr_index == i)
@@ -173,7 +173,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
     instr_encode_table_t ref;
     unsigned int j = 0;
-    while (CURR_TABLE.opcode_size != NULL) {
+    while (CURR_TABLE.opcode_size != 0) {
       if (CURR_TABLE.ident == ident) {
         ref = CURR_TABLE;
         break;
@@ -181,7 +181,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
       j++;
     }
 
-    if (ref.opcode_size == NULL) {
+    if (ref.opcode_size == 0) {
       err("No corrsponding instruction opcode found.");
       free(buf.data);
       return BUF_NULL;
