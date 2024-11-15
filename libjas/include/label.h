@@ -92,4 +92,17 @@ void label_destroy_all();
  */
 label_t *label_lookup(char *name);
 
+/**
+ * Function for looking up all the external indexes in the label
+ * table, and returning a buffer containing the indexes of the
+ * external labels in the label table.
+ *
+ * @note The buffer will contain the indexes of the external
+ * labels in the label table, and will be used to create the
+ * relocation table for the external labels.
+ *
+ * @return The buffer containing the indexes of the external
+ * labels in the label table.
+ */
+buffer_t label_lookup_ext_indexes();
 #endif

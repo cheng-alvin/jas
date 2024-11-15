@@ -24,6 +24,7 @@
  */
 
 #include "label.h"
+#include "buffer.h"
 #include "error.h"
 #include <stdbool.h>
 #include <stdlib.h>
@@ -58,4 +59,16 @@ label_t *label_lookup(char *name) {
       return &label_table[i];
 
   return NULL;
+}
+
+buffer_t label_lookup_ext_indexes() {
+  buffer_t buf = BUF_NULL;
+  for (size_t i = 0; i < label_table_size; i++) {
+    if (label_table[i].ext &&
+        label_table[i].address == 0 &&
+        label_table[i].instr_index == 0)
+      buf_write(&buf, &i, 8);
+  }
+
+  return buf;
 }
