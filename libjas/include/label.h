@@ -84,6 +84,7 @@ void label_destroy_all();
  *
  * @param name The name of the label to look up in the label table.
  *
+ * @note Extern labels are not able to be looked up.
  * @note Caller is responsible for freeing the memory allocated
  * and handling string creations and declarations.
  * '

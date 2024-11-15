@@ -41,12 +41,25 @@ static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
 
   label_t *label = label_lookup((char *)op_arr[index].label);
   if (!label) {
+    for (size_t i = 0; i < label_table_size; i++) {
+      if (label_table[i].ext && label_table[i].address == 0 && label_table[i].instr_index == 0) {
+        label = &label_table[i];
+        break;
+      }
+    }
+  }
+
+  if (!label) {
     err("Referenced label was not found.");
     return;
   }
 
+  if (label->ext) {
+    label_create((char *)op_arr[index].label, false, true, buf->len, 0);
+  }
+
   ptrdiff_t rel_offset = label->address - (buf->len + rel_sz - 1);
-  buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
+  buf_write(buf, label->ext ? &(uint64_t){0} : (uint8_t *)&rel_offset, rel_sz);
 }
 
 void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {

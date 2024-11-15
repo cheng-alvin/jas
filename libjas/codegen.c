@@ -44,6 +44,8 @@
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre); // TODO Fix the stupid hack
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
   free(assemble(mode, instr_arr, arr_size, true).data);
+  label_destroy_all();
+
   const buffer_t code = assemble(mode, instr_arr, arr_size, false);
 
   if (exec_mode == CODEGEN_RAW) return code;
@@ -55,9 +57,10 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   buffer_t strtab = BUF_NULL;
   buffer_t symtab = BUF_NULL;
+  buffer_t rela = BUF_NULL;
   buffer_t out = BUF_NULL;
 
-  buffer_t header = exe_header(0x40, 5, 1);
+  buffer_t header = exe_header(0x40, 6, 1);
   buf_concat(&out, 1, &header);
   free(header.data);
 
@@ -65,21 +68,25 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buf_write(&out, pad, 0x40); // Padding
   free((void *)pad);
 
+  const uint8_t *rela_pad = calloc(24, 1);
+  buf_write(&rela, rela_pad, 24); // Padding
+  free((void *)rela_pad);
+
   /**
    * @note
    * The file offset of the section header table as seen with the expressions
-   * such as `6 * 0x40 + sizeof(shstrtab)` etc is shown as `6 * 0x40` because
+   * such as `7 * 0x40 + sizeof(shstrtab)` etc is shown as `6 * 0x40` because
    * the ELF header is 64 bytes long and the section header table is 64 bytes
    * EACH, given that there are 5 sections, the total size of the section header
-   * table is 256 bytes, hence the `6 * 0x40` expression.
+   * table is 256 bytes, hence the `7 * 0x40` expression.
    *
    * Also, the data offset must also be taken into account when calculating the
    * file offset of the section header table. as we need some space for the data
    * itself for the section.
    */
-  const int base = 6 * 0x40;
+  const int base = 7 * 0x40;
 
-  char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
+  char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0.rela.text\0";
   buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, base, sizeof(shstrtab));
 
   buf_write_byte(&strtab, 0);
@@ -89,35 +96,44 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   free(sym_pad);
 
   for (size_t i = 0; i < label_table_size; i++) {
-    if (label_table[i].exported) {
+    if (label_table[i].address == 0 && label_table[i].instr_index == 0) continue;
 
-      buf_write(&symtab, (uint32_t *)&strtab.len, 4);             // Name offset
-      buf_write_byte(&symtab, (((1) << 4) + ((0) & 0xf)));        // Info
-      buf_write_byte(&symtab, 0);                                 // Other
-      buf_write(&symtab, &(uint16_t){4}, 2);                      // Section index
-      buf_write(&symtab, (uint64_t *)&label_table[i].address, 8); // Value
-      buf_write(&symtab, &(uint64_t){0}, 8);                      // Size
+    uint8_t bind = 0;
+    uint16_t sect_in = 4; // Default for .text
 
-      // TODO Check if a terminating null byte is needed
-      buf_write(&strtab, (uint8_t *)label_table[i].name, strlen(label_table[i].name) + 1);
+    if (label_table[i].exported) bind = 1;
+    if (label_table[i].ext) {
+      buf_write(&rela, (uint64_t *)&label_table[i].address, 8);                        // Offset
+      buf_write(&rela, &(uint64_t){((symtab.len / 24) << 32) + (2 & 0xffffffffL)}, 8); // Info
+      buf_write(&rela, &(uint64_t){4}, 8);                                             // Addend
     }
+
+    buf_write(&symtab, (uint32_t *)&strtab.len, 4);             // Name offset
+    buf_write_byte(&symtab, (((bind) << 4) + ((0) & 0xf)));     // Info
+    buf_write_byte(&symtab, 0);                                 // Other
+    buf_write(&symtab, &sect_in, 2);                            // Section index
+    buf_write(&symtab, (uint64_t *)&label_table[i].address, 8); // Value
+    buf_write(&symtab, &(uint64_t){0}, 8);                      // Size
+
+    buf_write(&strtab, (uint8_t *)label_table[i].name, strlen(label_table[i].name) + 1);
   }
 
   buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, base + sizeof(shstrtab), strtab.len);
   buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, base + sizeof(shstrtab) + strtab.len, symtab.len);
 
   buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x7, base + sizeof(shstrtab) + strtab.len + symtab.len, code.len);
+  buffer_t rela_text_sect_head = exe_sect_header(33, 0x04, 0x2, base + sizeof(shstrtab) + strtab.len + symtab.len + code.len, rela.len);
 
-  buf_concat(&out, 4, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
-  FREE_ALL(shstrtab_sect_head.data, strtab_sect_head.data, symtab_sect_head.data, text_sect_head.data);
+  buf_concat(&out, 5, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head, &rela_text_sect_head);
+  FREE_ALL(shstrtab_sect_head.data, strtab_sect_head.data, symtab_sect_head.data, text_sect_head.data, rela_text_sect_head.data);
 
   buf_write(&out, (uint8_t *)shstrtab, sizeof(shstrtab));
 
-  buf_concat(&out, 2, &strtab, &symtab);
-  FREE_ALL(strtab.data, symtab.data);
+  buf_concat(&out, 3, &strtab, &symtab, &code);
+  FREE_ALL(strtab.data, symtab.data, code.data);
 
-  buf_write(&out, code.data, code.len);
-  free(code.data);
+  buf_concat(&out, 1, &rela);
+  free(rela.data);
 
   return out;
 }
@@ -128,7 +144,6 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
   for (size_t i = 0; i < arr_size; i++) {
     if (instr_arr[i].instr > INSTR_SYSCALL) {
-      if (pre) continue;
       if (instr_arr[i].instr == INSTR_DIR_WRT_BUF) {
         const buffer_t *data = (buffer_t *)instr_arr[i].operands[0].data;
         buf_write(&buf, data->data, data->len);
@@ -140,16 +155,11 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
           instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
           instr_arr[i].instr == INSTR_DIR_EXTERN_LABEL,
           NULL,
-          i);
+          instr_arr[i].instr == INSTR_DIR_EXTERN_LABEL ? 0 : i);
 
-      continue;
-    }
-
-    if (instr_arr[i].operands == NULL) {
-      if (!pre) continue;
       for (size_t k = 0; k < label_table_size; k++) {
         if (label_table[k].instr_index == i)
-          label_table[k].address = buf.len - 1;
+          label_table[k].address = buf.len;
       }
 
       continue;
