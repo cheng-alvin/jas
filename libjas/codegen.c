@@ -135,6 +135,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
         continue;
       }
 
+      // TODO Add relocation table
       label_create(
           instr_arr[i].operands[0].data,
           instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
