@@ -126,30 +126,20 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
   for (size_t i = 0; i < arr_size; i++) {
     if (instr_arr[i].instr > INSTR_SYSCALL) {
-      if (pre) continue;
       if (instr_arr[i].instr == INSTR_DIR_WRT_BUF) {
         const buffer_t *data = (buffer_t *)instr_arr[i].operands[0].data;
         buf_write(&buf, data->data, data->len);
         continue;
       }
 
+      if (!pre) continue;
       // TODO Add relocation table
       label_create(
           instr_arr[i].operands[0].data,
           instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
           instr_arr[i].instr == INSTR_DIR_EXTERN_LABEL,
-          NULL,
+          buf.len,
           i);
-
-      continue;
-    }
-
-    if (instr_arr[i].operands == NULL) {
-      if (!pre) continue;
-      for (size_t k = 0; k < label_table_size; k++) {
-        if (label_table[k].instr_index == i)
-          label_table[k].address = buf.len - 1;
-      }
 
       continue;
     }
