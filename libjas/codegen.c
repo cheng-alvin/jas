@@ -41,10 +41,28 @@
     }                                                                   \
   } while (0)
 
-static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre); // TODO Fix the stupid hack
+bool is_pre = false;
+
+static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size); // TODO Fix the stupid hack
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
-  free(assemble(mode, instr_arr, arr_size, true).data);
-  const buffer_t code = assemble(mode, instr_arr, arr_size, false);
+  for (size_t i = 0; i < arr_size / sizeof(instruction_t); i++) {
+    if (instr_arr[i].instr >= INSTR_DIR_LOCAL_LABEL) {
+      if (instr_arr[i].operands[0].data)
+        label_create(
+            instr_arr[i].operands[0].data,
+            instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
+            instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
+            0, i);
+    }
+  }
+
+  is_pre = true;
+  free(assemble(mode, instr_arr, arr_size).data);
+
+  is_pre = false;
+  const buffer_t code = assemble(mode, instr_arr, arr_size);
+
+  // continue;
 
   if (exec_mode == CODEGEN_RAW) return code;
 
@@ -120,7 +138,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   return out;
 }
 
-static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, bool pre) {
+static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
   arr_size /= sizeof(instruction_t);
   buffer_t buf = BUF_NULL;
 
@@ -129,17 +147,16 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
       if (instr_arr[i].instr == INSTR_DIR_WRT_BUF) {
         const buffer_t *data = (buffer_t *)instr_arr[i].operands[0].data;
         buf_write(&buf, data->data, data->len);
-        continue;
       }
 
-      if (!pre) continue;
-      // TODO Add relocation table
-      label_create(
-          instr_arr[i].operands[0].data,
-          instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
-          instr_arr[i].instr == INSTR_DIR_EXTERN_LABEL,
-          buf.len,
-          i);
+      if (is_pre && instr_arr[i].instr <= INSTR_DIR_LOCAL_LABEL) {
+        for (size_t j = 0; j < label_table_size; j++) {
+          if (strcmp(label_table[j].name, instr_arr[i].operands[0].data) == 0) {
+            label_table[j].address = buf.len;
+            break;
+          }
+        }
+      }
 
       continue;
     }
