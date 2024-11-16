@@ -111,11 +111,8 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   buf_write(&out, (uint8_t *)shstrtab, sizeof(shstrtab));
 
-  buf_concat(&out, 2, &strtab, &symtab);
-  FREE_ALL(strtab.data, symtab.data);
-
-  buf_write(&out, code.data, code.len);
-  free(code.data);
+  buf_concat(&out, 3, &strtab, &symtab, &code);
+  FREE_ALL(strtab.data, symtab.data, code.data);
 
   return out;
 }
