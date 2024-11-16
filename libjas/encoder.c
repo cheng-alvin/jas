@@ -45,7 +45,7 @@ static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
     return;
   }
 
-  ptrdiff_t rel_offset = label->address - (buf->len + rel_sz - 1);
+  ptrdiff_t rel_offset = label->address - (buf->len + rel_sz - 1) - 1;
   buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
 }
 
