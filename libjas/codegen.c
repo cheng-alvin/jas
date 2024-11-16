@@ -89,18 +89,19 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   free(sym_pad);
 
   for (size_t i = 0; i < label_table_size; i++) {
-    if (label_table[i].exported) {
+    // Refer to https://www.sco.com/developers/devspecs/gabi41.pdf - Figure 4-16
+    uint8_t binding = 0;
+    if (label_table[i].exported || label_table[i].ext) binding = 1;
 
-      buf_write(&symtab, (uint32_t *)&strtab.len, 4);             // Name offset
-      buf_write_byte(&symtab, (((1) << 4) + ((0) & 0xf)));        // Info
-      buf_write_byte(&symtab, 0);                                 // Other
-      buf_write(&symtab, &(uint16_t){4}, 2);                      // Section index
-      buf_write(&symtab, (uint64_t *)&label_table[i].address, 8); // Value
-      buf_write(&symtab, &(uint64_t){0}, 8);                      // Size
+    buf_write(&symtab, (uint32_t *)&strtab.len, 4);             // Name offset
+    buf_write_byte(&symtab, (((binding) << 4) + ((0) & 0xf)));  // Info
+    buf_write_byte(&symtab, 0);                                 // Other
+    buf_write(&symtab, &(uint16_t){4}, 2);                      // Section index
+    buf_write(&symtab, (uint64_t *)&label_table[i].address, 8); // Value
+    buf_write(&symtab, &(uint64_t){0}, 8);                      // Size
 
-      // TODO Check if a terminating null byte is needed
-      buf_write(&strtab, (uint8_t *)label_table[i].name, strlen(label_table[i].name) + 1);
-    }
+    // TODO Check if a terminating null byte is needed
+    buf_write(&strtab, (uint8_t *)label_table[i].name, strlen(label_table[i].name) + 1);
   }
 
   buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, base + sizeof(shstrtab), strtab.len);
