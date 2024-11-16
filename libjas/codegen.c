@@ -63,7 +63,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   const uint8_t *pad = calloc(0x40, 1);
   buf_write(&out, pad, 0x40); // Padding
-  free((void *)pad);
 
   /**
    * @note
@@ -83,10 +82,9 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, base, sizeof(shstrtab));
 
   buf_write_byte(&strtab, 0);
+  buf_write(&symtab, pad, 0x18);
 
-  uint8_t *sym_pad = calloc(0x18, 1);
-  buf_write(&symtab, sym_pad, 0x18);
-  free(sym_pad);
+  free(pad);
 
   for (size_t i = 0; i < label_table_size; i++) {
     // Refer to https://www.sco.com/developers/devspecs/gabi41.pdf - Figure 4-16
