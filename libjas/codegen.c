@@ -147,7 +147,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
         buf_write(&buf, data->data, data->len);
       }
 
-      if (is_pre && instr_arr[i].instr <= INSTR_DIR_LOCAL_LABEL) {
+      if (is_pre && (uint8_t)instr_arr[i].instr >= (uint8_t)INSTR_DIR_LOCAL_LABEL) {
         for (size_t j = 0; j < label_table_size; j++) {
           if (strcmp(label_table[j].name, instr_arr[i].operands[0].data) == 0) {
             label_table[j].address = buf.len;
