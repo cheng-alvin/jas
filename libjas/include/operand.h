@@ -151,6 +151,9 @@ enum enc_ident op_ident_identify(enum operands *input);
  * @param input The operand struct to determine the mode from
  * @return The ModR/M mode
  *
+ * @note Function also performs checks for RIP, ESP, IP instr-
+ * uction pointers for offset and ModR/M bytes and modes.
+ *
  * @see `operand_t`
  */
 uint8_t op_modrm_mode(operand_t input);
