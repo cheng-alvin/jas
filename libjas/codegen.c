@@ -62,8 +62,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   is_pre = false;
   const buffer_t code = assemble(mode, instr_arr, arr_size);
 
-  // continue;
-
   if (exec_mode == CODEGEN_RAW) return code;
 
   if (mode != MODE_LONG) {
