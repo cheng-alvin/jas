@@ -31,6 +31,16 @@
 #include <stdint.h>
 
 uint8_t op_modrm_mode(operand_t input) {
+  // Special checking conditions for RIP, EIP and IP (Instruction pointers)
+  if (reg_lookup_val(input.data) == 5 && !reg_needs_rex(input.data)) {
+    if (input.data == REG_RIP || input.data == REG_EIP || input.data == REG_IP) {
+      if (op_r(input.data))
+        err("RIP, EIP and IP cannot be used as direct operands.");
+
+      return OP_MODRM_INDIRECT;
+    }
+  }
+
   if (op_m(input.type) && input.offset == 0)
     return OP_MODRM_INDIRECT;
 
