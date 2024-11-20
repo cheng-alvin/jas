@@ -30,7 +30,6 @@
 #include <stddef.h>
 
 /**
-
  * Function for creating a new label with the given name and address
  * as mentioned in the `label_t` struct, storing it in an internal
  * table as a label entry.
