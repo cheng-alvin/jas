@@ -116,7 +116,7 @@ enum operands {
 
 #define op_rm(x) (op_r(x) || op_m(x))
 
-typedef struct {
+typedef struct operand {
   void *data;         /* Data in the operand */
   enum operands type; /* Type tied to the void pointer*/
   uint32_t offset;    /* The offset applied to the data (if applicable) */
