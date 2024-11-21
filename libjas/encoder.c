@@ -121,22 +121,33 @@ void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   buf_write(buf, imm, imm_size);
 }
 
-void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  const uint8_t reg = reg_lookup_val(op_arr[1].data);
-  const uint8_t rm = reg_lookup_val(op_arr[0].data);
+static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, bool is_rm) {
+  const uint8_t reg_idx = is_rm ? 0 : 1;
+  const uint8_t rm_idx = is_rm ? 1 : 0;
+
+  const uint8_t reg = reg_lookup_val(op_arr[reg_idx].data);
+  const uint8_t rm = reg_lookup_val(op_arr[rm_idx].data);
+
   op_write_prefix(buf, op_arr, mode);
 
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
   check_mode(mode, instr_ref->support);
+  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
 
-  buf_write_byte(buf, op_modrm_mode(op_arr[0]) | reg << 3 | rm);
+  buf_write_byte(buf, op_modrm_mode(op_arr[rm_idx]) | (reg << 3) | rm);
 
-  if (op_m(op_arr[0].type))
-    rm == 4 ? buf_write_byte(buf, EMPTY_SIB) : NULL;
+  if (op_m(op_arr[rm_idx].type)) {
+    if (rm == 4) {
+      buf_write_byte(buf, EMPTY_SIB);
+    }
+  }
 
-  if (op_arr[0].offset != 0)
-    buf_write(buf, (uint8_t *)&op_arr[0].offset, 4);
+  if (op_arr[rm_idx].offset != 0) {
+    buf_write(buf, (uint8_t *)&op_arr[rm_idx].offset, 4);
+  }
 }
+
+inline void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) { mr_rm_ref(op_arr, buf, instr_ref, mode, true); }
+inline void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) { mr_rm_ref(op_arr, buf, instr_ref, mode, false); }
 
 void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const uint8_t reg = reg_lookup_val(op_arr[0].data);
@@ -154,23 +165,6 @@ void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
   uint8_t *imm = (uint8_t *)op_arr[1].data;
   buf_write(buf, imm, imm_size);
-}
-
-void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  const uint8_t reg = reg_lookup_val(op_arr[0].data);
-  const uint8_t rm = reg_lookup_val(op_arr[1].data);
-  op_write_prefix(buf, op_arr, mode);
-
-  check_mode(mode, instr_ref->support);
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
-
-  buf_write_byte(buf, op_modrm_mode(op_arr[1]) | reg << 3 | rm);
-
-  if (op_m(op_arr[1].type))
-    rm == 4 ? buf_write_byte(buf, EMPTY_SIB) : NULL;
-
-  if (op_arr[1].offset != 0)
-    buf_write(buf, (uint8_t *)&op_arr[1].offset, 4);
 }
 
 void zo(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
