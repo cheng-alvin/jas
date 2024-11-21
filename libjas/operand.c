@@ -31,14 +31,12 @@
 #include <stdint.h>
 
 uint8_t op_modrm_mode(operand_t input) {
-  // Special checking conditions for RIP, EIP and IP (Instruction pointers)
   const enum registers deref_reg = (*(enum registers *)input.data);
+
   if (reg_lookup_val(input.data) == 5 && !reg_needs_rex(deref_reg)) {
     if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP) {
-
       if (op_r(deref_reg))
         err("RIP, EIP and IP cannot be used as direct operands.");
-
       return OP_MODRM_INDIRECT;
     }
   }
