@@ -146,13 +146,8 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
   }
 }
 
-void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  mr_rm_ref(op_arr, buf, instr_ref, mode, true);
-}
-
-void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  mr_rm_ref(op_arr, buf, instr_ref, mode, false);
-}
+void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) { mr_rm_ref(op_arr, buf, instr_ref, mode, true); }
+void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) { mr_rm_ref(op_arr, buf, instr_ref, mode, false); }
 
 void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const uint8_t reg = reg_lookup_val(op_arr[0].data);
