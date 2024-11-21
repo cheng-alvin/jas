@@ -126,9 +126,8 @@ void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum 
   const uint8_t rm = reg_lookup_val(op_arr[0].data);
   op_write_prefix(buf, op_arr, mode);
 
-  check_mode(mode, instr_ref->support);
-
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
+  check_mode(mode, instr_ref->support);
 
   buf_write_byte(buf, op_modrm_mode(op_arr[0]) | reg << 3 | rm);
 
