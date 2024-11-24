@@ -162,7 +162,7 @@ Test(example, example) {
               OP_NONE,
           },
       },
-      // imul eax, eax
+      // add eax, eax
       (instruction_t){
           .instr = INSTR_ADD,
           .operands = (operand_t[]){
