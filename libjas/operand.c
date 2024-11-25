@@ -37,7 +37,7 @@ uint8_t op_modrm_mode(operand_t input) {
       if (op_r(deref_reg))
         err("RIP, EIP and IP cannot be used as direct operands.");
       return OP_MODRM_INDIRECT;
-    } else
+    } else if (input.offset > 0l)
       return OP_MODRM_DISP8; // Assume to be Base pointer reg
   }
 
