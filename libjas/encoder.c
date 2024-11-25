@@ -49,29 +49,6 @@ static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
   buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
 }
 
-void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  /**
-   * @brief This opcode identity should:
-   *   1. Write the opcode to the buffer ✅
-   *   2. Calculate the relative offset of the label ✅
-   *   3. Write the relative offset to the buffer - kinda ✅
-   */
-
-  // IN BYTES!!!
-  const uint8_t rel_sz = op_sizeof(op_arr[0].type) / 8;
-
-  if (rel_sz == 8) {
-    err("A relative address cannot be 64 bit-sized.");
-    return;
-  }
-
-  check_mode(mode, instr_ref->support);
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
-
-  // Calculate the relative offset of the label
-  ref_label(op_arr, buf, 0);
-}
-
 void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   //  Error checking - A register only & only 8, 16, 32 bit-sized operands
   if (reg_lookup_val(op_arr[0].data) != 0 && !reg_needs_rex(op_arr[0].data)) {
@@ -109,21 +86,58 @@ void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
     buf_write(buf, (uint8_t *)&op_arr[0].offset, 4);
 }
 
-void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  m(op_arr, buf, instr_ref, mode);
-  if (op_arr[1].type == OP_IMM64) {
-    err("Invalid immediate value.");
-    return;
-  }
-
+static void i_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
   uint8_t *imm = (uint8_t *)op_arr[1].data;
   buf_write(buf, imm, imm_size);
 }
 
+void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  /**
+   * @brief This opcode identity should:
+   *   1. Write the opcode to the buffer ✅
+   *   2. Calculate the relative offset of the label ✅
+   *   3. Write the relative offset to the buffer - kinda ✅
+   */
+
+  // IN BYTES!!!
+  const uint8_t rel_sz = op_sizeof(op_arr[0].type) / 8;
+
+  if (rel_sz == 8) {
+    err("A relative address cannot be 64 bit-sized.");
+    return;
+  }
+
+  check_mode(mode, instr_ref->support);
+  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
+
+  // Calculate the relative offset of the label
+  ref_label(op_arr, buf, 0);
+}
+
+void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  m(op_arr, buf, instr_ref, mode);
+  i_common(op_arr, buf, instr_ref, mode);
+
+  if (op_arr[1].type == OP_IMM64) {
+    err("Invalid immediate value.");
+    return;
+  }
+}
+
 static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, bool is_rm) {
-  const uint8_t reg_idx = is_rm ? 0 : 1;
-  const uint8_t rm_idx = is_rm ? 1 : 0;
+  /**
+   * @brief This opcode identity is a "Common ground for MR and RM"
+   * Since rm and mr just has to be flipped, we can just use a boolean
+   * to determine which one to use, and then reference it.
+   *
+   * @note An empty SIB byte will be written if the register is 4
+   * (A rsp, sp or esp) register that activates the SIB byte.
+   */
+
+  // Since this is accessed quite often
+  register const uint8_t reg_idx = is_rm ? 0 : 1;
+  register const uint8_t rm_idx = is_rm ? 1 : 0;
 
   const uint8_t reg = reg_lookup_val(op_arr[reg_idx].data);
   const uint8_t rm = reg_lookup_val(op_arr[rm_idx].data);
@@ -135,6 +149,7 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
 
   buf_write_byte(buf, op_modrm_mode(op_arr[rm_idx]) | (reg << 3) | rm);
 
+  // Isolate??!?! - Writing in offset
   if (op_m(op_arr[rm_idx].type)) {
     if (rm == 4) {
       buf_write_byte(buf, EMPTY_SIB);
@@ -161,10 +176,7 @@ void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
 
 void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   o(op_arr, buf, instr_ref, mode);
-
-  const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
-  uint8_t *imm = (uint8_t *)op_arr[1].data;
-  buf_write(buf, imm, imm_size);
+  i_common(op_arr, buf, instr_ref, mode);
 }
 
 void zo(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
