@@ -45,7 +45,8 @@ static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
     return;
   }
 
-  int32_t rel_offset = label->address - (buf->len + rel_sz - 1) - 1;
+  extern bool is_pre;
+  int32_t rel_offset = is_pre ? 0 : label->address - (buf->len + rel_sz - 1) - 1;
   buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
 }
 
@@ -172,8 +173,11 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
    */
 
   const enum registers deref_reg = (*(enum registers *)op_arr[rm_idx].data);
-  if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP)
+  if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP) {
+    op_arr[rm_idx].type = deref_reg == REG_RIP ? OP_M32 : op_arr[rm_idx].type;
     ref_label(op_arr, buf, rm_idx);
+    op_arr[rm_idx].type = deref_reg == REG_RIP ? OP_M64 : op_arr[rm_idx].type;
+  }
 
   if (op_m(op_arr[rm_idx].type)) {
     if (rm == 4) {
