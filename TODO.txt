@@ -29,9 +29,3 @@ POPA: Pop counterpart of PUSHA, popping all general purpose registers
 MOVZX: Move with zero-extension (padding).
 
 https://docs.google.com/document/d/1bm9lxVyAk2qogOF9ujERyRcSwXkpKxLW8IWVU8FuMyE/edit?usp=sharing
-
-Current plan:
-As of 14/9, the current plan is to make the assembler work only with stack
-variables and not rip addressing or segment addressing etc, we'll currently 
-just be able to write a c compiler in this before we continue and add other 
-functionality like relocation and everything else in between :):)
