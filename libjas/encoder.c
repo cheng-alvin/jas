@@ -82,6 +82,13 @@ void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
   if (op_m(op_arr[0].type))
     rm == 4 ? buf_write_byte(buf, EMPTY_SIB) : NULL;
 
+  const enum registers deref_reg = (*(enum registers *)op_arr[0].data);
+  if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP)
+    ref_label(op_arr, buf, 0);
+
+  if (rm == 5 && op_arr[0].offset == 0)
+    buf_write_byte(buf, 0);
+
   if (op_arr[0].offset != 0)
     buf_write(buf, (uint8_t *)&op_arr[0].offset, 4);
 }
@@ -135,7 +142,7 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
    * (A rsp, sp or esp) register that activates the SIB byte.
    */
 
-  // Since this is accessed quite often
+  // Register - Since this is accessed quite often
   register const uint8_t reg_idx = is_rm ? 0 : 1;
   register const uint8_t rm_idx = is_rm ? 1 : 0;
 
@@ -149,12 +156,33 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
 
   buf_write_byte(buf, op_modrm_mode(op_arr[rm_idx]) | (reg << 3) | rm);
 
-  // Isolate??!?! - Writing in offset
+  /**
+   * @note
+   * Some edge cases for the ModR/M byte:
+   *
+   * 1. If the register is RIP, EIP or IP, then the label will be referenced
+   * through the relative offset via the `ref_label` function, see above.
+   *
+   * 2. If the register is a 4 (rsp, sp or esp), then an empty SIB byte will
+   * be written to the buffer. Since the value 4 in the reg field will auto
+   * matically trigger the SIB to be expected.
+   *
+   * 3. If the register rbp is referenced, then the offset will be written
+   * as 0 and the mode will be set to a 8 bit displacement.
+   */
+
+  const enum registers deref_reg = (*(enum registers *)op_arr[rm_idx].data);
+  if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP)
+    ref_label(op_arr, buf, rm_idx);
+
   if (op_m(op_arr[rm_idx].type)) {
     if (rm == 4) {
       buf_write_byte(buf, EMPTY_SIB);
     }
   }
+
+  if (rm == 5 && op_arr[rm_idx].offset == 0)
+    buf_write_byte(buf, 0);
 
   if (op_arr[rm_idx].offset != 0) {
     buf_write(buf, (uint8_t *)&op_arr[rm_idx].offset, 4);
