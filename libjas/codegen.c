@@ -41,6 +41,15 @@
     }                                                                   \
   } while (0)
 
+#define WRITE_SYMTAB(name, sect_idx)                                       \
+  buf_write(&symtab, (uint32_t *)&strtab.len, 4);      /* Name offset */   \
+  buf_write_byte(&symtab, (((1) << 4) + ((3) & 0xf))); /* Info */          \
+  buf_write_byte(&symtab, 0);                          /* Other */         \
+  buf_write(&symtab, &(uint16_t){sect_idx}, 2);        /* Section index */ \
+  buf_write(&symtab, &(uint64_t){0}, 8);               /* Value */         \
+  buf_write(&symtab, &(uint64_t){0}, 8);               /* Size */          \
+  buf_write(&strtab, name, strlen(name) + 1);
+
 bool is_pre = false;
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size); // TODO Fix the stupid hack
@@ -102,16 +111,10 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   // Writing section name to symbol table
   // For some reason the gcc compiler does not link if there's no filename.
-  // TODO CLEAN UP: THIS IS A FUCKING DUMPSTER FIRE
 
-  buf_write(&symtab, (uint32_t *)&strtab.len, 4);      // Name offset
-  buf_write_byte(&symtab, (((1) << 4) + ((3) & 0xf))); // Info
-  buf_write_byte(&symtab, 0);                          // Other
-  buf_write(&symtab, &(uint16_t){4}, 2);               // Section index
-  buf_write(&symtab, &(uint64_t){0}, 8);               // Value
-  buf_write(&symtab, &(uint64_t){0}, 8);               // Size
+  WRITE_SYMTAB(".text", 4);
 
-  buf_write(&strtab, ".text", strlen(".text") + 1);
+  // Please see `WRITE_SYMTAB` macro for more information
 
   free(pad);
 
