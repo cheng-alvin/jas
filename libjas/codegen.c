@@ -171,7 +171,6 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
           }
         }
       }
-
       continue;
     }
 
@@ -185,30 +184,27 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
     enum enc_ident ident = op_ident_identify(operand_list);
     if (instr_arr[i].instr == INSTR_MOV) {
-      if (ident == OP_MI)
-        ident = OP_OI;
-
-      if (ident == OP_I)
-        ident = OP_O;
+      if (ident == OP_MI) ident = OP_OI;
+      if (ident == OP_I) ident = OP_O;
     }
 
-    instr_encode_table_t ref;
-    unsigned int j = 0;
+    register instr_encode_table_t *ref;
+    register unsigned int j = 0;
     while (CURR_TABLE.opcode_size != 0) {
       if (CURR_TABLE.ident == ident) {
-        ref = CURR_TABLE;
+        ref = &CURR_TABLE;
         break;
       }
       j++;
     }
 
-    if (ref.opcode_size == 0) {
+    if (ref->opcode_size == 0) {
       err("No corrsponding instruction opcode found.");
       free(buf.data);
       return BUF_NULL;
     }
 
-    if (ref.pre != NULL) ref.pre(current.operands, &buf, &ref, (enum modes)mode);
+    if (ref->pre != NULL) ref->pre(current.operands, &buf, &ref, (enum modes)mode);
     instr_encode_func(ident)(current.operands, &buf, &ref, (enum modes)mode);
   }
 
