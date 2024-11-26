@@ -100,6 +100,19 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   buf_write_byte(&strtab, 0);
   buf_write(&symtab, pad, 0x18);
 
+  // Writing section name to symbol table
+  // For some reason the gcc compiler does not link if there's no filename.
+  // TODO CLEAN UP: THIS IS A FUCKING DUMPSTER FIRE
+
+  buf_write(&symtab, (uint32_t *)&strtab.len, 4);      // Name offset
+  buf_write_byte(&symtab, (((1) << 4) + ((3) & 0xf))); // Info
+  buf_write_byte(&symtab, 0);                          // Other
+  buf_write(&symtab, &(uint16_t){4}, 2);               // Section index
+  buf_write(&symtab, &(uint64_t){0}, 8);               // Value
+  buf_write(&symtab, &(uint64_t){0}, 8);               // Size
+
+  buf_write(&strtab, ".text", strlen(".text") + 1);
+
   free(pad);
 
   for (size_t i = 0; i < label_table_size; i++) {
