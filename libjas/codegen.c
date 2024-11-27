@@ -48,7 +48,7 @@
   buf_write(&symtab, &(uint16_t){sect_idx}, 2);        /* Section index */ \
   buf_write(&symtab, &(uint64_t){0}, 8);               /* Value */         \
   buf_write(&symtab, &(uint64_t){0}, 8);               /* Size */          \
-  buf_write(&strtab, name, strlen(name) + 1);
+  buf_write(&strtab, (uint8_t *)name, strlen(name) + 1);
 
 bool is_pre = false;
 
@@ -188,7 +188,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
       if (ident == OP_I) ident = OP_O;
     }
 
-    register instr_encode_table_t *ref;
+    instr_encode_table_t *ref = NULL;
     register unsigned int j = 0;
     while (CURR_TABLE.opcode_size != 0) {
       if (CURR_TABLE.ident == ident) {
