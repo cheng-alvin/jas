@@ -19,6 +19,8 @@ with contributing to Jas (especially for those who are not familiar with Git).
 > two word overview on the changes commited and commit messages shall show the added changes in another couple
 > words with details appearing in the description.
 
+To build Jas, simply run `make` in the home or `libjas` directories. Tests can be added in the `tests` directory and built using `make tests` as well in the home directory.
+
 ### What now?
 After reading the instructions here, you should have a good understanding of how to contribute
 to the Jas assembler project! Write some code, drink some coffee, and have fun!
