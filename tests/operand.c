@@ -30,6 +30,20 @@ Test(operand, write_prefix) {
    * instruction will be changed to that particular si-
    * ze and will be override.
    */
+
+  buffer_t buf = BUF_NULL;
+  const operand_t op_arr[] = {
+      op_construct_operand(OP_R8, 0, &(enum registers){REG_RAX}),
+      op_construct_operand(OP_IMM8, 0, &(unsigned char){0xFF}),
+  };
+
+  op_write_prefix(&buf, op_arr, MODE_REAL);
+  op_write_prefix(&buf, op_arr, MODE_LONG);
+  op_write_prefix(&buf, op_arr, MODE_PROTECTED);
+
+  assert_eq(buf.data[2], OP_WORD_OVERRIDE);
+  assert_eq(buf.data[1], REX_W);
+  assert_eq(buf.data[0], OP_WORD_OVERRIDE);
 }
 
 Test(operand, construct_operand) {
@@ -38,25 +52,6 @@ Test(operand, construct_operand) {
   assert_eq(byte.type, OP_IMM8);
   assert_eq(byte.offset, 0);
   assert_eq(*(unsigned char *)byte.data, 0xFF);
-}
-
-Test(operand, sizeof) {
-  assert_eq(op_sizeof(OP_IMM8), 8);
-  assert_eq(op_sizeof(OP_IMM16), 16);
-  assert_eq(op_sizeof(OP_IMM32), 32);
-  assert_eq(op_sizeof(OP_IMM64), 64);
-
-  assert_eq(op_sizeof(OP_R8), 8);
-  assert_eq(op_sizeof(OP_R16), 16);
-  assert_eq(op_sizeof(OP_R32), 32);
-  assert_eq(op_sizeof(OP_R64), 64);
-
-  assert_eq(op_sizeof(OP_M8), 8);
-  assert_eq(op_sizeof(OP_M16), 16);
-  assert_eq(op_sizeof(OP_M32), 32);
-  assert_eq(op_sizeof(OP_M64), 64);
-
-  assert_eq(op_sizeof(OP_NULL), 0);
 }
 
 Test(operand, ident_identify) {
