@@ -6,8 +6,6 @@
 
 Test(operand, write_prefix) {
   /**
-   * TODO test following conditions:
-   *
    * mode | size    | output
    * -----------------------------
    * real | 32      | 0x66
