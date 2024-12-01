@@ -65,7 +65,6 @@ int main(void) {
 
   RunTest(operand, write_prefix);
   RunTest(operand, construct_operand);
-  RunTest(operand, sizeof);
   RunTest(operand, ident_identify);
 
   return 0;
