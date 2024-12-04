@@ -112,9 +112,7 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
           buf_write_byte(buf, OP_WORD_OVERRIDE);
       }
 
-      if (!buf_element_exists(buf, override))
-        buf_write_byte(buf, override);
-      break;
+      goto override_write;
 
     case 32:
       if (mode == MODE_REAL) goto override_write;
