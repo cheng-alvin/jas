@@ -24,8 +24,6 @@
  */
 
 #include "endian.h"
-#include <stddef.h>
-#include <stdint.h>
 #include <stdlib.h>
 
 uint8_t *endian(uint8_t *data, size_t data_size) {
