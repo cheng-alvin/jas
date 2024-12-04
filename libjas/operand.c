@@ -118,8 +118,7 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
       if (mode == MODE_REAL) goto override_write;
       if (override != OP_ADDR_OVERRIDE || mode == MODE_PROTECTED) break;
 
-    // TODO isolate in buffer
-    override_write: // NOT THS :D
+    override_write:
       if (!buf_element_exists(buf, override))
         buf_write_byte(buf, override);
 
