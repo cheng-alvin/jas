@@ -46,15 +46,15 @@ Test(operand, write_prefix) {
   RUN_TEST(op_arr32, MODE_REAL, 1, OP_WORD_OVERRIDE);
   RUN_TEST(op_addr32, MODE_REAL, 2, OP_ADDR_OVERRIDE);
   RUN_TEST(op_arr16, MODE_PROTECTED, 3, OP_WORD_OVERRIDE);
-  RUN_TEST(op_addr16, MODE_PROTECTED, 4, OP_ADDR_OVERRIDE);
-  RUN_TEST(op_arr16, MODE_LONG, 5, OP_WORD_OVERRIDE);
-  RUN_TEST(op_addr32, MODE_LONG, 6, OP_ADDR_OVERRIDE);
+  RUN_TEST(op_arr16, MODE_LONG, 4, OP_WORD_OVERRIDE);  //
+  RUN_TEST(op_addr16, MODE_LONG, 6, OP_ADDR_OVERRIDE); //
+  RUN_TEST(op_addr32, MODE_LONG, 8, OP_ADDR_OVERRIDE);
 
   op_write_prefix(&buf, op_addr16, MODE_LONG);
-  assert_eq(buf.data[7], OP_ADDR_OVERRIDE);
-  assert_eq(buf.data[8], OP_WORD_OVERRIDE);
+  assert_eq(buf.data[9], OP_ADDR_OVERRIDE);
+  assert_eq(buf.data[10], OP_WORD_OVERRIDE);
 
-  RUN_TEST(op_arr64, MODE_LONG, 9, REX_W);
+  RUN_TEST(op_arr64, MODE_LONG, 11, REX_W);
 
   free(buf.data);
 }
