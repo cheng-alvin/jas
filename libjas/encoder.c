@@ -52,7 +52,7 @@ static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
 
 void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   //  Error checking - A register only & only 8, 16, 32 bit-sized operands
-  if (reg_lookup_val(op_arr[0].data) != 0 && !reg_needs_rex(op_arr[0].data)) {
+  if (reg_lookup_val(op_arr[0].data) != 0 && !reg_needs_rex((enum registers)op_arr[0].data)) {
     err("Instruction identity must use an \"A\" register!");
     return;
   }
