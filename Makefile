@@ -17,7 +17,6 @@ clean:
 	@mkdir -p $(BUILD)/include
 	@mkdir -p $(BUILD)/lib
 	@mkdir -p $(BUILD)
-	@$(MAKE) -C tests clean
 
 tests: 
 	$(MAKE) -C tests
