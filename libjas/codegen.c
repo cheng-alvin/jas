@@ -177,7 +177,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
     instruction_t current = instr_arr[i];
     const enum operands operand_list[4] = {
-        current.operands[0].type,
+        current.operands[0].type, /* TODO - LLDB reporting SEG-FAULT here: */
         current.operands[1].type,
         current.operands[2].type,
         current.operands[3].type,
