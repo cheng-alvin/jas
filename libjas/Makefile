@@ -12,7 +12,7 @@ libjas.a: $(OBJ)
 
 libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -std=c99
 libjas_debug.a: $(OBJ)
-	ar rcs $(BUILD)/$@ $^
+	ar rcs $(BUILD)/lib/$@ $^
 
 # Individual object files rules:
 operand_cpp.o: CFLAGS = $(CFLAGS_COMMON) -std=c++11
