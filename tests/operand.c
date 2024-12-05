@@ -30,18 +30,33 @@ Test(operand, write_prefix) {
    */
 
   buffer_t buf = BUF_NULL;
-  const operand_t op_arr[] = {
-      op_construct_operand(OP_R8, 0, &(enum registers){REG_RAX}),
-      op_construct_operand(OP_IMM8, 0, &(unsigned char){0xFF}),
-  };
+  buf_write_byte(&buf, 0x0); // Filler byte cuz NULL pointer will be accessed if no prefix
 
-  op_write_prefix(&buf, op_arr, MODE_REAL);
-  op_write_prefix(&buf, op_arr, MODE_LONG);
-  op_write_prefix(&buf, op_arr, MODE_PROTECTED);
+  const operand_t op_arr16[] = {r16, imm16, OP_NONE, OP_NONE};
+  const operand_t op_addr16[] = {m16, imm16, OP_NONE, OP_NONE};
+  const operand_t op_arr32[] = {r32, imm32, OP_NONE, OP_NONE};
+  const operand_t op_addr32[] = {m32, imm32, OP_NONE, OP_NONE};
+  const operand_t op_arr64[] = {r64, imm64, OP_NONE, OP_NONE};
+  const operand_t op_addr64[] = {m64, imm64, OP_NONE, OP_NONE};
 
-  assert_eq(buf.data[2], OP_WORD_OVERRIDE);
-  assert_eq(buf.data[1], REX_W);
-  assert_eq(buf.data[0], OP_WORD_OVERRIDE);
+#define RUN_TEST(operands, mode, index, expected) \
+  op_write_prefix(&buf, operands, mode);          \
+  assert_eq(buf.data[index], expected);
+
+  RUN_TEST(op_arr32, MODE_REAL, 1, OP_WORD_OVERRIDE);
+  RUN_TEST(op_addr32, MODE_REAL, 2, OP_ADDR_OVERRIDE);
+  RUN_TEST(op_arr16, MODE_PROTECTED, 3, OP_WORD_OVERRIDE);
+  RUN_TEST(op_addr16, MODE_PROTECTED, 4, OP_ADDR_OVERRIDE);
+  RUN_TEST(op_arr16, MODE_LONG, 5, OP_WORD_OVERRIDE);
+  RUN_TEST(op_addr32, MODE_LONG, 6, OP_ADDR_OVERRIDE);
+
+  op_write_prefix(&buf, op_addr16, MODE_LONG);
+  assert_eq(buf.data[7], OP_ADDR_OVERRIDE);
+  assert_eq(buf.data[8], OP_WORD_OVERRIDE);
+
+  RUN_TEST(op_arr64, MODE_LONG, 9, REX_W);
+
+  free(buf.data);
 }
 
 Test(operand, construct_operand) {

@@ -93,6 +93,7 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
    */
 
   uint8_t rex = REX_DEFAULT;
+  const size_t starting_idx = buf->len;
 
   for (uint8_t i = 0; i < 4; i++) {
     if (op_arr[i].type == OP_NULL)
@@ -119,8 +120,10 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
       if (override != OP_ADDR_OVERRIDE || mode == MODE_PROTECTED) break;
 
     override_write:
-      if (!buf_element_exists(buf, override))
-        buf_write_byte(buf, override);
+      for (uint8_t k = starting_idx; k < buf->len - 1; k++)
+        if (buf->data[k] == override) break;
+
+      buf_write_byte(buf, override);
 
       break;
 
