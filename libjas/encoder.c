@@ -36,6 +36,9 @@
 #define OP_OPCODE_HELPER (op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode)
 #define EMPTY_SIB 0x24
 
+#define DEFINE_ENCODER(ident) \
+  void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
+
 static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
   const uint8_t rel_sz = op_sizeof(op_arr[index].type) / 8;
 
@@ -50,7 +53,7 @@ static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
   buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
 }
 
-void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+DEFINE_ENCODER(i) {
   //  Error checking - A register only & only 8, 16, 32 bit-sized operands
   if (reg_lookup_val(op_arr[0].data) != 0 && !reg_needs_rex((enum registers)op_arr[0].data)) {
     err("Instruction identity must use an \"A\" register!");
@@ -70,7 +73,7 @@ void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
   buf_write(buf, imm, imm_size);
 }
 
-void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+DEFINE_ENCODER(m) {
   const uint8_t opcode_extend = instr_ref->opcode_ext << 3;
   const uint8_t rm = reg_lookup_val(op_arr[0].data);
 
@@ -100,7 +103,7 @@ static void i_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *ins
   buf_write(buf, imm, imm_size);
 }
 
-void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+DEFINE_ENCODER(d) {
   /**
    * @brief This opcode identity should:
    *   1. Write the opcode to the buffer ✅
@@ -123,7 +126,7 @@ void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
   ref_label(op_arr, buf, 0);
 }
 
-void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+DEFINE_ENCODER(mi) {
   m(op_arr, buf, instr_ref, mode);
   i_common(op_arr, buf, instr_ref, mode);
 
@@ -193,10 +196,15 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
   }
 }
 
-void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) { mr_rm_ref(op_arr, buf, instr_ref, mode, true); }
-void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) { mr_rm_ref(op_arr, buf, instr_ref, mode, false); }
+DEFINE_ENCODER(mr) {
+  mr_rm_ref(op_arr, buf, instr_ref, mode, false);
+}
 
-void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+DEFINE_ENCODER(rm) {
+  mr_rm_ref(op_arr, buf, instr_ref, mode, true);
+}
+
+DEFINE_ENCODER(o) {
   const uint8_t reg = reg_lookup_val(op_arr[0].data);
   op_write_prefix(buf, op_arr, mode);
 
@@ -206,12 +214,12 @@ void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum m
   buf_write(buf, data, instr_ref->opcode_size);
 }
 
-void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+DEFINE_ENCODER(oi) {
   o(op_arr, buf, instr_ref, mode);
   i_common(op_arr, buf, instr_ref, mode);
 }
 
-void zo(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+DEFINE_ENCODER(zo) {
   check_mode(mode, instr_ref->support);
   buf_write(buf, instr_ref->opcode, instr_ref->opcode_size);
 }
