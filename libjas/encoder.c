@@ -196,13 +196,8 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
   }
 }
 
-DEFINE_ENCODER(mr) {
-  mr_rm_ref(op_arr, buf, instr_ref, mode, false);
-}
-
-DEFINE_ENCODER(rm) {
-  mr_rm_ref(op_arr, buf, instr_ref, mode, true);
-}
+DEFINE_ENCODER(mr) { mr_rm_ref(op_arr, buf, instr_ref, mode, false); }
+DEFINE_ENCODER(rm) { mr_rm_ref(op_arr, buf, instr_ref, mode, true); }
 
 DEFINE_ENCODER(o) {
   const uint8_t reg = reg_lookup_val(op_arr[0].data);
