@@ -18,6 +18,6 @@ libjas_debug.a:
 clean:
 	@find . -name "*.o" -type f -delete
 	@find . -name "*.a" -type f -delete
-	@find . -type f -perm +111 -exec rm -f {} \;
+	@ls | grep -v "\.\|Makefile" | xargs rm
 
 .PHONY: clean all
