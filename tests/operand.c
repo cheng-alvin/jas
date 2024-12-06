@@ -47,7 +47,7 @@ Test(operand, write_prefix) {
   RUN_TEST(op_addr32, MODE_REAL, 2, OP_ADDR_OVERRIDE);
   RUN_TEST(op_arr16, MODE_PROTECTED, 3, OP_WORD_OVERRIDE);
   RUN_TEST(op_arr16, MODE_LONG, 4, OP_WORD_OVERRIDE);  //
-  RUN_TEST(op_addr16, MODE_LONG, 6, OP_ADDR_OVERRIDE); //
+  RUN_TEST(op_addr16, MODE_LONG, 6, OP_ADDR_OVERRIDE); // TODO For some strange reason an extra byte?
   RUN_TEST(op_addr32, MODE_LONG, 8, OP_ADDR_OVERRIDE);
 
   op_write_prefix(&buf, op_addr16, MODE_LONG);
