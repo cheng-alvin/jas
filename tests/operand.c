@@ -5,30 +5,6 @@
 #include "test.h"
 
 Test(operand, write_prefix) {
-  /**
-   * mode | size    | output
-   * -----------------------------
-   * real | 32      | 0x66
-   * real | 32 addr | 0x67
-   * prot | 16      | 0x66
-   * prot | 16 addr | 0x67
-   * long | 16      | 0x66
-   * long | 32 addr | 0x67
-   * long | 16 addr | 0x67 + 0x66
-   *
-   * long | 64      | REX.W
-   *
-   * Additional: Register REX prefix for REX.B
-   *
-   * @note (Potentially drop support for 16-bit operands
-   * in long mode)
-   *
-   * @note Note that when a 16 bit operand override is
-   * used in an instruction, all of the operands in the
-   * instruction will be changed to that particular si-
-   * ze and will be override.
-   */
-
   buffer_t buf = BUF_NULL;
   buf_write_byte(&buf, 0x0); // Filler byte cuz NULL pointer will be accessed if no prefix
 
