@@ -51,12 +51,31 @@ Test(operand, ident_identify) {
   assert_eq(op_ident_identify(input2), OP_RM);
 }
 
+Test(operand, modrm_mode) {
+  struct {
+    operand_t operand;
+    int expected_mode;
+  } test_cases[] = {
+      {op_construct_operand(OP_M64, 0, &(enum registers){REG_RIP}), OP_MODRM_INDIRECT},
+      {op_construct_operand(OP_M64, 0, &(enum registers){REG_EIP}), OP_MODRM_INDIRECT},
+      {op_construct_operand(OP_M64, 0, &(enum registers){REG_IP}), OP_MODRM_INDIRECT},
+      {op_construct_operand(OP_M64, 0, &(enum registers){REG_RAX}), OP_MODRM_INDIRECT},
+      {op_construct_operand(OP_M64, 8, &(enum registers){REG_RAX}), OP_MODRM_DISP32},
+      {op_construct_operand(OP_M64, 0, &(enum registers){REG_RBP}), OP_MODRM_DISP8},
+  };
+
+  for (size_t i = 0; i < sizeof(test_cases) / sizeof(test_cases[0]); i++) {
+    assert_eq(op_modrm_mode(test_cases[i].operand), test_cases[i].expected_mode);
+  }
+}
+
 int main(void) {
   TestSuite(operand);
 
   RunTest(operand, write_prefix);
   RunTest(operand, construct_operand);
   RunTest(operand, ident_identify);
+  RunTest(operand, modrm_mode);
 
   return 0;
 }
