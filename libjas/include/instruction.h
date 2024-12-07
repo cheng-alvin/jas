@@ -35,6 +35,16 @@
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
 
+/**
+ * Lookup macro for checking if an instruction is a directive.
+ * Directives are instructions that are not executed by the CPU
+ * but are used to provide information to the assembler.
+ *
+ * @param i The instruction to check
+ * @example if (INSTR_DIRECTIVE(INSTR_MOV))
+ */
+#define INSTR_DIRECTIVE(i) ((uint8_t)i > (uint8_t)INSTR_SYSCALL)
+
 enum instructions {
   INSTR_MOV,
   INSTR_LEA,
