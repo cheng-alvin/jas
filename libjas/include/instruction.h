@@ -42,6 +42,10 @@ typedef struct instr_encode_table instr_encode_table_t;
  *
  * @param i The instruction to check
  * @example if (INSTR_DIRECTIVE(INSTR_MOV))
+ *
+ * @note - Internal
+ * Please update this macro if more directives and/or instructions
+ * are added/supported in this enum list (In the future).
  */
 #define INSTR_DIRECTIVE(i) ((uint8_t)i > (uint8_t)INSTR_SYSCALL)
 
