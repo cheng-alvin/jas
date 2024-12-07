@@ -170,6 +170,10 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
         const buffer_t *data = (buffer_t *)instr_arr[i].operands[0].data;
         buf_write(&buf, data->data, data->len);
       }
+      if (instr_arr[i].instr == INSTR_DIR_ORG) {
+        /* Implement org directive here: */
+        continue;
+      }
       if (is_pre && IS_LABEL) {
         for (size_t j = 0; j < label_table_size; j++) {
           if (strcmp(label_table[j].name, instr_arr[i].operands[0].data) == 0) {
