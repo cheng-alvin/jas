@@ -18,13 +18,17 @@ Test(operand, write_prefix) {
   op_write_prefix(&buf, operands, mode);          \
   assert_eq(buf.data[index], expected);
 
-  RUN_TEST(op_arr16, MODE_PROTECTED, 1, 0x66);
-  RUN_TEST(op_addr16, MODE_PROTECTED, 2, 0x67);
+  RUN_TEST(op_arr16, MODE_PROTECTED, 0, 0x66);
+
+  op_write_prefix(&buf, op_addr16, MODE_PROTECTED);
+  assert_eq(buf.data[1], 0x67);
+  assert_eq(buf.data[2], 0x66);
+
   RUN_TEST(op_arr32, MODE_REAL, 3, 0x66);
 
   op_write_prefix(&buf, op_addr32, MODE_REAL);
-  assert_eq(buf.data[4], 0x66);
-  assert_eq(buf.data[5], 0x67);
+  assert_eq(buf.data[4], 0x67);
+  assert_eq(buf.data[5], 0x66);
 
   RUN_TEST(op_arr64, MODE_LONG, 6, REX_W);
   RUN_TEST(op_addr64, MODE_LONG, 7, REX_W);

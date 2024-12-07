@@ -121,10 +121,8 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
 
     override_write:
       if (already_written == override) break;
-
       buf_write_byte(buf, override);
       already_written = override;
-
       break;
 
     case 64:
