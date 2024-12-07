@@ -152,6 +152,10 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   return out;
 }
 
+// Macro for checking if the instruction is a label and shall be handled
+#define IS_LABEL (uint8_t) instr_arr[i].instr >= (uint8_t)INSTR_DIR_LOCAL_LABEL && \
+                     (uint8_t)instr_arr[i].instr <= (uint8_t)INSTR_DIR_EXTERN_LABEL
+
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
   arr_size /= sizeof(instruction_t);
   buffer_t buf = BUF_NULL;
@@ -159,13 +163,14 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
   for (size_t i = 0; i < arr_size; i++) {
     if (instr_arr[i].operands == NULL) continue;
 
+    /* -- Handle assembler directives -- */
+
     if (instr_arr[i].instr > INSTR_SYSCALL) {
       if (instr_arr[i].instr == INSTR_DIR_WRT_BUF) {
         const buffer_t *data = (buffer_t *)instr_arr[i].operands[0].data;
         buf_write(&buf, data->data, data->len);
       }
-
-      if (is_pre && (uint8_t)instr_arr[i].instr >= (uint8_t)INSTR_DIR_LOCAL_LABEL) {
+      if (is_pre && IS_LABEL) {
         for (size_t j = 0; j < label_table_size; j++) {
           if (strcmp(label_table[j].name, instr_arr[i].operands[0].data) == 0) {
             label_table[j].address = buf.len;
