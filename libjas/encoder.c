@@ -34,11 +34,22 @@
 #include <stdlib.h>
 
 #define OP_OPCODE_HELPER (op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode)
-#define EMPTY_SIB 0x24
+#define EMPTY_SIB 0x25
 
 #define DEFINE_ENCODER(ident) \
   void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
 
+/**
+ * @brief
+ * - A label is a memory address NOT a value!
+ * therefore, a instruction like mov rax, label
+ * should move the ADDRESS of the label to rax
+ * NOT THE VALUE
+ *
+ * - A empty 0x25 SIB byte is written if we want a
+ * base pointer register (rsp, sp or esp) to be used
+ * with an absolute address.
+ */
 static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
   const uint8_t rel_sz = op_sizeof(op_arr[index].type) / 8;
 
