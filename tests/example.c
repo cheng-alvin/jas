@@ -14,21 +14,14 @@ Test(example, example) {
       (instruction_t){
           .instr = INSTR_MOV,
           .operands = (operand_t[]){
-              (operand_t){
-                  .type = OP_M64,
-                  .data = &(enum registers){REG_RBP},
-                  .offset = 0,
-                  //   .label = "double(int)",
-              },
-              (operand_t){
-                  .type = OP_R64,
-                  .data = &(enum registers){REG_RAX},
-              },
+              (operand_t){.type = OP_M64, .data = &(enum registers){REG_RIP}, .label = "double(int)"},
+              (operand_t){.type = OP_R64, .data = &(enum registers){REG_RAX}},
               OP_NONE,
               OP_NONE,
           },
       },
-      // square(int):
+
+      // double(int):
       (instruction_t){
           .instr = INSTR_DIR_GLOBAL_LABEL,
           .operands = (operand_t[]){
@@ -38,7 +31,6 @@ Test(example, example) {
               OP_NONE,
           },
       },
-
   };
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr), CODEGEN_ELF);
