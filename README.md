@@ -34,7 +34,7 @@ int main(void) {
 
   buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr), CODEGEN_RAW);
 
-  /* Do something to `buf` */
+  /* Do something to `buf.data` - The uint8_t array */
 
   free(buf.data);
   return 0;
