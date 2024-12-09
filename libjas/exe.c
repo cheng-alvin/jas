@@ -64,7 +64,7 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
   buf_write_byte(&ret, 0x03); // Target ABI
   buf_write_byte(&ret, 0);    // ABI version
 
-  buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0}, 7); // Padding - 7 byte
+  buf_write(&ret, (uint8_t[]){0, 0, 0, 0, 0, 0, 0}, 7); // Padding - 7 bytes
 
   buf_write(&ret, endian((uint8_t[]){0x00, 0x01}, 2), 2); // Executable type type
   buf_write(&ret, endian((uint8_t[]){0x00, 0x3E}, 2), 2); // Machine ISA
