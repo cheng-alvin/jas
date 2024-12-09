@@ -8,7 +8,6 @@
   <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/cheng-alvin/jas">
   <img alt="GitHub License" src="https://img.shields.io/github/license/cheng-alvin/jas">
   <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/cheng-alvin/jas"/>
-  <img alt="Discord" src="https://img.shields.io/discord/1312301991724056596"/>
 </p>
 
 <p align="center" padding="10px"> Jas is a minimal, fast and simple zero-dependency assembler for the x64 family of processors, jas not only aims to be fast and simple when using it but also aims to be a learning reasource for others to learn about low-level system programming and the x64 instruction set. Useful for implementing into compilers, operating systems and JIT interpreters and other types of utilites that need compilation to ELF or just a plain enocded buffer. </p>
