@@ -38,7 +38,12 @@ void label_create(char *name, bool exported, bool ext, size_t address, size_t in
     return;
   }
 
-  label_t label = {.name = name, .exported = exported, .ext = ext, .address = address, .instr_index = instr_index};
+  label_t label = {
+    .name = name,
+    .exported = exported, 
+    .ext = ext, .address = address, 
+    .instr_index = instr_index
+  };
 
   label_table_size++;
   label_table = (label_t *)realloc(label_table, label_table_size * sizeof(label_t));
