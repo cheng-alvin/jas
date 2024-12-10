@@ -25,12 +25,15 @@
 
 #include "endian.h"
 #include <stdlib.h>
+#include <string.h>
 
 uint8_t *endian(uint8_t *data, size_t data_size) {
-  uint8_t *result = (uint8_t *)malloc(data_size);
+  uint8_t *temp = (uint8_t *)malloc(data_size);
+  memcpy(temp, data, data_size);
 
   for (size_t i = data_size; i > 0; i--)
-    result[data_size - i] = data[i - 1];
+    data[data_size - i] = temp[i - 1];
 
-  return result;
+  free(temp);
+  return data;
 }
