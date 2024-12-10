@@ -111,7 +111,7 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
   if (type == 0x02) {
     buf_write(&ret, &(uint32_t){2}, 4);                    // Section link
     buf_write(&ret, &(uint32_t){label_table_size + 1}, 4); // Section info
-    buf_write(&ret, &(uint64_t){0}, 8);                    // Section address alignment
+    buf_write(&ret, QWORD_PAD, 8);                         // Section address alignment
     buf_write(&ret, &(uint64_t){0x18}, 8);                 // Section entry size
 
     return ret;
@@ -119,8 +119,8 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
 
   buf_write(&ret, (uint8_t *)&int_pad, 4); // Section link
   buf_write(&ret, (uint8_t *)&int_pad, 4); // Section info
-  buf_write(&ret, &(uint64_t){0}, 8);      // Section address alignment
-  buf_write(&ret, &(uint64_t){0}, 8);      // Section entry size
+  buf_write(&ret, QWORD_PAD, 8);           // Section address alignment
+  buf_write(&ret, QWORD_PAD, 8);           // Section entry size
 
   return ret;
 }
