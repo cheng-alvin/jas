@@ -1,7 +1,7 @@
 BUILD = build
 
 all: clean
-	$(MAKE) -C libjas libjas.a
+	$(MAKE) -C libjas libjas.a -j8
 	cp libjas/include/*.h $(BUILD)/include
 	mv $(BUILD)/libjas.a $(BUILD)/lib/libjas.a
 	cp README.md $(BUILD)
