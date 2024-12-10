@@ -39,9 +39,6 @@
  * @param data_size The size of the byte array.
  *
  * @return The converted byte array.
- *
- * @note Array was returned using `malloc`ed memory, therefore,
- * the returned memory must the freed after usage!
  */
 uint8_t *endian(uint8_t *data, size_t data_size);
 
