@@ -9,8 +9,6 @@ Test(endian, endian) {
 
   assert(result[0] == expected[0]);
   assert(result[1] == expected[1]);
-
-  free(result);
 }
 
 int main(void) {
