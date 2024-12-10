@@ -27,6 +27,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Note: this function seems only to be used in the `exe` module, may remove in the future
+
 uint8_t *endian(uint8_t *data, size_t data_size) {
   uint8_t *temp = (uint8_t *)malloc(data_size);
   memcpy(temp, data, data_size);
