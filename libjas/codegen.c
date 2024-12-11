@@ -41,15 +41,6 @@
     }                                                                   \
   } while (0)
 
-#define WRITE_SYMTAB(name, sect_idx)                                       \
-  buf_write(&symtab, (uint32_t *)&strtab.len, 4);      /* Name offset */   \
-  buf_write_byte(&symtab, (((1) << 4) + ((3) & 0xf))); /* Info */          \
-  buf_write_byte(&symtab, 0);                          /* Other */         \
-  buf_write(&symtab, &(uint16_t){sect_idx}, 2);        /* Section index */ \
-  buf_write(&symtab, &(uint64_t){0}, 8);               /* Value */         \
-  buf_write(&symtab, &(uint64_t){0}, 8);               /* Size */          \
-  buf_write(&strtab, (uint8_t *)name, strlen(name) + 1);
-
 bool is_pre = false;
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size); // TODO Fix the stupid hack
@@ -112,7 +103,9 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   // Writing section name to symbol table
   // For some reason the gcc compiler does not link if there's no filename.
 
-  WRITE_SYMTAB(".text", 4);
+  buffer_t section_ent = exe_sym_ent(".text", 4, &strtab, (((1) << 4) + ((3) & 0xf)));
+  buf_concat(&symtab, 1, &section_ent);
+  free(section_ent.data);
 
   // Please see `WRITE_SYMTAB` macro for more information
 
@@ -123,14 +116,17 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
     uint8_t binding = 0;
     if (label_table[i].exported || label_table[i].ext) binding = 1;
 
-    buf_write(&symtab, (uint32_t *)&strtab.len, 4);             // Name offset
-    buf_write_byte(&symtab, (((binding) << 4) + ((0) & 0xf)));  // Info
-    buf_write_byte(&symtab, 0);                                 // Other
-    buf_write(&symtab, &(uint16_t){4}, 2);                      // Section index
-    buf_write(&symtab, (uint64_t *)&label_table[i].address, 8); // Value
-    buf_write(&symtab, &(uint64_t){0}, 8);                      // Size
+    /* Previous implementation: */
+    // buf_write(&symtab, (uint32_t *)&strtab.len, 4);             // Name offset
+    // buf_write_byte(&symtab, (((binding) << 4) + ((0) & 0xf)));  // Info
+    // buf_write_byte(&symtab, 0);                                 // Other
+    // buf_write(&symtab, &(uint16_t){4}, 2);                      // Section index
+    // buf_write(&symtab, (uint64_t *)&label_table[i].address, 8); // Value
+    // buf_write(&symtab, &(uint64_t){0}, 8);                      // Size
 
-    buf_write(&strtab, (uint8_t *)label_table[i].name, strlen(label_table[i].name) + 1);
+    //! free this guy
+    buf_concat(&symtab, 1,
+               exe_sym_ent(label_table[i].name, 4, &strtab, (((binding) << 4) + ((0) & 0xf))));
   }
 
   buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, base + sizeof(shstrtab), strtab.len);
