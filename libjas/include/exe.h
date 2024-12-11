@@ -74,4 +74,4 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
  * symbol name shall be written and the index of the section is used to
  * determine the section the symbol is in.
  */
-buffer_t exe_sym_ent(char *name, uint16_t sect_idx, buffer_t *strtab) {
+buffer_t exe_sym_ent(char *name, uint16_t sect_idx, buffer_t *strtab);

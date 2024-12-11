@@ -27,6 +27,7 @@
 #include "endian.h"
 #include "label.h"
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * @brief File with functions for generating the parts of the
