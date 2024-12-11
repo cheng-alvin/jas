@@ -86,9 +86,9 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
 
   buf_write(&ret, (uint8_t *)&int_pad, 4); // Program header table entry size and count - Combined not used
 
-  buf_write(&ret, endian((uint8_t[]){0x40, 0x00}, 2), 2); // Section header table entry size
-  buf_write(&ret, (uint8_t *)&sect_count, 2);             // Section header table count
-  buf_write(&ret, (uint8_t *)&sect_count_str, 2);         // Section header table string table index
+  buf_write(&ret, (uint8_t[]){0x40, 0x00}, 2);    // Section header table entry size
+  buf_write(&ret, (uint8_t *)&sect_count, 2);     // Section header table count
+  buf_write(&ret, (uint8_t *)&sect_count_str, 2); // Section header table string table index
 
   return ret;
 }
@@ -126,16 +126,17 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
   return ret;
 }
 
-buffer_t exe_sym_ent(char *name, uint16_t sect_idx, buffer_t *strtab) {
+buffer_t exe_sym_ent(char *name, uint16_t sect_idx, buffer_t *strtab, uint8_t info) {
   buffer_t symtab = BUF_NULL;
-  buf_write(&symtab, (uint8_t[]){strtab->len}, 4);     // Name offset
-  buf_write_byte(&symtab, (((1) << 4) + ((3) & 0xf))); // Info
-  buf_write_byte(&symtab, 0);                          // Other
-  buf_write(&symtab, &(uint16_t){sect_idx}, 2);        // Section index
-  buf_write(&symtab, QWORD_PAD, 8);                    // Value
-  buf_write(&symtab, QWORD_PAD, 8);                    // Size
 
-  buf_write(&strtab, (uint8_t *)name, strlen(name) + 1); // Add name to string table
+  buf_write_byte(&symtab, info);                   // Info
+  buf_write(&symtab, (uint32_t *)&strtab->len, 4); // Name offset
+  buf_write_byte(&symtab, 0);                      // Other
+  buf_write(&symtab, &(uint16_t){sect_idx}, 2);    // Section index
+  buf_write(&symtab, QWORD_PAD, 8);                // Value
+  buf_write(&symtab, QWORD_PAD, 8);                // Size
+
+  buf_write(strtab, (uint8_t *)name, strlen(name) + 1); // Add name to string table
 
   return symtab;
 }
