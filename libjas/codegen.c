@@ -115,9 +115,10 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
     // Refer to https://www.sco.com/developers/devspecs/gabi41.pdf - Figure 4-16
     uint8_t binding = 0;
     if (label_table[i].exported || label_table[i].ext) binding = 1;
-    //! free this guy
-    buf_concat(&symtab, 1,
-               exe_sym_ent(label_table[i].name, 4, &strtab, (((binding) << 4) + ((0) & 0xf))));
+
+    const buffer_t ent = exe_sym_ent(label_table[i].name, 4, &strtab, (((binding) << 4) + ((0) & 0xf)));
+    buf_concat(&symtab, 1, ent);
+    free(ent.data);
   }
 
   buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, base + sizeof(shstrtab), strtab.len);
