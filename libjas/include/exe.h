@@ -59,3 +59,19 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
  * @see https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h
  */
 buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uint64_t off, uint64_t sect_sz);
+
+/**
+ * Function for generating a symbol table entry in the ELF object file.
+ * This function is used in conjunction with `exe_sect_header` function
+ * for generating the entire symbol header and this is only used for
+ * the individual symbol entries.
+ *
+ * @param name The name of the symbol
+ * @param sect_idx The index of the section
+ * @param strtab The string table buffer pointer
+ *
+ * @note The `strtab` buffer pointer is used as a descriptor for where the
+ * symbol name shall be written and the index of the section is used to
+ * determine the section the symbol is in.
+ */
+buffer_t exe_sym_ent(char *name, uint16_t sect_idx, buffer_t *strtab) {
