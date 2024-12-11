@@ -117,7 +117,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
     if (label_table[i].exported || label_table[i].ext) binding = 1;
 
     const buffer_t ent = exe_sym_ent(label_table[i].name, 4, &strtab, (((binding) << 4) + ((0) & 0xf)));
-    buf_concat(&symtab, 1, ent);
+    buf_concat(&symtab, 1, &ent);
     free(ent.data);
   }
 
