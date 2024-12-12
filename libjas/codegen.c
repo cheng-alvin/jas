@@ -106,9 +106,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   const buffer_t section_ent = exe_sym_ent(".text", 0x0, 4, &strtab, (((1) << 4) + ((3) & 0xf)));
   buf_concat(&symtab, 1, &section_ent);
   free(section_ent.data);
-
-  // Please see `WRITE_SYMTAB` macro for more information
-
   free(pad);
 
   for (size_t i = 0; i < label_table_size; i++) {
