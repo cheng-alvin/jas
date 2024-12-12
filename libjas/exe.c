@@ -133,7 +133,7 @@ buffer_t exe_sym_ent(char *name, uint64_t sym_val, uint16_t sect_idx, buffer_t *
   buf_write_byte(&symtab, info);                   // Info
   buf_write_byte(&symtab, 0);                      // Other
   buf_write(&symtab, &(uint16_t){sect_idx}, 2);    // Section index
-  buf_write(&symtab, sym_val, 8);                  // Value
+  buf_write(&symtab, &sym_val, 8);                 // Value
   buf_write(&symtab, QWORD_PAD, 8);                // Size
 
   buf_write(strtab, (uint8_t *)name, strlen(name) + 1); // Add name to string table

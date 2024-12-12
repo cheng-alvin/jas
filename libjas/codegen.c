@@ -103,7 +103,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   // Writing section name to symbol table
   // For some reason the gcc compiler does not link if there's no filename.
 
-  const buffer_t section_ent = exe_sym_ent(".text", 4, &strtab, (((1) << 4) + ((3) & 0xf)));
+  const buffer_t section_ent = exe_sym_ent(".text", 0x0, 4, &strtab, (((1) << 4) + ((3) & 0xf)));
   buf_concat(&symtab, 1, &section_ent);
   free(section_ent.data);
 
@@ -116,7 +116,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
     uint8_t binding = 0;
     if (label_table[i].exported || label_table[i].ext) binding = 1;
 
-    const buffer_t ent = exe_sym_ent(label_table[i].name, 4, &strtab, (((binding) << 4) + ((0) & 0xf)));
+    const buffer_t ent = exe_sym_ent(label_table[i].name, label_table[i].address, 4, &strtab, (((binding) << 4) + ((0) & 0xf)));
     buf_concat(&symtab, 1, &ent);
     free(ent.data);
   }
