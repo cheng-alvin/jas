@@ -7,8 +7,8 @@ AND, OR, XOR, NOT: Logical operations. - ✅
 INC, DEC: Increment and decrement. - ✅
 Control Flow Instructions:
 JMP: Unconditional jump. - ✅
-JE, JNE, JZ, JNZ: Conditional jumps.
-CALL, RET: Subroutine call and return.
+JE, JNE, JZ, JNZ: Conditional jumps. - ✅
+CALL, RET: Subroutine call and return. - ✅
 CMP: Compare values (used with conditional jumps).
 Stack Instructions:
 PUSH, POP: Push onto and pop from the stack. - ✅

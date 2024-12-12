@@ -134,8 +134,6 @@ static instr_encode_table_t ret[] = {
 
 static instr_encode_table_t cmp[] = {INSTR_GENERAL(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)};
 
-// TODO Pushing individual registers is not supported (yet)
-// ...as in ZO series for registers like CS, SS, DS, etc.
 static instr_encode_table_t push[] = {
     {OP_M, 6, {0xFF}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
     {OP_O, NULL, {0x50}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
