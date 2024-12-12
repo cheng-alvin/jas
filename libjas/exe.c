@@ -126,14 +126,14 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
   return ret;
 }
 
-buffer_t exe_sym_ent(char *name, uint16_t sect_idx, buffer_t *strtab, uint8_t info) {
+buffer_t exe_sym_ent(char *name, uint64_t sym_val, uint16_t sect_idx, buffer_t *strtab, uint8_t info) {
   buffer_t symtab = BUF_NULL;
 
   buf_write(&symtab, (uint32_t *)&strtab->len, 4); // Name offset
   buf_write_byte(&symtab, info);                   // Info
   buf_write_byte(&symtab, 0);                      // Other
   buf_write(&symtab, &(uint16_t){sect_idx}, 2);    // Section index
-  buf_write(&symtab, QWORD_PAD, 8);                // Value
+  buf_write(&symtab, sym_val, 8);                  // Value
   buf_write(&symtab, QWORD_PAD, 8);                // Size
 
   buf_write(strtab, (uint8_t *)name, strlen(name) + 1); // Add name to string table

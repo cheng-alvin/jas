@@ -67,6 +67,7 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
  * the individual symbol entries.
  *
  * @param name The name of the symbol
+ * @param sym_val The value of the symbol (Which is the offset)
  * @param sect_idx The index of the section
  * @param strtab The string table buffer pointer
  * @param info The data for the corresponding info field
@@ -75,4 +76,4 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
  * symbol name shall be written and the index of the section is used to
  * determine the section the symbol is in.
  */
-buffer_t exe_sym_ent(char *name, uint16_t sect_idx, buffer_t *strtab, uint8_t info);
+buffer_t exe_sym_ent(char *name, uint64_t sym_val, uint16_t sect_idx, buffer_t *strtab, uint8_t info);
