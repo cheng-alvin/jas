@@ -33,9 +33,13 @@ cases is me). Please direct all queries and concerns to eventide1029+jas@gmail.c
 on code and contributions to the Assembler.
 
 ### Building and testing
-To build Jas, simply run `make` in the home or `libjas` directories. Tests can be added in the `tests` directory 
-and built using `make tests` as well in the home directory, all C test files will be automatically built and run.
-You may include the Jas testing framework [here](https://github.com/cheng-alvin/jas/blob/main/tests/test.h)
+To build Jas, simply run `make` in the home or `libjas` directories (A debug binary must be built in `libjas`). 
+Tests can be added in the `tests` directory and built using `make tests` as well in the home directory, all C 
+test files will be automatically built and run. You may include the Jas testing framework [here](https://github.com/cheng-alvin/jas/blob/main/tests/test.h) 
+
+> The build and testing scripts must be successful before submitting a pull request up to the repo,
+> if tests and compilation scripts fail, you must put your PR as a "draft" instead.
+
 
 ### What to remember before submitting a PR
 Once you have completed your work, remember to submit pull requests that are organised and have a clear sense of 
