@@ -40,6 +40,17 @@ test files will be automatically built and run. You may include the Jas testing 
 > The build and testing scripts must be successful before submitting a pull request up to the repo,
 > if tests and compilation scripts fail, you must put your PR as a "draft" instead.
 
+### Code style
+Preferably, if you have `clang-format` installed on your system, you can simply run `make format` in the home 
+directory to *automatically* format the source files to conform to our programming style as specified in 
+[this](https://github.com/cheng-alvin/jas/blob/main/.clang-format) file. Otherwise you are welcome to write
+your patch in your own coding style and have it formatted automatically when merged into the main branch,
+just as long as the maintainers can read it, then it'll okay.
+
+As mentioned above, a Github action will automatically run when new code is pushed onto the main branch to
+automatically format the code using `clang-format`. You can ignore this behaviour by adding a `clang-format off`
+and a corrisponding `clang-format on` comment in your code for small snippets that may break or cause issues 
+down the line if formatted automatically.
 
 ### What to remember before submitting a PR
 Once you have completed your work, remember to submit pull requests that are organised and have a clear sense of 
