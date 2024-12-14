@@ -55,4 +55,19 @@ enum codegen_modes {
  */
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode);
 
+/**
+ * Wrapper function for the `codegen` function that gives boiler-
+ * plate code to generate the binary of a single instruction given
+ * in the instruction struct form, but not an array as seen in the
+ * `codegen` function.
+ *
+ * @param mode The mode to generate the machine code in
+ * @param instr The instruction to generate the code from
+ *
+ * @return The buffer struct containing the machine code
+ *
+ * @see `codegen`
+ */
+inline buffer_t assemble_instr(enum modes mode, instruction_t instr);
+
 #endif
