@@ -63,11 +63,11 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
  *
  * @param mode The mode to generate the machine code in
  * @param instr The instruction to generate the code from
- * @param modes The output mode of the codegen function
  *
  * @return The buffer struct containing the machine code
  *
  * @see `codegen`
  */
-inline buffer_t assemble_instr(enum modes mode, instruction_t instr, enum codegen_modes modes) {
+inline buffer_t assemble_instr(enum modes mode, instruction_t instr);
+
 #endif
