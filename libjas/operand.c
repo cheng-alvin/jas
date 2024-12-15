@@ -44,8 +44,13 @@ uint8_t op_modrm_mode(operand_t input) {
   if (op_m(input.type) && input.offset == 0)
     return OP_MODRM_INDIRECT;
 
-  else if (input.offset != 0)
-    return OP_MODRM_DISP32;
+  if (input.offset != 0) {
+    if ((intmax_t)input.offset > INT32_MAX) err("Displacement value is too large.");
+    if ((intmax_t)input.offset > INT8_MAX) // Size of a `uint8_t`
+      return OP_MODRM_DISP32;
+
+    return OP_MODRM_DISP8; // Revert to 8-bit displacement when extra space is not needed
+  }
 
   return OP_MODRM_REG;
 }

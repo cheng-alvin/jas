@@ -154,6 +154,10 @@ enum enc_ident op_ident_identify(enum operands *input);
  * @note Function also performs checks for RIP, ESP, IP instr-
  * uction pointers for offset and ModR/M bytes and modes.
  *
+ * @note The function requires the offset value to be typed as
+ * signed types to prevent confusion and to match with the Intel
+ * -required specifications as outlined.
+ *
  * @see `operand_t`
  */
 uint8_t op_modrm_mode(operand_t input);
