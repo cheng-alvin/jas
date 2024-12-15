@@ -60,7 +60,7 @@ Test(operand, modrm_mode) {
       {op_construct_operand(OP_M64, 0, &(enum registers){REG_RAX}), OP_MODRM_INDIRECT},
       {op_construct_operand(OP_M64, 8, &(enum registers){REG_RAX}), OP_MODRM_DISP8},
       {op_construct_operand(OP_M64, 0, &(enum registers){REG_RBP}), OP_MODRM_DISP8},
-      {op_construct_operand(OP_M64, 0xFFFF, &(enum registers){REG_RAX}), OP_MODRM_DISP8},
+      {op_construct_operand(OP_M64, 0xFFFF, &(enum registers){REG_RAX}), OP_MODRM_DISP32},
   };
 
   for (size_t i = 0; i < sizeof(test_cases) / sizeof(test_cases[0]); i++) {
