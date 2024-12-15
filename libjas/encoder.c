@@ -94,8 +94,8 @@ DEFINE_ENCODER(m) {
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
   buf_write_byte(buf, op_modrm_mode(op_arr[0]) | opcode_extend | rm);
 
-  if (op_m(op_arr[0].type))
-    rm == 4 ? buf_write_byte(buf, EMPTY_SIB) : NULL;
+  if (op_m(op_arr[0].type) && rm == 4)
+    buf_write_byte(buf, EMPTY_SIB);
 
   const enum registers deref_reg = (*(enum registers *)op_arr[0].data);
   if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP)
