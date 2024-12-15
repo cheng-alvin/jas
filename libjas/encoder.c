@@ -64,6 +64,18 @@ static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
   buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
 }
 
+static void write_offset(uint8_t mode, buffer_t *buf, operand_t *op_arr, uint8_t index) {
+  switch (mode) {
+  case OP_MODRM_DISP8:
+    buf_write_byte(buf, (uint8_t)op_arr[index].offset);
+    break;
+
+  case OP_MODRM_DISP32:
+    buf_write(buf, (uint8_t *)&op_arr[index].offset, 4);
+    break;
+  }
+}
+
 DEFINE_ENCODER(i) {
   //  Error checking - A register only & only 8, 16, 32 bit-sized operands
   if (reg_lookup_val(op_arr[0].data) != 0 && !reg_needs_rex((enum registers)op_arr[0].data)) {
@@ -90,9 +102,10 @@ DEFINE_ENCODER(m) {
 
   op_write_prefix(buf, op_arr, mode);
   check_mode(mode, instr_ref->support);
-
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
-  buf_write_byte(buf, op_modrm_mode(op_arr[0]) | opcode_extend | rm);
+
+  const uint8_t mod = op_modrm_mode(op_arr[0]);
+  buf_write_byte(buf, mod | opcode_extend | rm);
 
   if (op_m(op_arr[0].type))
     rm == 4 ? buf_write_byte(buf, EMPTY_SIB) : NULL;
@@ -104,8 +117,7 @@ DEFINE_ENCODER(m) {
   if (rm == 5 && op_arr[0].offset == 0)
     buf_write_byte(buf, 0);
 
-  if (op_arr[0].offset != 0)
-    buf_write(buf, (uint8_t *)&op_arr[0].offset, 4);
+  write_offset(mod, buf, op_arr, 0);
 }
 
 static void i_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
@@ -169,7 +181,8 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
   check_mode(mode, instr_ref->support);
   buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
 
-  buf_write_byte(buf, op_modrm_mode(op_arr[rm_idx]) | (reg << 3) | rm);
+  const uint8_t mod = op_modrm_mode(op_arr[rm_idx]);
+  buf_write_byte(buf, mod | (reg << 3) | rm);
 
   /**
    * @note
@@ -202,9 +215,10 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
   if (rm == 5 && op_arr[rm_idx].offset == 0)
     buf_write_byte(buf, 0);
 
-  if (op_arr[rm_idx].offset != 0) {
-    buf_write(buf, (uint8_t *)&op_arr[rm_idx].offset, 4);
-  }
+  // if (op_arr[rm_idx].offset != 0) {
+  // buf_write(buf, (uint8_t *)&op_arr[rm_idx].offset, 4);
+  // }
+  write_offset(mod, buf, op_arr, rm_idx);
 }
 
 DEFINE_ENCODER(mr) { mr_rm_ref(op_arr, buf, instr_ref, mode, false); }
