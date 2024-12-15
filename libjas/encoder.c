@@ -71,7 +71,7 @@ static void write_offset(uint8_t mode, buffer_t *buf, operand_t *op_arr, uint8_t
     break;
 
   case OP_MODRM_DISP32:
-    buf_write(buf, (int8_t *)&op_arr[index].offset, 4);
+    buf_write(buf, (uint8_t *)&(int32_t){op_arr[index].offset}, 4);
     break;
   }
 }
