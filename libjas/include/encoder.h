@@ -29,9 +29,6 @@
 #include "buffer.h"
 #include "mode.h"
 
-#define DEFINE_ENCODER(ident) \
-  void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
-
 // Forward declarations -  See `instruction.h` and `operand.h` respectively
 typedef struct instr_encode_table instr_encode_table_t;
 typedef struct operand operand_t;
@@ -54,6 +51,17 @@ enum enc_ident {
   OP_D,
   OP_O,
 };
+
+/**
+ * Macro definition for the encoder function signature,
+ * this function signature and it's parameters are all
+ * documented in `instruction.h` with the `instr_encoder_t`
+ * typedef.
+ *
+ * @see `instr_encoder_t`
+ */
+#define DEFINE_ENCODER(ident) \
+  void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
 
 /**
  * @brief
