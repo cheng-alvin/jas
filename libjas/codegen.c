@@ -208,6 +208,6 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
   return buf;
 }
 
-inline buffer_t assemble_instr(enum modes mode, instruction_t instr) {
+buffer_t assemble_instr(enum modes mode, instruction_t instr) {
   return codegen(mode, &instr, sizeof(instruction_t), CODEGEN_RAW);
 }
