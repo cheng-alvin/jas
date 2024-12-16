@@ -53,6 +53,17 @@ enum enc_ident {
 };
 
 /**
+ * Macro definition for the encoder function signature,
+ * this function signature and it's parameters are all
+ * documented in `instruction.h` with the `instr_encoder_t`
+ * typedef.
+ *
+ * @see `instr_encoder_t`
+ */
+#define DEFINE_ENCODER(ident) \
+  void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
+
+/**
  * @brief
  * The encoder function signature for the different operand
  * identifiers. The encoder functions are used to encode the
@@ -61,18 +72,17 @@ enum enc_ident {
  * from `instruction.h` and the corresponding `instruction.c`.
  */
 
-void d(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-void i(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+DEFINE_ENCODER(d);
+DEFINE_ENCODER(i);
 
-void m(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-void mi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-void mr(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+DEFINE_ENCODER(m);
+DEFINE_ENCODER(mi);
+DEFINE_ENCODER(mr);
 
-void o(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-void oi(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+DEFINE_ENCODER(o);
+DEFINE_ENCODER(oi);
 
-void rm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
-
-void zo(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+DEFINE_ENCODER(rm);
+DEFINE_ENCODER(zo);
 
 #endif

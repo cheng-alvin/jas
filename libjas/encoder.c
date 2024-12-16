@@ -25,7 +25,6 @@
 
 #include "encoder.h"
 #include "buffer.h"
-#include "endian.h"
 #include "error.h"
 #include "instruction.h"
 #include "label.h"
@@ -35,9 +34,6 @@
 
 #define OP_OPCODE_HELPER (op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode)
 #define EMPTY_SIB 0x24
-
-#define DEFINE_ENCODER(ident) \
-  void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
 
 /**
  * @brief
