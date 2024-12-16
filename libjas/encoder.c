@@ -25,7 +25,6 @@
 
 #include "encoder.h"
 #include "buffer.h"
-#include "endian.h"
 #include "error.h"
 #include "instruction.h"
 #include "label.h"
