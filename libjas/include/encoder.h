@@ -29,6 +29,9 @@
 #include "buffer.h"
 #include "mode.h"
 
+#define DEFINE_ENCODER(ident) \
+  void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
+
 // Forward declarations -  See `instruction.h` and `operand.h` respectively
 typedef struct instr_encode_table instr_encode_table_t;
 typedef struct operand operand_t;
