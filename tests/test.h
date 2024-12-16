@@ -101,4 +101,14 @@ static void test_error_handler(const char *msg) {
   fail(msg);
 }
 
+#define assert_eq_buf(a, b)                                                                  \
+  \ 
+  if (a.len != b.len) test_printf("\nAssertion failed: %s is not the same as %s\n", #a, #b); \
+  for (size_t i = 0; i < a.len; i++) {                                                       \
+    if (a.data[i] != b.data[i]) {                                                            \
+      test_printf("\nAssertion failed: %s is not the same as %s\n", #a, #b);                 \
+      break;                                                                                 \
+    }                                                                                        \
+  }
+
 #endif
