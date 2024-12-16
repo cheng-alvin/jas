@@ -28,7 +28,6 @@
 #include "register.h"
 #include "rex.h"
 #include <stdbool.h>
-#include <stdint.h>
 
 uint8_t op_modrm_mode(operand_t input) {
   register const enum registers deref_reg = (*(enum registers *)input.data);

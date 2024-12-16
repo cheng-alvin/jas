@@ -101,7 +101,8 @@ static void test_error_handler(const char *msg) {
   fail(msg);
 }
 
-#define assert_eq_buf(a, b) assert_eq_buf_arr(a, b, b.len)
+
+#define assert_eq_buf(a, b) assert_eq_buf_arr(a, b.data, b.len)
 #define assert_eq_buf_arr(a, b, arr_len)                                                       \
   \ 
   if (a.len != arr_len) test_printf("\nAssertion failed: %s is not the same as %s\n", #a, #b); \
@@ -111,5 +112,16 @@ static void test_error_handler(const char *msg) {
       exit(1);                                                                                 \
     }                                                                                          \
   }
+
+#define instr_test(operands, expected)                   \
+                                                         \
+  err_add_callback(test_error_handler);                  \
+  const instruction_t instr = {                          \
+      .instr = INSTR_MOV, \ 
+    .operands = (operand_t[]) #operands,                 \
+  };                                                     \
+  const buffer_t buf = assemble_instr(MODE_LONG, instr); \
+  assert_eq_buf_arr(buf, #expected, sizeof(#expected));  \
+  free(buf.data);
 
 #endif

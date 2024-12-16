@@ -68,6 +68,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
  *
  * @see `codegen`
  */
-inline buffer_t assemble_instr(enum modes mode, instruction_t instr);
+buffer_t assemble_instr(enum modes mode, instruction_t instr);
 
 #endif

@@ -24,10 +24,7 @@
  */
 
 #include "instruction.h"
-#include "encoder.h"
 #include "error.h"
-#include "operand.h"
-#include <stdbool.h>
 #include <stddef.h>
 
 static void pre_default(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
