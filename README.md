@@ -66,13 +66,6 @@ make # Build source code
 
 Voila! Now you have a built copy of Jas in the `build` folder, just simply copy and link against the archive to start building your dream compiler or assembler frontend!
 
-### What others are saying about Jas
-> "Woah dude, that's amazing. I've checked both Jas and Brainfry and they are such incredible projects. Congrats Brainfry being 7.46kb it's stunning!"  
-> — **u/Noel_Em**  
-
-> "Bro this is gold! So glad I found this subreddit. It's full of bright devs like OP. Awesome work!! Low-level devs UNITE! :D"  
-> — **u/disassembler123**  
-
 ### 📝 Licensing 
 All the code under the Jas assembler project repository is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License) which is a popular open-source license for projects like this! Please see [LICENSE](https://github.com/cheng-alvin/jas/blob/main/LICENSE) for the details.
 
