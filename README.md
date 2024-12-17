@@ -73,9 +73,6 @@ Voila! Now you have a built copy of Jas in the `build` folder, just simply copy 
 > "Bro this is gold! So glad I found this subreddit. It's full of bright devs like OP. Awesome work!! Low-level devs UNITE! :D"  
 > — **u/disassembler123**  
 
-> "Damn, looks like a project that'd take an enormous amount of time to make. I wouldn't be able to keep on with it for sure, nice work!"  
-> — **u/Perfect-Highlight964**
-
 ### 📝 Licensing 
 All the code under the Jas assembler project repository is licensed under the [MIT license](https://en.wikipedia.org/wiki/MIT_License) which is a popular open-source license for projects like this! Please see [LICENSE](https://github.com/cheng-alvin/jas/blob/main/LICENSE) for the details.
 
