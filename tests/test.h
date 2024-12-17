@@ -112,15 +112,4 @@ static void test_error_handler(const char *msg) {
     }                                                                                          \
   }
 
-#define instr_test(operands, expected)                   \
-                                                         \
-  err_add_callback(test_error_handler);                  \
-  const instruction_t instr = {                          \
-      .instr = INSTR_MOV, \ 
-    .operands = (operand_t[]) #operands,                 \
-  };                                                     \
-  const buffer_t buf = assemble_instr(MODE_LONG, instr); \
-  assert_eq_buf_arr(buf, #expected, sizeof(#expected));  \
-  free(buf.data);
-
 #endif
