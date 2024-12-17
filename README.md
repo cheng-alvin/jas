@@ -66,7 +66,7 @@ make # Build source code
 
 Voila! Now you have a built copy of Jas in the `build` folder, just simply copy and link against the archive to start building your dream compiler or assembler frontend!
 
-## What others are saying
+### What others are saying about Jas
 > "Woah dude, that's amazing. I've checked both Jas and Brainfry and they are such incredible projects. Congrats Brainfry being 7.46kb it's stunning!"  
 > — **u/Noel_Em**  
 
