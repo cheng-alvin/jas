@@ -62,8 +62,8 @@ typedef struct {
   size_t instr_index; /* Index to slip the label in the instruction array */
 } label_t;
 
-extern label_t *label_table;
-extern size_t label_table_size;
+inline size_t label_get_size();
+inline label_t *label_get_table();
 
 /**
  * Function for destroying the label table, freeing the memory
