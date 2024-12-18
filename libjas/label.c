@@ -65,5 +65,5 @@ label_t *label_lookup(char *name) {
   return NULL;
 }
 
-inline size_t label_get_size() { return label_table_size; }
-inline label_t *label_get_table() { return label_table; }
+size_t label_get_size() { return label_table_size; }
+label_t *label_get_table() { return label_table; }
