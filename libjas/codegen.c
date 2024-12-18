@@ -108,6 +108,10 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   free(section_ent.data);
   free(pad);
 
+  //!! DO NOT try and modify these - Please dont spoof me through pointer arithmetic as well :)
+  const size_t label_table_size = label_get_size();
+  const label_t *label_table = label_get_table();
+
   for (size_t i = 0; i < label_table_size; i++) {
     // Refer to https://www.sco.com/developers/devspecs/gabi41.pdf - Figure 4-16
     uint8_t binding = 0;
@@ -156,9 +160,10 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
         buf_write(&buf, data->data, data->len);
       }
       if (is_pre && IS_LABEL) {
-        for (size_t j = 0; j < label_table_size; j++) {
-          if (strcmp(label_table[j].name, instr_arr[i].operands[0].data) == 0) {
-            label_table[j].address = buf.len;
+        for (size_t j = 0; j < label_get_size; j++) {
+          label_t *tab = label_get_table();
+          if (strcmp(tab[j].name, instr_arr[i].operands[0].data) == 0) {
+            tab[j].address = buf.len;
             break;
           }
         }
