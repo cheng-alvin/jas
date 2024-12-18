@@ -29,8 +29,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-label_t *label_table = NULL;
-size_t label_table_size = 0;
+static label_t *label_table = NULL;
+static size_t label_table_size = 0;
 
 void label_create(char *name, bool exported, bool ext, size_t address, size_t instr_index) {
   if (label_lookup(name) != NULL) {
@@ -39,11 +39,11 @@ void label_create(char *name, bool exported, bool ext, size_t address, size_t in
   }
 
   label_t label = {
-    .name = name,
-    .exported = exported, 
-    .ext = ext, .address = address, 
-    .instr_index = instr_index
-  };
+      .name = name,
+      .exported = exported,
+      .ext = ext,
+      .address = address,
+      .instr_index = instr_index};
 
   label_table_size++;
   label_table = (label_t *)realloc(label_table, label_table_size * sizeof(label_t));
@@ -64,3 +64,6 @@ label_t *label_lookup(char *name) {
 
   return NULL;
 }
+
+inline size_t label_get_size() { return label_table_size; }
+inline label_t *label_get_table() { return label_table; }
