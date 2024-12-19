@@ -108,7 +108,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   free(section_ent.data);
   free(pad);
 
-  //!! DO NOT try and modify these - Please dont spoof me through pointer arithmetic as well :)
   const size_t label_table_size = label_get_size();
   const label_t *label_table = label_get_table();
 
