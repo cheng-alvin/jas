@@ -1,5 +1,7 @@
-![](https://github.com/cheng-alvin/jas/blob/main/logo.png)
+<!-- ![](https://github.com/cheng-alvin/jas/blob/main/logo.png) -->
+![Jas logo -  Christmas edition](https://github.com/user-attachments/assets/804d9479-77d2-4342-8f54-500a5f9d09fa)
 <p align="center">
+
 
   <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 <img src='https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square' />
