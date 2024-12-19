@@ -1,4 +1,4 @@
-<!-- ![](https://github.com/cheng-alvin/jas/blob/main/logo.png) -->
+<!-- ![Jas logo](https://github.com/cheng-alvin/jas/blob/main/logo.png) -->
 ![Jas logo -  Christmas edition](https://github.com/user-attachments/assets/804d9479-77d2-4342-8f54-500a5f9d09fa)
 <p align="center">
 
