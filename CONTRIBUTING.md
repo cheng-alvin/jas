@@ -59,7 +59,8 @@ encoder table, adding and/or registering the instructions to the instruction ide
 and writing unit tests.
 
 **First, define a instruction encode table:**
-A instructiojn encoder table describes the identity of the instruction and how each instance can be enocded
+
+A instruction encoder table describes the identity of the instruction and how each instance can be enocded
 in binary as well as some key meta data such as what modes the instruction support and operand extensions
 etc. (Details will appear in the [`instruction.h`](https://github.com/cheng-alvin/jas/blob/main/libjas/include/instruction.h) file)
 Each insruction encoder table includes *entries*, each entry defines the meta data that corrisond to a certain
