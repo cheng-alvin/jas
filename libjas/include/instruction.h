@@ -150,4 +150,22 @@ instr_encoder_t instr_encode_func(enum enc_ident input);
 #define INSTR_NULL \
   (instruction_t) { .instr = NULL, .operands = NULL }
 
+// Macro for checking if the instruction is a label and shall be handled
+#define IS_LABEL(x)                                      \
+  (uint8_t) x.instr >= (uint8_t)INSTR_DIR_LOCAL_LABEL && \
+      (uint8_t)x.instr <= (uint8_t)INSTR_DIR_EXTERN_LABEL
+
+/**
+ * Function for getting the instruction table based on the instruction
+ * struct provided. The function will return a instruction table struct
+ * as described above in this header file.
+ *
+ * @param instr The instruction struct to get the identifier from
+ * @return The instruction table struct
+ *
+ * @see `instr_encode_table_t`
+ * @see `instruction_t`
+ */
+instr_encode_table_t instr_get_tab(instruction_t instr);
+
 #endif

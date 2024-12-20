@@ -31,8 +31,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CURR_TABLE instr_table[instr_arr[i].instr][j]
-
 #define FREE_ALL(...)                                                   \
   do {                                                                  \
     void *pointers[] = {__VA_ARGS__};                                   \
@@ -43,7 +41,20 @@
 
 bool is_pre = false;
 
-static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size); // TODO Fix the stupid hack
+static instr_encode_table_t *get_instr_tabs(instruction_t *instr_arr, size_t arr_size) {
+  instr_encode_table_t *tabs = malloc(sizeof(instr_encode_table_t) * arr_size);
+
+  for (size_t i = 0; i < arr_size; i++) {
+    if (IS_LABEL(instr_arr[i])) {
+      tabs[i] = INSTR_TERMINATOR;
+      continue;
+    }
+    tabs[i] = instr_get_tab(instr_arr[i]);
+  }
+  return tabs;
+}
+
+static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, instr_encode_table_t *tabs);
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
   for (size_t i = 0; i < arr_size / sizeof(instruction_t); i++) {
     if (instr_arr[i].instr >= INSTR_DIR_LOCAL_LABEL) {
@@ -57,10 +68,14 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   }
 
   is_pre = true;
-  free(assemble(mode, instr_arr, arr_size).data);
+
+  // Spaghetti code warning 🍝🍝🍝
+  const instr_encode_table_t *tabs = get_instr_tabs(instr_arr, arr_size / sizeof(instruction_t));
+  free(assemble(mode, instr_arr, arr_size, tabs).data);
 
   is_pre = false;
-  const buffer_t code = assemble(mode, instr_arr, arr_size);
+  const buffer_t code = assemble(mode, instr_arr, arr_size, tabs);
+  free(tabs);
 
   if (exec_mode == CODEGEN_RAW) return code;
 
@@ -140,11 +155,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   return out;
 }
 
-// Macro for checking if the instruction is a label and shall be handled
-#define IS_LABEL (uint8_t) instr_arr[i].instr >= (uint8_t)INSTR_DIR_LOCAL_LABEL && \
-                     (uint8_t)instr_arr[i].instr <= (uint8_t)INSTR_DIR_EXTERN_LABEL
-
-static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size) {
+static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, instr_encode_table_t *tabs) {
   arr_size /= sizeof(instruction_t);
   buffer_t buf = BUF_NULL;
 
@@ -158,7 +169,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
         const buffer_t *data = (buffer_t *)instr_arr[i].operands[0].data;
         buf_write(&buf, data->data, data->len);
       }
-      if (is_pre && IS_LABEL) {
+      if (is_pre && IS_LABEL(instr_arr[i])) {
         for (size_t j = 0; j < label_get_size; j++) {
           label_t *tab = label_get_table();
           if (strcmp(tab[j].name, instr_arr[i].operands[0].data) == 0) {
@@ -171,42 +182,10 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
       continue;
     }
 
+    const instr_encode_table_t ref = tabs[i];
     instruction_t current = instr_arr[i];
-
-    const enum operands operand_list[4] = {
-        current.operands[0].type,
-        current.operands[1].type,
-        current.operands[2].type,
-        current.operands[3].type,
-    };
-
-    enum enc_ident ident = op_ident_identify(operand_list);
-    if (instr_arr[i].instr == INSTR_MOV) {
-      if (ident == OP_MI)
-        ident = OP_OI;
-
-      if (ident == OP_I)
-        ident = OP_O;
-    }
-
-    instr_encode_table_t ref;
-    unsigned int j = 0;
-    while (CURR_TABLE.opcode_size != 0) {
-      if (CURR_TABLE.ident == ident) {
-        ref = CURR_TABLE;
-        break;
-      }
-      j++;
-    }
-
-    if (ref.opcode_size == 0) {
-      err("No corrsponding instruction opcode found.");
-      free(buf.data);
-      return BUF_NULL;
-    }
-
     if (ref.pre != NULL) ref.pre(current.operands, &buf, &ref, (enum modes)mode);
-    instr_encode_func(ident)(current.operands, &buf, &ref, (enum modes)mode);
+    instr_encode_func(ref.ident)(current.operands, &buf, &ref, (enum modes)mode);
   }
 
   return buf;
