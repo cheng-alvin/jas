@@ -153,7 +153,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
     /* -- Handle assembler directives -- */
 
-    if (instr_arr[i].instr > INSTR_SYSCALL) {
+    if (INSTR_DIRECTIVE(instr_arr[i].instr)) {
       if (instr_arr[i].instr == INSTR_DIR_WRT_BUF) {
         const buffer_t *data = (buffer_t *)instr_arr[i].operands[0].data;
         buf_write(&buf, data->data, data->len);
