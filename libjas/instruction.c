@@ -174,6 +174,37 @@ instr_encode_table_t *instr_table[] =
 
 // clang-format on
 
+#define CURR_TABLE instr_table[instr.instr][j]
+
+instr_encode_table_t instr_get_tab(instruction_t instr) {
+  if (IS_LABEL(instr)) return INSTR_TERMINATOR; // aka empty
+  const enum operands operand_list[4] = {
+      instr.operands[0].type,
+      instr.operands[1].type,
+      instr.operands[2].type,
+      instr.operands[3].type,
+  };
+
+  enum enc_ident ident = op_ident_identify(operand_list);
+  if (instr.instr == INSTR_MOV) {
+    if (ident == OP_MI) ident = OP_OI;
+    if (ident == OP_I) ident = OP_O;
+  }
+
+  unsigned int j = 0;
+  while (CURR_TABLE.opcode_size != 0) {
+    if (CURR_TABLE.ident == ident) {
+      return CURR_TABLE;
+      break;
+    }
+    j++;
+  }
+
+  // fall-through; no corresponding instruction opcode found
+  err("No corrsponding instruction opcode found.");
+  return INSTR_TERMINATOR; // aka empty
+}
+
 instr_encoder_t instr_encode_func(enum enc_ident input) {
   instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m, &zo, &d, &o};
   return lookup[(size_t)input];
