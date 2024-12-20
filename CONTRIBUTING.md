@@ -52,6 +52,46 @@ automatically format the code using `clang-format`. You can ignore this behaviou
 and a corrisponding `clang-format on` comment in your code for small snippets that may break or cause issues 
 down the line if formatted automatically.
 
+### Adding suport for a instruction to the assembler
+A common addition for the Jas assembler, especially since how complex the Intel x64 instruction set is, is the 
+addition of new instructions and instruction encoder identities, which can be done by creating a instruction 
+encoder table, adding and/or registering the instructions to the instruction identities, and finally testing 
+and writing unit tests.
+
+**First, define a instruction encode table:**
+A instructiojn encoder table describes the identity of the instruction and how each instance can be enocded
+in binary as well as some key meta data such as what modes the instruction support and operand extensions
+etc. (Details will appear in the [`instruction.h`](https://github.com/cheng-alvin/jas/blob/main/libjas/include/instruction.h) file)
+Each insruction encoder table includes *entries*, each entry defines the meta data that corrisond to a certain
+identity. For example, a MR identity (A identity with a m64 and r64) will be one entry and includes the 
+opcode, and support status in different operating modes. Below is an example of a instruction encoded in the `MR` identity and can be encoded as `FF /r` or `FA /r` when using the byte-instruction mode (More examples will be [here](https://github.com/cheng-alvin/jas/blob/main/libjas/instruction.c))
+
+
+```c
+{
+  .ident = OP_MR,
+  .opcode_ext = NULL,
+  .opcode = {0xff},
+  .support = MODE_SUPPORT_ALL,
+  .byte_instr_opcode = {0xfa},
+  .opcode_size = 1,
+  .pre = NULL,
+}
+
+```
+
+### What are instruction encoder identities?
+Many instructions share lots of operand encoding logic that can be encapsulated. Each operand encoding identities have a certain order of operand types, allowing code to be shared among instructions who have similar operand inputs. 
+
+In Jas, we have organized these functions as codes like `MR`, `RM` or `Z` in which it corresponds to a certain combination of operands types (or classes if your fancy) within an instruction. However, tOnce an instruction struct is mapped to one of the operand identities, the assembler has narrowed down the instruction to a small set of possibilities allowing it to encode more efficiently. Each identity will, based on the instruction struct, encode the instruction into machine code, since every instruction in the operand identity has a similar encoding format.
+
+(Or, if you're struggling to understand me, it's a bit like the quadratics identites we used in high school, remember DOTS?)
+
+*As always, the Intel manual is the best place to find more information, in fact, the operand identities are official "guidelines" of operand combinations Intel has placed out; you can find it below the opcode encoder table*
+
+### The benefits of identities
+Once an instruction struct is mapped to one of the operand identities, the assembler has narrowed down the instruction to a small set of possibilities allowing it to encode more efficiently. Each identity will, based on the instruction struct, encode the instruction into machine code, since every instruction in the operand identity has a similar encoding format. The operand identites eliminates the large code size, improves and removed many performance overheads and improves reliability by packing everything in a function for encoding.
+
 ### What to remember before submitting a PR
 Once you have completed your work, remember to submit pull requests that are organised and have a clear sense of 
 purpose, any change from one line of code to a whole file is okay, it just has to have a purpose and a clear 
