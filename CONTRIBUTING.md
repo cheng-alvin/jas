@@ -69,29 +69,23 @@ opcode, and support status in different operating modes. Below is an example of 
 
 
 ```c
-{
-  .ident = OP_MR,
-  .opcode_ext = NULL,
-  .opcode = {0xff},
-  .support = MODE_SUPPORT_ALL,
-  .byte_instr_opcode = {0xfa},
-  .opcode_size = 1,
-  .pre = NULL,
-}
+#include <jas.h>
+
+static instr_encode_table_t new_ent = {
+  .ident                 = OP_MR, 
+  .opcode_ext            = NULL, 
+  .opcode                = {0xff},
+  .support               = MODE_SUPPORT_ALL,
+  .byte_instr_opcode     = {0xfa},
+  .opcode_size           = 1,
+  .pre                   = NULL,
+};
+
+// `new_ent` will be added to an array of different instruction identities.
 
 ```
 
-### What are instruction encoder identities?
-Many instructions share lots of operand encoding logic that can be encapsulated. Each operand encoding identities have a certain order of operand types, allowing code to be shared among instructions who have similar operand inputs. 
-
-In Jas, we have organized these functions as codes like `MR`, `RM` or `Z` in which it corresponds to a certain combination of operands types (or classes if your fancy) within an instruction. However, tOnce an instruction struct is mapped to one of the operand identities, the assembler has narrowed down the instruction to a small set of possibilities allowing it to encode more efficiently. Each identity will, based on the instruction struct, encode the instruction into machine code, since every instruction in the operand identity has a similar encoding format.
-
-(Or, if you're struggling to understand me, it's a bit like the quadratics identites we used in high school, remember DOTS?)
-
-*As always, the Intel manual is the best place to find more information, in fact, the operand identities are official "guidelines" of operand combinations Intel has placed out; you can find it below the opcode encoder table*
-
-### The benefits of identities
-Once an instruction struct is mapped to one of the operand identities, the assembler has narrowed down the instruction to a small set of possibilities allowing it to encode more efficiently. Each identity will, based on the instruction struct, encode the instruction into machine code, since every instruction in the operand identity has a similar encoding format. The operand identites eliminates the large code size, improves and removed many performance overheads and improves reliability by packing everything in a function for encoding.
+> Many instructions share lots of operand encoding logic or patterns that can be encapsulated. Each operand encoding identities have a certain order of operand types, allowing code to be shared among instructions who have similar operand inputs. In Jas, we have denoted these identities as  two letter codes like `MR`, `RM` or `Z` in which it corresponds to a certain combination of operands types (or classes if your fancy) within an instruction. In the end, they are mapped to a enocder function with the same name.
 
 ### What to remember before submitting a PR
 Once you have completed your work, remember to submit pull requests that are organised and have a clear sense of 
