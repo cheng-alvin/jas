@@ -27,7 +27,7 @@
 #include "error.h"
 #include <stddef.h>
 
-static void pre_default(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+static void same_operand_sizes(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const uint8_t ref = op_sizeof(op_arr[0].type);
 
   for (uint8_t i = 0; i < 4; i++) {
@@ -42,15 +42,15 @@ static void pre_default(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *
 
 static void pre_imm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) != 64) {
-    pre_default(op_arr, buf, instr_ref, mode);
+    same_operand_sizes(op_arr, buf, instr_ref, mode);
     return;
   }
 }
 
 static instr_encode_table_t mov[] = {
-    {OP_MR, NULL, {0x89}, MODE_SUPPORT_ALL, {0x88}, 1, &pre_default},
-    {OP_RM, NULL, {0x8B}, MODE_SUPPORT_ALL, {0x8A}, 1, &pre_default},
-    {OP_OI, NULL, {0xB8}, MODE_SUPPORT_ALL, {0xB0}, 1, &pre_default},
+    {OP_MR, NULL, {0x89}, MODE_SUPPORT_ALL, {0x88}, 1, &same_operand_sizes},
+    {OP_RM, NULL, {0x8B}, MODE_SUPPORT_ALL, {0x8A}, 1, &same_operand_sizes},
+    {OP_OI, NULL, {0xB8}, MODE_SUPPORT_ALL, {0xB0}, 1, &same_operand_sizes},
     {OP_MI, 0b10000000, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, 1, &pre_imm},
 
     INSTR_TERMINATOR,
@@ -67,8 +67,8 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 // clang-format off
 
 #define INSTR_GENERAL(rm, rm_byte, mr, mr_byte,i, i_byte, mi_ext, mi, mi_byte)  \
-      {OP_MR, NULL, {mr}, MODE_SUPPORT_ALL, {mr_byte}, 1, &pre_default},        \
-      {OP_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &pre_default},        \
+      {OP_MR, NULL, {mr}, MODE_SUPPORT_ALL, {mr_byte}, 1, &same_operand_sizes},        \
+      {OP_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &same_operand_sizes},        \
       {OP_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm},          \
       {OP_I, NULL, {i}, MODE_SUPPORT_ALL, {i_byte}, 1, &pre_imm},               \
       INSTR_TERMINATOR,
@@ -79,8 +79,8 @@ static instr_encode_table_t lea[] = {{OP_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x
 
 static instr_encode_table_t add[] = {INSTR_GENERAL(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, 0b10000000, 0x81, 0x80)};
 static instr_encode_table_t sub[] = {INSTR_GENERAL(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x81, 0x80)};
-static instr_encode_table_t mul[] = {{OP_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
-static instr_encode_table_t div[] = {{OP_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t mul[] = {{OP_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
+static instr_encode_table_t div[] = {{OP_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
 
 // Note all or, and and xor instructions have a imm8 which is not supported
 
@@ -90,10 +90,10 @@ static instr_encode_table_t xor [] = {INSTR_GENERAL(0x33, 0x32, 0x31, 0x30, 0x35
 
 // ---
 
-static instr_encode_table_t _not[] = {{OP_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t _not[] = {{OP_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
 
-static instr_encode_table_t inc[] = {{OP_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
-static instr_encode_table_t dec[] = {{OP_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t inc[] = {{OP_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
+static instr_encode_table_t dec[] = {{OP_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
 
 static void pre_jcc_no_byte(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) == 8)
@@ -161,7 +161,7 @@ static void pre_int(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 }
 
 static instr_encode_table_t _int[] = {{OP_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {0xCD}, 1, &pre_int}, INSTR_TERMINATOR};
-static instr_encode_table_t syscall[] = {{OP_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {0x00, 0x00}, 2, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t syscall[] = {{OP_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {0x00, 0x00}, 2, &same_operand_sizes}, INSTR_TERMINATOR};
 
 // clang-format off
 
