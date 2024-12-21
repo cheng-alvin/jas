@@ -124,7 +124,7 @@ static void pre_ret(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 
 // TODO / note far jumps, calls and returns are not supported (yet)
 static instr_encode_table_t ret[] = {
-    {OP_ZO, NULL, {0xC3}, MODE_SUPPORT_ALL, {0xC3}, 1, &pre_default},
+    {OP_ZO, NULL, {0xC3}, MODE_SUPPORT_ALL, {0xC3}, 1, NULL},
     {OP_I, NULL, {0xC2}, MODE_SUPPORT_ALL, {0xC2}, 1, &pre_ret},
     INSTR_TERMINATOR,
 };
@@ -147,13 +147,13 @@ static instr_encode_table_t pop[] = {
 static instr_encode_table_t in[] = {{}};
 static instr_encode_table_t out[] = {{}};
 
-static instr_encode_table_t clc[] = {{OP_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {0xF8}, 1, &pre_default}, INSTR_TERMINATOR};
-static instr_encode_table_t stc[] = {{OP_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {0xF9}, 1, &pre_default}, INSTR_TERMINATOR};
-static instr_encode_table_t cli[] = {{OP_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {0xFA}, 1, &pre_default}, INSTR_TERMINATOR};
-static instr_encode_table_t sti[] = {{OP_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {0xFB}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t clc[] = {{OP_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {0xF8}, 1, NULL}, INSTR_TERMINATOR};
+static instr_encode_table_t stc[] = {{OP_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {0xF9}, 1, NULL}, INSTR_TERMINATOR};
+static instr_encode_table_t cli[] = {{OP_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {0xFA}, 1, NULL}, INSTR_TERMINATOR};
+static instr_encode_table_t sti[] = {{OP_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {0xFB}, 1, NULL}, INSTR_TERMINATOR};
 
-static instr_encode_table_t nop[] = {{OP_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {0x90}, 1, &pre_default}, INSTR_TERMINATOR};
-static instr_encode_table_t hlt[] = {{OP_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, &pre_default}, INSTR_TERMINATOR};
+static instr_encode_table_t nop[] = {{OP_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {0x90}, 1, NULL}, INSTR_TERMINATOR};
+static instr_encode_table_t hlt[] = {{OP_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, NULL}, INSTR_TERMINATOR};
 
 static void pre_int(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) != 8)
