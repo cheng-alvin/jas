@@ -50,8 +50,6 @@ Yeah! that's it! Seriously! It's that simple, this little snippet of code genera
 ### 🏗️ Build and install
 The very first step in doing anything with jas is to build and link the library against your application code, since jas is a library. Ensure you have a C99 and C++17 compiler installed (Anything will do, preferably `clang`), and GNU make or something to run makefile while buidling. 
 
-> Since all the build scripts are written in bash, we only support building from POSIX-compliant systems such as Linux or Mac. 
-
 To obtain the Jas source files, run:
 ``` bash
 git clone https://github.com/cheng-alvin/jas/
