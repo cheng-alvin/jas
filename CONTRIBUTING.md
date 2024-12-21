@@ -7,9 +7,7 @@ feature, please see [this](https://github.com/cheng-alvin/jas/issues).
 
 ### Getting started
 For beginners and those who are new to Git and GitHub, please see [here](https://guides.github.com/activities/hello-world/)
-for a quick tutorial on how to get started with Git and GitHub. 
-
-The Jas project is hosted on this Github page and does not have any official mirrors on other sites at this point, 
+for a quick tutorial on how to get started with Git and GitHub. The Jas project is hosted on this Github page and does not have any official mirrors on other sites at this point, 
 you may create a un-official mirror on other sites and hosts if you wish, but all official development will occur
 here.
 
@@ -37,9 +35,6 @@ To build Jas, simply run `make` in the home or `libjas` directories (A debug bin
 Tests can be added in the `tests` directory and built using `make tests` as well in the home directory, all C 
 test files will be automatically built and run. You may include the Jas testing framework [here](https://github.com/cheng-alvin/jas/blob/main/tests/test.h) 
 
-> The build and testing scripts must be successful before submitting a pull request up to the repo,
-> if tests and compilation scripts fail, you must put your PR as a "draft" instead.
-
 ### Code style
 Preferably, if you have `clang-format` installed on your system, you can simply run `make format` in the home 
 directory to *automatically* format the source files to conform to our programming style as specified in 
@@ -55,7 +50,7 @@ down the line if formatted automatically.
 ### Adding suport for a instruction to the assembler
 A common addition for the Jas assembler, especially since how complex the Intel x64 instruction set is, is the 
 addition of new instructions and instruction encoder identities, which can be done by creating a instruction 
-encoder table, adding and/or registering the instructions to the instruction identities, and finally testing 
+encoder table, adding and/or registering the instruction enocder tables to the instruction list(s), and finally testing 
 and writing unit tests.
 
 **First, define a instruction encode table:**
