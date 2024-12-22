@@ -20,10 +20,10 @@ cd jas
 
 For the safety of already stable code, we'll use branches (Like everyone else) to develop software and squash bugs
 in parallel, before starting any development work, you must create a new branch and create a pull request with a 
-detailed description of your work and changes you have commited. 
+detailed description of your work and changes you have committed. 
 
 > Please note that branch and commit names shall be as short as possible, branch names should contain a one or
-> two word overview on the changes commited and commit messages shall show the added changes in another couple
+> two word overview on the changes committed and commit messages shall show the added changes in another couple
 > words with details appearing in the description.
 
 To ensure the quality of the contributed code, all pull requests must be reviewed by a maintainer (which is most
@@ -43,22 +43,22 @@ your patch in your own coding style and have it formatted automatically when mer
 just as long as the maintainers can read it, then it'll okay.
 
 As mentioned above, a Github action will automatically run when new code is pushed onto the main branch to
-automatically format the code using `clang-format`. You can ignore this behaviour by adding a `clang-format off`
-and a corrisponding `clang-format on` comment in your code for small snippets that may break or cause issues 
+automatically format the code using `clang-format`. You can ignore this behavior by adding a `clang-format off`
+and a corresponding `clang-format on` comment in your code for small snippets that may break or cause issues 
 down the line if formatted automatically.
 
-### Adding suport for a instruction to the assembler
+### Adding support for a instruction to the assembler
 A common addition for the Jas assembler, especially since how complex the Intel x64 instruction set is, is the 
 addition of new instructions and instruction encoder identities, which can be done by creating a instruction 
-encoder table, adding and/or registering the instruction enocder tables to the instruction list(s), and finally testing 
+encoder table, adding and/or registering the instruction encoder tables to the instruction list(s), and finally testing 
 and writing unit tests.
 
 **First, define a instruction encode table:**
 
-A instruction encoder table describes the identity of the instruction and how each instance can be enocded
+A instruction encoder table describes the identity of the instruction and how each instance can be encoded
 in binary as well as some key meta data such as what modes the instruction support and operand extensions
 etc. (Details will appear in the [`instruction.h`](https://github.com/cheng-alvin/jas/blob/main/libjas/include/instruction.h) file)
-Each insruction encoder table includes *entries*, each entry defines the meta data that corrisond to a certain
+Each instruction encoder table includes *entries*, each entry defines the meta data that correspond to a certain
 identity. For example, a MR identity (A identity with a m64 and r64) will be one entry and includes the 
 opcode, and support status in different operating modes. Below is an example of a instruction encoded in the `MR` identity and can be encoded as `FF /r` or `FA /r` when using the byte-instruction mode (More examples will be [here](https://github.com/cheng-alvin/jas/blob/main/libjas/instruction.c))
 
@@ -80,13 +80,13 @@ static instr_encode_table_t new_ent = {
 
 ```
 
-> Many instructions share lots of operand encoding logic or patterns that can be encapsulated. Each operand encoding identities have a certain order of operand types, allowing code to be shared among instructions who have similar operand inputs. In Jas, we have denoted these identities as  two letter codes like `MR`, `RM` or `Z` in which it corresponds to a certain combination of operands types (or classes if your fancy) within an instruction. In the end, they are mapped to a enocder function with the same name.
+> Many instructions share lots of operand encoding logic or patterns that can be encapsulated. Each operand encoding identities have a certain order of operand types, allowing code to be shared among instructions who have similar operand inputs. In Jas, we have denoted these identities as  two letter codes like `MR`, `RM` or `Z` in which it corresponds to a certain combination of operands types (or classes if your fancy) within an instruction. In the end, they are mapped to a encoder function with the same name.
 
 ### What to remember before submitting a PR
-Once you have completed your work, remember to submit pull requests that are organised and have a clear sense of 
+Once you have completed your work, remember to submit pull requests that are organized and have a clear sense of 
 purpose, any change from one line of code to a whole file is okay, it just has to have a purpose and a clear 
 reason to be merged upstream. (but also remember to try and keep it small) Speaking of size, please also ensure 
-that you properly and logically organise banches and pull requests, if changes don't seem to fit in one pull
+that you properly and logically organize branches and pull requests, if changes don't seem to fit in one pull
 request logically, feel free to submit multiple, as long as it makes sense logically.
 
 ### What now?
