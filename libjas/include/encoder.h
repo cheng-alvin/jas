@@ -41,15 +41,15 @@ typedef struct operand operand_t;
  * methods in the main source file - `encoder.c`.
  */
 enum enc_ident {
-  OP_MR,
-  OP_RM,
-  OP_OI,
-  OP_MI,
-  OP_I,
-  OP_M,
-  OP_ZO,
-  OP_D,
-  OP_O,
+  ENC_MR,
+  ENC_RM,
+  ENC_OI,
+  ENC_MI,
+  ENC_I,
+  ENC_M,
+  ENC_ZO,
+  ENC_D,
+  ENC_O,
 };
 
 /**
