@@ -94,7 +94,8 @@ in the `instructions` enum in the `instruction.h` header, the name should be pre
 and followed with the instruction's name as shown on the Intel manual to maintain consistency. 
 
 Here's an example - Lets say I am adding a fictional instruction of `xyz` into the enum
-```
+
+```c
 enum instructions {
   INSTR_MOV,
   INSTR_LEA,
@@ -108,6 +109,8 @@ enum instructions {
 
   // ...
 }
+```
+
 > Please ensure the instruction is not appended in the enum, but instead added **before** the directives section,
 > otherwise the instruction you are trying to add as a *instruction* will be interpreted as an assembler directive. (All assembler directives are prefixed as `INSTR_DIR_` instead of just `INSTR_`)
 
