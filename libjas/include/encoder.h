@@ -60,29 +60,16 @@ enum enc_ident {
  *
  * @see `instr_encoder_t`
  */
-#define DEFINE_ENCODER(ident) \
+#define DEFINE_ENCODER(ident, ...) \
   void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
 
-/**
- * @brief
- * The encoder function signature for the different operand
- * identifiers. The encoder functions are used to encode the
- * operands into machine code while incorporating the opcodes
- * and all other necessary information based off lookup tables
- * from `instruction.h` and the corresponding `instruction.c`.
- */
+/* --- Register encoder function declarations here: --- */
+#define DECLARE_ENCODER_LIST(func_name, ...) \
+  DEFINE_ENCODER(func_name, __VA_ARGS__);    \
+  DECLARE_ENCODER_LIST(__VA_ARGS__)
 
-DEFINE_ENCODER(d);
-DEFINE_ENCODER(i);
+DECLARE_ENCODER_LIST(mr, rm, oi, mi, i, m, zo, d, o);
 
-DEFINE_ENCODER(m);
-DEFINE_ENCODER(mi);
-DEFINE_ENCODER(mr);
-
-DEFINE_ENCODER(o);
-DEFINE_ENCODER(oi);
-
-DEFINE_ENCODER(rm);
-DEFINE_ENCODER(zo);
+#undef DECLARE_ENCODER_LIST
 
 #endif
