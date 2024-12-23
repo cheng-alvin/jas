@@ -153,7 +153,7 @@ DEFINE_ENCODER(mi) {
   }
 }
 
-static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, bool is_rm) {
+static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, enum enc_ident ident) {
   /**
    * @brief This opcode identity is a "Common ground for MR and RM"
    * Since rm and mr just has to be flipped, we can just use a boolean
@@ -162,6 +162,8 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
    * @note An empty SIB byte will be written if the register is 4
    * (A rsp, sp or esp) register that activates the SIB byte.
    */
+
+  const bool is_rm = ident == ENC_RM;
 
   // Register - Since this is accessed quite often
   register const uint8_t reg_idx = is_rm ? 0 : 1;
@@ -215,8 +217,8 @@ static void mr_rm_ref(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
   write_offset(mod, buf, op_arr, rm_idx);
 }
 
-DEFINE_ENCODER(mr) { mr_rm_ref(op_arr, buf, instr_ref, mode, false); }
-DEFINE_ENCODER(rm) { mr_rm_ref(op_arr, buf, instr_ref, mode, true); }
+DEFINE_ENCODER(mr) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_MR); }
+DEFINE_ENCODER(rm) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_RM); }
 
 DEFINE_ENCODER(o) {
   const uint8_t reg = reg_lookup_val(op_arr[0].data);
