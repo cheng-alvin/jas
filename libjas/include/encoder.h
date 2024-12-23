@@ -93,6 +93,6 @@ typedef void (*encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t
  * @param input The instruction encoding identity
  * @return The instruction encoder function pointer
  */
-encoder_t instr_encode_func(enum enc_ident input);
+encoder_t enc_lookup(enum enc_ident input);
 
 #endif
