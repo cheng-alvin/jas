@@ -103,7 +103,26 @@ and fetch whatever table is needed.
 
 ### Adding a new encoder
 Although most of the encoders used by 80% of all Intel x64 instructions, many are still unsupported and require 
-you to add it in n
+you to add it into the assembler manually, especially many of the specialized floating point instructions and
+CPU specific stuff. All encoders live in the `libjas/encoder.c` file, to write a new encoder function, use the `DEFINE_ENCODER`
+macro defined in `libjas/include/encoder.h` and providing the name of the encoder as the argument. (The name should be in 
+lowercase and match the naming scheme as shown on the Intel manual.) See example below:
+```c
+// ...
+DEFINE_ENCODER(xx){
+  // ...
+}
+```
+
+The `DEFINE_ENCODER` macro already gives developers some helper arguments such as the instruction encoder table to reference,
+the operand array, more details appear in the `encoder.h` header, all "invokers" of these encoder function, including the 
+assembler itself will conform to this structure.
+
+After defining a encoder that you are happy with, there is no way the assembler can have any indication of the *existence* of 
+this encoder and cannot be invoked. All encoders should be *appended* to the `enc_ident` enum in the `libjas/include/encoder.h` 
+header so that the order can match up to the encoders array in the `enc_lookup()` function. 
+
+> The `enc_ident` enum serves as a *indexer* for the `enc_lookup()` array and allows the lookup table to work properly. 
 
 ### How does maintaining work?
 Code in Jas should be a collaborative project, there is no way that one person will have the ability to look after
