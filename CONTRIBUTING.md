@@ -28,7 +28,7 @@ detailed description of your work and changes you have committed.
 
 To ensure the quality of the contributed code, all pull requests must be reviewed by a maintainer (which is most
 cases is me). Please direct all queries and concerns to eventide1029+jas@gmail.com as well as for any feedback 
-on code and contributions to the Assembler. [See below]()
+on code and contributions to the Assembler. [See below](https://github.com/cheng-alvin/jas/blob/contributing-guide-changes/CONTRIBUTING.md#how-does-maintaining-work)
 
 ### Building and testing
 To build Jas, simply run `make` in the home or `libjas` directories (A debug binary must be built in `libjas`). 
