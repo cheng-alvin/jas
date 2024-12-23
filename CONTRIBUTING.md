@@ -82,7 +82,7 @@ static instr_encode_table_t new_ent = {
 
 > Many instructions share lots of operand encoding logic or patterns that can be encapsulated. Each operand encoding identities have a certain order of operand types, allowing code to be shared among instructions who have similar operand inputs. In Jas, we have denoted these identities as  two letter codes like `MR`, `RM` or `Z` in which it corresponds to a certain combination of operands types (or classes if your fancy) within an instruction. In the end, they are mapped to a encoder function with the same name.
 
-** Next, register the new instruction: **
+**Next, register the new instruction:**
 
 Even though you have the instruction encoder table already setup, currently the assembler has no indication that
 this instruction actually *exists*. Therefore, we'll need to indicate to the assembler that this instruction 
@@ -92,24 +92,6 @@ previous "chapter")
 So, register the instruction and the instruction encoder table to the assembler, we'll add the instruction's name
 in the `instructions` enum in the `instruction.h` header, the name should be prefixed with the prefix of `INSTR_`
 and followed with the instruction's name as shown on the Intel manual to maintain consistency. 
-
-Here's an example - Lets say I am adding a fictional instruction of `xyz` into the enum
-
-```c
-enum instructions {
-  INSTR_MOV,
-  INSTR_LEA,
-
-  // ...
-
-  INSTR_XYZ,
-
-  // Directives:
-  INSTR_DIR_WRT_BUF,
-
-  // ...
-}
-```
 
 > Please ensure the instruction is not appended in the enum, but instead added **before** the directives section,
 > otherwise the instruction you are trying to add as a *instruction* will be interpreted as an assembler directive. (All assembler directives are prefixed as `INSTR_DIR_` instead of just `INSTR_`)
