@@ -208,7 +208,3 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   return INSTR_TERMINATOR; // aka empty
 }
 
-instr_encoder_t instr_encode_func(enum enc_ident input) {
-  instr_encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m, &zo, &d, &o};
-  return lookup[(size_t)input];
-}

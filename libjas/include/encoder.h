@@ -55,21 +55,44 @@ enum enc_ident {
 /**
  * Macro definition for the encoder function signature,
  * this function signature and it's parameters are all
- * documented in `instruction.h` with the `instr_encoder_t`
- * typedef.
+ * documented below.
  *
- * @see `instr_encoder_t`
+ * For very very special cases where you need to define
+ * a custom encoder function, or if you need to reference
+ * it in a different file, you can use this macro, instead
+ * of using the `enc_lookup()` function.
+ *
+ * @see `encoder_t`
  */
 #define DEFINE_ENCODER(ident, ...) \
   void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
 
-/* --- Register encoder function declarations here: --- */
-#define DECLARE_ENCODER_LIST(func_name, ...) \
-  DEFINE_ENCODER(func_name, __VA_ARGS__);    \
-  DECLARE_ENCODER_LIST(__VA_ARGS__)
+/**
+ * Type wrapper for the instruction encoder function pointer. Where
+ * each operand encoder function takes an array of operands and
+ * a buffer to write the encoded instruction to.
+ *
+ * (Based on the operand identities like MR, RM, etc.)
+ *
+ * @param op_arr The array of operands to encode
+ * @param buf The buffer to write the encoded instruction to
+ * @param instr_ref The instruction reference table
+ * @param mode The operating mode of the instruction
+ *
+ * @note All encoder functions will conform to this signature.
+ */
+typedef void (*encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
 
-DECLARE_ENCODER_LIST(mr, rm, oi, mi, i, m, zo, d, o);
-
-#undef DECLARE_ENCODER_LIST
+/**
+ * Lookup table for the different instruction encoder functions.
+ * The lookup table is indexed by the operand encoding identity
+ * and the corresponding encoder function is returned.
+ *
+ * @see `encoder.c`
+ *
+ * @param input The instruction encoding identity
+ * @return The instruction encoder function pointer
+ */
+encoder_t instr_encode_func(enum enc_ident input);
 
 #endif

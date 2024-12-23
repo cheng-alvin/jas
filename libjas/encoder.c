@@ -239,3 +239,8 @@ DEFINE_ENCODER(zo) {
   check_mode(mode, instr_ref->support);
   buf_write(buf, instr_ref->opcode, instr_ref->opcode_size);
 }
+
+encoder_t enc_lookup(enum enc_ident input) {
+  encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m, &zo, &d, &o};
+  return lookup[(size_t)input];
+}
