@@ -101,6 +101,41 @@ encoder table to the general lookup table for instructions called `instr_table`,
 order as the enum is in. This is very important since the assembler uses a lookup and uses the enum as a indexing tool
 and fetch whatever table is needed.
 
+### Adding a new encoder
+Although most of the encoders used by 80% of all Intel x64 instructions, many are still unsupported and require 
+you to add it in n
+
+### How does maintaining work?
+Code in Jas should be a collaborative project, there is no way that one person will have the ability to look after
+all the code in such a complicated project. Once a new block of code such as function or a new file is added, they
+will be automatically assigned to the author(s) of that block. For example, a new encoder is merged into the assembler,
+the people who initially wrote it will take care of the encoder's source, documentation and addressing issues. Their name(s)
+and email addresses as well as relevant contact details (preferably Github username) should be added on the documentation
+comment for the encoder similar to the one below:
+
+```c
+// func.h
+
+/**
+ * @author example <example@example.com>
+ * 
+ * ...
+ */
+void func(); 
+```
+
+All questions, concerns and general inquires related to this block of code should be directed to this maintainer,
+he or she should also review any related PRs and keep in constant communication with other maintainers and the 
+contributors.
+
+> If you do contribute some code and **do not wish** to look after it long-term as a maintainer (Which is 100% okay)
+> you may drop support for it at anytime, just drop a email to eventide1029@gmail.com and I (Alvin) will be keen to do my best to look after it.
+
+#### Becoming a maintainer
+Becoming a maintainer is easy! Everyone can do it! It's a great way to contribute to the community and help out 
+with the constant stream of issues. To become a maintainer just drop in a quick email to me (Alvin) eventide1029@gmail.com
+and I'll be happy to let you look after that portion of code.
+
 ### What to remember before submitting a PR
 Once you have completed your work, remember to submit pull requests that are organized and have a clear sense of 
 purpose, any change from one line of code to a whole file is okay, it just has to have a purpose and a clear 
