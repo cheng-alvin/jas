@@ -91,6 +91,9 @@ enum instructions {
   INSTR_DIR_EXTERN_LABEL,
 };
 
+// Alias type for the encoder `encoder_t` function pointer. - See `encoder.h`
+typedef encoder_t pre_encoder_t;
+
 struct instr_encode_table {
   enum enc_ident ident;         /* Operand encoding identity */
   uint8_t opcode_ext;           /* Opcode extension */
@@ -98,7 +101,7 @@ struct instr_encode_table {
   mode_support_t support;       /* Support status of the instruction (Optional, Would be set to "all" if not used) */
   uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
   uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
-  encoder_t pre;                /* Pre-encoder processor function (Optional, null if not applicable) */
+  pre_encoder_t pre;            /* Pre-encoder processor function (Optional, null if not applicable) */
 };
 
 /**
