@@ -28,7 +28,7 @@ detailed description of your work and changes you have committed.
 
 To ensure the quality of the contributed code, all pull requests must be reviewed by a maintainer (which is most
 cases is me). Please direct all queries and concerns to eventide1029+jas@gmail.com as well as for any feedback 
-on code and contributions to the Assembler.
+on code and contributions to the Assembler. [See below]()
 
 ### Building and testing
 To build Jas, simply run `make` in the home or `libjas` directories (A debug binary must be built in `libjas`). 
@@ -95,6 +95,11 @@ and followed with the instruction's name as shown on the Intel manual to maintai
 
 > Please ensure the instruction is not appended in the enum, but instead added **before** the directives section,
 > otherwise the instruction you are trying to add as a *instruction* will be interpreted as an assembler directive. (All assembler directives are prefixed as `INSTR_DIR_` instead of just `INSTR_`)
+
+After your shiny new instruction is registered to the `instructions` enum, you'll also need to register the instruction's
+encoder table to the general lookup table for instructions called `instr_table`, they must be placed in a array in **the same** 
+order as the enum is in. This is very important since the assembler uses a lookup and uses the enum as a indexing tool
+and fetch whatever table is needed.
 
 ### What to remember before submitting a PR
 Once you have completed your work, remember to submit pull requests that are organized and have a clear sense of 
