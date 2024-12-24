@@ -24,6 +24,7 @@
  */
 
 #include "codegen.h"
+#include "encoder.h"
 #include "error.h"
 #include "exe.h"
 #include "label.h"
@@ -185,7 +186,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
     const instr_encode_table_t ref = tabs[i];
     instruction_t current = instr_arr[i];
     if (ref.pre != NULL) ref.pre(current.operands, &buf, &ref, (enum modes)mode);
-    instr_encode_func(ref.ident)(current.operands, &buf, &ref, (enum modes)mode);
+    enc_lookup(ref.ident)(current.operands, &buf, &ref, (enum modes)mode);
   }
 
   return buf;

@@ -47,8 +47,8 @@ Test(operand, ident_identify) {
   const enum operands input[] = {OP_R8, OP_R16, OP_NULL, OP_NULL};
   const enum operands input2[] = {OP_R8, OP_M16, OP_NULL, OP_NULL};
 
-  assert_eq(op_ident_identify(input), OP_MR);
-  assert_eq(op_ident_identify(input2), OP_RM);
+  assert_eq(op_ident_identify(input), ENC_MR);
+  assert_eq(op_ident_identify(input2), ENC_RM);
 }
 
 Test(operand, modrm_mode) {

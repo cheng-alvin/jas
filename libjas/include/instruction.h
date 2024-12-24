@@ -91,21 +91,8 @@ enum instructions {
   INSTR_DIR_EXTERN_LABEL,
 };
 
-/**
- * Type wrapper for the instruction encoder function pointer. Where
- * each operand encoder function takes an array of operands and
- * a buffer to write the encoded instruction to.
- *
- * (Based on the operand identities like MR, RM, etc.)
- *
- * @param op_arr The array of operands to encode
- * @param buf The buffer to write the encoded instruction to
- * @param instr_ref The instruction reference table
- * @param mode The operating mode of the instruction
- *
- * @note All encoder functions will conform to this signature.
- */
-typedef void (*instr_encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+// Alias type for the encoder `encoder_t` function pointer. - See `encoder.h`
+typedef encoder_t pre_encoder_t;
 
 struct instr_encode_table {
   enum enc_ident ident;         /* Operand encoding identity */
@@ -114,7 +101,7 @@ struct instr_encode_table {
   mode_support_t support;       /* Support status of the instruction (Optional, Would be set to "all" if not used) */
   uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
   uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
-  instr_encoder_t pre;          /* Pre-encoder processor function (Optional, null if not applicable) */
+  pre_encoder_t pre;            /* Pre-encoder processor function (Optional, null if not applicable) */
 };
 
 /**
@@ -127,14 +114,6 @@ typedef struct {
   enum instructions instr; /* Type of instruction */
   operand_t *operands;     /* Operands of the instruction */
 } instruction_t;
-
-/**
- * Lookup table for the different instruction class encoders.
- *
- * @param input The instruction encoding identity
- * @return The instruction encoder function pointer
- */
-instr_encoder_t instr_encode_func(enum enc_ident input);
 
 #define INSTR_TERMINATOR         \
   (instr_encode_table_t) {       \

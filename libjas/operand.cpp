@@ -58,20 +58,20 @@ static op_ident_hash_t op_hash(enum operands input) {
 
 namespace op {
   static std::unordered_map<uint32_t, enum enc_ident> lookup = {
-      {__combine__(OP_HASH_R, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE), OP_MR},
-      {__combine__(OP_HASH_M, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE), OP_MR},
+      {__combine__(OP_HASH_R, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE), ENC_MR},
+      {__combine__(OP_HASH_M, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE), ENC_MR},
 
-      {__combine__(OP_HASH_R, OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE), OP_RM},
+      {__combine__(OP_HASH_R, OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE), ENC_RM},
 
-      {__combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), OP_MI},
-      {__combine__(OP_HASH_M, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), OP_MI},
+      {__combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), ENC_MI},
+      {__combine__(OP_HASH_M, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), ENC_MI},
 
-      {__combine__(OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), OP_ZO},
-      {__combine__(OP_HASH_ACC, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), OP_I},
-      {__combine__(OP_HASH_REL, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), OP_D},
+      {__combine__(OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), ENC_ZO},
+      {__combine__(OP_HASH_ACC, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), ENC_I},
+      {__combine__(OP_HASH_REL, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), ENC_D},
 
-      {__combine__(OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), OP_M},
-      {__combine__(OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), OP_M},
+      {__combine__(OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), ENC_M},
+      {__combine__(OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), ENC_M},
   };
 }
 extern "C" enum enc_ident op_ident_identify(enum operands *input) {
