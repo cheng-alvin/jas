@@ -47,7 +47,7 @@ typedef struct instr_encode_table instr_encode_table_t;
  * Please update this macro if more directives and/or instructions
  * are added/supported in this enum list (In the future).
  */
-#define INSTR_DIRECTIVE(i) ((uint8_t)i > (uint8_t)INSTR_SYSCALL)
+#define INSTR_DIRECTIVE(i) ((uint8_t)i > (uint8_t)INSTR_DUMMY)
 
 enum instructions {
   INSTR_MOV,
@@ -82,6 +82,8 @@ enum instructions {
   INSTR_HLT,
   INSTR_INT,
   INSTR_SYSCALL,
+
+  INSTR_DUMMY,
 
   // Directives:
   INSTR_DIR_WRT_BUF, // A buffer_t to write to
