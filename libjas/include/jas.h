@@ -1,6 +1,6 @@
 /**
  * MIT License
- * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ * Copyright (c) 2023-2024 Alvin Cheng <eventide1029@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 
 /**
  * @author cheng-alvin
- * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ * Copyright (c) 2023-2024 Alvin Cheng <eventide1029@gmail.com>
  *
  * Jas is a minimal, fast and simple zero-dependency assembler for the x64
  * family of processors, jas not only aims to be fast and simple when using
@@ -41,24 +41,5 @@
  *
  * Made with love by Alvin / the Jas crew and contributors ❤️ .
  */
-
-#ifdef __cplusplus
-namespace jas {
-  extern "C" {
-#endif
-
-#include "buffer.h"
-#include "codegen.h"
-#include "error.h"
-#include "instruction.h"
-#include "label.h"
-#include "mode.h"
-#include "operand.h"
-#include "register.h"
-
-#ifdef __cplusplus
-  }
-}
-#endif
 
 #endif

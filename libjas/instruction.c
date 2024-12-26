@@ -1,6 +1,6 @@
 /**
  * MIT License
- * Copyright (c) 2023-2024 Alvin Cheng (eventide1029@gmail.com)
+ * Copyright (c) 2023-2024 Alvin Cheng <eventide1029@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -207,4 +207,3 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   err("No corrsponding instruction opcode found.");
   return INSTR_TERMINATOR; // aka empty
 }
-
