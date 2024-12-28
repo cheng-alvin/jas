@@ -42,4 +42,23 @@
  * Made with love by Alvin / the Jas crew and contributors ❤️ .
  */
 
+#ifdef __cplusplus
+namespace jas {
+  extern "C" {
+#endif
+
+#include "buffer.h"
+#include "codegen.h"
+#include "error.h"
+#include "instruction.h"
+#include "label.h"
+#include "mode.h"
+#include "operand.h"
+#include "register.h"
+
+#ifdef __cplusplus
+  }
+}
+#endif
+
 #endif
