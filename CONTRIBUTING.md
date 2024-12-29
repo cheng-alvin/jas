@@ -65,8 +65,9 @@ opcode, and support status in different operating modes. Below is an example of 
 
 ```c
 #include <jas.h>
+#include <stdbool.h>
 
-static instr_encode_table_t new_ent = {
+DEFINE_TAB(new_ent) = {
   .ident                 = OP_MR, 
   .opcode_ext            = NULL, 
   .opcode                = {0xff},
@@ -74,6 +75,7 @@ static instr_encode_table_t new_ent = {
   .byte_instr_opcode     = {0xfa},
   .opcode_size           = 1,
   .pre                   = NULL,
+  .has_byte_opcode       = true,
 };
 
 // `new_ent` will be added to an array of different instruction identities.
