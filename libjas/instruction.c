@@ -47,11 +47,13 @@ static void pre_imm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
   }
 }
 
+#define ZERO_EXT 0b10000000
+
 static instr_encode_table_t mov[] = {
     {ENC_MR, NULL, {0x89}, MODE_SUPPORT_ALL, {0x88}, 1, &same_operand_sizes},
     {ENC_RM, NULL, {0x8B}, MODE_SUPPORT_ALL, {0x8A}, 1, &same_operand_sizes},
     {ENC_OI, NULL, {0xB8}, MODE_SUPPORT_ALL, {0xB0}, 1, &same_operand_sizes},
-    {ENC_MI, 0b10000000, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, 1, &pre_imm},
+    {ENC_MI, ZERO_EXT, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, 1, &pre_imm},
 
     INSTR_TERMINATOR,
 };
@@ -66,7 +68,7 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 
 // clang-format off
 
-#define INSTR_GENERAL(rm, rm_byte, mr, mr_byte,i, i_byte, mi_ext, mi, mi_byte)  \
+#define GENERIC(rm, rm_byte, mr, mr_byte,i, i_byte, mi_ext, mi, mi_byte)  \
       {ENC_MR, NULL, {mr}, MODE_SUPPORT_ALL, {mr_byte}, 1, &same_operand_sizes},        \
       {ENC_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &same_operand_sizes},        \
       {ENC_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm},          \
@@ -77,16 +79,16 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 
 static instr_encode_table_t lea[] = {{ENC_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, 1, &pre_lea}, INSTR_TERMINATOR};
 
-static instr_encode_table_t add[] = {INSTR_GENERAL(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, 0b10000000, 0x81, 0x80)};
-static instr_encode_table_t sub[] = {INSTR_GENERAL(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x81, 0x80)};
+static instr_encode_table_t add[] = {GENERIC(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, ZERO_EXT, 0x81, 0x80)};
+static instr_encode_table_t sub[] = {GENERIC(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x81, 0x80)};
 static instr_encode_table_t mul[] = {{ENC_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
 static instr_encode_table_t div[] = {{ENC_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
 
 // Note all or, and and xor instructions have a imm8 which is not supported
 
-static instr_encode_table_t and[] = {INSTR_GENERAL(0x23, 0x22, 0x21, 0x20, 0x25, 0x24, 4, 0x81, 0x80)};
-static instr_encode_table_t or [] = {INSTR_GENERAL(0x0B, 0x0A, 0x09, 0x08, 0x0D, 0x0C, 1, 0x81, 0x80)};
-static instr_encode_table_t xor [] = {INSTR_GENERAL(0x33, 0x32, 0x31, 0x30, 0x35, 0x34, 6, 0x81, 0x80)};
+static instr_encode_table_t and[] = {GENERIC(0x23, 0x22, 0x21, 0x20, 0x25, 0x24, 4, 0x81, 0x80)};
+static instr_encode_table_t or [] = {GENERIC(0x0B, 0x0A, 0x09, 0x08, 0x0D, 0x0C, 1, 0x81, 0x80)};
+static instr_encode_table_t xor [] = {GENERIC(0x33, 0x32, 0x31, 0x30, 0x35, 0x34, 6, 0x81, 0x80)};
 
 // ---
 
@@ -129,7 +131,7 @@ static instr_encode_table_t ret[] = {
     INSTR_TERMINATOR,
 };
 
-static instr_encode_table_t cmp[] = {INSTR_GENERAL(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)};
+static instr_encode_table_t cmp[] = {GENERIC(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)};
 
 static instr_encode_table_t push[] = {
     {ENC_M, 6, {0xFF}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
