@@ -104,6 +104,7 @@ struct instr_encode_table {
   uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
   uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
   pre_encoder_t pre;            /* Pre-encoder processor function (Optional, null if not applicable) */
+  bool has_byte_opcode;         /* If the instruction encoder table has a byte instruction opcode */
 };
 
 /**
@@ -126,6 +127,7 @@ typedef struct {
     .byte_instr_opcode = {NULL}, \
     .opcode_size = NULL,         \
     .pre = NULL,                 \
+    .has_byte_opcode = false     \
   }
 
 #define INSTR_NULL \

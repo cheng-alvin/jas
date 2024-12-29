@@ -50,10 +50,10 @@ static void pre_imm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 #define ZERO_EXT 0b10000000
 
 static instr_encode_table_t mov[] = {
-    {ENC_MR, NULL, {0x89}, MODE_SUPPORT_ALL, {0x88}, 1, &same_operand_sizes},
-    {ENC_RM, NULL, {0x8B}, MODE_SUPPORT_ALL, {0x8A}, 1, &same_operand_sizes},
+    {ENC_MR, NULL, {0x89}, MODE_SUPPORT_ALL, {0x88}, 1, &same_operand_sizes, true},
+    {ENC_RM, NULL, {0x8B}, MODE_SUPPORT_ALL, {0x8A}, 1, &same_operand_sizes, true},
     {ENC_OI, NULL, {0xB8}, MODE_SUPPORT_ALL, {0xB0}, 1, &same_operand_sizes},
-    {ENC_MI, ZERO_EXT, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, 1, &pre_imm},
+    {ENC_MI, ZERO_EXT, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, 1, &pre_imm, true},
 
     INSTR_TERMINATOR,
 };
@@ -69,7 +69,7 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 // clang-format off
 
 #define GENERIC(rm, rm_byte, mr, mr_byte,i, i_byte, mi_ext, mi, mi_byte)  \
-      {ENC_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &same_operand_sizes},        \
+     {ENC_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &same_operand_sizes},        \
       {ENC_MR, NULL, {mr}, MODE_SUPPORT_ALL, {mr_byte}, 1, &same_operand_sizes},        \
       {ENC_I, NULL, {i}, MODE_SUPPORT_ALL, {i_byte}, 1, &pre_imm},               \
       {ENC_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm},          \
@@ -104,7 +104,7 @@ static void pre_jcc_no_byte(operand_t *op_arr, buffer_t *buf, instr_encode_table
 
 static instr_encode_table_t jmp[] = {
     {ENC_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL},
-    {ENC_M, 4, {0xFF}, MODE_SUPPORT_ALL, {0x90}, 1, &pre_imm},
+    {ENC_M, 4, {0xFF}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_imm, false},
     INSTR_TERMINATOR,
 };
 
@@ -115,7 +115,7 @@ static instr_encode_table_t jnz[] = {{ENC_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_AL
 
 static instr_encode_table_t call[] = {
     {ENC_D, NULL, {0xE8}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL},
-    {ENC_M, 2, {0xFF}, MODE_SUPPORT_ALL, {0x90}, 1, &pre_imm},
+    {ENC_M, 2, {0xFF}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_imm, false},
     INSTR_TERMINATOR,
 };
 
@@ -134,15 +134,15 @@ static instr_encode_table_t ret[] = {
 static instr_encode_table_t cmp[] = {GENERIC(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)};
 
 static instr_encode_table_t push[] = {
-    {ENC_M, 6, {0xFF}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
-    {ENC_O, NULL, {0x50}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
-    {ENC_I, NULL, {0x68}, MODE_SUPPORT_ALL, {0x6A}, 1, &pre_imm},
+    {ENC_M, 6, {0xFF}, MODE_SUPPORT_ALL, NULL, 1, NULL, false},
+    {ENC_O, NULL, {0x50}, MODE_SUPPORT_ALL, NULL, 1, NULL, false},
+    {ENC_I, NULL, {0x68}, MODE_SUPPORT_ALL, {0x6A}, 1, &pre_imm, false},
     INSTR_TERMINATOR,
 };
 
 static instr_encode_table_t pop[] = {
-    {ENC_M, 0, {0x8F}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
-    {ENC_O, NULL, {0x58}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
+    {ENC_M, 0, {0x8F}, MODE_SUPPORT_ALL, NULL, 1, NULL, false},
+    {ENC_O, NULL, {0x58}, MODE_SUPPORT_ALL, NULL, 1, NULL, false},
     INSTR_TERMINATOR,
 };
 
@@ -154,7 +154,7 @@ static instr_encode_table_t stc[] = {{ENC_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {0
 static instr_encode_table_t cli[] = {{ENC_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {0xFA}, 1, NULL}, INSTR_TERMINATOR};
 static instr_encode_table_t sti[] = {{ENC_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {0xFB}, 1, NULL}, INSTR_TERMINATOR};
 
-static instr_encode_table_t nop[] = {{ENC_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {0x90}, 1, NULL}, INSTR_TERMINATOR};
+static instr_encode_table_t nop[] = {{ENC_ZO, {0x90}, NULL, MODE_SUPPORT_ALL, NULL, 1, NULL, false}, INSTR_TERMINATOR};
 static instr_encode_table_t hlt[] = {{ENC_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, NULL}, INSTR_TERMINATOR};
 
 static void pre_int(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
