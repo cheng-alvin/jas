@@ -171,7 +171,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
         buf_write(&buf, data->data, data->len);
       }
       if (is_pre && IS_LABEL(instr_arr[i])) {
-        for (size_t j = 0; j < label_get_size; j++) {
+        for (size_t j = 0; j < label_get_size(); j++) {
           label_t *tab = label_get_table();
           if (strcmp(tab[j].name, instr_arr[i].operands[0].data) == 0) {
             tab[j].address = buf.len;
