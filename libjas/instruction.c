@@ -178,33 +178,25 @@ instr_encode_table_t *instr_table[] =
         in, out, clc, stc, cli, sti, nop, hlt, _int, syscall,
     };
 
-// clang-format on
 
 #define CURR_TABLE instr_table[instr.instr][j]
 
 instr_encode_table_t instr_get_tab(instruction_t instr) {
   if (IS_LABEL(instr)) return INSTR_TERMINATOR; // aka empty
   const enum operands operand_list[4] = {
-      instr.operands[0].type,
-      instr.operands[1].type,
-      instr.operands[2].type,
-      instr.operands[3].type,
+      instr.operands[0].type, instr.operands[1].type,
+      instr.operands[2].type, instr.operands[3].type,
   };
+
+  // clang-format on
 
   enum enc_ident ident = op_ident_identify(operand_list);
   if (instr.instr == INSTR_MOV) {
     if (ident == ENC_MI) ident = ENC_OI;
     if (ident == ENC_I) ident = ENC_O;
   }
-
-  unsigned int j = 0;
-  while (CURR_TABLE.opcode_size != 0) {
-    if (CURR_TABLE.ident == ident) {
-      return CURR_TABLE;
-      break;
-    }
-    j++;
-  }
+  for (uint8_t j = 0; j < sizeof(CURR_TABLE) / sizeof(instr_encode_table_t); j++)
+    if (CURR_TABLE.ident == ident) return CURR_TABLE;
 
   // fall-through; no corresponding instruction opcode found
   err("No corrsponding instruction opcode found.");
