@@ -69,10 +69,10 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 // clang-format off
 
 #define GENERIC(rm, rm_byte, mr, mr_byte,i, i_byte, mi_ext, mi, mi_byte)  \
-      {ENC_MR, NULL, {mr}, MODE_SUPPORT_ALL, {mr_byte}, 1, &same_operand_sizes},        \
       {ENC_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &same_operand_sizes},        \
-      {ENC_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm},          \
+      {ENC_MR, NULL, {mr}, MODE_SUPPORT_ALL, {mr_byte}, 1, &same_operand_sizes},        \
       {ENC_I, NULL, {i}, MODE_SUPPORT_ALL, {i_byte}, 1, &pre_imm},               \
+      {ENC_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm},          \
       INSTR_TERMINATOR,
 
 // clang-format on
