@@ -195,7 +195,7 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
     if (ident == ENC_MI) ident = ENC_OI;
     if (ident == ENC_I) ident = ENC_O;
   }
-  for (uint8_t j = 0; j < sizeof(CURR_TABLE) / sizeof(instr_encode_table_t); j++)
+  for (uint8_t j = 0; CURR_TABLE.opcode_size; j++)
     if (CURR_TABLE.ident == ident) return CURR_TABLE;
 
   // fall-through; no corresponding instruction opcode found
