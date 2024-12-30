@@ -1,6 +1,7 @@
 #include "operand.h"
 #include "buffer.h"
 #include "encoder.h"
+#include "instruction.h"
 #include "rex.h"
 #include "test.h"
 
@@ -68,6 +69,18 @@ Test(operand, modrm_mode) {
   }
 }
 
+Test(operand, write_opcode) {
+  const operand_t op_arr[] = {r64, imm64, OP_NONE, OP_NONE};
+  const instr_encode_table_t instr_ref = {ENC_MI, 0, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, 1, NULL, true};
+
+  uint8_t *out = op_write_opcode(op_arr, &instr_ref);
+  assert_eq(out, instr_ref.opcode);
+
+  const operand_t op_arr_byte[] = {r8, imm8, OP_NONE, OP_NONE};
+  out = op_write_opcode(op_arr_byte, &instr_ref);
+  assert_eq(out, instr_ref.byte_instr_opcode);
+}
+
 int main(void) {
   TestSuite(operand);
 
@@ -75,6 +88,7 @@ int main(void) {
   RunTest(operand, construct_operand);
   RunTest(operand, ident_identify);
   RunTest(operand, modrm_mode);
+  RunTest(operand, write_opcode);
 
   return 0;
 }
