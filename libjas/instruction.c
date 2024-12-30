@@ -47,11 +47,14 @@ static void pre_imm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
   }
 }
 
-static instr_encode_table_t mov[] = {
-    {ENC_MR, NULL, {0x89}, MODE_SUPPORT_ALL, {0x88}, 1, &same_operand_sizes},
-    {ENC_RM, NULL, {0x8B}, MODE_SUPPORT_ALL, {0x8A}, 1, &same_operand_sizes},
+#define ZERO_EXT 0b10000000
+#define DEFINE_TAB(name) instr_encode_table_t name[]
+
+DEFINE_TAB(mov) = {
+    {ENC_MR, NULL, {0x89}, MODE_SUPPORT_ALL, {0x88}, 1, &same_operand_sizes, true},
+    {ENC_RM, NULL, {0x8B}, MODE_SUPPORT_ALL, {0x8A}, 1, &same_operand_sizes, true},
     {ENC_OI, NULL, {0xB8}, MODE_SUPPORT_ALL, {0xB0}, 1, &same_operand_sizes},
-    {ENC_MI, 0b10000000, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, 1, &pre_imm},
+    {ENC_MI, ZERO_EXT, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, 1, &pre_imm, true},
 
     INSTR_TERMINATOR,
 };
@@ -66,54 +69,54 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 
 // clang-format off
 
-#define INSTR_GENERAL(rm, rm_byte, mr, mr_byte,i, i_byte, mi_ext, mi, mi_byte)  \
+#define GENERIC(rm, rm_byte, mr, mr_byte,i, i_byte, mi_ext, mi, mi_byte)  \
+     {ENC_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &same_operand_sizes},        \
       {ENC_MR, NULL, {mr}, MODE_SUPPORT_ALL, {mr_byte}, 1, &same_operand_sizes},        \
-      {ENC_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &same_operand_sizes},        \
-      {ENC_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm},          \
       {ENC_I, NULL, {i}, MODE_SUPPORT_ALL, {i_byte}, 1, &pre_imm},               \
+      {ENC_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm},          \
       INSTR_TERMINATOR,
 
 // clang-format on
 
-static instr_encode_table_t lea[] = {{ENC_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, 1, &pre_lea}, INSTR_TERMINATOR};
+DEFINE_TAB(lea) = {{ENC_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, 1, &pre_lea}, INSTR_TERMINATOR};
 
-static instr_encode_table_t add[] = {INSTR_GENERAL(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, 0b10000000, 0x81, 0x80)};
-static instr_encode_table_t sub[] = {INSTR_GENERAL(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x81, 0x80)};
-static instr_encode_table_t mul[] = {{ENC_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
-static instr_encode_table_t div[] = {{ENC_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
+DEFINE_TAB(add) = {GENERIC(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, ZERO_EXT, 0x81, 0x80)};
+DEFINE_TAB(sub) = {GENERIC(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x81, 0x80)};
+DEFINE_TAB(mul) = {{ENC_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
+DEFINE_TAB(div) = {{ENC_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
 
 // Note all or, and and xor instructions have a imm8 which is not supported
 
-static instr_encode_table_t and[] = {INSTR_GENERAL(0x23, 0x22, 0x21, 0x20, 0x25, 0x24, 4, 0x81, 0x80)};
-static instr_encode_table_t or [] = {INSTR_GENERAL(0x0B, 0x0A, 0x09, 0x08, 0x0D, 0x0C, 1, 0x81, 0x80)};
-static instr_encode_table_t xor [] = {INSTR_GENERAL(0x33, 0x32, 0x31, 0x30, 0x35, 0x34, 6, 0x81, 0x80)};
+DEFINE_TAB(and) = {GENERIC(0x23, 0x22, 0x21, 0x20, 0x25, 0x24, 4, 0x81, 0x80)};
+DEFINE_TAB(or) = {GENERIC(0x0B, 0x0A, 0x09, 0x08, 0x0D, 0x0C, 1, 0x81, 0x80)};
+DEFINE_TAB(xor) = {GENERIC(0x33, 0x32, 0x31, 0x30, 0x35, 0x34, 6, 0x81, 0x80)};
 
 // ---
 
-static instr_encode_table_t _not[] = {{ENC_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
+DEFINE_TAB(_not) = {{ENC_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
 
-static instr_encode_table_t inc[] = {{ENC_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
-static instr_encode_table_t dec[] = {{ENC_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
+DEFINE_TAB(inc) = {{ENC_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
+DEFINE_TAB(dec) = {{ENC_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
 
 static void pre_jcc_no_byte(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) == 8)
     err("Byte operands cannot be used with this instruction.");
 }
 
-static instr_encode_table_t jmp[] = {
+DEFINE_TAB(jmp) = {
     {ENC_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL},
-    {ENC_M, 4, {0xFF}, MODE_SUPPORT_ALL, {0x90}, 1, &pre_imm},
+    {ENC_M, 4, {0xFF}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_imm, false},
     INSTR_TERMINATOR,
 };
 
-static instr_encode_table_t je[] = {{ENC_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x090, 0x74}, 2, NULL}, INSTR_TERMINATOR};
-static instr_encode_table_t jne[] = {{ENC_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
-static instr_encode_table_t jz[] = {{ENC_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
-static instr_encode_table_t jnz[] = {{ENC_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x90, 0x75}, 2, NULL}, INSTR_TERMINATOR};
+DEFINE_TAB(je) = {{ENC_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x090, 0x74}, 2, NULL}, INSTR_TERMINATOR};
+DEFINE_TAB(jne) = {{ENC_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
+DEFINE_TAB(jz) = {{ENC_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
+DEFINE_TAB(jnz) = {{ENC_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x90, 0x75}, 2, NULL}, INSTR_TERMINATOR};
 
-static instr_encode_table_t call[] = {
+DEFINE_TAB(call) = {
     {ENC_D, NULL, {0xE8}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL},
-    {ENC_M, 2, {0xFF}, MODE_SUPPORT_ALL, {0x90}, 1, &pre_imm},
+    {ENC_M, 2, {0xFF}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_imm, false},
     INSTR_TERMINATOR,
 };
 
@@ -123,45 +126,45 @@ static void pre_ret(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 }
 
 // TODO / note far jumps, calls and returns are not supported (yet)
-static instr_encode_table_t ret[] = {
+DEFINE_TAB(ret) = {
     {ENC_ZO, NULL, {0xC3}, MODE_SUPPORT_ALL, {0xC3}, 1, NULL},
     {ENC_I, NULL, {0xC2}, MODE_SUPPORT_ALL, {0xC2}, 1, &pre_ret},
     INSTR_TERMINATOR,
 };
 
-static instr_encode_table_t cmp[] = {INSTR_GENERAL(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)};
+DEFINE_TAB(cmp) = {GENERIC(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)};
 
-static instr_encode_table_t push[] = {
-    {ENC_M, 6, {0xFF}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
-    {ENC_O, NULL, {0x50}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
-    {ENC_I, NULL, {0x68}, MODE_SUPPORT_ALL, {0x6A}, 1, &pre_imm},
+DEFINE_TAB(push) = {
+    {ENC_M, 6, {0xFF}, MODE_SUPPORT_ALL, NULL, 1, NULL, false},
+    {ENC_O, NULL, {0x50}, MODE_SUPPORT_ALL, NULL, 1, NULL, false},
+    {ENC_I, NULL, {0x68}, MODE_SUPPORT_ALL, {0x6A}, 1, &pre_imm, false},
     INSTR_TERMINATOR,
 };
 
-static instr_encode_table_t pop[] = {
-    {ENC_M, 0, {0x8F}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
-    {ENC_O, NULL, {0x58}, MODE_SUPPORT_ALL, {0x90}, 1, NULL},
+DEFINE_TAB(pop) = {
+    {ENC_M, 0, {0x8F}, MODE_SUPPORT_ALL, NULL, 1, NULL, false},
+    {ENC_O, NULL, {0x58}, MODE_SUPPORT_ALL, NULL, 1, NULL, false},
     INSTR_TERMINATOR,
 };
 
-static instr_encode_table_t in[] = {{}};
-static instr_encode_table_t out[] = {{}};
+DEFINE_TAB(in) = {{}};
+DEFINE_TAB(out) = {{}};
 
-static instr_encode_table_t clc[] = {{ENC_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {0xF8}, 1, NULL}, INSTR_TERMINATOR};
-static instr_encode_table_t stc[] = {{ENC_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {0xF9}, 1, NULL}, INSTR_TERMINATOR};
-static instr_encode_table_t cli[] = {{ENC_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {0xFA}, 1, NULL}, INSTR_TERMINATOR};
-static instr_encode_table_t sti[] = {{ENC_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {0xFB}, 1, NULL}, INSTR_TERMINATOR};
+DEFINE_TAB(clc) = {{ENC_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {0xF8}, 1, NULL}, INSTR_TERMINATOR};
+DEFINE_TAB(stc) = {{ENC_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {0xF9}, 1, NULL}, INSTR_TERMINATOR};
+DEFINE_TAB(cli) = {{ENC_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {0xFA}, 1, NULL}, INSTR_TERMINATOR};
+DEFINE_TAB(sti) = {{ENC_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {0xFB}, 1, NULL}, INSTR_TERMINATOR};
 
-static instr_encode_table_t nop[] = {{ENC_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {0x90}, 1, NULL}, INSTR_TERMINATOR};
-static instr_encode_table_t hlt[] = {{ENC_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, NULL}, INSTR_TERMINATOR};
+DEFINE_TAB(nop) = {{ENC_ZO, {0x90}, NULL, MODE_SUPPORT_ALL, NULL, 1, NULL, false}, INSTR_TERMINATOR};
+DEFINE_TAB(hlt) = {{ENC_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, NULL}, INSTR_TERMINATOR};
 
 static void pre_int(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) != 8)
     err("Invalid operand size for INT instruction.");
 }
 
-static instr_encode_table_t _int[] = {{ENC_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {0xCD}, 1, &pre_int}, INSTR_TERMINATOR};
-static instr_encode_table_t syscall[] = {
+DEFINE_TAB(_int) = {{ENC_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {0xCD}, 1, &pre_int}, INSTR_TERMINATOR};
+DEFINE_TAB(syscall) = {
     {ENC_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {0x00, 0x00}, 2, &same_operand_sizes},
     INSTR_TERMINATOR,
 };
@@ -175,33 +178,25 @@ instr_encode_table_t *instr_table[] =
         in, out, clc, stc, cli, sti, nop, hlt, _int, syscall,
     };
 
-// clang-format on
 
 #define CURR_TABLE instr_table[instr.instr][j]
 
 instr_encode_table_t instr_get_tab(instruction_t instr) {
   if (IS_LABEL(instr)) return INSTR_TERMINATOR; // aka empty
   const enum operands operand_list[4] = {
-      instr.operands[0].type,
-      instr.operands[1].type,
-      instr.operands[2].type,
-      instr.operands[3].type,
+      instr.operands[0].type, instr.operands[1].type,
+      instr.operands[2].type, instr.operands[3].type,
   };
+
+  // clang-format on
 
   enum enc_ident ident = op_ident_identify(operand_list);
   if (instr.instr == INSTR_MOV) {
     if (ident == ENC_MI) ident = ENC_OI;
     if (ident == ENC_I) ident = ENC_O;
   }
-
-  unsigned int j = 0;
-  while (CURR_TABLE.opcode_size != 0) {
-    if (CURR_TABLE.ident == ident) {
-      return CURR_TABLE;
-      break;
-    }
-    j++;
-  }
+  for (uint8_t j = 0; CURR_TABLE.opcode_size; j++)
+    if (CURR_TABLE.ident == ident) return CURR_TABLE;
 
   // fall-through; no corresponding instruction opcode found
   err("No corrsponding instruction opcode found.");
