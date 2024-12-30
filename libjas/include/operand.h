@@ -196,6 +196,25 @@ uint8_t op_sizeof(enum operands input);
  */
 operand_t op_construct_operand(enum operands type, size_t offset, void *data);
 
+/**
+ * Function for returning the opcode of the instruction based
+ * on the instruction encoder table provided in the function
+ * arguments as well as if a byte opcode is provided in the
+ * the encoder table.
+ *
+ * @param op_arr The operand array to base the opcode from
+ * @param instr_ref The instruction reference table
+ * @return The opcode of the instruction
+ *
+ * You can literally wrap this into a buffer write function
+ * to quickly and easily write in the opcode like as shown:
+ *
+ *  buf_write(buf, op_write_opcode(<operands>, <encoder table>), <opcode size>);
+ *
+ * @see buffer.h
+ */
+uint8_t *op_write_opcode(operand_t *op_arr, instr_encode_table_t *instr_ref);
+
 #define OP_NONE      \
   (operand_t) {      \
     .data = NULL,    \

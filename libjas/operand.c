@@ -25,6 +25,7 @@
 
 #include "operand.h"
 #include "error.h"
+#include "instruction.h"
 #include "register.h"
 #include "rex.h"
 #include <stdbool.h>
@@ -61,6 +62,29 @@ uint8_t op_sizeof(enum operands input) {
   if (op_qword(input)) return 64;
 
   return 0;
+}
+
+uint8_t *op_write_opcode(operand_t *op_arr, instr_encode_table_t *instr_ref) {
+  if (!instr_ref->has_byte_opcode) return instr_ref->opcode;
+
+  // According to Oracle's <x86 Assembly Language Reference Manual>
+  // (Yeah seriously - Oracle has a x86 Assembly Language Reference Manual)
+  // Only when *BOTH* operands are byte-sized, the opcode will also be byte-sized
+  // So, wel'll check if they are *BOTH* byte sized then write that.
+
+  const uint8_t reference = op_sizeof(op_arr[0].type);
+  const uint8_t sizes[] =
+      {reference, op_sizeof(op_arr[1].type),
+       op_sizeof(op_arr[2].type), op_sizeof(op_arr[3].type)};
+
+  bool sizes_are_byte = reference == 8;
+  for (unsigned char i = 0; i < 4; i++) {
+    if (op_arr[i].type == OP_NULL) break;
+    if (sizes[i] != 8 && sizes_are_byte) sizes_are_byte = false;
+  }
+
+  if (sizes_are_byte) return instr_ref->byte_instr_opcode;
+  return instr_ref->opcode;
 }
 
 void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
