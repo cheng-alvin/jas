@@ -113,6 +113,13 @@ DEFINE_ENCODER(m) {
   write_offset(mod, buf, op_arr, 0);
 }
 
+/**
+ * @note - Internal documentation (31th Dec 2024 - Last day of '24 🎉) 
+ * This function will be used to write a number (aka a immediate value)
+ * to the buffer, which is considered a common ground for many encoder
+ * identities, such as `mi`, `oi` etc that also require a immediate value
+ * to be written to the buffer for the encoding.
+ */
 static void i_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
   uint8_t *imm = (uint8_t *)op_arr[1].data;
