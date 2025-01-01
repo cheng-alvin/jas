@@ -67,12 +67,13 @@ uint8_t op_sizeof(enum operands input) {
 /* Instructions containing a byte-sized operand uses the byte opcode (see. 4-136 Vol. 2B, MOVZX—Move With Zero-Extend) */
 uint8_t *op_write_opcode(operand_t *op_arr, instr_encode_table_t *instr_ref) {
   if (!instr_ref->has_byte_opcode) return instr_ref->opcode;
-
   for (uint8_t i = 0; i < 4; i++) {
     if (op_arr[i].type == OP_NULL) break;
     if (op_byte(op_arr[i].type)) return instr_ref->byte_instr_opcode;
     continue;
   }
+
+  return instr_ref->opcode;
 }
 
 void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
