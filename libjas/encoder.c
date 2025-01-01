@@ -30,7 +30,6 @@
 #include "register.h"
 #include <stdlib.h>
 
-#define OP_OPCODE_HELPER (op_sizeof(op_arr[0].type) == 8 ? instr_ref->byte_instr_opcode : instr_ref->opcode)
 #define EMPTY_SIB 0x24
 
 /**
@@ -82,7 +81,7 @@ DEFINE_ENCODER(i) {
     return;
   }
 
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
+  buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
 
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
   uint8_t *imm = (uint8_t *)op_arr[1].data;
@@ -96,7 +95,7 @@ DEFINE_ENCODER(m) {
 
   op_write_prefix(buf, op_arr, mode);
   check_mode(mode, instr_ref->support);
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
+  buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
 
   const uint8_t mod = op_modrm_mode(op_arr[0]);
   buf_write_byte(buf, mod | opcode_extend | rm);
@@ -137,7 +136,7 @@ DEFINE_ENCODER(d) {
   }
 
   check_mode(mode, instr_ref->support);
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
+  buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
 
   // Calculate the relative offset of the label
   ref_label(op_arr, buf, 0);
@@ -175,7 +174,7 @@ static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t 
   op_write_prefix(buf, op_arr, mode);
 
   check_mode(mode, instr_ref->support);
-  buf_write(buf, OP_OPCODE_HELPER, instr_ref->opcode_size);
+  buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
 
   const uint8_t mod = op_modrm_mode(op_arr[rm_idx]);
   buf_write_byte(buf, mod | (reg << 3) | rm);
@@ -226,7 +225,7 @@ DEFINE_ENCODER(o) {
 
   check_mode(mode, instr_ref->support);
 
-  uint8_t *data = &(uint8_t){*(OP_OPCODE_HELPER) + (uint8_t)reg};
+  uint8_t *data = &(uint8_t){*(op_write_opcode(op_arr, instr_ref)) + (uint8_t)reg};
   buf_write(buf, data, instr_ref->opcode_size);
 }
 
