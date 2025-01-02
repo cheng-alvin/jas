@@ -67,6 +67,13 @@ static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
     err("Byte operands cannot be used with the LEA instruction.");
 }
 
+static void no_operands(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  for (uint8_t i = 0; i < 4; i++) {
+    if (op_arr[i].type != OP_NULL)
+      err("This encoder identity does not support any operands.");
+  }
+}
+
 // clang-format off
 
 #define GENERIC(rm, rm_byte, mr, mr_byte,i, i_byte, mi_ext, mi, mi_byte)  \
@@ -127,8 +134,8 @@ static void pre_ret(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
 
 // TODO / note far jumps, calls and returns are not supported (yet)
 DEFINE_TAB(ret) = {
-    {ENC_ZO, NULL, {0xC3}, MODE_SUPPORT_ALL, {0xC3}, 1, NULL},
-    {ENC_I, NULL, {0xC2}, MODE_SUPPORT_ALL, {0xC2}, 1, &pre_ret},
+    {ENC_ZO, NULL, {0xC3}, MODE_SUPPORT_ALL, {0xC3}, 1, &no_operands, true},
+    {ENC_I, NULL, {0xC2}, MODE_SUPPORT_ALL, {0xC2}, 1, &pre_ret, true},
     INSTR_TERMINATOR,
 };
 
@@ -150,13 +157,13 @@ DEFINE_TAB(pop) = {
 DEFINE_TAB(in) = {{}};
 DEFINE_TAB(out) = {{}};
 
-DEFINE_TAB(clc) = {{ENC_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {0xF8}, 1, NULL}, INSTR_TERMINATOR};
-DEFINE_TAB(stc) = {{ENC_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {0xF9}, 1, NULL}, INSTR_TERMINATOR};
-DEFINE_TAB(cli) = {{ENC_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {0xFA}, 1, NULL}, INSTR_TERMINATOR};
-DEFINE_TAB(sti) = {{ENC_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {0xFB}, 1, NULL}, INSTR_TERMINATOR};
+DEFINE_TAB(clc) = {{ENC_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TERMINATOR};
+DEFINE_TAB(stc) = {{ENC_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TERMINATOR};
+DEFINE_TAB(cli) = {{ENC_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TERMINATOR};
+DEFINE_TAB(sti) = {{ENC_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TERMINATOR};
 
-DEFINE_TAB(nop) = {{ENC_ZO, {0x90}, NULL, MODE_SUPPORT_ALL, NULL, 1, NULL, false}, INSTR_TERMINATOR};
-DEFINE_TAB(hlt) = {{ENC_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, NULL}, INSTR_TERMINATOR};
+DEFINE_TAB(nop) = {{ENC_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TERMINATOR};
+DEFINE_TAB(hlt) = {{ENC_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, &no_operands, true}, INSTR_TERMINATOR};
 
 static void pre_int(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) != 8)
