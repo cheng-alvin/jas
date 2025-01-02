@@ -199,10 +199,12 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   // clang-format on
 
   enum enc_ident ident = op_ident_identify(operand_list);
+  if (ident == ENC_MR && op_r(operand_list[0])) ident = ENC_RM;
   if (instr.instr == INSTR_MOV) {
     if (ident == ENC_MI) ident = ENC_OI;
     if (ident == ENC_I) ident = ENC_O;
   }
+
   for (uint8_t j = 0; CURR_TABLE.opcode_size; j++)
     if (CURR_TABLE.ident == ident) return CURR_TABLE;
 
