@@ -77,20 +77,20 @@ static void no_operands(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *
 // clang-format off
 
 #define GENERIC(rm, rm_byte, mr, mr_byte,i, i_byte, mi_ext, mi, mi_byte)  \
-     {ENC_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &same_operand_sizes},        \
-      {ENC_MR, NULL, {mr}, MODE_SUPPORT_ALL, {mr_byte}, 1, &same_operand_sizes},        \
-      {ENC_I, NULL, {i}, MODE_SUPPORT_ALL, {i_byte}, 1, &pre_imm},               \
-      {ENC_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm},          \
+     {ENC_RM, NULL, {rm}, MODE_SUPPORT_ALL, {rm_byte}, 1, &same_operand_sizes, true},        \
+      {ENC_MR, NULL, {mr}, MODE_SUPPORT_ALL, {mr_byte}, 1, &same_operand_sizes, true},        \
+      {ENC_I, NULL, {i}, MODE_SUPPORT_ALL, {i_byte}, 1, &pre_imm, true},               \
+      {ENC_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm, true},          \
       INSTR_TERMINATOR,
 
 // clang-format on
 
-DEFINE_TAB(lea) = {{ENC_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, 1, &pre_lea}, INSTR_TERMINATOR};
+DEFINE_TAB(lea) = {{ENC_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, 1, &pre_lea, true}, INSTR_TERMINATOR};
 
 DEFINE_TAB(add) = {GENERIC(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, ZERO_EXT, 0x81, 0x80)};
 DEFINE_TAB(sub) = {GENERIC(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x81, 0x80)};
-DEFINE_TAB(mul) = {{ENC_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
-DEFINE_TAB(div) = {{ENC_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
+DEFINE_TAB(mul) = {{ENC_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes, true}, INSTR_TERMINATOR};
+DEFINE_TAB(div) = {{ENC_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes, true}, INSTR_TERMINATOR};
 
 // Note all or, and and xor instructions have a imm8 which is not supported
 
@@ -100,10 +100,10 @@ DEFINE_TAB(xor) = {GENERIC(0x33, 0x32, 0x31, 0x30, 0x35, 0x34, 6, 0x81, 0x80)};
 
 // ---
 
-DEFINE_TAB(_not) = {{ENC_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
+DEFINE_TAB(_not) = {{ENC_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes, true}, INSTR_TERMINATOR};
 
-DEFINE_TAB(inc) = {{ENC_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
-DEFINE_TAB(dec) = {{ENC_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes}, INSTR_TERMINATOR};
+DEFINE_TAB(inc) = {{ENC_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes, true}, INSTR_TERMINATOR};
+DEFINE_TAB(dec) = {{ENC_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes, true}, INSTR_TERMINATOR};
 
 static void pre_jcc_no_byte(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[0].type) == 8)
@@ -111,18 +111,18 @@ static void pre_jcc_no_byte(operand_t *op_arr, buffer_t *buf, instr_encode_table
 }
 
 DEFINE_TAB(jmp) = {
-    {ENC_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL},
+    {ENC_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL, true},
     {ENC_M, 4, {0xFF}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_imm, false},
     INSTR_TERMINATOR,
 };
 
-DEFINE_TAB(je) = {{ENC_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x090, 0x74}, 2, NULL}, INSTR_TERMINATOR};
-DEFINE_TAB(jne) = {{ENC_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
-DEFINE_TAB(jz) = {{ENC_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte}, INSTR_TERMINATOR};
-DEFINE_TAB(jnz) = {{ENC_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x90, 0x75}, 2, NULL}, INSTR_TERMINATOR};
+DEFINE_TAB(je) = {{ENC_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x090, 0x74}, 2, NULL, true}, INSTR_TERMINATOR};
+DEFINE_TAB(jne) = {{ENC_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte, true}, INSTR_TERMINATOR};
+DEFINE_TAB(jz) = {{ENC_D, NULL, {0x0f, 0x84}, MODE_SUPPORT_ALL, {0x00, 0x00}, 2, &pre_jcc_no_byte, true}, INSTR_TERMINATOR};
+DEFINE_TAB(jnz) = {{ENC_D, NULL, {0x0f, 0x85}, MODE_SUPPORT_ALL, {0x90, 0x75}, 2, NULL, true}, INSTR_TERMINATOR};
 
 DEFINE_TAB(call) = {
-    {ENC_D, NULL, {0xE8}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL},
+    {ENC_D, NULL, {0xE8}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL, true},
     {ENC_M, 2, {0xFF}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_imm, false},
     INSTR_TERMINATOR,
 };
@@ -144,7 +144,7 @@ DEFINE_TAB(cmp) = {GENERIC(0x3B, 0x3A, 0x39, 0x38, 0x3D, 0x3C, 7, 0x81, 0x80)};
 DEFINE_TAB(push) = {
     {ENC_M, 6, {0xFF}, MODE_SUPPORT_ALL, NULL, 1, NULL, false},
     {ENC_O, NULL, {0x50}, MODE_SUPPORT_ALL, NULL, 1, NULL, false},
-    {ENC_I, NULL, {0x68}, MODE_SUPPORT_ALL, {0x6A}, 1, &pre_imm, false},
+    {ENC_I, NULL, {0x68}, MODE_SUPPORT_ALL, {0x6A}, 1, &pre_imm, true},
     INSTR_TERMINATOR,
 };
 
@@ -170,9 +170,9 @@ static void pre_int(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *inst
     err("Invalid operand size for INT instruction.");
 }
 
-DEFINE_TAB(_int) = {{ENC_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {0xCD}, 1, &pre_int}, INSTR_TERMINATOR};
+DEFINE_TAB(_int) = {{ENC_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_int, false}, INSTR_TERMINATOR};
 DEFINE_TAB(syscall) = {
-    {ENC_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {0x00, 0x00}, 2, &same_operand_sizes},
+    {ENC_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {NULL}, 2, &same_operand_sizes, false},
     INSTR_TERMINATOR,
 };
 
@@ -181,7 +181,7 @@ static void pre_movzx(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *in
     err("Invalid operand size for MOVZX instruction");
 }
 
-DEFINE_TAB(movzx) = {{ENC_RM, NULL, {0x0F, 0xB7}, MODE_SUPPORT_ALL, {0x0F, 0xB6}, 2, &pre_movzx}, INSTR_TERMINATOR};
+DEFINE_TAB(movzx) = {{ENC_RM, NULL, {0x0F, 0xB7}, MODE_SUPPORT_ALL, {0x0F, 0xB6}, 2, &pre_movzx, true}, INSTR_TERMINATOR};
 
 // clang-format off
 
