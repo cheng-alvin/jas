@@ -176,12 +176,13 @@ DEFINE_TAB(syscall) = {
     INSTR_TERMINATOR,
 };
 
-static void pre_movzx(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+static void pre_small_operands(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
   if (op_sizeof(op_arr[1].type) < 16)
     err("Invalid operand size for MOVZX instruction");
 }
 
-DEFINE_TAB(movzx) = {{ENC_RM, NULL, {0x0F, 0xB7}, MODE_SUPPORT_ALL, {0x0F, 0xB6}, 2, &pre_movzx, true}, INSTR_TERMINATOR};
+DEFINE_TAB(movzx) = {{ENC_RM, NULL, {0x0F, 0xB7}, MODE_SUPPORT_ALL, {0x0F, 0xB6}, 2, &pre_small_operands, true}, INSTR_TERMINATOR};
+DEFINE_TAB(movsx) = {{ENC_RM, NULL, {0x0F, 0xBF}, MODE_SUPPORT_ALL, {0x0F, 0xBE}, 2, &pre_small_operands, true}, INSTR_TERMINATOR};
 
 // clang-format off
 
@@ -190,7 +191,7 @@ instr_encode_table_t *instr_table[] =
         mov, lea, add, sub, mul, div, and, or, xor, _not, inc,
         dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
         in, out, clc, stc, cli, sti, nop, hlt, _int, syscall, 
-        movzx,
+        movzx, movsx,
     };
 
 

@@ -83,6 +83,7 @@ enum instructions {
   INSTR_INT,
   INSTR_SYSCALL,
   INSTR_MOVZX,
+  INSTR_MOVSX,
 
   INSTR_DUMMY,
 

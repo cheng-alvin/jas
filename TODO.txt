@@ -31,7 +31,7 @@ https://docs.google.com/document/d/1bm9lxVyAk2qogOF9ujERyRcSwXkpKxLW8IWVU8FuMyE/
 More instructions:
 Data Movement Instructions
 XCHG: Exchange data between registers or memory.
-MOVSX/MOVZX: Move with sign/zero extension.
+MOVSX/MOVZX: Move with sign/zero extension. - ✅
 BSWAP: Byte swap (useful for endian conversion).
 CMOVcc: Conditional move based on flags (e.g., CMOVZ, CMOVNZ).
 Arithmetic and Logic Instructions
