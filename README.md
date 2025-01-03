@@ -22,7 +22,7 @@ First of all, install/link against the binary releases [here](https://github.com
 #include <stdlib.h>
 
 int main(void) {
-  instruction_t instr[] = (instruction_t[]) {
+  instruction_t instr[] = {
       (instruction_t){
           .instr = INSTR_MOV,
           .operands = (operand_t[]){
