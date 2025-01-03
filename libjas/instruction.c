@@ -184,6 +184,13 @@ static void pre_small_operands(operand_t *op_arr, buffer_t *buf, instr_encode_ta
 DEFINE_TAB(movzx) = {{ENC_RM, NULL, {0x0F, 0xB7}, MODE_SUPPORT_ALL, {0x0F, 0xB6}, 2, &pre_small_operands, true}, INSTR_TERMINATOR};
 DEFINE_TAB(movsx) = {{ENC_RM, NULL, {0x0F, 0xBF}, MODE_SUPPORT_ALL, {0x0F, 0xBE}, 2, &pre_small_operands, true}, INSTR_TERMINATOR};
 
+DEFINE_TAB(xchg) = {
+    {ENC_O, NULL, {0x90}, MODE_SUPPORT_ALL, {NULL}, 1, &same_operand_sizes, false},
+    {ENC_MR, NULL, {0x87}, MODE_SUPPORT_ALL, {0x86}, 1, &same_operand_sizes, true},
+    {ENC_RM, NULL, {0x87}, MODE_SUPPORT_ALL, {0x86}, 1, &same_operand_sizes, true},
+    INSTR_TERMINATOR,
+};
+
 // clang-format off
 
 instr_encode_table_t *instr_table[] =
@@ -191,7 +198,7 @@ instr_encode_table_t *instr_table[] =
         mov, lea, add, sub, mul, div, and, or, xor, _not, inc,
         dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
         in, out, clc, stc, cli, sti, nop, hlt, _int, syscall, 
-        movzx, movsx,
+        movzx, movsx, xchg,
     };
 
 
