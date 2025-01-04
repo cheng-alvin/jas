@@ -205,6 +205,7 @@ instr_encode_table_t *instr_table[] =
 #define CURR_TABLE instr_table[instr.instr][j]
 
 instr_encode_table_t instr_get_tab(instruction_t instr) {
+  if (instr.instr == NULL && instr.operands == NULL) return INSTR_TERMINATOR;
   if (IS_LABEL(instr)) return INSTR_TERMINATOR; // aka empty
   const enum operands operand_list[4] = {
       instr.operands[0].type, instr.operands[1].type,
