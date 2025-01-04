@@ -237,7 +237,7 @@ instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
   for (uint8_t i = 0; i < operand_count; i++)
     operands[i] = op_construct_operand(
         va_arg(args, enum operands),
-        va_arg(args, uint8_t), va_arg(args, void *));
+        va_arg(args, size_t), va_arg(args, void *));
 
   return (instruction_t){
       .instr = instr,
