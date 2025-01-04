@@ -231,11 +231,13 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
 
 instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
   va_list args;
-  va_start(args, operand_count);
+  va_start(args, operand_count * 3);
 
   operand_t operands[4] = {OP_NONE, OP_NONE, OP_NONE, OP_NONE};
   for (uint8_t i = 0; i < operand_count; i++)
-    operands[i] = va_arg(args, operand_t);
+    operands[i] = op_construct_operand(
+        va_arg(args, enum operands),
+        va_arg(args, uint8_t), va_arg(args, void *));
 
   return (instruction_t){
       .instr = instr,
