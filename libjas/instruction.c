@@ -25,6 +25,7 @@
 
 #include "instruction.h"
 #include "error.h"
+#include <stdarg.h>
 #include <stddef.h>
 
 static void same_operand_sizes(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
@@ -226,4 +227,18 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   // fall-through; no corresponding instruction opcode found
   err("No corrsponding instruction opcode found.");
   return INSTR_TERMINATOR; // aka empty
+}
+
+instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
+  va_list args;
+  va_start(args, operand_count);
+
+  operand_t operands[4] = {OP_NONE, OP_NONE, OP_NONE, OP_NONE};
+  for (uint8_t i = 0; i < operand_count; i++)
+    operands[i] = va_arg(args, operand_t);
+
+  return (instruction_t){
+      .instr = instr,
+      .operands = operands,
+  };
 }
