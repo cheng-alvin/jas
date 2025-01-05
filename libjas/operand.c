@@ -160,10 +160,11 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
     buf_write_byte(buf, rex);
 }
 
-operand_t op_construct_operand(enum operands type, size_t offset, void *data) {
+operand_t op_construct_operand(enum operands type, size_t offset, void *data, char *label) {
   return (operand_t){
       .type = type,
       .offset = offset,
       .data = data,
+      .label = label,
   };
 }
