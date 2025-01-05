@@ -37,7 +37,7 @@ Test(operand, write_prefix) {
 }
 
 Test(operand, construct_operand) {
-  const operand_t byte = op_construct_operand(OP_IMM8, 0, &(unsigned char){0xFF});
+  const operand_t byte = op_construct_operand(OP_IMM8, 0, &(unsigned char){0xFF}, "");
 
   assert_eq(byte.type, OP_IMM8);
   assert_eq(byte.offset, 0);
@@ -57,11 +57,11 @@ Test(operand, modrm_mode) {
     operand_t operand;
     int expected_mode;
   } test_cases[] = {
-      {op_construct_operand(OP_M64, 0, &(enum registers){REG_RIP}), OP_MODRM_INDIRECT},
-      {op_construct_operand(OP_M64, 0, &(enum registers){REG_RAX}), OP_MODRM_INDIRECT},
-      {op_construct_operand(OP_M64, 8, &(enum registers){REG_RAX}), OP_MODRM_DISP8},
-      {op_construct_operand(OP_M64, 0, &(enum registers){REG_RBP}), OP_MODRM_DISP8},
-      {op_construct_operand(OP_M64, 0xFFFF, &(enum registers){REG_RAX}), OP_MODRM_DISP32},
+      {op_construct_operand(OP_M64, 0, &(enum registers){REG_RIP}, ""), OP_MODRM_INDIRECT},
+      {op_construct_operand(OP_M64, 0, &(enum registers){REG_RAX}, ""), OP_MODRM_INDIRECT},
+      {op_construct_operand(OP_M64, 8, &(enum registers){REG_RAX}, ""), OP_MODRM_DISP8},
+      {op_construct_operand(OP_M64, 0, &(enum registers){REG_RBP}, ""), OP_MODRM_DISP8},
+      {op_construct_operand(OP_M64, 0xFFFF, &(enum registers){REG_RAX}, ""), OP_MODRM_DISP32},
   };
 
   for (size_t i = 0; i < sizeof(test_cases) / sizeof(test_cases[0]); i++) {

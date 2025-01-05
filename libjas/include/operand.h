@@ -189,12 +189,13 @@ uint8_t op_sizeof(enum operands input);
  * @param type The type of the operand
  * @param offset The offset of the operand
  * @param data The data of the operand
+ * @param label The name of the referenced label (if applicable)
  * @return The constructed operand struct
  *
  * @note Operands and parameter types are based on `operand_t`
  * @see `operand_t`
  */
-operand_t op_construct_operand(enum operands type, size_t offset, void *data);
+operand_t op_construct_operand(enum operands type, size_t offset, void *data, char *label);
 
 /**
  * Function for returning the opcode of the instruction based
