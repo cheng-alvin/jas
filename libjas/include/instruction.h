@@ -154,4 +154,41 @@ typedef struct {
  */
 instr_encode_table_t instr_get_tab(instruction_t instr);
 
+/**
+ * A function for easily defining a instruction in the `instruction_t`
+ * form without having to use the struct initializer or mangle around
+ * with void pointers and curly braces. This function is used to create
+ * a instruction struct and its operands using variadic arguments
+ * and grouping 3 arguments together and passed off into the function.
+ *
+ * @param instr The instruction type
+ * @param operand_count The number of operands to pass
+ * @param ... The operands to pass (Refer to below example)
+ *
+ * @return The instruction struct
+ *
+ * @note All operands will be grouped into three arguments, a type, offset
+ * and data, similar to the ones of the `operand_t` struct.
+ *
+ * @example instr_gen(INSTR_XXX, 1, OP_R64, REG_RAX, 0;
+ *
+ * The example above will generate a instruction struct with the
+ * instruction type `INSTR_XXX` and a single operand with the type
+ * `OP_R64`, an offset of `0` and the data `REG_RAX`, which returns:
+ *
+ * ```
+ * (instruction_t){
+ *   .instr = INSTR_XXX,
+ *   .operands = (operand_t[]){
+ *     (operand_t)
+ *     {.type = OP_R64, .offset = 0, .data = &(enum registers){REG_RAX}},
+ *     OP_NONE, OP_NONE, OP_NONE,
+ *   },
+ * }
+ *```
+ *
+ * @see `operand_t`
+ */
+instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...);
+
 #endif

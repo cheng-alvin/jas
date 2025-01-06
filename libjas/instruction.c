@@ -25,6 +25,8 @@
 
 #include "instruction.h"
 #include "error.h"
+#include "register.h"
+#include <stdarg.h>
 #include <stddef.h>
 
 static void same_operand_sizes(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
@@ -226,4 +228,44 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   // fall-through; no corresponding instruction opcode found
   err("No corrsponding instruction opcode found.");
   return INSTR_TERMINATOR; // aka empty
+}
+
+instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
+  va_list args;
+  va_start(args, operand_count * 3);
+
+  operand_t operands[4] = {OP_NONE, OP_NONE, OP_NONE, OP_NONE};
+  for (uint8_t i = 0; i < operand_count; i++) {
+    const enum operands type = va_arg(args, enum operands);
+    char *label = "";
+    void *data;
+    if (op_rel(type)) {
+      char *lab = va_arg(args, char *);
+      label = lab;
+    } else if (op_imm(type)) {
+      // clang-format off
+      switch (op_sizeof(type)) {
+      case 8: data = &(uint8_t){va_arg(args, uint8_t)}; break;
+      case 16: data = &(uint16_t){va_arg(args, uint16_t)}; break;
+      case 32: data = &(uint32_t){va_arg(args, uint32_t)}; break;
+      case 64: data = &(uint64_t){va_arg(args, uint64_t)}; break;
+      default:
+        err("Invalid operand size.");
+        break;
+      }
+      // clang-format on
+    } else {
+      enum registers temp = va_arg(args, enum registers);
+      data = &temp;
+    }
+
+    const size_t off = va_arg(args, size_t);
+    operands[i] = op_construct_operand(type, off, data, label);
+  }
+
+  va_end(args);
+  return (instruction_t){
+      .instr = instr,
+      .operands = operands,
+  };
 }
