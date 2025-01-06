@@ -10,7 +10,7 @@ BUILD = ../build
 libjas.a: $(OBJ) 
 	ar rcs $(BUILD)/$@ $^ 
 
-libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -std=c99 -O0
+libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -std=c99 -Og
 libjas_debug.a: $(OBJ)
 	ar rcs $(BUILD)/$@ $^
 
