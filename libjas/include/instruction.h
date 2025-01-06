@@ -170,7 +170,7 @@ instr_encode_table_t instr_get_tab(instruction_t instr);
  * @note All operands will be grouped into three arguments, a type, offset
  * and data, similar to the ones of the `operand_t` struct.
  *
- * @example instr_gen(INSTR_XXX, 1, OP_R64, 0, REG_RAX);
+ * @example instr_gen(INSTR_XXX, 1, OP_R64, REG_RAX, 0;
  *
  * The example above will generate a instruction struct with the
  * instruction type `INSTR_XXX` and a single operand with the type
@@ -180,7 +180,8 @@ instr_encode_table_t instr_get_tab(instruction_t instr);
  * (instruction_t){
  *   .instr = INSTR_XXX,
  *   .operands = (operand_t[]){
- *     (operand_t){.type = OP_R64, .offset = 0, .data = REG_RAX},
+ *     (operand_t)
+ *     {.type = OP_R64, .offset = 0, .data = &(enum registers){REG_RAX}},
  *     OP_NONE, OP_NONE, OP_NONE,
  *   },
  * }
