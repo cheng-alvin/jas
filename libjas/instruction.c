@@ -254,10 +254,8 @@ instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
         break;
       }
       // clang-format on
-    } else {
-      enum registers temp = va_arg(args, enum registers);
-      data = &temp;
-    }
+    } else
+      data = (void *)&(enum registers){va_arg(args, enum registers)};
 
     const size_t off = va_arg(args, size_t);
     operands[i] = op_construct_operand(type, off, data, label);
