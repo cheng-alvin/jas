@@ -25,10 +25,11 @@
 
 #include "instruction.h"
 #include "error.h"
-#include "pre.c"
 #include "register.h"
 #include <stdarg.h>
 #include <stddef.h>
+
+#include "pre.c"
 
 #define ZERO_EXT 0b10000000
 #define DEFINE_TAB(name) instr_encode_table_t name[]
