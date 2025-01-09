@@ -108,10 +108,10 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
    * file offset of the section header table. as we need some space for the data
    * itself for the section.
    */
-  const int base = 6 * 0x40;
+  size_t base = 6 * 0x40;
 
   char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
-  buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, base, sizeof(shstrtab));
+  buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, &base, sizeof(shstrtab));
 
   buf_write_byte(&strtab, 0);
   buf_write(&symtab, pad, 0x18);
@@ -137,10 +137,9 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
     free(ent.data);
   }
 
-  buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, base + sizeof(shstrtab), strtab.len);
-  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, base + sizeof(shstrtab) + strtab.len, symtab.len);
-
-  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x7, base + sizeof(shstrtab) + strtab.len + symtab.len, code.len);
+  buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, &base, strtab.len);
+  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, &base, symtab.len);
+  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x7, &base, code.len);
 
   // Write and clean everything 🧹🧹
 

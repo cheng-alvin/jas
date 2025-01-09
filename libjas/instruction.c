@@ -29,25 +29,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 
-static void same_operand_sizes(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  const uint8_t ref = op_sizeof(op_arr[0].type);
-
-  for (uint8_t i = 0; i < 4; i++) {
-    if (op_arr[i].type == OP_NULL) continue;
-
-    if (op_sizeof(op_arr[i].type) != ref) {
-      err("Invalid operand sizes.");
-      break;
-    }
-  }
-}
-
-static void pre_imm(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  if (op_sizeof(op_arr[0].type) != 64) {
-    same_operand_sizes(op_arr, buf, instr_ref, mode);
-    return;
-  }
-}
+#include "pre.c"
 
 #define ZERO_EXT 0b10000000
 #define DEFINE_TAB(name) instr_encode_table_t name[]
@@ -60,21 +42,6 @@ DEFINE_TAB(mov) = {
 
     INSTR_TAB_NULL,
 };
-
-static void pre_lea(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  if (op_m(op_arr[0].type) || op_r(op_arr[1].type))
-    err("Invalid operands type for LEA instruction.");
-
-  if (op_sizeof(op_arr[0].type) == 8)
-    err("Byte operands cannot be used with the LEA instruction.");
-}
-
-static void no_operands(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  for (uint8_t i = 0; i < 4; i++) {
-    if (op_arr[i].type != OP_NULL)
-      err("This encoder identity does not support any operands.");
-  }
-}
 
 // clang-format off
 
@@ -107,11 +74,6 @@ DEFINE_TAB(_not) = {{ENC_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operan
 DEFINE_TAB(inc) = {{ENC_M, 0, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes, true}, INSTR_TAB_NULL};
 DEFINE_TAB(dec) = {{ENC_M, 1, {0xFF}, MODE_SUPPORT_ALL, {0xFE}, 1, &same_operand_sizes, true}, INSTR_TAB_NULL};
 
-static void pre_jcc_no_byte(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  if (op_sizeof(op_arr[0].type) == 8)
-    err("Byte operands cannot be used with this instruction.");
-}
-
 DEFINE_TAB(jmp) = {
     {ENC_D, NULL, {0xE9}, MODE_SUPPORT_ALL, {0xEB}, 1, NULL, true},
     {ENC_M, 4, {0xFF}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_imm, false},
@@ -128,11 +90,6 @@ DEFINE_TAB(call) = {
     {ENC_M, 2, {0xFF}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_imm, false},
     INSTR_TAB_NULL,
 };
-
-static void pre_ret(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  if (op_sizeof(op_arr[0].type) != 16)
-    err("Other operand sizes cannot be used with this instruction.");
-}
 
 // TODO / note far jumps, calls and returns are not supported (yet)
 DEFINE_TAB(ret) = {
@@ -167,21 +124,13 @@ DEFINE_TAB(sti) = {{ENC_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {NULL}, 1, &no_opera
 DEFINE_TAB(nop) = {{ENC_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
 DEFINE_TAB(hlt) = {{ENC_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, &no_operands, true}, INSTR_TAB_NULL};
 
-static void pre_int(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  if (op_sizeof(op_arr[0].type) != 8)
-    err("Invalid operand size for INT instruction.");
-}
-
 DEFINE_TAB(_int) = {{ENC_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_int, false}, INSTR_TAB_NULL};
+
 DEFINE_TAB(syscall) = {
     {ENC_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {NULL}, 2, &same_operand_sizes, false},
     INSTR_TAB_NULL,
 };
 
-static void pre_small_operands(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
-  if (op_sizeof(op_arr[1].type) < 16)
-    err("Invalid operand size for MOVZX/MOVSX instruction");
-}
 
 DEFINE_TAB(movzx) = {{ENC_RM, NULL, {0x0F, 0xB7}, MODE_SUPPORT_ALL, {0x0F, 0xB6}, 2, &pre_small_operands, true}, INSTR_TAB_NULL};
 DEFINE_TAB(movsx) = {{ENC_RM, NULL, {0x0F, 0xBF}, MODE_SUPPORT_ALL, {0x0F, 0xBE}, 2, &pre_small_operands, true}, INSTR_TAB_NULL};
@@ -193,6 +142,8 @@ DEFINE_TAB(xchg) = {
     INSTR_TAB_NULL,
 };
 
+DEFINE_TAB(bswap) = {{ENC_O, NULL, {0x0F, 0xC8}, MODE_SUPPORT_ALL, {NULL}, 2, &same_operand_sizes, false}, INSTR_TAB_NULL};
+
 // clang-format off
 
 instr_encode_table_t *instr_table[] =
@@ -200,7 +151,7 @@ instr_encode_table_t *instr_table[] =
         mov, lea, add, sub, mul, div, and, or, xor, _not, inc,
         dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
         in, out, clc, stc, cli, sti, nop, hlt, _int, syscall, 
-        movzx, movsx, xchg,
+        movzx, movsx, xchg, bswap,
     };
 
 
