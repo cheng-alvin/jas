@@ -193,6 +193,8 @@ DEFINE_TAB(xchg) = {
     INSTR_TERMINATOR,
 };
 
+DEFINE_TAB(bswap) = {{ENC_O, NULL, {0x0F, 0xC8}, MODE_SUPPORT_ALL, {NULL}, 2, &same_operand_sizes, false}, INSTR_TERMINATOR};
+
 // clang-format off
 
 instr_encode_table_t *instr_table[] =
@@ -200,7 +202,7 @@ instr_encode_table_t *instr_table[] =
         mov, lea, add, sub, mul, div, and, or, xor, _not, inc,
         dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
         in, out, clc, stc, cli, sti, nop, hlt, _int, syscall, 
-        movzx, movsx, xchg,
+        movzx, movsx, xchg, bswap,
     };
 
 
