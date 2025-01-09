@@ -122,7 +122,7 @@ typedef struct {
   operand_t *operands;     /* Operands of the instruction */
 } instruction_t;
 
-#define INSTR_TERMINATOR         \
+#define INSTR_TAB_NULL           \
   (instr_encode_table_t) {       \
     .ident = NULL,               \
     .opcode_ext = NULL,          \
