@@ -64,7 +64,6 @@ uint8_t op_sizeof(enum operands input) {
   return 0;
 }
 
-/* Instructions containing a byte-sized operand uses the byte opcode (see. 4-136 Vol. 2B, MOVZX—Move With Zero-Extend) */
 uint8_t *op_write_opcode(operand_t *op_arr, instr_encode_table_t *instr_ref) {
   if (!instr_ref->has_byte_opcode) return instr_ref->opcode;
   for (uint8_t i = 0; i < 4; i++) {

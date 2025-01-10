@@ -30,6 +30,8 @@
 // Note: this function seems only to be used in the `exe` module, may remove in the future
 
 uint8_t *endian(uint8_t *data, size_t data_size) {
+
+#ifdef __LITTLE_ENDIAN__
   uint8_t *temp = (uint8_t *)malloc(data_size);
   memcpy(temp, data, data_size);
 
@@ -37,5 +39,7 @@ uint8_t *endian(uint8_t *data, size_t data_size) {
     data[data_size - i] = temp[i - 1];
 
   free(temp);
+#endif
+
   return data;
 }

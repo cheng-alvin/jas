@@ -44,7 +44,6 @@ bool is_pre = false;
 
 static instr_encode_table_t *get_instr_tabs(instruction_t *instr_arr, size_t arr_size) {
   instr_encode_table_t *tabs = malloc(sizeof(instr_encode_table_t) * arr_size);
-
   for (size_t i = 0; i < arr_size; i++) {
     if (IS_LABEL(instr_arr[i])) {
       tabs[i] = INSTR_TAB_NULL;
@@ -70,7 +69,6 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   is_pre = true;
 
-  // Spaghetti code warning 🍝🍝🍝
   const instr_encode_table_t *tabs = get_instr_tabs(instr_arr, arr_size / sizeof(instruction_t));
   free(assemble(mode, instr_arr, arr_size, tabs).data);
 
@@ -132,7 +130,10 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
     uint8_t binding = 0;
     if (label_table[i].exported || label_table[i].ext) binding = 1;
 
-    const buffer_t ent = exe_sym_ent(label_table[i].name, label_table[i].address, 4, &strtab, (((binding) << 4) + ((0) & 0xf)));
+    const buffer_t ent =
+        exe_sym_ent(label_table[i].name, label_table[i].address, 4, &strtab,
+                    (((binding) << 4) + ((0) & 0xf)));
+
     buf_concat(&symtab, 1, &ent);
     free(ent.data);
   }
