@@ -23,6 +23,9 @@
  * @see `LICENSE`
  */
 
+#ifndef EXE_H
+#define EXE_H
+
 #include "buffer.h"
 #include <stddef.h>
 #include <stdint.h>
@@ -80,3 +83,5 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
  * determine the section the symbol is in.
  */
 buffer_t exe_sym_ent(char *name, uint64_t sym_val, uint16_t sect_idx, buffer_t *strtab, uint8_t info);
+
+#endif
