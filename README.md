@@ -71,8 +71,8 @@ All the code under the Jas assembler project repository is licensed under the [M
 
 *No warranty of any kind is provided, please double check offical sources before deploying code to production*
 
-### ❤️ Contributing / Security issues
-No software is perfect, nor is Jas. As the assembler is written in C, many secuity issues may arise, causing issues across the program. It's a shared responsibility to safeguard Jas of all developers, contributers and users alike. Please report all secuity concerns in a timely manner via email or the means provided [here](https://github.com/cheng-alvin/jas/blob/dev/SECURITY.md). 
+### ❤️ Contributing / reporting bugs
+No software is perfect, nor is Jas. As the assembler is written in C, many secuity issues may arise, causing issues across the program. It's a shared responsibility to safeguard Jas of all developers, contributers and users alike. Please report all secuity or any other concerns in a timely manner via email to the offical mailing list: jas-assembler@google-groups.com.
 
 However, for developers interested and passionate about assemblers and low-level programming, please see the [contributing guide](https://github.com/cheng-alvin/jas/blob/a02fea10d9d398ef63a9fc9419ce54d8b406c3a5/CONTRIBUTING.txt) in the home directory for more information on how to contribute code to the repository! 
 

@@ -3,7 +3,7 @@
 Thank you for considering to contribute to the Jas assembler! The jas assembler is a project that is developed by a
 small group of people. We are always looking for new contributors to help us improve the assembler. This guide is 
 for **DEVELOPERS looking to commit code to the Jas assembler**. If you are looking to report a bug or request a
-feature, please see [this](https://github.com/cheng-alvin/jas/issues).
+feature, please use the official mailing list: jas-assembler@google-groups.com.
 
 ### Getting started
 For beginners and those who are new to Git and GitHub, please see [here](https://guides.github.com/activities/hello-world/)
