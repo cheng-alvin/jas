@@ -60,14 +60,11 @@ in binary as well as some key meta data such as what modes the instruction suppo
 etc. (Details will appear in the [`instruction.h`](https://github.com/cheng-alvin/jas/blob/main/libjas/include/instruction.h) file)
 Each instruction encoder table includes *entries*, each entry defines the meta data that correspond to a certain
 identity. For example, a MR identity (A identity with a m64 and r64) will be one entry and includes the 
-opcode, and support status in different operating modes. Below is an example of a instruction encoded in the `MR` identity and can be encoded as `FF /r` or `FA /r` when using the byte-instruction mode (More examples will be [here](https://github.com/cheng-alvin/jas/blob/main/libjas/instruction.c))
+opcode, and support status in different operating modes. Below is an example of a instruction encoded in the `MR` identity and can be encoded as `FF /r` or `FA /r` when using the byte-instruction mode (More examples will be [here](https://github.com/cheng-alvin/jas/blob/main/libjas/tab.c))
 
 
 ```c
-#include <jas.h>
-#include <stdbool.h>
-
-DEFINE_TAB(new_ent) = {
+DEFINE_TAB(new_ent) = {{
   .ident                 = OP_MR, 
   .opcode_ext            = NULL, 
   .opcode                = {0xff},
@@ -76,7 +73,7 @@ DEFINE_TAB(new_ent) = {
   .opcode_size           = 1,
   .pre                   = NULL,
   .has_byte_opcode       = true,
-};
+}};
 
 // `new_ent` will be added to an array of different instruction identities.
 
