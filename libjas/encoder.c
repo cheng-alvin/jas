@@ -52,8 +52,7 @@ static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
     return;
   }
 
-  extern bool is_pre;
-  int32_t rel_offset = is_pre ? 0 : label->address - (buf->len + rel_sz - 1) - 1;
+  int32_t rel_offset = label->address == 0 ? 0 : label->address - (buf->len + rel_sz - 1) - 1;
   buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
 }
 
@@ -114,7 +113,7 @@ DEFINE_ENCODER(m) {
 }
 
 /**
- * @note - Internal documentation (31th Dec 2024 - Last day of '24 🎉) 
+ * @note - Internal documentation (31th Dec 2024 - Last day of '24 🎉)
  * This function will be used to write a number (aka a immediate value)
  * to the buffer, which is considered a common ground for many encoder
  * identities, such as `mi`, `oi` etc that also require a immediate value
