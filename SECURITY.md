@@ -8,8 +8,7 @@ the means of email and other more private ways to prevent it from leaking into t
 
 | Version | How to report                     |
 | ------- | --------------------------------- |
-| > 1.x.y | Report via email and safe forms   |
-| 0.x.y   | Report via Github issues          |
+| > 1.x.y | Report via private emailing             |
+| 0.x.y   | Report on the **mailing list**          |
 
-If you are reporting for > 1.x.y  versions, please send your emails to eventide+security@gmail.com. Write it up as if you are doing it for a Github issue, feel 
-free to use issue templates or other resources online.
+If you are reporting for > 1.x.y  versions, please send your emails to eventide+security@gmail.com. Write it up as if you are doing it for a Github issue for any other project.
