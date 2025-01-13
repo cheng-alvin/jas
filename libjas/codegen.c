@@ -40,8 +40,6 @@
     }                                                                   \
   } while (0)
 
-bool is_pre = false;
-
 static instr_encode_table_t *get_instr_tabs(instruction_t *instr_arr, size_t arr_size) {
   instr_encode_table_t *tabs = malloc(sizeof(instr_encode_table_t) * arr_size);
   for (size_t i = 0; i < arr_size; i++) {
@@ -54,7 +52,7 @@ static instr_encode_table_t *get_instr_tabs(instruction_t *instr_arr, size_t arr
   return tabs;
 }
 
-static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, instr_encode_table_t *tabs);
+static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, instr_encode_table_t *tab, bool is_pre);
 buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
   for (size_t i = 0; i < arr_size / sizeof(instruction_t); i++) {
     if (instr_arr[i].instr >= INSTR_DIR_LOCAL_LABEL) {
@@ -67,13 +65,11 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
     }
   }
 
-  is_pre = true;
-
   const instr_encode_table_t *tabs = get_instr_tabs(instr_arr, arr_size / sizeof(instruction_t));
-  free(assemble(mode, instr_arr, arr_size, tabs).data);
+  const uint8_t *pre_ret = assemble(mode, instr_arr, arr_size, tabs, true).data;
+  if (pre_ret != NULL) free(pre_ret);
 
-  is_pre = false;
-  const buffer_t code = assemble(mode, instr_arr, arr_size, tabs);
+  const buffer_t code = assemble(mode, instr_arr, arr_size, tabs, false);
   free(tabs);
 
   if (exec_mode == CODEGEN_RAW) return code;
@@ -156,14 +152,16 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
   return out;
 }
 
-static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, instr_encode_table_t *tabs) {
+static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, instr_encode_table_t *tabs, bool is_pre) {
   arr_size /= sizeof(instruction_t);
   buffer_t buf = BUF_NULL;
+  size_t label_index = 0;
 
   for (size_t i = 0; i < arr_size; i++) {
+    /* -- Sanity checks -- */
+    if (is_pre && label_get_size() == 0) break;
+    if (is_pre && label_index >= label_get_size()) break;
     if (instr_arr[i].operands == NULL) continue;
-
-    /* -- Handle assembler directives -- */
 
     if (INSTR_DIRECTIVE(instr_arr[i].instr)) {
       if (instr_arr[i].instr == INSTR_DIR_WRT_BUF) {
@@ -178,6 +176,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
             break;
           }
         }
+        label_index++;
       }
 
       continue;
