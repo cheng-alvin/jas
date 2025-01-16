@@ -169,13 +169,14 @@ instr_encode_table_t instr_get_tab(instruction_t instr);
 #define r64(x) OP_R64, x, 0
 #define r32(x) OP_R32, x, 0
 #define r16(x) OP_R16, x, 0
+#define r8(x) OP_R8, x, 0
+
+// --
 
 #define imm8(x) OP_IMM8, x, 0
 #define imm16(x) OP_IMM16, x, 0
 #define imm32(x) OP_IMM32, x, 0
 #define imm64(x) OP_IMM64, x, 0
-
-// --
 
 /**
  * These Relative macros are used to define the relative operand,
