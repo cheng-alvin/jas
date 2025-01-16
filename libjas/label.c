@@ -69,3 +69,24 @@ label_t *label_lookup(char *name) {
 
 size_t label_get_size() { return label_table_size; }
 label_t *label_get_table() { return label_table; }
+
+instruction_t label_gen(char *name, enum label_type type) {
+  enum instructions instr = INSTR_DIR_LOCAL_LABEL;
+
+  // clang-format off
+  switch (type) {
+    case LABEL_LOCAL: instr = INSTR_DIR_LOCAL_LABEL; break;
+    case LABEL_GLOBAL: instr = INSTR_DIR_GLOBAL_LABEL; break;
+    case LABEL_EXTERN: instr = INSTR_DIR_EXTERN_LABEL; break;
+
+    default: break;
+  }
+  // clang-format on
+
+  return (instruction_t){
+      .instr = instr,
+      .operands = (operand_t[]){
+          op_construct_operand(OP_MISC, 0, name, NULL),
+      },
+  };
+}
