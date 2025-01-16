@@ -15,26 +15,15 @@
 <p align="center" padding="10px"> Jas is a minimal, fast and simple zero-dependency assembler for the x64 family of processors, jas not only aims to be fast and simple when using it but also aims to be a learning reasource for others to learn about low-level system programming and the x64 instruction set. Useful for implementing into compilers, operating systems and JIT interpreters and other types of utilites that need compilation to ELF or just a plain enocded buffer. </p>
 
 ### ⚡Quick start
-First of all, install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases) or build it from source with following the instructions below. Jas takes instructions in an array in a struct form defined in [instruction.h](https://github.com/cheng-alvin/jas/blob/0faa905be7cb1238796af46552b3271a11b4e2dd/libjas/instruction.h) and passes it to a `codegen()` function which generates the the actual buffer of an array of `uint8_t` for you to process.
+First of all, install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases) or build it from source with following the instructions below. Jas takes instructions in an array in a struct form defined in [instruction.h](https://github.com/cheng-alvin/jas/blob/0faa905be7cb1238796af46552b3271a11b4e2dd/libjas/instruction.h) and passes it to a `assemble_instr()` function which generates the the actual buffer of an array of `uint8_t` for you to process. (However, in this situation, we are using the `instr_gen()` function and operand generation macros to generate the instruction structure automatically without the janky C structure syntax)
 ```c
 #include <jas.h>
 #include <stdint.h>
 #include <stdlib.h>
 
 int main(void) {
-  instruction_t instr[] = {
-      (instruction_t){
-          .instr = INSTR_MOV,
-          .operands = (operand_t[]){
-              (operand_t){.type = OP_R64, .data = &(enum registers){REG_RAX}},
-              (operand_t){.type = OP_IMM64, .data = &(uint64_t){0}},
-              OP_NONE,
-              OP_NONE,
-          },
-      },
-  };
-
-  buffer_t buf = codegen(MODE_LONG, instr, sizeof(instr), CODEGEN_RAW);
+  instruction_t instr = instr_gen(INSTR_MOV, 2, r64(REG_RAX), imm64(0));
+  buffer_t buf = assemble_instr(MODE_LONG, instr, CODEGEN_RAW);
 
   /* Do something to `buf.data` - The uint8_t array */
 

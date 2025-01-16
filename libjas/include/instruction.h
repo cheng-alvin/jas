@@ -156,6 +156,64 @@ typedef struct {
 instr_encode_table_t instr_get_tab(instruction_t instr);
 
 /**
+ * Macros for defining the instruction operands in a more readable
+ * form for passing into the `instr_gen` function. The macros are
+ * used to define the operand type, register, immediate, memory
+ * and relative operands.
+ *
+ * @example
+ * We dont need to type in: `instr_gen(INSTR_MOV, 1, OP_R64, REG_RAX, 0);`
+ * But instead, we can type in: `instr_gen(INSTR_MOV, 1, r64(REG_RAX));`
+ */
+
+#define r64(x) OP_R64, x, 0
+#define r32(x) OP_R32, x, 0
+#define r16(x) OP_R16, x, 0
+#define r8(x) OP_R8, x, 0
+
+// --
+
+#define imm8(x) OP_IMM8, x, 0
+#define imm16(x) OP_IMM16, x, 0
+#define imm32(x) OP_IMM32, x, 0
+#define imm64(x) OP_IMM64, x, 0
+
+/**
+ * These Relative macros are used to define the relative operand,
+ * usually using labels. The relative operand is used in jump
+ * instructions and other instructions that require a relative
+ * offset to a label.
+ *
+ * @example rel("label", 10)
+ */
+
+#define rel8(x, off) OP_REL8, x, off
+#define rel32(x, off) OP_REL32, x, off
+
+// Note: offset must be provided - equivalent to: [eax + xyz]
+// (SIB bytes and another register for displacement not supported)
+
+#define m8(x, off) OP_M8, x, off
+#define m16(x, off) OP_M16, x, off
+#define m32(x, off) OP_M32, x, off
+#define m64(x, off) OP_M64, x, off
+
+/**
+ * Not to be confused with the `r8` and other operand macros, this
+ * macro is used to define the accumulator register operand in the
+ * instruction. Like rax, eax etc. This wouldn't work when used with
+ * instructions that dont support the accumulator register.
+ *
+ * Check the Intel manual, whatever the intel manual says is as a valid
+ * accumulator is the default implemented version.
+ */
+
+#define acc8 OP_ACC8, REG_AL, 0
+#define acc16 OP_ACC16, REG_AX, 0
+#define acc32 OP_ACC32, REG_EAX, 0
+#define acc64 OP_ACC64, REG_RAX, 0
+
+/**
  * A function for easily defining a instruction in the `instruction_t`
  * form without having to use the struct initializer or mangle around
  * with void pointers and curly braces. This function is used to create
@@ -167,27 +225,6 @@ instr_encode_table_t instr_get_tab(instruction_t instr);
  * @param ... The operands to pass (Refer to below example)
  *
  * @return The instruction struct
- *
- * @note All operands will be grouped into three arguments, a type, offset
- * and data, similar to the ones of the `operand_t` struct.
- *
- * @example instr_gen(INSTR_XXX, 1, OP_R64, REG_RAX, 0);
- *
- * The example above will generate a instruction struct with the
- * instruction type `INSTR_XXX` and a single operand with the type
- * `OP_R64`, an offset of `0` and the data `REG_RAX`, which returns:
- *
- * ```
- * (instruction_t){
- *   .instr = INSTR_XXX,
- *   .operands = (operand_t[]){
- *     (operand_t)
- *     {.type = OP_R64, .offset = 0, .data = &(enum registers){REG_RAX}},
- *     OP_NONE, OP_NONE, OP_NONE,
- *   },
- * }
- *```
- *
  * @see `operand_t`
  */
 instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...);
