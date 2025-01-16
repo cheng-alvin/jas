@@ -26,6 +26,7 @@
 #ifndef LABEL_H
 #define LABEL_H
 
+#include "instruction.h"
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -90,4 +91,35 @@ void label_destroy_all();
  */
 label_t *label_lookup(char *name);
 
+/**
+ * Enumeration for expressing the different types of labels used
+ * in the assembler, such as local, global, and external labels.
+ *
+ * Determines the type of label to be created in the assembler.
+ * (And if a label table should be generated)
+ */
+
+enum label_type {
+  LABEL_LOCAL,
+  LABEL_GLOBAL,
+  LABEL_EXTERN,
+};
+
+/**
+ * Function similar to `instr_ge()` and `label_create()`, used to
+ * generate a label instruction in the instruction array, and
+ * return the instruction struct back to the caller.
+ *
+ * @param name The name of the label to be generated.
+ * @param type The type of the label. @see `enum label_type`
+ *
+ * @return The instruction struct of the label generated.
+ *
+ * @note The label name should not contain the `:` character, as
+ * it is automatically added by the assembler. (The `:` character
+ * is a label terminator usually found in assembly languages, and
+ * does not get used in this assembler, typing in `:` would result
+ * in that carrying over to the output)
+ */
+instruction_t label_gen(char *name, enum label_type type);
 #endif
