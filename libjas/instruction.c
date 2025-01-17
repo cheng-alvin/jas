@@ -105,3 +105,24 @@ instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
       .operands = operands,
   };
 }
+
+instruction_t instr_write_bytes(size_t data_sz, ...) {
+  buffer_t data = BUF_NULL;
+  va_list args;
+  va_start(args, data_sz);
+
+  for (size_t i = 0; i < data_sz; i++) {
+    const uint8_t byte = va_arg(args, uint8_t);
+    buf_write_byte(&data, byte);
+  }
+
+  // clang-format off
+  return (instruction_t){
+      .instr = INSTR_DIR_WRT_BUF,
+      .operands = (operand_t[]){
+          op_construct_operand(OP_MISC, 0, &data, NULL),
+          OP_NONE, OP_NONE, OP_NONE,
+      },
+  };
+  // clang-format on
+}

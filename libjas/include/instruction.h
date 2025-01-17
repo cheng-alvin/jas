@@ -156,6 +156,26 @@ typedef struct {
 instr_encode_table_t instr_get_tab(instruction_t instr);
 
 /**
+ * Function for generating an instruction struct with the given
+ * instruction type and operands. The function is used to create
+ * a Jas buffer and write it into a instruction, similar to the
+ * `db` and `dw` directives in NASM, but this uses the size and
+ * variadic arguments to write the bytes into the buffer.
+ *
+ * @param data_sz The size of the data to write
+ * @param ... The data to write into the buffer
+ *
+ * @return The instruction struct
+ *
+ * @example The **Jas** function call of:
+ * >  instr_write_bytes(7, 0x48, 0x89, 0x80, 0xff, 0x00, 0x00, 0x00);
+ *
+ * Is equivalent to: (In NASM)
+ * >  db 0x48, 0x89, 0x80, 0xff, 0x00, 0x00, 0x00
+ */
+instruction_t instr_write_bytes(size_t data_sz, ...);
+
+/**
  * Macros for defining the instruction operands in a more readable
  * form for passing into the `instr_gen` function. The macros are
  * used to define the operand type, register, immediate, memory
