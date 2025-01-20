@@ -113,17 +113,13 @@ instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
     } else {
       alloc_operand_data(temp_reg); /* Note braces as macro expands */
     }
-
     const size_t off = va_arg(args, size_t);
     operands[i] = op_construct_operand(type, off, data, label);
   }
 
   va_end(args);
   instruction_t *instr_struct = malloc(sizeof(instruction_t));
-  *instr_struct = (instruction_t){
-      .instr = instr,
-      .operands = operands,
-  };
+  *instr_struct = (instruction_t){.instr = instr, .operands = operands};
 
   return *instr_struct;
 }
