@@ -30,7 +30,7 @@ DEFINE_TAB(lea) = {{ENC_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, 1, &pre_lea,
 DEFINE_TAB(add) = {GENERIC(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, ZERO_EXT, 0x81, 0x80)};
 DEFINE_TAB(sub) = {GENERIC(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x81, 0x80)};
 DEFINE_TAB(mul) = {{ENC_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes, true}, INSTR_TAB_NULL};
-DEFINE_TAB(div) = {{ENC_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes, true}, INSTR_TAB_NULL};
+DEFINE_TAB(_div) = {{ENC_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes, true}, INSTR_TAB_NULL};
 
 // Note all or, and and xor instructions have a imm8 which is not supported
 
