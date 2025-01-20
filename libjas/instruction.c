@@ -139,8 +139,11 @@ instruction_t instr_write_bytes(size_t data_sz, ...) {
     buf_write_byte(&data, byte);
   }
 
+  va_end(args);
+
+  instruction_t *instr_ret = malloc(sizeof(instruction_t));
   // clang-format off
-  return (instruction_t){
+  *instr_ret = (instruction_t){
       .instr = INSTR_DIR_WRT_BUF,
       .operands = (operand_t[]){
           op_construct_operand(OP_MISC, 0, &data, NULL),
@@ -148,4 +151,5 @@ instruction_t instr_write_bytes(size_t data_sz, ...) {
       },
   };
   // clang-format on
+  return *instr_ret;
 }

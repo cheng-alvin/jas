@@ -82,10 +82,14 @@ instruction_t label_gen(char *name, enum label_type type) {
   }
   // clang-format on
 
-  return (instruction_t){
+  name = strdup(name);
+  instruction_t *instr_ret = malloc(sizeof(instruction_t));
+  *instr_ret = (instruction_t){
       .instr = instr,
       .operands = (operand_t[]){
           op_construct_operand(OP_MISC, 0, name, NULL),
       },
   };
+
+  return *instr_ret;
 }
