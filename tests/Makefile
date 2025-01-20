@@ -1,6 +1,6 @@
 CC = clang
 
-CFLAGS_COMMON = -I ../libjas/include -I ../libjas/ -lstdc++ -g -Og
+CFLAGS_COMMON = -I ../libjas/include -I ../libjas/ -lstdc++ -g -O0
 CFLAGS = $(CFLAGS_COMMON)
 
 TESTS = $(patsubst %.c, %, $(wildcard *.c)) 
