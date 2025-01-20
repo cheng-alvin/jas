@@ -26,16 +26,17 @@
 #include "instruction.h"
 #include "error.h"
 #include "register.h"
+#include "tabs.c"
 #include <stdarg.h>
 #include <stddef.h>
-
-#include "tabs.c"
+#include <stdlib.h>
+#include <string.h>
 
 // clang-format off
 
 instr_encode_table_t *instr_table[] =
     {
-        mov, lea, add, sub, mul, div, and, or, xor, _not, inc,
+        mov, lea, add, sub, mul, _div, and, or, xor, _not, inc,
         dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
         in, out, clc, stc, cli, sti, nop, hlt, _int, syscall, 
         movzx, movsx, xchg, bswap,
@@ -68,43 +69,63 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   return INSTR_TAB_NULL; // aka empty
 }
 
+/* Stupid almost-stub implementation */
 instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
   va_list args;
   va_start(args, operand_count * 3);
 
-  operand_t operands[4] = {OP_NONE, OP_NONE, OP_NONE, OP_NONE};
+  // Note, a temporary register type is used to prevent conflict
+  // with the `enum registers` type by passing into `alloc_operand_data`
+  typedef enum registers temp_reg;
+
+  // clang-format off
+  operand_t *operands = malloc(sizeof(operand_t) * 4);
+  for (uint8_t i = 0; i < 4; i++) operands[i] = OP_NONE;
+  // clang-format on
+
   for (uint8_t i = 0; i < operand_count; i++) {
     const enum operands type = va_arg(args, enum operands);
     char *label = "";
     void *data;
     if (op_rel(type)) {
       char *lab = va_arg(args, char *);
-      label = lab;
-    } else if (op_imm(type)) {
+      label = strdup(lab);
+
       // clang-format off
+    #define alloc_operand_data(type)        \
+      type *type##_ = malloc(sizeof(type)); \
+      *type##_ = va_arg(args, type);        \
+      data = (void *)type##_;
+
+    } else if (op_imm(type)) {
       switch (op_sizeof(type)) {
-      case 8: data = &(uint8_t){va_arg(args, uint8_t)}; break;
-      case 16: data = &(uint16_t){va_arg(args, uint16_t)}; break;
-      case 32: data = &(uint32_t){va_arg(args, uint32_t)}; break;
-      case 64: data = &(uint64_t){va_arg(args, uint64_t)}; break;
+      case 8: alloc_operand_data(uint8_t); break;
+      case 16: alloc_operand_data(uint16_t); break;
+      case 32: alloc_operand_data(uint32_t); break;
+      case 64: alloc_operand_data(uint64_t); break;
       default:
         err("Invalid operand size.");
         break;
       }
       // clang-format on
-    } else
-      data = (void *)&(enum registers){va_arg(args, enum registers)};
+    } else {
+      alloc_operand_data(temp_reg); /* Note braces as macro expands */
+    }
 
     const size_t off = va_arg(args, size_t);
     operands[i] = op_construct_operand(type, off, data, label);
   }
 
   va_end(args);
-  return (instruction_t){
+  instruction_t *instr_struct = malloc(sizeof(instruction_t));
+  *instr_struct = (instruction_t){
       .instr = instr,
       .operands = operands,
   };
+
+  return *instr_struct;
 }
+#undef alloc_data
 
 instruction_t instr_write_bytes(size_t data_sz, ...) {
   buffer_t data = BUF_NULL;
