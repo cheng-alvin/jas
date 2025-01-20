@@ -1,6 +1,6 @@
 CC = clang
 
-CFLAGS_COMMON =-I include -Wno-incompatible-pointer-types -Wno-int-conversion -Ofast
+CFLAGS_COMMON =-I include -Wno-incompatible-pointer-types -Wno-int-conversion -O3
 CFLAGS = $(CFLAGS_COMMON)
 
 C_SRC = $(wildcard *.c) # Includes only C source files
