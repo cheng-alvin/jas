@@ -47,7 +47,7 @@ instr_encode_table_t *instr_table[] =
 
 instr_encode_table_t instr_get_tab(instruction_t instr) {
   if (instr.instr == NULL && instr.operands == NULL) return INSTR_TAB_NULL;
-  if (IS_LABEL(instr)) return INSTR_TAB_NULL; // aka empty
+  if (INSTR_DIRECTIVE(instr.instr)) return INSTR_TAB_NULL; // aka empty
   const enum operands operand_list[4] = {
       instr.operands[0].type, instr.operands[1].type,
       instr.operands[2].type, instr.operands[3].type,
