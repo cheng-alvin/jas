@@ -69,6 +69,13 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   return INSTR_TAB_NULL; // aka empty
 }
 
+#define alloc_operand_data(type)          \
+  do {                                    \
+    type *type##_ = malloc(sizeof(type)); \
+    *type##_ = va_arg(args, type);        \
+    data = (void *)type##_;               \
+  } while (0);
+
 /* Stupid almost-stub implementation */
 instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
   va_list args;
@@ -92,11 +99,6 @@ instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
       label = strdup(lab);
 
       // clang-format off
-    #define alloc_operand_data(type)        \
-      type *type##_ = malloc(sizeof(type)); \
-      *type##_ = va_arg(args, type);        \
-      data = (void *)type##_;
-
     } else if (op_imm(type)) {
       switch (op_sizeof(type)) {
       case 8: alloc_operand_data(uint8_t); break;
