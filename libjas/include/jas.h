@@ -51,6 +51,7 @@ namespace jas {
 #include "codegen.h"
 #include "error.h"
 #include "instruction.h"
+#include "label.h"
 #include "mode.h"
 #include "operand.h"
 #include "register.h"
