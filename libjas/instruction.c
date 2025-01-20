@@ -126,6 +126,7 @@ instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
 #undef alloc_data
 
 instruction_t instr_write_bytes(size_t data_sz, ...) {
+  buffer_t *buffer_ptr = malloc(sizeof(buffer_t));
   buffer_t data = BUF_NULL;
   va_list args;
   va_start(args, data_sz);
@@ -138,11 +139,13 @@ instruction_t instr_write_bytes(size_t data_sz, ...) {
   va_end(args);
 
   instruction_t *instr_ret = malloc(sizeof(instruction_t));
+  memcpy(buffer_ptr, &data, sizeof(buffer_t));
+
   // clang-format off
   *instr_ret = (instruction_t){
       .instr = INSTR_DIR_WRT_BUF,
       .operands = (operand_t[]){
-          op_construct_operand(OP_MISC, 0, &data, NULL),
+          op_construct_operand(OP_MISC, 0, buffer_ptr, NULL),
           OP_NONE, OP_NONE, OP_NONE,
       },
   };
