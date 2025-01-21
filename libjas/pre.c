@@ -33,10 +33,8 @@ DEFINE_PRE_ENCODER(same_operand_sizes) {
 }
 
 DEFINE_PRE_ENCODER(pre_imm) {
-  if (op_sizeof(op_arr[0].type) != 64) {
-    same_operand_sizes(op_arr, buf, instr_ref, mode);
-    return;
-  }
+  if (op_sizeof(op_arr[1].type) == 64) err("64-bit immediate is not allowed.");
+  if (op_acc(op_arr[0].type)) same_operand_sizes(op_arr, buf, instr_ref, mode);
 }
 
 DEFINE_PRE_ENCODER(pre_jcc_no_byte) {
