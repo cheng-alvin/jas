@@ -68,6 +68,7 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   err("No corrsponding instruction opcode found.");
   return INSTR_TAB_NULL; // aka empty
 }
+#undef CURR_TABLE
 
 #define alloc_operand_data(type)          \
   do {                                    \
