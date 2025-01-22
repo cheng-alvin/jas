@@ -6,7 +6,7 @@
 #define oi_bytes {0x48, 0xB8, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 #define mi_bytes \
-  { 0x48, 0xC7, 0x80, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF }
+  {0x48, 0xC7, 0x80, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF}
 
 // TODO: Encapsulate this into a global macro for all tests
 #define MOV_TEST(name, op1, op2, expected_bytes)                                        \
@@ -20,7 +20,7 @@
     };                                                                                  \
                                                                                         \
     const unsigned char expected[] = expected_bytes;                                    \
-    const buffer_t buf = assemble_instr(MODE_LONG, instr);                              \
+    const buffer_t buf = assemble_instr(MODE_LONG, &instr);                             \
                                                                                         \
     assert_eq_buf_arr(buf, expected, sizeof(expected));                                 \
     free(buf.data);                                                                     \
