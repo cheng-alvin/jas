@@ -253,4 +253,36 @@ instruction_t *instr_write_bytes(size_t data_sz, ...);
  */
 instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
 
+/**
+ * Helper macro for freeing an array of instruction structs and
+ * their operands. The macro is used to free the memory allocated
+ * using the help of the `instr_free()` function `free()`
+ *
+ * @param instr_arr The array of instruction structs
+ * @param arr_size The size of the instruction array
+ *
+ * @note If the instruction array is dynamically allocated, the
+ * memory allocated for the array *itself* must be taken care of
+ * by the caller instead of this function/macro.
+ */
+#define instr_free_all(instr_arr, arr_size) \
+  do {                                      \
+    for (size_t i = 0; i < arr_size; i++)   \
+      instr_free(instr_arr[i]);             \
+  } while (0)
+
+/**
+ * Function for freeing the memory allocated for the instruction
+ * struct and its operands. The function is used to prevent memory
+ * leaks and free the memory allocated for the instruction structs
+ * and the operand structs that are nested inside the instruction.
+ *
+ * @param instr The instruction struct to free
+ *
+ * @note The function will free the memory allocated for the instruction
+ * struct and the operand structs inside the instruction struct, including
+ * relevent buffer for `INSTR_DIR_WRT_BUF` instructions.
+ */
+void instr_free(instruction_t *instr);
+
 #endif

@@ -153,3 +153,17 @@ instruction_t *instr_write_bytes(size_t data_sz, ...) {
   // clang-format on
   return instr_ret;
 }
+
+void instr_free(instruction_t *instr) {
+  for (uint8_t i = 0; i < 4; i++) {
+    if (instr->operands[i].type == OP_MISC && instr->instr == INSTR_DIR_WRT_BUF) {
+      buffer_t *data = (buffer_t *)instr->operands[i].data;
+      free(data->data);
+    }
+
+    if (instr->operands[i].type) free(instr->operands[i].data);
+    if (instr->operands[i].label) free(instr->operands[i].label);
+  }
+
+  free(instr);
+}
