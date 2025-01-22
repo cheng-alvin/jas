@@ -42,18 +42,16 @@ enum codegen_modes {
  * jas sub-modules function.
  *
  * @param mode The mode to generate the machine code in
- * @param instr_arr The instruction array to generate the code from
- * @param arr_size The size of the instruction array (in bytes)
+ * @param instr_input The instruction array to generate the code from
+ * @param arr_count The size of the instruction array (in elements)
  * @param exec_mode The output mode of the codegen function
  * (i.e raw code or elf)
  *
  * @return The buffer struct containing the machine code
- *
- * @see `buffer.h`
- * @see `instruction.h`
- * @see `codegen_modes`
  */
-buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode);
+buffer_t codegen(
+    enum modes mode, instruction_t **instr_input, size_t arr_count,
+    enum codegen_modes exec_mode);
 
 /**
  * Wrapper function for the `codegen` function that gives boiler-
@@ -62,12 +60,12 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
  * `codegen` function.
  *
  * @param mode The mode to generate the machine code in
- * @param instr The instruction to generate the code from
+ * @param instr The instruction pointer to generate the code from
  *
  * @return The buffer struct containing the machine code
  *
  * @see `codegen`
  */
-buffer_t assemble_instr(enum modes mode, instruction_t instr);
+buffer_t assemble_instr(enum modes mode, instruction_t *instr);
 
 #endif
