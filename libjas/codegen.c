@@ -59,7 +59,7 @@ buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count,
   instruction_t *instr_arr = malloc(arr_size);
 
   for (size_t i = 0; i < arr_count; i++)
-    memcpy(&instr_arr[i], instr_input[i], sizeof(instruction_t));
+    instr_arr[i] = *instr_input[i];
 
   for (size_t i = 0; i < arr_size / sizeof(instruction_t); i++) {
     if (instr_arr[i].instr >= INSTR_DIR_LOCAL_LABEL) {
@@ -200,5 +200,5 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 }
 
 buffer_t assemble_instr(enum modes mode, instruction_t *instr) {
-  return codegen(mode, instr, sizeof(instruction_t), CODEGEN_RAW);
+  return codegen(mode, &instr, 1, CODEGEN_RAW);
 }
