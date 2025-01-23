@@ -138,8 +138,8 @@ typedef struct {
   (instruction_t) { .instr = NULL, .operands = NULL }
 
 // Macro for checking if the instruction is a label and shall be handled
-#define IS_LABEL(x)                                      \
-  (uint8_t) x.instr >= (uint8_t)INSTR_DIR_LOCAL_LABEL && \
+#define IS_LABEL(x)                                     \
+  (uint8_t)x.instr >= (uint8_t)INSTR_DIR_LOCAL_LABEL && \
       (uint8_t)x.instr <= (uint8_t)INSTR_DIR_EXTERN_LABEL
 
 /**
@@ -165,7 +165,7 @@ instr_encode_table_t instr_get_tab(instruction_t instr);
  * @param data_sz The size of the data to write
  * @param ... The data to write into the buffer
  *
- * @return The instruction struct
+ * @return The instruction struct pointer
  *
  * @example The **Jas** function call of:
  * >  instr_write_bytes(7, 0x48, 0x89, 0x80, 0xff, 0x00, 0x00, 0x00);
@@ -173,7 +173,7 @@ instr_encode_table_t instr_get_tab(instruction_t instr);
  * Is equivalent to: (In NASM)
  * >  db 0x48, 0x89, 0x80, 0xff, 0x00, 0x00, 0x00
  */
-instruction_t instr_write_bytes(size_t data_sz, ...);
+instruction_t *instr_write_bytes(size_t data_sz, ...);
 
 /**
  * Macros for defining the instruction operands in a more readable
@@ -244,9 +244,45 @@ instruction_t instr_write_bytes(size_t data_sz, ...);
  * @param operand_count The number of operands to pass
  * @param ... The operands to pass (Refer to below example)
  *
- * @return The instruction struct
- * @see `operand_t`
+ * @return The instruction struct pointer
+ *
+ * @note Instruction pointers are `malloc`ed (aka dynamically allocated)
+ * and shall be freed after useed to prevent memory leaks, please use the
+ * `instr_free()` function to free the memory allocated for the instruction
+ * structs by this function and similar functions.
  */
-instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...);
+instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
+
+/**
+ * Helper macro for freeing an array of instruction structs and
+ * their operands. The macro is used to free the memory allocated
+ * using the help of the `instr_free()` function `free()`
+ *
+ * @param instr_arr The array of instruction structs
+ * @param arr_size The size of the instruction array
+ *
+ * @note If the instruction array is dynamically allocated, the
+ * memory allocated for the array *itself* must be taken care of
+ * by the caller instead of this function/macro.
+ */
+#define instr_free_all(instr_arr, arr_size) \
+  do {                                      \
+    for (size_t i = 0; i < arr_size; i++)   \
+      instr_free(instr_arr[i]);             \
+  } while (0)
+
+/**
+ * Function for freeing the memory allocated for the instruction
+ * struct and its operands. The function is used to prevent memory
+ * leaks and free the memory allocated for the instruction structs
+ * and the operand structs that are nested inside the instruction.
+ *
+ * @param instr The instruction struct to free
+ *
+ * @note The function will free the memory allocated for the instruction
+ * struct and the operand structs inside the instruction struct, including
+ * relevent buffer for `INSTR_DIR_WRT_BUF` instructions.
+ */
+void instr_free(instruction_t *instr);
 
 #endif

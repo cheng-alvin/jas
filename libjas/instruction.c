@@ -78,7 +78,7 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   } while (0);
 
 /* Stupid almost-stub implementation */
-instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
+instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
   va_list args;
   va_start(args, operand_count * 3);
 
@@ -122,11 +122,11 @@ instruction_t instr_gen(enum instructions instr, uint8_t operand_count, ...) {
   instruction_t *instr_struct = malloc(sizeof(instruction_t));
   *instr_struct = (instruction_t){.instr = instr, .operands = operands};
 
-  return *instr_struct;
+  return instr_struct;
 }
 #undef alloc_data
 
-instruction_t instr_write_bytes(size_t data_sz, ...) {
+instruction_t *instr_write_bytes(size_t data_sz, ...) {
   buffer_t *buffer_ptr = malloc(sizeof(buffer_t));
   buffer_t data = BUF_NULL;
   va_list args;
@@ -151,5 +151,24 @@ instruction_t instr_write_bytes(size_t data_sz, ...) {
       },
   };
   // clang-format on
-  return *instr_ret;
+  return instr_ret;
+}
+
+void instr_free(instruction_t *instr) {
+  for (uint8_t i = 0; i < 4; i++) {
+    if (instr->operands[i].type == OP_NULL) break;
+    if (instr->operands[i].type == OP_MISC && instr->instr == INSTR_DIR_WRT_BUF) {
+      buffer_t *data = (buffer_t *)instr->operands[i].data;
+      free(data->data);
+    }
+
+    if (strlen(instr->operands[i].label)) {
+      free(instr->operands[i].label);
+      continue;
+    }
+
+    if (instr->operands[i].type) free(instr->operands[i].data);
+  }
+
+  free(instr);
 }

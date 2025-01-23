@@ -53,7 +53,14 @@ static instr_encode_table_t *get_instr_tabs(instruction_t *instr_arr, size_t arr
 }
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, instr_encode_table_t *tab, bool is_pre);
-buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enum codegen_modes exec_mode) {
+buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count, enum codegen_modes exec_mode) {
+  /* Implementing a "wrapper" due to old baggage ~~(And partially out of lazy-ness)~~ */
+  const size_t arr_size = arr_count * sizeof(instruction_t);
+  instruction_t *instr_arr = malloc(arr_size);
+
+  for (size_t i = 0; i < arr_count; i++)
+    instr_arr[i] = *instr_input[i];
+
   for (size_t i = 0; i < arr_size / sizeof(instruction_t); i++) {
     if (instr_arr[i].instr >= INSTR_DIR_LOCAL_LABEL) {
       if (instr_arr[i].operands[0].data)
@@ -71,6 +78,7 @@ buffer_t codegen(enum modes mode, instruction_t *instr_arr, size_t arr_size, enu
 
   const buffer_t code = assemble(mode, instr_arr, arr_size, tabs, false);
   free(tabs);
+  free(instr_arr);
 
   if (exec_mode == CODEGEN_RAW) return code;
 
@@ -191,6 +199,6 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
   return buf;
 }
 
-buffer_t assemble_instr(enum modes mode, instruction_t instr) {
-  return codegen(mode, &instr, sizeof(instruction_t), CODEGEN_RAW);
+buffer_t assemble_instr(enum modes mode, instruction_t *instr) {
+  return codegen(mode, &instr, 1, CODEGEN_RAW);
 }

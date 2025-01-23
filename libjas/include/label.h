@@ -113,7 +113,7 @@ enum label_type {
  * @param name The name of the label to be generated.
  * @param type The type of the label. @see `enum label_type`
  *
- * @return The instruction struct of the label generated.
+ * @return The instruction struct pointer of the label generated.
  *
  * @note The label name should not contain the `:` character, as
  * it is automatically added by the assembler. (The `:` character
@@ -121,5 +121,5 @@ enum label_type {
  * does not get used in this assembler, typing in `:` would result
  * in that carrying over to the output)
  */
-instruction_t label_gen(char *name, enum label_type type);
+instruction_t *label_gen(char *name, enum label_type type);
 #endif
