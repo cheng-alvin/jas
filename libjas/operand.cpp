@@ -37,8 +37,7 @@ extern "C" {
 #include "operand.hpp"
 #include <cstddef>
 #include <cstdint>
-#include <unordered_map>
-#include <unordered_set>
+#include <map>
 
 #define OP_HASH_NONE (uint32_t)0b11111111
 
@@ -56,40 +55,47 @@ static op_ident_hash_t op_hash(enum operands input) {
   return OP_HASH_NONE;
 }
 
-namespace op {
-  static std::unordered_map<uint32_t, enum enc_ident> lookup = {
-      {__combine__(OP_HASH_R, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE), ENC_MR},
-      {__combine__(OP_HASH_M, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE), ENC_MR},
+static multimap<enum enc_ident, uint32_t> master = {
+    {ENC_MR, __combine__(OP_HASH_R, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE)},
+    {ENC_MR, __combine__(OP_HASH_M, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE)},
 
-      {__combine__(OP_HASH_R, OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE), ENC_RM},
+    {ENC_RM, __combine__(OP_HASH_R, OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE)},
+    {ENC_RM, __combine__(OP_HASH_M, OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE)},
 
-      {__combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), ENC_MI},
-      {__combine__(OP_HASH_M, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), ENC_MI},
+    {ENC_MI, __combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE)},
+    {ENC_MI, __combine__(OP_HASH_M, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE)},
 
-      {__combine__(OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), ENC_ZO},
-      {__combine__(OP_HASH_ACC, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE), ENC_O},
-      {__combine__(OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), ENC_I},
-      {__combine__(OP_HASH_REL, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), ENC_D},
+    {ENC_ZO, __combine__(OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
+    {ENC_O, __combine__(OP_HASH_ACC, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE)},
+    {ENC_I, __combine__(OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
+    {ENC_D, __combine__(OP_HASH_REL, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
 
-      {__combine__(OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), ENC_M},
-      {__combine__(OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE), ENC_M},
-  };
-}
-extern "C" enum enc_ident op_ident_identify(enum operands *input) {
-  op_ident_hash_t hash[4];
+    {ENC_M, __combine__(OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
+    {ENC_M, __combine__(OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
 
-  for (auto i = 0; i < 4; i++)
-    hash[i] = op_hash(input[i]);
+    {ENC_OI, __combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE)},
+};
 
+extern "C" enum enc_ident op_ident_identify(enum operands *input, instr_encode_table_t *instr_ref) {
   uint32_t hash_key = 0;
 
-  for (uint8_t i = 0; i < sizeof(hash); i++)
-    hash_key |= (uint32_t)hash[i] << (24 - i * 8);
+  for (uint8_t i = 0; i < 4; i++)
+    hash_key |= (uint32_t)op_hash(input[i]) << (24 - i * 8);
 
-  if (op::lookup.find(hash_key) == op::lookup.end()) {
-    err("Operand identifier not found.");
-    return (enum enc_ident)0;
+  auto j = 0;
+  multimap<uint32_t, enum enc_ident> lookup_table;
+  while (instr_ref[j].opcode_size) {
+    auto range = master.equal_range(instr_ref[j].ident);
+    for (auto it = range.first; it != range.second; it++) {
+      lookup_table.insert({it->second, instr_ref[j].ident});
+    }
+    j++;
   }
 
-  return (enum enc_ident)op::lookup[hash_key];
+  if (lookup_table.find(hash_key) != lookup_table.end()) {
+    return lookup_table.find(hash_key)->second;
+  } else {
+    err("No corresponding instruction opcode found.");
+    return ENC_NULL;
+  }
 }

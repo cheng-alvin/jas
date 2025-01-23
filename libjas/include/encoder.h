@@ -41,6 +41,7 @@ typedef struct operand operand_t;
  * methods in the main source file - `encoder.c`.
  */
 enum enc_ident {
+  ENC_NULL,
   ENC_MR,
   ENC_RM,
   ENC_OI,
