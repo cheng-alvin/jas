@@ -52,14 +52,10 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
       instr.operands[0].type, instr.operands[1].type,
       instr.operands[2].type, instr.operands[3].type,
   };
-
   // clang-format on
 
-  enum enc_ident ident = op_ident_identify(operand_list);
-  if (ident == ENC_MR && op_r(operand_list[0])) ident = ENC_RM;
-  // TODO Edge case for MOV instruction - Work on in future
-  if (instr.instr == INSTR_MOV)
-    if (ident == ENC_MI) ident = ENC_OI;
+  enum enc_ident ident =
+      op_ident_identify(operand_list, instr_table[(size_t)instr.instr]);
 
   for (uint8_t j = 0; CURR_TABLE.opcode_size; j++)
     if (CURR_TABLE.ident == ident) return CURR_TABLE;

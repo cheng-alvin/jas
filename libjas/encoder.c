@@ -246,6 +246,6 @@ DEFINE_ENCODER(zo) {
 }
 
 encoder_t enc_lookup(enum enc_ident input) {
-  encoder_t lookup[] = {&mr, &rm, &oi, &mi, &i, &m, &zo, &d, &o};
+  encoder_t lookup[] = {NULL, &mr, &rm, &oi, &mi, &i, &m, &zo, &d, &o};
   return lookup[(size_t)input];
 }
