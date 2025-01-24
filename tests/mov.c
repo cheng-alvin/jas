@@ -6,7 +6,7 @@
 #define oi_bytes {0x48, 0xB8, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 #define mi_bytes \
-  {0x48, 0xC7, 0x80, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF}
+  {0x67, 0xC7, 0x80, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF};
 
 // TODO: Encapsulate this into a global macro for all tests
 #define MOV_TEST(name, op1, op2, expected_bytes)                                        \
@@ -29,7 +29,7 @@
 MOV_TEST(mr, m64, r64, mr_bytes);
 MOV_TEST(rm, r64, m64, rm_bytes);
 MOV_TEST(oi, r64, imm64, oi_bytes);
-MOV_TEST(mi, m64, imm64, oi_bytes);
+MOV_TEST(mi, m32, imm32, mi_bytes);
 
 int main(void) {
   TestSuite(mov);
