@@ -136,7 +136,7 @@ typedef struct {
   }
 
 #define INSTR_NULL \
-  (instruction_t) { .instr = NULL, .operands = NULL }
+  (instruction_t) { .instr = INSTR_NOTHING, .operands = NULL }
 
 // Macro for checking if the instruction is a label and shall be handled
 #define IS_LABEL(x)                                     \
