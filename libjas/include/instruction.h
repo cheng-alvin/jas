@@ -50,6 +50,7 @@ typedef struct instr_encode_table instr_encode_table_t;
 #define INSTR_DIRECTIVE(i) ((uint8_t)i > (uint8_t)INSTR_DUMMY)
 
 enum instructions {
+  INSTR_NOTHING, /* Note naming conflict below `INSTR_NULL` */
   INSTR_MOV,
   INSTR_LEA,
   INSTR_ADD,
@@ -135,7 +136,7 @@ typedef struct {
   }
 
 #define INSTR_NULL \
-  (instruction_t) { .instr = NULL, .operands = NULL }
+  (instruction_t) { .instr = INSTR_NOTHING, .operands = NULL }
 
 // Macro for checking if the instruction is a label and shall be handled
 #define IS_LABEL(x)                                     \

@@ -36,7 +36,7 @@
 
 instr_encode_table_t *instr_table[] =
     {
-        mov, lea, add, sub, mul, _div, and, or, xor, _not, inc,
+        NULL, mov, lea, add, sub, mul, _div, and, or, xor, _not, inc,
         dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
         in, out, clc, stc, cli, sti, nop, hlt, _int, syscall, 
         movzx, movsx, xchg, bswap,
@@ -46,7 +46,7 @@ instr_encode_table_t *instr_table[] =
 #define CURR_TABLE instr_table[instr.instr][j]
 
 instr_encode_table_t instr_get_tab(instruction_t instr) {
-  if (instr.instr == NULL && instr.operands == NULL) return INSTR_TAB_NULL;
+  if (instr.instr == INSTR_NOTHING && instr.operands == NULL) return INSTR_TAB_NULL;
   if (INSTR_DIRECTIVE(instr.instr)) return INSTR_TAB_NULL; // aka empty
   const enum operands operand_list[4] = {
       instr.operands[0].type, instr.operands[1].type,
