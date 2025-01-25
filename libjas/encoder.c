@@ -70,7 +70,7 @@ static void write_offset(uint8_t mode, buffer_t *buf, operand_t *op_arr, uint8_t
 
 DEFINE_ENCODER(i) {
   //  Error checking - A register only & only 8, 16, 32 bit-sized operands
-  if (reg_lookup_val(op_arr[0].data) != 0 && !reg_needs_rex((enum registers)op_arr[0].data)) {
+  if (reg_lookup_val(op_arr[0].data) != 0 && !reg_needs_rex(*(enum registers *)op_arr[0].data)) {
     err("Instruction identity must use an \"A\" register!");
     return;
   }
