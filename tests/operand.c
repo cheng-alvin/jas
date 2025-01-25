@@ -44,7 +44,7 @@ Test(operand, construct_operand) {
   assert_eq(*(unsigned char *)byte.data, 0xFF);
 }
 
-#define sample_tab instr_table[0] /* Corresponds to the `mov` table */
+#define sample_tab instr_table[1] /* Corresponds to the `mov` table */
 Test(operand, ident_identify) {
   const enum operands input[] = {OP_R8, OP_R16, OP_NULL, OP_NULL};
   const enum operands input2[] = {OP_R8, OP_M16, OP_NULL, OP_NULL};
