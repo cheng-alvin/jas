@@ -87,13 +87,22 @@ DEFINE_TAB(pop) = {
 DEFINE_TAB(in) = {{}};
 DEFINE_TAB(out) = {{}};
 
-DEFINE_TAB(clc) = {{ENC_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
-DEFINE_TAB(stc) = {{ENC_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
-DEFINE_TAB(cli) = {{ENC_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
-DEFINE_TAB(sti) = {{ENC_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
+#define ZO_GENERIC(opcode) \
+  {ENC_ZO, NULL, {opcode}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL
 
-DEFINE_TAB(nop) = {{ENC_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
-DEFINE_TAB(hlt) = {{ENC_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, &no_operands, true}, INSTR_TAB_NULL};
+// clang-format off
+
+DEFINE_TAB(clc) = { ZO_GENERIC(0xF8) };
+DEFINE_TAB(stc) = { ZO_GENERIC(0xF9) };
+DEFINE_TAB(cli) = { ZO_GENERIC(0xFA) };
+DEFINE_TAB(sti) = { ZO_GENERIC(0xFB) };
+
+DEFINE_TAB(nop) = { ZO_GENERIC(0x90) };
+DEFINE_TAB(hlt) = { ZO_GENERIC(0xF4) };
+
+// clang-format on
+
+#undef ZO_GENERIC
 
 DEFINE_TAB(_int) = {{ENC_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_int, false}, INSTR_TAB_NULL};
 
