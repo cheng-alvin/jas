@@ -39,7 +39,10 @@ instr_encode_table_t *instr_table[] =
         NULL, mov, lea, add, sub, mul, _div, and, or, xor, _not, inc,
         dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
         in, out, clc, stc, cli, sti, nop, hlt, _int, syscall, 
-        movzx, movsx, xchg, bswap,
+        movzx, movsx, xchg, bswap, cmova, cmovae, cmovb, cmovbe, cmove, 
+        cmovg, cmovge, cmovl, cmovle, cmovna, cmovnae, cmovnb, cmovnbe,
+        cmovne, cmovng, cmovnge, cmovnl, cmovnle, cmovno, cmovnp, cmovns,
+        cmovnz, cmovo, cmovp, cmovpe, cmovpo, cmovs, cmovz,       
     };
 
 

@@ -113,3 +113,46 @@ DEFINE_TAB(xchg) = {
 };
 
 DEFINE_TAB(bswap) = {{ENC_O, NULL, {0x0F, 0xC8}, MODE_SUPPORT_ALL, {NULL}, 2, &same_operand_sizes, false}, INSTR_TAB_NULL};
+
+#define CMOV_CC(opcode) \
+  {ENC_RM, NULL, {0x0F, opcode}, MODE_SUPPORT_ALL, {NULL}, 2, &pre_cmov, false}, INSTR_TAB_NULL
+
+// For reference, see above
+// TODO Confirm correctness
+
+// clang-format off
+
+DEFINE_TAB(cmova)    = { CMOV_CC(0x47) };
+DEFINE_TAB(cmovae)   = { CMOV_CC(0x43) };
+DEFINE_TAB(cmovb)    = { CMOV_CC(0x42) };
+DEFINE_TAB(cmovbe)   = { CMOV_CC(0x46) };
+DEFINE_TAB(cmove)    = { CMOV_CC(0x44) };
+DEFINE_TAB(cmovg)    = { CMOV_CC(0x4F) };
+DEFINE_TAB(cmovge)   = { CMOV_CC(0x4D) };
+DEFINE_TAB(cmovl)    = { CMOV_CC(0x4C) };
+DEFINE_TAB(cmovle)   = { CMOV_CC(0x4E) };
+
+DEFINE_TAB(cmovna)   = { CMOV_CC(0x46) };
+DEFINE_TAB(cmovnae)  = { CMOV_CC(0x42) };
+DEFINE_TAB(cmovnb)   = { CMOV_CC(0x43) };
+DEFINE_TAB(cmovnbe)  = { CMOV_CC(0x47) };
+DEFINE_TAB(cmovne)   = { CMOV_CC(0x45) };
+DEFINE_TAB(cmovng)   = { CMOV_CC(0x4E) };
+DEFINE_TAB(cmovnge)  = { CMOV_CC(0x4C) };
+DEFINE_TAB(cmovnl)   = { CMOV_CC(0x4D) };
+DEFINE_TAB(cmovnle)  = { CMOV_CC(0x4F) };
+
+DEFINE_TAB(cmovno)   = { CMOV_CC(0x41) };
+DEFINE_TAB(cmovnp)   = { CMOV_CC(0x4B) };
+DEFINE_TAB(cmovns)   = { CMOV_CC(0x49) };
+DEFINE_TAB(cmovnz)   = { CMOV_CC(0x45) };
+DEFINE_TAB(cmovo)    = { CMOV_CC(0x40) };
+DEFINE_TAB(cmovp)    = { CMOV_CC(0x4A) };
+DEFINE_TAB(cmovpe)   = { CMOV_CC(0x4A) };
+DEFINE_TAB(cmovpo)   = { CMOV_CC(0x4B) };
+DEFINE_TAB(cmovs)    = { CMOV_CC(0x48) };
+DEFINE_TAB(cmovz)    = { CMOV_CC(0x44) };
+
+// clang-format on
+
+#undef CMOV_CC
