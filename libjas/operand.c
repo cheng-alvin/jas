@@ -34,7 +34,7 @@ uint8_t op_modrm_mode(operand_t input) {
   register const enum registers deref_reg = (*(enum registers *)input.data);
   if (reg_lookup_val(input.data) == 5 && !reg_needs_rex(deref_reg)) {
     if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP) {
-      if (op_r(deref_reg))
+      if (op_r(input.type))
         err("RIP, EIP and IP cannot be used as direct operands.");
       return OP_MODRM_INDIRECT;
     } else if (input.offset == 0)
