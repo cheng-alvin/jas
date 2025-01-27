@@ -23,21 +23,21 @@ DEFINE_TAB(mov) = {
       {ENC_MI, mi_ext, {mi}, MODE_SUPPORT_ALL, {mi_byte}, 1, &pre_imm, true},          \
       INSTR_TAB_NULL,
 
-// clang-format on
 
 DEFINE_TAB(lea) = {{ENC_RM, NULL, {0x8D}, MODE_SUPPORT_ALL, {0x8D}, 1, &pre_lea, true}, INSTR_TAB_NULL};
 
-DEFINE_TAB(add) = {GENERIC(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, ZERO_EXT, 0x81, 0x80)};
-DEFINE_TAB(sub) = {GENERIC(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x81, 0x80)};
+DEFINE_TAB(add) = { GENERIC(0x03, 0x02, 0x01, 0x00, 0x03, 0x02, ZERO_EXT, 0x81, 0x80) };
+DEFINE_TAB(sub) = { GENERIC(0x2B, 0x2A, 0x28, 0x29, 0x2C, 0x2D, 5, 0x81, 0x80) };
 DEFINE_TAB(mul) = {{ENC_M, 4, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes, true}, INSTR_TAB_NULL};
 DEFINE_TAB(_div) = {{ENC_M, 6, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes, true}, INSTR_TAB_NULL};
 
 // Note all or, and and xor instructions have a imm8 which is not supported
 
-DEFINE_TAB(and) = {GENERIC(0x23, 0x22, 0x21, 0x20, 0x25, 0x24, 4, 0x81, 0x80)};
-DEFINE_TAB(or) = {GENERIC(0x0B, 0x0A, 0x09, 0x08, 0x0D, 0x0C, 1, 0x81, 0x80)};
-DEFINE_TAB(xor) = {GENERIC(0x33, 0x32, 0x31, 0x30, 0x35, 0x34, 6, 0x81, 0x80)};
+DEFINE_TAB(and) = { GENERIC(0x23, 0x22, 0x21, 0x20, 0x25, 0x24, 4, 0x81, 0x80) };
+DEFINE_TAB(or)  = { GENERIC(0x0B, 0x0A, 0x09, 0x08, 0x0D, 0x0C, 1, 0x81, 0x80) };
+DEFINE_TAB(xor) = { GENERIC(0x33, 0x32, 0x31, 0x30, 0x35, 0x34, 6, 0x81, 0x80) };
 
+// clang-format on
 // ---
 
 DEFINE_TAB(_not) = {{ENC_M, 2, {0xF7}, MODE_SUPPORT_ALL, {0xF6}, 1, &same_operand_sizes, true}, INSTR_TAB_NULL};
@@ -87,21 +87,22 @@ DEFINE_TAB(pop) = {
 DEFINE_TAB(in) = {{}};
 DEFINE_TAB(out) = {{}};
 
-DEFINE_TAB(clc) = {{ENC_ZO, NULL, {0xF8}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
-DEFINE_TAB(stc) = {{ENC_ZO, NULL, {0xF9}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
-DEFINE_TAB(cli) = {{ENC_ZO, NULL, {0xFA}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
-DEFINE_TAB(sti) = {{ENC_ZO, NULL, {0xFB}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
+#define ZO_GENERIC(opcode) \
+  {ENC_ZO, NULL, {opcode}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL
 
-DEFINE_TAB(nop) = {{ENC_ZO, NULL, {0x90}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL};
-DEFINE_TAB(hlt) = {{ENC_ZO, NULL, {0xF4}, MODE_SUPPORT_ALL, {0xF4}, 1, &no_operands, true}, INSTR_TAB_NULL};
+// clang-format off
+
+DEFINE_TAB(clc) = { ZO_GENERIC(0xF8) }; DEFINE_TAB(stc) = { ZO_GENERIC(0xF9) };
+DEFINE_TAB(cli) = { ZO_GENERIC(0xFA) }; DEFINE_TAB(sti) = { ZO_GENERIC(0xFB) };
+DEFINE_TAB(nop) = { ZO_GENERIC(0x90) }; DEFINE_TAB(hlt) = { ZO_GENERIC(0xF4) };
+
+// clang-format on
+
+#undef ZO_GENERIC
 
 DEFINE_TAB(_int) = {{ENC_I, NULL, {0xCD}, MODE_SUPPORT_ALL, {NULL}, 1, &pre_int, false}, INSTR_TAB_NULL};
 
-DEFINE_TAB(syscall) = {
-    {ENC_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {NULL}, 2, &same_operand_sizes, false},
-    INSTR_TAB_NULL,
-};
-
+DEFINE_TAB(syscall) = {{ENC_ZO, NULL, {0x0F, 0x05}, MODE_SUPPORT_64BIT, {NULL}, 2, &same_operand_sizes, false}, INSTR_TAB_NULL};
 DEFINE_TAB(movzx) = {{ENC_RM, NULL, {0x0F, 0xB7}, MODE_SUPPORT_ALL, {0x0F, 0xB6}, 2, &pre_small_operands, true}, INSTR_TAB_NULL};
 DEFINE_TAB(movsx) = {{ENC_RM, NULL, {0x0F, 0xBF}, MODE_SUPPORT_ALL, {0x0F, 0xBE}, 2, &pre_small_operands, true}, INSTR_TAB_NULL};
 
@@ -122,37 +123,22 @@ DEFINE_TAB(bswap) = {{ENC_O, NULL, {0x0F, 0xC8}, MODE_SUPPORT_ALL, {NULL}, 2, &s
 
 // clang-format off
 
-DEFINE_TAB(cmova)    = { CMOV_CC(0x47) };
-DEFINE_TAB(cmovae)   = { CMOV_CC(0x43) };
-DEFINE_TAB(cmovb)    = { CMOV_CC(0x42) };
-DEFINE_TAB(cmovbe)   = { CMOV_CC(0x46) };
-DEFINE_TAB(cmove)    = { CMOV_CC(0x44) };
-DEFINE_TAB(cmovg)    = { CMOV_CC(0x4F) };
-DEFINE_TAB(cmovge)   = { CMOV_CC(0x4D) };
-DEFINE_TAB(cmovl)    = { CMOV_CC(0x4C) };
-DEFINE_TAB(cmovle)   = { CMOV_CC(0x4E) };
-
-DEFINE_TAB(cmovna)   = { CMOV_CC(0x46) };
-DEFINE_TAB(cmovnae)  = { CMOV_CC(0x42) };
-DEFINE_TAB(cmovnb)   = { CMOV_CC(0x43) };
-DEFINE_TAB(cmovnbe)  = { CMOV_CC(0x47) };
-DEFINE_TAB(cmovne)   = { CMOV_CC(0x45) };
-DEFINE_TAB(cmovng)   = { CMOV_CC(0x4E) };
-DEFINE_TAB(cmovnge)  = { CMOV_CC(0x4C) };
-DEFINE_TAB(cmovnl)   = { CMOV_CC(0x4D) };
-DEFINE_TAB(cmovnle)  = { CMOV_CC(0x4F) };
-
-DEFINE_TAB(cmovno)   = { CMOV_CC(0x41) };
-DEFINE_TAB(cmovnp)   = { CMOV_CC(0x4B) };
-DEFINE_TAB(cmovns)   = { CMOV_CC(0x49) };
-DEFINE_TAB(cmovnz)   = { CMOV_CC(0x45) };
-DEFINE_TAB(cmovo)    = { CMOV_CC(0x40) };
-DEFINE_TAB(cmovp)    = { CMOV_CC(0x4A) };
-DEFINE_TAB(cmovpe)   = { CMOV_CC(0x4A) };
-DEFINE_TAB(cmovpo)   = { CMOV_CC(0x4B) };
-DEFINE_TAB(cmovs)    = { CMOV_CC(0x48) };
-DEFINE_TAB(cmovz)    = { CMOV_CC(0x44) };
+DEFINE_TAB(cmova)    = { CMOV_CC(0x47) };  DEFINE_TAB(cmovae)   = { CMOV_CC(0x43) };
+DEFINE_TAB(cmovb)    = { CMOV_CC(0x42) };  DEFINE_TAB(cmovbe)   = { CMOV_CC(0x46) };
+DEFINE_TAB(cmove)    = { CMOV_CC(0x44) };  DEFINE_TAB(cmovg)    = { CMOV_CC(0x4F) };
+DEFINE_TAB(cmovge)   = { CMOV_CC(0x4D) };  DEFINE_TAB(cmovl)    = { CMOV_CC(0x4C) };
+DEFINE_TAB(cmovle)   = { CMOV_CC(0x4E) };  DEFINE_TAB(cmovna)   = { CMOV_CC(0x46) };
+DEFINE_TAB(cmovnae)  = { CMOV_CC(0x42) };  DEFINE_TAB(cmovnb)   = { CMOV_CC(0x43) };
+DEFINE_TAB(cmovnbe)  = { CMOV_CC(0x47) };  DEFINE_TAB(cmovne)   = { CMOV_CC(0x45) };
+DEFINE_TAB(cmovng)   = { CMOV_CC(0x4E) };  DEFINE_TAB(cmovnge)  = { CMOV_CC(0x4C) };
+DEFINE_TAB(cmovnl)   = { CMOV_CC(0x4D) };  DEFINE_TAB(cmovnle)  = { CMOV_CC(0x4F) };
+DEFINE_TAB(cmovno)   = { CMOV_CC(0x41) };  DEFINE_TAB(cmovnp)   = { CMOV_CC(0x4B) };
+DEFINE_TAB(cmovns)   = { CMOV_CC(0x49) };  DEFINE_TAB(cmovnz)   = { CMOV_CC(0x45) };
+DEFINE_TAB(cmovo)    = { CMOV_CC(0x40) };  DEFINE_TAB(cmovp)    = { CMOV_CC(0x4A) };
+DEFINE_TAB(cmovpe)   = { CMOV_CC(0x4A) };  DEFINE_TAB(cmovpo)   = { CMOV_CC(0x4B) };
+DEFINE_TAB(cmovs)    = { CMOV_CC(0x48) };  DEFINE_TAB(cmovz)    = { CMOV_CC(0x44) };
 
 // clang-format on
 
+#undef ZERO_EXT
 #undef CMOV_CC

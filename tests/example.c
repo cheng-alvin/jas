@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 int main(void) {
-  instruction_t *instr = instr_gen(INSTR_MOV, 2, r32(REG_EAX), imm32(0x12345678));
+  instruction_t *instr = instr_gen(INSTR_AND, 2, r32(REG_EAX), imm8(0x12));
   buffer_t buf = assemble_instr(MODE_LONG, instr);
 
   for (int i = 0; i < buf.len; i++)
