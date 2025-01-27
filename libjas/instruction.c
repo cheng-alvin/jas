@@ -66,11 +66,11 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
 }
 #undef CURR_TABLE
 
-#define alloc_operand_data(type)          \
-  do {                                    \
-    type *type##_ = malloc(sizeof(type)); \
-    *type##_ = va_arg(args, type);        \
-    data = (void *)type##_;               \
+#define alloc_operand_data(type)             \
+  do {                                       \
+    type *type##_ = malloc(sizeof(type));    \
+    *type##_ = (type)va_arg(args, uint64_t); \
+    data = (void *)type##_;                  \
   } while (0);
 
 /* Stupid almost-stub implementation */
