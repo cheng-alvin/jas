@@ -169,5 +169,6 @@ void instr_free(instruction_t *instr) {
     if (instr->operands[i].type) free(instr->operands[i].data);
   }
 
+  free(instr->operands);
   free(instr);
 }

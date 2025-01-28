@@ -51,6 +51,8 @@ enum enc_ident {
   ENC_ZO,
   ENC_D,
   ENC_O,
+  ENC_IGN, /* Although **NOT** original Intel, this identity will
+              void all operands, directs to the ZO identity. */
 };
 
 /**

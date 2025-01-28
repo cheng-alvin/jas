@@ -95,6 +95,11 @@ extern "C" enum enc_ident op_ident_identify(enum operands *input, instr_encode_t
   if (lookup_table.find(hash_key) != lookup_table.end()) {
     return lookup_table.find(hash_key)->second;
   } else {
+    uint8_t k = 0;
+    while (instr_ref[k].opcode_size) {
+      if (instr_ref[k].ident == ENC_IGN) return ENC_IGN;
+      k++;
+    } /* Fall though: */
     err("No corresponding instruction opcode found.");
     return ENC_NULL;
   }
