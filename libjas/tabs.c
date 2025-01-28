@@ -84,8 +84,17 @@ DEFINE_TAB(pop) = {
     INSTR_TAB_NULL,
 };
 
-DEFINE_TAB(in) = {{}};
-DEFINE_TAB(out) = {{}};
+DEFINE_TAB(in) = {
+    {ENC_OI, NULL, {0xE5}, MODE_SUPPORT_ALL, {0xE4}, 1, &pre_in_out, true},
+    {ENC_IGN, NULL, {0xED}, MODE_SUPPORT_ALL, {0xEC}, 1, &pre_in_out, true},
+    INSTR_TAB_NULL,
+};
+
+DEFINE_TAB(out) = {
+    {ENC_OI, NULL, {0xE7}, MODE_SUPPORT_ALL, {0xE6}, 1, &pre_in_out, true},
+    {ENC_IGN, NULL, {0xEF}, MODE_SUPPORT_ALL, {0xEE}, 1, &pre_in_out, true},
+    INSTR_TAB_NULL,
+};
 
 #define ZO_GENERIC(opcode) \
   {ENC_ZO, NULL, {opcode}, MODE_SUPPORT_ALL, {NULL}, 1, &no_operands, false}, INSTR_TAB_NULL

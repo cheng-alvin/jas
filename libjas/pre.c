@@ -1,5 +1,6 @@
 #include "error.h"
 #include "operand.h"
+#include "register.h"
 
 #define DEFINE_PRE_ENCODER(name) \
   static void name(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
@@ -66,4 +67,13 @@ DEFINE_PRE_ENCODER(pre_cmov) {
       break;
     }
   }
+}
+
+DEFINE_PRE_ENCODER(pre_in_out) {
+  const enum registers reg = *(enum registers *)op_arr[0].data;
+  if (reg != REG_AL && reg != REG_AX && reg != REG_EAX)
+    err("Invalid operand for IN/OUT instruction.");
+
+  if (op_sizeof(op_arr[1].type) > 16 && *(enum registers *)op_arr[1].data != REG_DX)
+    err("Byte or `dx` operands needs to be used with the IN/OUT instruction.");
 }
