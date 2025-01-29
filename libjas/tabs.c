@@ -90,6 +90,7 @@ DEFINE_TAB(in) = {
     INSTR_TAB_NULL,
 };
 
+// Note the jumble up of the operands in the table, OUT imm and AL is CORRECT instead.
 DEFINE_TAB(out) = {
     {ENC_OI, NULL, {0xE7}, MODE_SUPPORT_ALL, {0xE6}, 1, &pre_in_out, true},
     {ENC_IGN, NULL, {0xEF}, MODE_SUPPORT_ALL, {0xEE}, 1, &pre_in_out, true},
