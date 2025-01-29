@@ -50,7 +50,6 @@ static op_ident_hash_t op_hash(enum operands input) {
   if (op_r(input)) return OP_HASH_R;
   if (op_imm(input)) return OP_HASH_IMM;
   if (op_m(input)) return OP_HASH_M;
-  if (op_acc(input)) return OP_HASH_ACC;
 
   return OP_HASH_NONE;
 }
@@ -66,7 +65,7 @@ static multimap<enum enc_ident, uint32_t> master = {
     {ENC_MI, __combine__(OP_HASH_M, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE)},
 
     {ENC_ZO, __combine__(OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
-    {ENC_O, __combine__(OP_HASH_ACC, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE)},
+    {ENC_O, __combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE)},
     {ENC_I, __combine__(OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
     {ENC_D, __combine__(OP_HASH_REL, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
 
