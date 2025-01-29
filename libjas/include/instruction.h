@@ -248,19 +248,18 @@ instruction_t *instr_write_bytes(size_t data_sz, ...);
 #define m64(x, off) OP_M64, x, off
 
 /**
- * Not to be confused with the `r8` and other operand macros, this
- * macro is used to define the accumulator register operand in the
- * instruction. Like rax, eax etc. This wouldn't work when used with
- * instructions that dont support the accumulator register.
+ * This macro is used to define the accumulator register operand in the
+ * instruction. Like rax, eax etc. This operand will work in-place of of
+ * the r16(REG_AX) for example.
  *
  * Check the Intel manual, whatever the intel manual says is as a valid
  * accumulator is the default implemented version.
  */
 
-#define acc8 OP_ACC8, REG_AL, 0
-#define acc16 OP_ACC16, REG_AX, 0
-#define acc32 OP_ACC32, REG_EAX, 0
-#define acc64 OP_ACC64, REG_RAX, 0
+#define acc8 OP_R8, REG_AL, 0
+#define acc16 OP_R16, REG_AX, 0
+#define acc32 OP_R32, REG_EAX, 0
+#define acc64 OP_R64, REG_RAX, 0
 
 /**
  * A function for easily defining a instruction in the `instruction_t`

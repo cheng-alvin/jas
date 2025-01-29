@@ -79,10 +79,6 @@ enum operands {
   OP_M16,
   OP_M32,
   OP_M64,
-  OP_ACC8,
-  OP_ACC16,
-  OP_ACC32,
-  OP_ACC64,
 };
 
 /**
@@ -103,14 +99,13 @@ enum operands {
 #define op_r(x) ((x) <= OP_R64 && (x) >= OP_R8)
 #define op_imm(x) ((x) <= OP_IMM64 && (x) >= OP_IMM8)
 #define op_m(x) ((x) <= OP_M64 && (x) >= OP_M8)
-#define op_acc(x) ((x) <= OP_ACC64 && (x) >= OP_ACC8)
 
 // --
 
-#define op_byte(x) (x == OP_REL8 || x == OP_R8 || x == OP_IMM8 || x == OP_M8 || x == OP_ACC8)
-#define op_word(x) (x == OP_REL16 || x == OP_R16 || x == OP_IMM16 || x == OP_M16 || x == OP_ACC16)
-#define op_dword(x) (x == OP_REL32 || x == OP_R32 || x == OP_IMM32 || x == OP_M32 || x == OP_ACC32)
-#define op_qword(x) (x == OP_R64 || x == OP_IMM64 || x == OP_M64 || x == OP_ACC64)
+#define op_byte(x) (x == OP_REL8 || x == OP_R8 || x == OP_IMM8 || x == OP_M8)
+#define op_word(x) (x == OP_REL16 || x == OP_R16 || x == OP_IMM16 || x == OP_M16)
+#define op_dword(x) (x == OP_REL32 || x == OP_R32 || x == OP_IMM32 || x == OP_M32)
+#define op_qword(x) (x == OP_R64 || x == OP_IMM64 || x == OP_M64)
 
 // --
 

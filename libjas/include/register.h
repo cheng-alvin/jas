@@ -225,4 +225,7 @@ uint8_t reg_lookup_val(enum registers *input);
  */
 bool reg_needs_rex(enum registers input);
 
+// Orphan macro for checking if the operand data is used as accumulator register.
+#define op_acc(x) ((x) == REG_AL || (x) == REG_AX || (x) == REG_EAX || (x) == REG_RAX)
+
 #endif
