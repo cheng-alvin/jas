@@ -1,7 +1,0 @@
-Package: libjas 
-Version: 0.1.0
-Section: libs
-Priority: optional
-Architecture: amd64
-Maintainer: Alvin Cheng <eventide1029@gmail.com>
-Description: A minimal x64 assembler and assembler library capable of generating ELF files.
