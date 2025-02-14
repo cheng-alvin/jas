@@ -31,7 +31,7 @@
 #include "mode.h"
 #include <stddef.h>
 
-enum codegen_modes {
+enum codegen_output {
   CODEGEN_RAW,
   CODEGEN_ELF,
 };
@@ -51,7 +51,7 @@ enum codegen_modes {
  */
 buffer_t codegen(
     enum modes mode, instruction_t **instr_input, size_t arr_count,
-    enum codegen_modes exec_mode);
+    enum codegen_output exec_mode);
 
 /**
  * Wrapper function for the `codegen` function that gives boiler-

@@ -27,8 +27,6 @@
 #define INSTRUCTION_H
 
 #include "encoder.h"
-#include "mode.h"
-#include "operand.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -133,7 +131,6 @@ struct instr_encode_table {
   enum enc_ident ident;         /* Operand encoding identity */
   uint8_t opcode_ext;           /* Opcode extension */
   uint8_t opcode[3];            /* Opcode of the instruction */
-  mode_support_t support;       /* Support status of the instruction (Optional, Would be set to "all" if not used) */
   uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
   uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
   pre_encoder_t pre;            /* Pre-encoder processor function (Optional, null if not applicable) */
@@ -156,7 +153,6 @@ typedef struct {
     .ident = NULL,               \
     .opcode_ext = NULL,          \
     .opcode = {NULL},            \
-    .support = MODE_SUPPORT_ALL, \
     .byte_instr_opcode = {NULL}, \
     .opcode_size = NULL,         \
     .pre = NULL,                 \
@@ -246,20 +242,6 @@ instruction_t *instr_write_bytes(size_t data_sz, ...);
 #define m16(x, off) OP_M16, x, off
 #define m32(x, off) OP_M32, x, off
 #define m64(x, off) OP_M64, x, off
-
-/**
- * This macro is used to define the accumulator register operand in the
- * instruction. Like rax, eax etc. This operand will work in-place of of
- * the r16(REG_AX) for example.
- *
- * Check the Intel manual, whatever the intel manual says is as a valid
- * accumulator is the default implemented version.
- */
-
-#define acc8 OP_R8, REG_AL, 0
-#define acc16 OP_R16, REG_AX, 0
-#define acc32 OP_R32, REG_EAX, 0
-#define acc64 OP_R64, REG_RAX, 0
 
 /**
  * A function for easily defining a instruction in the `instruction_t`

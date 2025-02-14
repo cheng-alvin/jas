@@ -24,7 +24,9 @@
  */
 
 #include "label.h"
+#include "codegen.h"
 #include "error.h"
+#include "operand.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
