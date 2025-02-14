@@ -24,9 +24,11 @@
  */
 
 #include "encoder.h"
+#include "codegen.h"
 #include "error.h"
 #include "instruction.h"
 #include "label.h"
+#include "operand.h"
 #include "register.h"
 #include <stdlib.h>
 
@@ -68,7 +70,7 @@ static void write_offset(uint8_t mode, buffer_t *buf, operand_t *op_arr, uint8_t
   }
 }
 
-DEFINE_ENCODER(i) {
+DEFINE_ENCODER(i, enum modes mode) {
   //  Error checking - A register only & only 8, 16, 32 bit-sized operands
   if (reg_lookup_val(op_arr[0].data) != 0 && !reg_needs_rex(*(enum registers *)op_arr[0].data)) {
     err("Instruction identity must use an \"A\" register!");
@@ -93,7 +95,6 @@ DEFINE_ENCODER(m) {
   const uint8_t rm = reg_lookup_val(op_arr[0].data);
 
   op_write_prefix(buf, op_arr, mode);
-  check_mode(mode, instr_ref->support);
   buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
 
   const uint8_t mod = op_modrm_mode(op_arr[0]);
@@ -141,7 +142,6 @@ DEFINE_ENCODER(d) {
     return;
   }
 
-  check_mode(mode, instr_ref->support);
   buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
 
   // Calculate the relative offset of the label
@@ -178,8 +178,6 @@ static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t 
   const uint8_t rm = reg_lookup_val(op_arr[rm_idx].data);
 
   op_write_prefix(buf, op_arr, mode);
-
-  check_mode(mode, instr_ref->support);
   buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
 
   const uint8_t mod = op_modrm_mode(op_arr[rm_idx]);
@@ -229,8 +227,6 @@ DEFINE_ENCODER(o) {
   const uint8_t reg = reg_lookup_val(op_arr[0].data);
   op_write_prefix(buf, op_arr, mode);
 
-  check_mode(mode, instr_ref->support);
-
   uint8_t *data = &(uint8_t){*(op_write_opcode(op_arr, instr_ref)) + (uint8_t)reg};
   buf_write(buf, data, instr_ref->opcode_size);
 }
@@ -241,7 +237,6 @@ DEFINE_ENCODER(oi) {
 }
 
 DEFINE_ENCODER(zo) {
-  check_mode(mode, instr_ref->support);
   buf_write(buf, instr_ref->opcode, instr_ref->opcode_size);
 }
 

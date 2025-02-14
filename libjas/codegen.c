@@ -28,6 +28,7 @@
 #include "error.h"
 #include "exe.h"
 #include "label.h"
+#include "operand.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -53,7 +54,7 @@ static instr_encode_table_t *get_instr_tabs(instruction_t *instr_arr, size_t arr
 }
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, instr_encode_table_t *tab, bool is_pre);
-buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count, enum codegen_modes exec_mode) {
+buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count, enum codegen_output exec_mode) {
   /* Implementing a "wrapper" due to old baggage ~~(And partially out of lazy-ness)~~ */
   const size_t arr_size = arr_count * sizeof(instruction_t);
   instruction_t *instr_arr = malloc(arr_size);
@@ -194,8 +195,8 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
     const instr_encode_table_t ref = tabs[i];
     instruction_t current = instr_arr[i];
-    if (ref.pre != NULL) ref.pre(current.operands, &buf, &ref, (enum modes)mode);
-    enc_lookup(ref.ident)(current.operands, &buf, &ref, (enum modes)mode);
+    if (ref.pre != NULL) ref.pre(current.operands, &buf, &ref, mode);
+    enc_lookup(ref.ident)(current.operands, &buf, &ref, mode);
   }
 
   return buf;

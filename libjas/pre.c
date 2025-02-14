@@ -1,5 +1,6 @@
 #include "error.h"
 #include "instruction.h"
+#include "mode.h"
 #include "operand.h"
 #include "register.h"
 

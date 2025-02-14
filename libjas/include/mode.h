@@ -23,82 +23,17 @@
  * @see `LICENSE`
  */
 
-#ifndef MODE_H
-#define MODE_H
+#pragma once
 
-#include <stdbool.h>
-#include <stdint.h>
-
+/**
+ * Enum representing all the different modes of the assembler, and also
+ * the different modes of the CPU. The modes are used to determine the
+ * type of machine code to generate, and also the type of instructions
+ * to generate. See the Intel manual for more information. (Happy
+ * new year as well lolll)
+ */
 enum modes {
   MODE_REAL,
   MODE_PROTECTED,
-  MODE_LONG,
+  MODE_LONG
 };
-
-/**
- * Type wrapper for an unsigned char that represents the
- * support status of an instruction in different intel x86
- * operation modes, like 64, 32 and 16 bit modes. The individual
- * bits of the byte represent the support status of the instruction
- * in the different operation modes. The bits are ordered from
- * least significant to most significant as follows:
- *
- * 0: 16 bit mode encoding support status
- * 1: 32 bit mode encoding support status
- * 2: 64 bit mode encoding support status
- *
- * 3-7: Reserved for future use
- *
- * A bit set to 1 indicates that the instruction is supported
- * in the corresponding operation mode, while a bit set to 0
- * indicates that the instruction is not supported in the
- * corresponding operation mode.
- *
- * 🤠
- *
- * There are some macros defined below to help you as well!
- */
-typedef uint8_t mode_support_t;
-
-/**
- * Macros for defining the different support status of an
- * instruction in the different intel x86 operation modes.
- *
- * You can just simply `|` them together to combine it!
- */
-
-#define MODE_SUPPORT_16BIT 0b00000001
-#define MODE_SUPPORT_32BIT 0b00000010
-#define MODE_SUPPORT_64BIT 0b00000100
-#define MODE_SUPPORT_ALL 0b00000111
-
-/**
- * Function for checking if an instruction is allowed in a given mode
- * by checking if a bit is set in the support field.
- *
- * @param mode The mode to check.
- * @param support The support field of the instruction.
- * @return True if the mode is matched, otherwise false.
- *
- * @see mode_support_t
- */
-bool mode_valid(const enum modes mode, const mode_support_t support);
-
-/**
- * Wrapper macro in support of the `mode_valid` function.
- * As suggested in the `mode_valid()`, the function does not
- * check for the validity if the fallback flag is set in favour
- * for flexibility.
- *
- * @note This macro is tailored for internal usage ONLY
- * otherwise some variables and parts may be undefined.
- *
- * @see `instruction.h`
- */
-#define check_mode(x, y)            \
-  if (!mode_valid(x, y)) {          \
-    err("Invalid operating mode."); \
-    return;                         \
-  }
-
-#endif

@@ -26,6 +26,7 @@
 #include "operand.h"
 #include "error.h"
 #include "instruction.h"
+#include "mode.h"
 #include "register.h"
 #include "rex.h"
 #include <stdbool.h>

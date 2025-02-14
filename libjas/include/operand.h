@@ -27,6 +27,7 @@
 #define OPERAND_H
 
 #include "buffer.h"
+#include "codegen.h"
 #include "encoder.h"
 #include "mode.h"
 #include <stdint.h>

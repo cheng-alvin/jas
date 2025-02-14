@@ -68,7 +68,6 @@ DEFINE_TAB(new_ent) = {{
   .ident                 = OP_MR, 
   .opcode_ext            = NULL, 
   .opcode                = {0xff},
-  .support               = MODE_SUPPORT_ALL,
   .byte_instr_opcode     = {0xfa},
   .opcode_size           = 1,
   .pre                   = NULL,

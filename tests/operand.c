@@ -72,7 +72,7 @@ Test(operand, modrm_mode) {
 
 Test(operand, write_opcode) {
   const operand_t op_arr[] = {r64, imm64, OP_NONE, OP_NONE};
-  const instr_encode_table_t instr_ref = {ENC_MI, 0, {0xC7}, MODE_SUPPORT_ALL, {0xC6}, 1, NULL, true};
+  const instr_encode_table_t instr_ref = {ENC_MI, 0, {0xC7}, {0xC6}, 1, NULL, true};
 
   uint8_t *out = op_write_opcode(op_arr, &instr_ref);
   assert_eq(out, instr_ref.opcode);
