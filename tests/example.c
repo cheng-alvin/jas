@@ -4,9 +4,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void error_handler(const char *msg) {
+  fprintf(stderr, "Error: %s\n", msg);
+  exit(1);
+}
+
 int main(void) {
-  instruction_t *instr = instr_gen(INSTR_AND, 2, r32(REG_EAX), imm8(0x12));
-  buffer_t buf = assemble_instr(MODE_LONG, instr);
+  err_add_callback(error_handler);
+  instruction_t *instr[4];
+
+  instr[2] = label_gen("label", LABEL_LOCAL);
+  instr[1] = instr_gen(INSTR_MOV, 2, r64(REG_RAX), imm64(0));
+  instr[0] = instr_gen(INSTR_JMP, 1, rel32("label", 0));
+
+  buffer_t buf = codegen(MODE_LONG, &instr, 3, CODEGEN_RAW);
 
   for (int i = 0; i < buf.len; i++)
     printf("%02X ", buf.data[i]);
