@@ -34,7 +34,7 @@
 static label_t *label_table = NULL;
 static size_t label_table_size = 0;
 
-void label_create(char *name, bool exported, bool ext, size_t address, size_t instr_index) {
+void label_create(char *name, bool exported, bool ext, size_t address) {
   if (label_lookup(name) != NULL) {
     err("Label conflict detected, a duplicate cannot be created.");
     return;
@@ -43,7 +43,7 @@ void label_create(char *name, bool exported, bool ext, size_t address, size_t in
   // clang-format off
   label_t label =
     {.name = name, .exported = exported, .ext = ext,
-     .address = address, .instr_index = instr_index, };
+     .address = address, };
   // clang-format on
 
   label_table_size++;
@@ -85,12 +85,13 @@ instruction_t *label_gen(char *name, enum label_type type) {
   // clang-format on
 
   name = strdup(name);
+  operand_t *operands = calloc(4, sizeof(operand_t));
+  operands[0] = op_construct_operand(OP_MISC, 0, name, NULL);
+
   instruction_t *instr_ret = malloc(sizeof(instruction_t));
   *instr_ret = (instruction_t){
       .instr = instr,
-      .operands = (operand_t[]){
-          op_construct_operand(OP_MISC, 0, name, NULL),
-      },
+      .operands = operands,
   };
 
   return instr_ret;
