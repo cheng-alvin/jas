@@ -194,6 +194,8 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
     const instr_encode_table_t ref = tabs[i];
     instruction_t current = instr_arr[i];
     if (ref.pre != NULL) ref.pre(current.operands, &buf, &ref, mode);
+    op_write_prefix(&buf, current.operands, mode);
+    buf_write(&buf, op_write_opcode(current.operands, &ref), ref.opcode_size);
     enc_lookup(ref.ident)(current.operands, &buf, &ref, mode);
   }
 

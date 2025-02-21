@@ -82,20 +82,13 @@ DEFINE_ENCODER(i) {
     return;
   }
 
-  buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
-
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
-  uint8_t *imm = (uint8_t *)op_arr[1].data;
-
-  buf_write(buf, imm, imm_size);
+  buf_write(buf, (uint8_t *)op_arr[1].data, imm_size);
 }
 
 DEFINE_ENCODER(m) {
   const uint8_t opcode_extend = instr_ref->opcode_ext << 3;
   const uint8_t rm = reg_lookup_val(op_arr[0].data);
-
-  op_write_prefix(buf, op_arr, mode);
-  buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
 
   const uint8_t mod = op_modrm_mode(op_arr[0]);
   buf_write_byte(buf, mod | opcode_extend | rm);
@@ -142,8 +135,6 @@ DEFINE_ENCODER(d) {
     return;
   }
 
-  buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
-
   // Calculate the relative offset of the label
   ref_label(op_arr, buf, 0);
 }
@@ -176,9 +167,6 @@ static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t 
 
   const uint8_t reg = reg_lookup_val(op_arr[reg_idx].data);
   const uint8_t rm = reg_lookup_val(op_arr[rm_idx].data);
-
-  op_write_prefix(buf, op_arr, mode);
-  buf_write(buf, op_write_opcode(op_arr, instr_ref), instr_ref->opcode_size);
 
   const uint8_t mod = op_modrm_mode(op_arr[rm_idx]);
   buf_write_byte(buf, mod | (reg << 3) | rm);
@@ -214,9 +202,6 @@ static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t 
   if (rm == 5 && op_arr[rm_idx].offset == 0)
     buf_write_byte(buf, 0);
 
-  // if (op_arr[rm_idx].offset != 0) {
-  // buf_write(buf, (uint8_t *)&op_arr[rm_idx].offset, 4);
-  // }
   write_offset(mod, buf, op_arr, rm_idx);
 }
 
@@ -224,11 +209,8 @@ DEFINE_ENCODER(mr) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_MR); }
 DEFINE_ENCODER(rm) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_RM); }
 
 DEFINE_ENCODER(o) {
-  const uint8_t reg = reg_lookup_val(op_arr[0].data);
-  op_write_prefix(buf, op_arr, mode);
-
-  uint8_t *data = &(uint8_t){*(op_write_opcode(op_arr, instr_ref)) + (uint8_t)reg};
-  buf_write(buf, data, instr_ref->opcode_size);
+  const size_t offset = (buf->len - 1) * sizeof(uint8_t);
+  buf->data[offset] += reg_lookup_val(op_arr[0].data);
 }
 
 DEFINE_ENCODER(oi) {
