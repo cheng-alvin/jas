@@ -141,15 +141,14 @@ instruction_t *instr_write_bytes(size_t data_sz, ...) {
   instruction_t *instr_ret = malloc(sizeof(instruction_t));
   memcpy(buffer_ptr, &data, sizeof(buffer_t));
 
-  // clang-format off
+  operand_t *operands = calloc(4, sizeof(operand_t));
+  operands[0] = op_construct_operand(OP_MISC, 0, buffer_ptr, NULL);
+
   *instr_ret = (instruction_t){
       .instr = INSTR_DIR_WRT_BUF,
-      .operands = (operand_t[]){
-          op_construct_operand(OP_MISC, 0, buffer_ptr, NULL),
-          OP_NONE, OP_NONE, OP_NONE,
-      },
+      .operands = operands,
   };
-  // clang-format on
+
   return instr_ret;
 }
 
