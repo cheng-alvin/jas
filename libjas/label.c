@@ -31,11 +31,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-static label_t *label_table = NULL;
-static size_t label_table_size = 0;
+void label_create(
+    label_t **label_table, size_t *label_table_size,
+    char *name, bool exported, bool ext, size_t address) {
 
-void label_create(char *name, bool exported, bool ext, size_t address) {
-  if (label_lookup(name) != NULL) {
+  if (label_lookup(label_table, label_table_size, name) != NULL) {
     err("Label conflict detected, a duplicate cannot be created.");
     return;
   }
@@ -46,30 +46,27 @@ void label_create(char *name, bool exported, bool ext, size_t address) {
      .address = address, };
   // clang-format on
 
-  label_table_size++;
+  *label_table_size++;
   label_table = (label_t *)
-      realloc(label_table, label_table_size * sizeof(label_t));
+      realloc(label_table, *label_table_size * sizeof(label_t));
 
-  label_table[label_table_size - 1] = label;
+  *(label_table)[*label_table_size - 1] = label;
 }
 
-void label_destroy_all() {
+void label_destroy_all(label_t **label_table, size_t *label_table_size) {
   free(label_table);
 
   label_table = NULL;
-  label_table_size = 0;
+  *(label_table_size) = 0;
 }
 
-label_t *label_lookup(char *name) {
-  for (size_t i = 0; i < label_table_size; i++)
-    if (strcmp(label_table[i].name, name) == 0)
-      return &label_table[i];
+label_t *label_lookup(label_t **label_table, size_t *label_table_size, char *name) {
+  for (size_t i = 0; i < *label_table_size; i++)
+    if (strcmp(label_table[i]->name, name) == 0)
+      return label_table[i];
 
   return NULL;
 }
-
-size_t label_get_size() { return label_table_size; }
-label_t *label_get_table() { return label_table; }
 
 instruction_t *label_gen(char *name, enum label_type type) {
   enum instructions instr = INSTR_DIR_LOCAL_LABEL;

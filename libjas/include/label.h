@@ -30,24 +30,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-/**
- * Function for creating a new label with the given name and address
- * as mentioned in the `label_t` struct, storing it in an internal
- * table as a label entry.
- *
- * @param name The name of the label.
- * @param exported Boolean for whether the label is exported or not.
- * @param ext Boolean for whether the label is external or not.
- * @param address The address of the label.
- *
- * @note The address depicts a position in the buffer, and can be
- * obtained using `buf.len` after encoding the instruction from
- * the `buffer.h`, or many times the `buf` variable. Therefore,
- * allowing the relative addressing of the label to be calculated
- * on the fly.
- */
-void label_create(char *name, bool exported, bool ext, size_t address);
-
 typedef struct {
   char *name;     /* Name of the label in a string format */
   bool exported;  /* Boolean for whether the label is exported to the linker table or not */
@@ -55,33 +37,50 @@ typedef struct {
   size_t address; /* Address of the label entry, can use `buf.len` */
 } label_t;
 
-size_t label_get_size();
-label_t *label_get_table();
+/**
+ * A factory function for creating a label entry in the label table.
+ * The label entry is a struct that contains the name of the label,
+ * whether it is exported or not, whether it is external or not, and
+ * the address of the label. This data is constructed and then stored
+ * into the given table pointer.
+ *
+ * @param label_table The label table to store the label entry in.
+ * @param label_table_size The size of the label table.
+ *
+ * @param name The name of the label.
+ * @param exported Boolean for whether the label is exported or not.
+ * @param ext Boolean for whether the label is external or not.
+ * @param address The address of the label.
+ */
+void label_create(
+    label_t **label_table, size_t *label_table_size,
+    char *name, bool exported, bool ext, size_t address);
 
 /**
  * Function for destroying the label table, freeing the memory
  * allocated for the label names and the label entries itself.
  *
- * @warning This function will free all the memory allocated for
- * the label entries and the label names, and will set the label
- * table to `NULL` and the label table size to `0`. Potentially
- * destructive!
+ * @param label_table The label table to destroy.
+ * @param label_table_size The size of the label table
  */
-void label_destroy_all();
+void label_destroy_all(label_t **label_table, size_t *label_table_size);
 
 /**
  * Function for looking up a label in the label table, and retu-
  * rning the label entry if found, otherwise returning a `NULL`
  * label entry will be returned back to the caller.
  *
+ * @param label_table The label table to look up the label in.
+ * @param label_table_size The size of the label table.
+ *
  * @param name The name of the label to look up in the label table.
- *
- * @note Caller is responsible for freeing the memory allocated
- * and handling string creations and declarations.
- *
  * @return The pointer to the label entry if found, otherwise `NULL`
+ *
+ * @note The label table is **assumed** to be allocated and setup
+ * correctly before calling this function, stored in the `label_table`
+ * and `label_table_size` pointers (as shown above).
  */
-label_t *label_lookup(char *name);
+label_t *label_lookup(label_t **label_table, size_t *label_table_size, char *name);
 
 /**
  * Enumeration for expressing the different types of labels used
