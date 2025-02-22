@@ -26,6 +26,7 @@ int main(void) {
 
   /* Do something to `buf.data` - The uint8_t array */
 
+  instr_free(instr);
   free(buf.data);
   return 0;
 }
