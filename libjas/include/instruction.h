@@ -289,9 +289,9 @@ instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
  *
  * @param instr The instruction struct to free
  *
- * @note The function will free the memory allocated for the instruction
- * struct and the operand structs inside the instruction struct, including
- * relevent buffer for `INSTR_DIR_WRT_BUF` instructions.
+ * @note This function should only be used to free instruction allocated
+ * using built-in Jas instruction generation functions, unless you actually
+ * know what you are doing.
  */
 void instr_free(instruction_t *instr);
 
