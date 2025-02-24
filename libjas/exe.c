@@ -94,9 +94,9 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
 }
 
 #define QWORD_PAD \
-  &(uint64_t) { 0 }
+  &(uint64_t){0}
 
-buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uint64_t *off, uint64_t sect_sz) {
+buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uint64_t *off, uint64_t sect_sz, size_t label_size) {
   buffer_t ret = BUF_NULL;
   buf_write(&ret, (uint8_t *)&str_offset, 4); // String table name offset
   buf_write(&ret, (uint8_t *)&type, 4);       // Section type
@@ -111,10 +111,10 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
   int int_pad = 0;
 
   if (type == 0x02) {
-    buf_write(&ret, &(uint32_t){2}, 4);                    // Section link
-    buf_write(&ret, &(uint32_t){label_get_size() + 1}, 4); // Section info
-    buf_write(&ret, QWORD_PAD, 8);                         // Section address alignment
-    buf_write(&ret, &(uint64_t){0x18}, 8);                 // Section entry size
+    buf_write(&ret, &(uint32_t){2}, 4);              // Section link
+    buf_write(&ret, &(uint32_t){label_size + 1}, 4); // Section info
+    buf_write(&ret, QWORD_PAD, 8);                   // Section address alignment
+    buf_write(&ret, &(uint64_t){0x18}, 8);           // Section entry size
 
     return ret;
   }
