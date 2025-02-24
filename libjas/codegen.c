@@ -52,9 +52,12 @@ static instr_encode_table_t *get_instr_tabs(instruction_t *instr_arr, size_t arr
   }
   return tabs;
 }
-
-static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, instr_encode_table_t *tab, bool is_pre);
+static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size,
+                         instr_encode_table_t *tabs, bool is_pre, label_t *label_table, size_t label_table_size);
 buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count, enum codegen_output exec_mode) {
+  label_t *label_table = NULL;
+  size_t label_table_size = 0;
+
   /* Implementing a "wrapper" due to old baggage ~~(And partially out of lazy-ness)~~ */
   const size_t arr_size = arr_count * sizeof(instruction_t);
   instruction_t *instr_arr = malloc(arr_size);
@@ -66,6 +69,7 @@ buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count,
     if (instr_arr[i].instr >= INSTR_DIR_LOCAL_LABEL) {
       if (instr_arr[i].operands[0].data)
         label_create(
+            &label_table, &label_table_size,
             instr_arr[i].operands[0].data,
             instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
             instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
@@ -74,10 +78,10 @@ buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count,
   }
 
   const instr_encode_table_t *tabs = get_instr_tabs(instr_arr, arr_size / sizeof(instruction_t));
-  const uint8_t *pre_ret = assemble(mode, instr_arr, arr_size, tabs, true).data;
+  const uint8_t *pre_ret = assemble(mode, instr_arr, arr_size, tabs, true, label_table, label_table_size).data;
   if (pre_ret != NULL) free(pre_ret);
 
-  const buffer_t code = assemble(mode, instr_arr, arr_size, tabs, false);
+  const buffer_t code = assemble(mode, instr_arr, arr_size, tabs, false, label_table, label_table_size);
   free(tabs);
   free(instr_arr);
 
@@ -114,7 +118,7 @@ buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count,
   size_t base = 6 * 0x40;
 
   char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
-  buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, &base, sizeof(shstrtab));
+  buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, &base, sizeof(shstrtab), NULL);
 
   buf_write_byte(&strtab, 0);
   buf_write(&symtab, pad, 0x18);
@@ -126,9 +130,6 @@ buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count,
   buf_concat(&symtab, 1, &section_ent);
   free(section_ent.data);
   free(pad);
-
-  const size_t label_table_size = label_get_size();
-  const label_t *label_table = label_get_table();
 
   for (size_t i = 0; i < label_table_size; i++) {
     // Refer to https://www.sco.com/developers/devspecs/gabi41.pdf - Figure 4-16
@@ -143,13 +144,13 @@ buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count,
     free(ent.data);
   }
 
-  buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, &base, strtab.len);
-  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, &base, symtab.len);
-  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x7, &base, code.len);
+  buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, &base, strtab.len, NULL);
+  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, &base, symtab.len, label_table_size);
+  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x7, &base, code.len, NULL);
 
   // Write and clean everything 🧹🧹
 
-  label_destroy_all();
+  label_destroy_all(&label_table, &label_table_size);
   buf_concat(&out, 4, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
   FREE_ALL(shstrtab_sect_head.data, strtab_sect_head.data, symtab_sect_head.data, text_sect_head.data);
 
@@ -161,15 +162,17 @@ buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count,
   return out;
 }
 
-static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size, instr_encode_table_t *tabs, bool is_pre) {
+static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size,
+                         instr_encode_table_t *tabs, bool is_pre, label_t *label_table, size_t label_table_size) {
+
   arr_size /= sizeof(instruction_t);
   buffer_t buf = BUF_NULL;
   size_t label_index = 0;
 
   for (size_t i = 0; i < arr_size; i++) {
     /* -- Sanity checks -- */
-    if (is_pre && label_get_size() == 0) break;
-    if (is_pre && label_index >= label_get_size()) break;
+    if (is_pre && label_table_size == 0) break;
+    if (is_pre && label_index >= label_table_size) break;
     if (instr_arr[i].operands == NULL) continue;
 
     if (INSTR_DIRECTIVE(instr_arr[i].instr)) {
@@ -178,8 +181,8 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
         buf_write(&buf, data->data, data->len);
       }
       if (is_pre && IS_LABEL(instr_arr[i])) {
-        for (size_t j = 0; j < label_get_size(); j++) {
-          label_t *tab = label_get_table();
+        for (size_t j = 0; j < label_table_size; j++) {
+          label_t *tab = label_table;
           if (strcmp(tab[j].name, instr_arr[i].operands[0].data) == 0) {
             tab[j].address = buf.len;
             break;
@@ -193,10 +196,10 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
     const instr_encode_table_t ref = tabs[i];
     instruction_t current = instr_arr[i];
-    if (ref.pre != NULL) ref.pre(current.operands, &buf, &ref, mode);
+    if (ref.pre != NULL) ref.pre(current.operands, &buf, &ref, mode, label_table, label_table_size);
     op_write_prefix(&buf, current.operands, mode);
     buf_write(&buf, op_write_opcode(current.operands, &ref), ref.opcode_size);
-    enc_lookup(ref.ident)(current.operands, &buf, &ref, mode);
+    enc_lookup(ref.ident)(current.operands, &buf, &ref, mode, label_table, label_table_size);
   }
 
   return buf;

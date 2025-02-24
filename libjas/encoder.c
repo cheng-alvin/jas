@@ -45,10 +45,10 @@
  * base pointer register (rsp, sp or esp) to be used
  * with an absolute address.
  */
-static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index) {
+static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index, label_t *label_table, size_t label_table_size) {
   const uint8_t rel_sz = op_sizeof(op_arr[index].type) / 8;
 
-  label_t *label = label_lookup((char *)op_arr[index].label);
+  label_t *label = label_lookup(&label_table, &label_table_size, (char *)op_arr[index].label);
   if (!label) {
     err("Referenced label was not found.");
     return;
@@ -98,7 +98,7 @@ DEFINE_ENCODER(m) {
 
   const enum registers deref_reg = (*(enum registers *)op_arr[0].data);
   if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP)
-    ref_label(op_arr, buf, 0);
+    ref_label(op_arr, buf, 0, label_table, label_table_size);
 
   if (rm == 5 && op_arr[0].offset == 0)
     buf_write_byte(buf, 0);
@@ -136,11 +136,11 @@ DEFINE_ENCODER(d) {
   }
 
   // Calculate the relative offset of the label
-  ref_label(op_arr, buf, 0);
+  ref_label(op_arr, buf, 0, label_table, label_table_size);
 }
 
 DEFINE_ENCODER(mi) {
-  m(op_arr, buf, instr_ref, mode);
+  m(op_arr, buf, instr_ref, mode, label_table, label_table_size);
   i_common(op_arr, buf, instr_ref, mode);
 
   if (op_arr[1].type == OP_IMM64) {
@@ -149,7 +149,7 @@ DEFINE_ENCODER(mi) {
   }
 }
 
-static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, enum enc_ident ident) {
+static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, enum enc_ident ident, label_t *label_table, size_t label_table_size) {
   /**
    * @brief This opcode identity is a "Common ground for MR and RM"
    * Since rm and mr just has to be flipped, we can just use a boolean
@@ -189,7 +189,7 @@ static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t 
   const enum registers deref_reg = (*(enum registers *)op_arr[rm_idx].data);
   if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP) {
     op_arr[rm_idx].type = deref_reg == REG_RIP ? OP_M32 : op_arr[rm_idx].type;
-    ref_label(op_arr, buf, rm_idx);
+    ref_label(op_arr, buf, rm_idx, label_table, label_table_size);
     op_arr[rm_idx].type = deref_reg == REG_RIP ? OP_M64 : op_arr[rm_idx].type;
   }
 
@@ -205,8 +205,8 @@ static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t 
   write_offset(mod, buf, op_arr, rm_idx);
 }
 
-DEFINE_ENCODER(mr) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_MR); }
-DEFINE_ENCODER(rm) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_RM); }
+DEFINE_ENCODER(mr) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_MR, label_table, label_table_size); }
+DEFINE_ENCODER(rm) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_RM, label_table, label_table_size); }
 
 DEFINE_ENCODER(o) {
   const size_t offset = (buf->len - 1) * sizeof(uint8_t);
@@ -214,7 +214,7 @@ DEFINE_ENCODER(o) {
 }
 
 DEFINE_ENCODER(oi) {
-  o(op_arr, buf, instr_ref, mode);
+  o(op_arr, buf, instr_ref, mode, label_table, label_table_size);
   i_common(op_arr, buf, instr_ref, mode);
 }
 
@@ -226,7 +226,7 @@ DEFINE_ENCODER(ign) {
   if (op_sizeof(op_arr[0].type) == 8 && instr_ref->has_byte_opcode)
     buf_write(buf, instr_ref->byte_instr_opcode, instr_ref->opcode_size);
   else
-    zo(op_arr, buf, instr_ref, mode);
+    zo(op_arr, buf, instr_ref, mode, label_table, label_table_size);
 }
 
 encoder_t enc_lookup(enum enc_ident input) {

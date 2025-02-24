@@ -46,9 +46,9 @@ void label_create(
      .address = address, };
   // clang-format on
 
-  *label_table_size++;
-  label_table = (label_t *)
-      realloc(label_table, *label_table_size * sizeof(label_t));
+  (*label_table_size)++;
+  *label_table = (label_t *)
+      realloc(*label_table, *label_table_size * sizeof(label_t));
 
   *(label_table)[*label_table_size - 1] = label;
 }
@@ -61,9 +61,11 @@ void label_destroy_all(label_t **label_table, size_t *label_table_size) {
 }
 
 label_t *label_lookup(label_t **label_table, size_t *label_table_size, char *name) {
-  for (size_t i = 0; i < *label_table_size; i++)
-    if (strcmp(label_table[i]->name, name) == 0)
-      return label_table[i];
+  const label_t *table_defref = *label_table;
+  for (size_t i = 0; i < table_defref; i++) {
+    if (table_defref[i].name == NULL) return NULL;
+    if (strcmp(table_defref[i].name, name) == 0) return &table_defref[i];
+  }
 
   return NULL;
 }

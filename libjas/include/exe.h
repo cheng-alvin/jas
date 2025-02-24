@@ -53,6 +53,7 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
  * @param flags The flags of the section
  * @param off The pointer to the offset of the section
  * @param sect_sz The size of the section
+ * @param label_size The size of the label table (if applicable)
  *
  * @return The buffer containing the section header
  *
@@ -64,7 +65,7 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
  * @note The `off` pointer is used to keep track of the offset/size of the section
  * headers and helps the caller to keep track of the section headers.
  */
-buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uint64_t *off, uint64_t sect_sz);
+buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uint64_t *off, uint64_t sect_sz, size_t label_size);
 
 /**
  * Function for generating a symbol table entry in the ELF object file.

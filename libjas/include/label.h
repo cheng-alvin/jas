@@ -26,9 +26,10 @@
 #ifndef LABEL_H
 #define LABEL_H
 
-#include "instruction.h"
 #include <stdbool.h>
 #include <stddef.h>
+
+typedef struct instruction instruction_t;
 
 typedef struct {
   char *name;     /* Name of the label in a string format */
