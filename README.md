@@ -17,7 +17,6 @@
 First of all, install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases) or build it from source with following the instructions below. Jas takes instructions in an array in a struct form defined in [instruction.h](https://github.com/cheng-alvin/jas/blob/0faa905be7cb1238796af46552b3271a11b4e2dd/libjas/instruction.h) and passes it to a `assemble_instr()` function which generates the the actual buffer of an array of `uint8_t` for you to process. (However, in this situation, we are using the `instr_gen()` function and operand generation macros to generate the instruction structure automatically without the janky C structure syntax)
 ```c
 #include <jas.h>
-#include <stdint.h>
 #include <stdlib.h>
 
 int main(void) {
@@ -26,6 +25,7 @@ int main(void) {
 
   /* Do something to `buf.data` - The uint8_t array */
 
+  instr_free(instr);
   free(buf.data);
   return 0;
 }
