@@ -143,7 +143,7 @@ struct instr_encode_table {
  */
 extern instr_encode_table_t *instr_table[];
 
-typedef struct {
+typedef struct instruction {
   enum instructions instr; /* Type of instruction */
   operand_t *operands;     /* Operands of the instruction */
 } instruction_t;

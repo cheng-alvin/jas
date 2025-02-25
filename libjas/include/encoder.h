@@ -27,6 +27,7 @@
 #define ENCODER_H
 
 #include "buffer.h"
+#include "label.h"
 #include "mode.h"
 
 // Forward declarations -  See `instruction.h` and `operand.h` respectively
@@ -68,7 +69,7 @@ enum enc_ident {
  * @see `encoder_t`
  */
 #define DEFINE_ENCODER(ident, ...) \
-  void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
+  void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, label_t *label_table, size_t label_table_size)
 
 /**
  * Type wrapper for the instruction encoder function pointer. Where
@@ -81,10 +82,12 @@ enum enc_ident {
  * @param buf The buffer to write the encoded instruction to
  * @param instr_ref The instruction reference table
  * @param mode The operating mode of the instruction
+ * @param label_table The label table applicable to the current context.
+ * @param label_table_size The size of the label table (as described)
  *
  * @note All encoder functions will conform to this signature.
  */
-typedef void (*encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode);
+typedef void (*encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, label_t *label_table, size_t label_table_size);
 
 /**
  * Lookup table for the different instruction encoder functions.
