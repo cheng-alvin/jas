@@ -28,9 +28,7 @@
 /**
  * Enum representing all the different modes of the assembler, and also
  * the different modes of the CPU. The modes are used to determine the
- * type of machine code to generate, and also the type of instructions
- * to generate. See the Intel manual for more information. (Happy
- * new year as well lolll)
+ * type of machine code to generate, matching to the modes described by Intel.
  */
 enum modes {
   MODE_REAL,
