@@ -83,9 +83,12 @@ instruction_t *label_gen(char *name, enum label_type type) {
   }
   // clang-format on
 
-  name = strdup(name);
+  const size_t label_name_size = strlen(name) + 1;
+  char *copied_name = malloc(label_name_size);
+  strcpy(copied_name, name);
+
   operand_t *operands = calloc(4, sizeof(operand_t));
-  operands[0] = op_construct_operand(OP_MISC, 0, name, NULL);
+  operands[0] = op_construct_operand(OP_MISC, 0, copied_name, NULL);
 
   instruction_t *instr_ret = malloc(sizeof(instruction_t));
   *instr_ret = (instruction_t){
