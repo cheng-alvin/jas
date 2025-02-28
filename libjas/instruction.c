@@ -96,7 +96,11 @@ instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
     void *data;
     if (op_rel(type)) {
       char *lab = va_arg(args, char *);
-      label = strdup(lab);
+      const size_t label_name_size = strlen(lab) + 1;
+      char *copied_name = malloc(label_name_size);
+      strcpy(copied_name, lab);
+      
+      label = copied_name;
 
       // clang-format off
     } else if (op_imm(type)) {
