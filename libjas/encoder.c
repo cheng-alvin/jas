@@ -218,18 +218,7 @@ DEFINE_ENCODER(oi) {
   i_common(op_arr, buf, instr_ref, mode);
 }
 
-DEFINE_ENCODER(zo) {
-  buf_write(buf, instr_ref->opcode, instr_ref->opcode_size);
-}
-
-DEFINE_ENCODER(ign) {
-  if (op_sizeof(op_arr[0].type) == 8 && instr_ref->has_byte_opcode)
-    buf_write(buf, instr_ref->byte_instr_opcode, instr_ref->opcode_size);
-  else
-    zo(op_arr, buf, instr_ref, mode, label_table, label_table_size);
-}
-
 encoder_t enc_lookup(enum enc_ident input) {
-  encoder_t lookup[] = {NULL, &mr, &rm, &oi, &mi, &i, &m, &zo, &d, &o, &ign};
+  encoder_t lookup[] = {NULL, &mr, &rm, &oi, &mi, &i, &m, NULL, &d, &o, NULL};
   return lookup[(size_t)input];
 }

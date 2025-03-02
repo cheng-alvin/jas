@@ -53,7 +53,7 @@ enum enc_ident {
   ENC_D,
   ENC_O,
   ENC_IGN, /* Although **NOT** original Intel, this identity will
-              void all operands, directs to the ZO identity. */
+  void all operands, only writing the opcode (IGN meaning *ignore*) */
 };
 
 /**

@@ -71,7 +71,7 @@ DEFINE_TAB(new_ent) = {{
   .byte_instr_opcode     = {0xfa},
   .opcode_size           = 1,
   .pre                   = NULL,
-  .has_byte_opcode       = true,
+  .byte_opcode_size      = 1,
 }};
 
 // `new_ent` will be added to an array of different instruction identities.
