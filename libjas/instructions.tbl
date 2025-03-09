@@ -1,0 +1,27 @@
+# **Notice:** The Jas encoder bank along with the `compiler.js` script
+# is a part of the Jas assembler project, licensed under the MIT license.
+# Please consult the `LICENSE` file for more information.
+
+# Contributors' list: (Add your own name here, if applicable)
+# Copyright (c) 2023-2024 Alvin Cheng <eventide1029@gmail.com>
+
+# This is the Jas assembler instruction encoder bank, this file contains
+# the encoder tables for encoding the instructions into machine code, with
+# each one handcrafted and reviewed by actual humans, not a dumb script that
+# runs through the Intel Manual. 
+
+# This is basically, (when boiled down) a successor to the `tabs.c` file as a 
+# representation of structs by allowing a script to write boilerplate for us.
+# All columns are matching the values of the `instr_encode_table` struct, see
+# `instruction.h` for more information. (Data sizes and omitted fields are auto-
+# matically computed by the compiler script)
+
+
+
+
+# name | identity | opcode extension | opcode            | byte opcode       | pre 
+# -----------------------------------------------------------------------------------------------
+  mov  | mr       | -                | 0x89              | 0x88              | same_operand_sizes
+  mov  | rm       | -                | 0x8B              | 0x8A              | same_operand_sizes
+  mov  | oi       | -                | 0xB8              | 0xB0              | same_operand_sizes
+  mov  | mi       | 0b10000000       | 0xC7              | 0xC6              | pre_imm 
