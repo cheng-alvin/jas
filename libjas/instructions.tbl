@@ -1,0 +1,47 @@
+# **Notice:** The Jas encoder bank along with the `compiler.js` script
+# is a part of the Jas assembler project, licensed under the MIT license.
+# Please consult the `LICENSE` file for more information.
+
+# Contributors' list: (Add your own name here, if applicable)
+# Copyright (c) 2023-2024 Alvin Cheng <eventide1029@gmail.com>
+
+# This is the Jas assembler instruction encoder bank, this file contains
+# the encoder tables for encoding the instructions into machine code, with
+# each one handcrafted and reviewed by actual humans, not a dumb script that
+# runs through the Intel Manual. 
+
+# This is basically, (when boiled down) a successor to the `tabs.c` file as a 
+# representation of structs by allowing a script to write boilerplate for us.
+# All columns are matching the values of the `instr_encode_table` struct, see
+# `instruction.h` for more information. (Data sizes and omitted fields are auto-
+# matically computed by the compiler script)
+
+# name | identity | opcode extension | opcode            | byte opcode       | pre 
+# -----------------------------------------------------------------------------------------------
+  mov  | mr       | -                | 0x89              | 0x88              | same_operand_sizes
+  mov  | rm       | -                | 0x8B              | 0x8A              | same_operand_sizes
+  mov  | oi       | -                | 0xB8              | 0xB0              | same_operand_sizes
+  mov  | mi       | 0b10000000       | 0xC7              | 0xC6              | pre_imm 
+
+  lea  | rm       | -                | 0x8D              | -                 | - 
+
+  add  | rm       | -                | 0x03              | 0x02              | same_operand_sizes
+  add  | mr       | -                | 0x01              | 0x00              | same_operand_sizes
+  add  | i        | -                | 0x05              | 0x04              | pre_imm
+  add  | mi       | 0b10000000       | 0x81              | 0x80              | pre_imm
+
+  sub  | rm       | -                | 0x2b              | 0x2a              | same_operand_sizes
+  sub  | mr       | -                | 0x29              | 0x28              | same_operand_sizes
+  sub  | i        | -                | 0x2c              | 0x2d              | pre_imm
+  sub  | mi       | 8                | 0x80              | 0x81              | pre_imm
+
+  mul  | m        | 4                | 0xF7              | 0xF6              | - 
+
+  _div | m        | 6                | 0xF7              | 0xF6              | -
+
+  and  | rm       | -                | 0x23              | 0x22              | same_operand_sizes
+  and  | mr       | -                | 0x21              | 0x20              | same_operand_sizes
+  and  | i        | -                | 0x25              | 0x24              | pre_imm
+  and  | mi       | 1                | 0x81              | 0x80              | pre_imm
+
+  or   | rm       | -                | 0x0B              | 0x0A              | same_operand_sizes
