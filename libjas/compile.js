@@ -50,4 +50,6 @@ for (const [key, instr] of Object.entries(groups)) {
   output = output.concat(`  INSTR_TAB_NULL,\n};\n`);
 }
 
-console.log(output);
+var prepend = `#include "instr_encode.h" \n#include "pre.c"\n\n`;
+fs.writeFileSync('tabs.c', prepend + output);
+process.exit(0);
