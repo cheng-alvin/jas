@@ -60,25 +60,42 @@ in binary as well as some key meta data such as what modes the instruction suppo
 etc. (Details will appear in the [`instruction.h`](https://github.com/cheng-alvin/jas/blob/main/libjas/include/instruction.h) file)
 Each instruction encoder table includes *entries*, each entry defines the meta data that correspond to a certain
 identity. For example, a MR identity (A identity with a m64 and r64) will be one entry and includes the 
-opcode, and support status in different operating modes. Below is an example of a instruction encoded in the `MR` identity and can be encoded as `FF /r` or `FA /r` when using the byte-instruction mode (More examples will be [here](https://github.com/cheng-alvin/jas/blob/main/libjas/tab.c))
+opcode, and support status in different operating modes. 
 
+** These entries are defined in the [`instructions.tbl`](https://github.com/cheng-alvin/jas/blob/main/libjas/instructions.tbl) file and is compiled using a script that compiles it into native C structs that can be used and accessed by the other parts of the assembler. **
 
-```c
-DEFINE_TAB(new_ent) = {{
-  .ident                 = OP_MR, 
-  .opcode_ext            = NULL, 
-  .opcode                = {0xff},
-  .byte_instr_opcode     = {0xfa},
-  .opcode_size           = 1,
-  .pre                   = NULL,
-  .byte_opcode_size      = 1,
-}};
+**Constructing a entry**
 
-// `new_ent` will be added to an array of different instruction identities.
+Jas encoder banks has now been since compiled using a text-based format. Every entry is line-seperated and values are seperated using `|`s, spaces are used to pad and align the values with the others (mainly for cosmetics) but they are eventually ignored by the compiler. Characters such as `-` are in-place for `NULL` and will be replaced with `NULL` during compilation. To compile the instruction encoder table, make the `tabs.c` target in the `libjas` directory, this will invoke the Node.js script and automatically generate the `tabs.c` file. 
+
+Here's a sample entry:
 
 ```
+# name | identity | opcode extension | opcode            | byte opcode       | pre 
+# -----------------------------------------------------------------------------------------------
+  cmc  | zo       | -                | 0xF5              | -                 | no_operands
+```
+Note that lines prepended with a `#` will be ignored and removed from the output.
 
-> Many instructions share lots of operand encoding logic or patterns that can be encapsulated. Each operand encoding identities have a certain order of operand types, allowing code to be shared among instructions who have similar operand inputs. In Jas, we have denoted these identities as  two letter codes like `MR`, `RM` or `Z` in which it corresponds to a certain combination of operands types (or classes if your fancy) within an instruction. In the end, they are mapped to a encoder function with the same name.
+This example text-based entry depicts the sample `cmc` instruction provided by intel in *Chapter 3 (Instruction set reference A-L) Vol 2A 3-1*, and will be compiled to the following C structure (Note that formatting may differ):
+
+``` c
+instr_encode_table_t cmc[] = {
+  {
+    .ident                 = OP_ZO, 
+    .opcode_ext            = NULL, 
+    .opcode                = {0xF5},
+    .byte_instr_opcode     = NULL,
+    .opcode_size           = 1,
+    .pre                   = &no_operands,
+    .byte_opcode_size      = 0,
+  },
+
+  INSTR_TAB_NULL,
+};
+```
+
+**FAQ:** What does `zo`, `OP_ZO` mean? What are they for? These are called *operand identies*, Intel calls them *Instruction Operand Encoding*(s), usually found below a instruction encoder table on the manual. Every enum is mapped to one of these *encoder funtions* and encodes the operands. (See [here](https://github.com/cheng-alvin/jas/edit/main/CONTRIBUTING.md#adding-a-new-encoder))
 
 **Next, register the new instruction:**
 
