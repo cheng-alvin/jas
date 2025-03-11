@@ -35,6 +35,11 @@ Yeah! that's it! Seriously! It's that simple, this little snippet of code genera
 
 > Since the returned buffer is in the form of a dynamically allocated pointer, care must be taken to `free` and manage the block of memory.
 
+### 💡 Why Jas?
+Jas is a very versitile library, it opens the door for generating low level assembly and ELF object files to us average programers, suddenly, we can use write our own compilers from scratch, without the complexities of LLVM or compiling down to a GCC backend. Jas is optimised to speed and complexity, as well as size, allowing it to be used in small-scale compilers and interpreters where compile time matters.
+
+[brainfry](https://github.com/cheng-alvin/brainfry) is a project I wrote during the weekend and is simple Brainf*ck compiler that compiled down to raw machine code, it performed well and only weighed in at a couple KiBs big, leading to immesely quick compile times. Jas severely simplified the development processs as anything written using LLVM or GCC backends would consist of long compile-times and huge binary sizes.
+
 ### 🏗️ Build and install
 The very first step in doing anything with jas is to build and link the library against your application code, since jas is a library. Ensure you have a C99 and C++17 compiler installed (Anything will do, preferably `clang`), and GNU make or something to run makefile while buidling. 
 

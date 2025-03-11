@@ -177,6 +177,11 @@ reason to be merged upstream. (but also remember to try and keep it small) Speak
 that you properly and logically organize branches and pull requests, if changes don't seem to fit in one pull
 request logically, feel free to submit multiple, as long as it makes sense logically.
 
+### Don't like Github? Don't worry!
+If you don't prefer to use Github as the platform for communication and merging code, patches may be submitted via the mailing list (Just like old-school), the maintainer taking care of that portion of the code will be responsible in checking for patches and reviewing them before applying them to the source code and merging it using a Pull request.
+
+Basically, once the patch has been received by the maintainer from the mailing list, the maintainer should apply and review the patch in their **own** branch before merging it in, labeling it as *patch* with the person who originally sent in the patch mentioned or quoted in the title.
+
 ### What now?
 After reading the instructions here, you should have a good understanding of how to contribute
 to the Jas assembler project! Write some code, drink some coffee, and have fun!
