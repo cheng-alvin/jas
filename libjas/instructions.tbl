@@ -45,3 +45,12 @@
   and  | mi       | 1                | 0x81              | 0x80              | pre_imm
 
   or   | rm       | -                | 0x0B              | 0x0A              | same_operand_sizes
+  or   | mr       | -                | 0x09              | 0x08              | same_operand_sizes
+  or   | i        | -                | 0x0d              | 0x0c              | same_operand_sizes
+  or   | mi       | 1                | 0x81              | 0x80              | pre_imm
+
+  xor  | rm       | -                | 0x33              | 0x32              | same_operand_sizes
+  xor  | mr       | -                | 0x31              | 0x30              | same_operand_sizes
+  xor  | i        | -                | 0x35              | 0x34              | pre_imm
+  xor  | mi       | 6                | 0x81              | 0x80              | pre_imm
+
