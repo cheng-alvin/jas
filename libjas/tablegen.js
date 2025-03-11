@@ -13,7 +13,7 @@ const byte_opcode = process.argv[6];
 const pre = process.argv[7];
 
 let out = ""
-out = out.concat(`  ${name}  |`);
+out = out.concat(`  ${name}${" ".repeat(5 - name.length)}|`);
 out = out.concat(` ${ident}${" ".repeat(9 - ident.length)}|`);
 out = out.concat(` ${opcode_ext}${" ".repeat(17 - opcode_ext.length)}|`);
 out = out.concat(` ${opcode}${" ".repeat(18 - opcode.length)}|`);

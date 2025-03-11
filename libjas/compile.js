@@ -38,9 +38,14 @@ for (const [key, instr] of Object.entries(groups)) {
     const ext = group[2];
     const opcode = addQuotes(group[3]);
     const opcode_size = countComma(group[3]) + 1;
-    const byte_opcode = addQuotes(group[4]);
+    const byte_opcode = group[4] == "-" ? "NULL" : addQuotes(group[4]);
     const byte_opcode_size = countComma(group[4]) + 1;
-    const pre = `&${group[5]}`;
+
+    let pre;
+    if (group[5] == "-")
+      pre = "NULL";
+    else
+      pre = `&${group[5]}`;
 
     // Putting it all together
     output = output.concat(
@@ -50,6 +55,6 @@ for (const [key, instr] of Object.entries(groups)) {
   output = output.concat(`  INSTR_TAB_NULL,\n};\n`);
 }
 
-var prepend = `#include "instr_encode.h" \n#include "pre.c"\n\n`;
+var prepend = `#include "instruction.h" \n#include "pre.c"\n\n`;
 fs.writeFileSync('tabs.c', prepend + output);
 process.exit(0);
