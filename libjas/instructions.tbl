@@ -101,7 +101,7 @@
   hlt  | zo       | -                | 0xF4              | -                 | no_operands
   _int | i        | -                | 0xCD              | -                 | pre_int
 
-
+# --------------------------------------------------------------------------------------------------
   syscall | zo       | -                | 0x0f              | -                 | no_operands
   movzx   | rm       | -                | 0x0F, 0xB7        | 0x0F, 0xB6        | pre_small_operands
   movsx   | rm       | -                | 0x0F, 0xBF        | 0x0F, 0xBE        | pre_small_operands
