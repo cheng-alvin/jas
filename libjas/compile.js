@@ -38,8 +38,9 @@ for (const [key, instr] of Object.entries(groups)) {
     const ext = group[2];
     const opcode = addQuotes(group[3]);
     const opcode_size = countComma(group[3]) + 1;
-    const byte_opcode = group[4] == "-" ? "NULL" : addQuotes(group[4]);
-    const byte_opcode_size = countComma(group[4]) + 1;
+    const byte_opcode = addQuotes(group[4] == "-" ? "NULL" : group[4]);
+    let byte_opcode_size = countComma(group[4]) + 1;
+    if (group[4] == "-") byte_opcode_size = 0;
 
     let pre;
     if (group[5] == "-")
