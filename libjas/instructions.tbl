@@ -54,3 +54,54 @@
   xor  | i        | -                | 0x35              | 0x34              | pre_imm
   xor  | mi       | 6                | 0x81              | 0x80              | pre_imm
 
+  _not | m        | 2                | 0xF7              | 0xF6              | same_operand_sizes
+
+  inc  | m        | 0                | 0xFF              | 0xFE              | same_operand_sizes
+  dec  | m        | 1                | 0xFF              | 0xFE              | same_operand_sizes
+
+  jmp  | d        | -                | 0xE9              | 0xEB              | -
+  jmp  | m        | 4                | 0xFF              | -                 | pre_imm
+
+  je   | d        | -                | 0x0f, 0x84        | 0x74              | -
+  jnz  | d        | -                | 0x0f, 0x85        | 0x75              | -
+
+  jne  | d        | -                | 0x0f, 0x85        | -                 | pre_jcc_no_byte
+  jz   | d        | -                | 0x0f, 0x84        | -                 | pre_jcc_no_byte
+
+
+  call | d        | -                | 0xE8              | 0xEB              | -
+  call | m        | 2                | 0xFF              | -                 | pre_imm
+
+  ret  | zo       | -                | 0xC3              | -                 | no_operands
+  ret  | i        | -                | 0xC2              | -                 | pre_ret
+
+  cmp  | rm       | -                | 0x3B              | 0x3A              | same_operand_sizes
+  cmp  | mr       | -                | 0x39              | 0x38              | same_operand_sizes
+  cmp  | i        | -                | 0x3D              | 0x3C              | pre_imm
+  cmp  | mi       | 8                | 0x81              | 0x80              | pre_imm
+
+  push | m        | 6                | 0xFF              | -                 | -
+  push | o        | -                | 0x50              | -                 | -
+  push | i        | -                | 0x68              | 0x6A              | pre_imm
+
+  pop  | m        | 0                | 0x8F              | -                 | -
+  pop  | o        | -                | 0x58              | -                 | -
+
+  in   | oi       | -                | 0xE5              | 0xE4              | pre_in_out
+  in   | ign      | -                | 0xED              | 0xEC              | pre_in_out
+
+  out  | ign      | -                | 0xEF              | 0xEE              | pre_in_out
+  out  | oi       | -                | 0xE7              | 0xE6              | pre_in_out
+
+  clc  | zo       | -                | 0xF8              | -                 | no_operands
+  stc  | zo       | -                | 0xF9              | -                 | no_operands
+  cli  | zo       | -                | 0xFA              | -                 | no_operands
+  sti  | zo       | -                | 0xFB              | -                 | no_operands
+  nop  | zo       | -                | 0x90              | -                 | no_operands
+  hlt  | zo       | -                | 0xF4              | -                 | no_operands
+  _int | i        | -                | 0xCD              | -                 | pre_int
+
+
+  syscall | zo       | -                | 0x0f              | -                 | no_operands
+  movzx   | rm       | -                | 0x0F, 0xB7        | 0x0F, 0xB6        | pre_small_operands
+  movsx   | rm       | -                | 0x0F, 0xBF        | 0x0F, 0xBE        | pre_small_operands
