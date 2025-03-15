@@ -21,6 +21,7 @@ clean:
 	@mkdir -p $(BUILD)/lib
 	@mkdir -p $(BUILD)
 	@$(MAKE) -C tests clean
+	@rm -rf libjas/tabs.c
 
 tests: 
 	$(MAKE) -C tests
