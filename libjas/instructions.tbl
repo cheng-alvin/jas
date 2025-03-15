@@ -104,8 +104,38 @@
   xchg | o        | -                | 0x90              | -                 | same_operand_sizes
   xchg | mr       | -                | 0x87              | 0x86              | same_operand_sizes
   xchg | rm       | -                | 0x87              | 0x86              | same_operand_sizes
-  
+
 # --------------------------------------------------------------------------------------------------
   syscall | zo       | -                | 0x0f              | -                 | no_operands
   movzx   | rm       | -                | 0x0F, 0xB7        | 0x0F, 0xB6        | pre_small_operands
-  movsx   | rm       | -                | 0x0F, 0xBF        | 0x0F, 0xBE        | pre_small_operands 
+  movsx   | rm       | -                | 0x0F, 0xBF        | 0x0F, 0xBE        | pre_small_operands  
+  bswap   | o        | -                | 0x0f, 0xC8        | -                 | same_operand_sizes
+
+  cmova   | rm       | -                | 0x0F, 0x47        | -                 | pre_cmov
+  cmovae  | rm       | -                | 0x0F, 0x43        | -                 | pre_cmov
+  cmovb   | rm       | -                | 0x0F, 0x42        | -                 | pre_cmov
+  cmovbe  | rm       | -                | 0x0F, 0x46        | -                 | pre_cmov
+  cmove   | rm       | -                | 0x0F, 0x44        | -                 | pre_cmov
+  cmovg   | rm       | -                | 0x0F, 0x4F        | -                 | pre_cmov
+  cmovge  | rm       | -                | 0x0F, 0x4D        | -                 | pre_cmov
+  cmovl   | rm       | -                | 0x0F, 0x4C        | -                 | pre_cmov
+  cmovle  | rm       | -                | 0x0F, 0x4E        | -                 | pre_cmov
+  cmovna  | rm       | -                | 0x0F, 0x46        | -                 | pre_cmov
+  cmovnae | rm       | -                | 0x0F, 0x42        | -                 | pre_cmov
+  cmovnb  | rm       | -                | 0x0F, 0x43        | -                 | pre_cmov
+  cmovnbe | rm       | -                | 0x0F, 0x47        | -                 | pre_cmov
+  cmovne  | rm       | -                | 0x0F, 0x45        | -                 | pre_cmov
+  cmovng  | rm       | -                | 0x0F, 0x4E        | -                 | pre_cmov
+  cmovnge | rm       | -                | 0x0F, 0x4C        | -                 | pre_cmov
+  cmovnl  | rm       | -                | 0x0F, 0x4D        | -                 | pre_cmov
+  cmovnle | rm       | -                | 0x0F, 0x4F        | -                 | pre_cmov
+  cmovno  | rm       | -                | 0x0F, 0x41        | -                 | pre_cmov
+  cmovnp  | rm       | -                | 0x0F, 0x4B        | -                 | pre_cmov
+  cmovns  | rm       | -                | 0x0F, 0x49        | -                 | pre_cmov
+  cmovnz  | rm       | -                | 0x0F, 0x45        | -                 | pre_cmov
+  cmovo   | rm       | -                | 0x0F, 0x40        | -                 | pre_cmov
+  cmovp   | rm       | -                | 0x0F, 0x4A        | -                 | pre_cmov
+  cmovpe  | rm       | -                | 0x0F, 0x4A        | -                 | pre_cmov
+  cmovpo  | rm       | -                | 0x0F, 0x4B        | -                 | pre_cmov
+  cmovs   | rm       | -                | 0x0F, 0x48        | -                 | pre_cmov
+  cmovz   | rm       | -                | 0x0F, 0x44        | -                 | pre_cmov
