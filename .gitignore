@@ -56,3 +56,5 @@ dkms.conf
 .DS_Store
 .vscode/
 .swp
+
+tabs.c
