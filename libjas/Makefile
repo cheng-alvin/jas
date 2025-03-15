@@ -7,7 +7,7 @@ C_SRC = $(wildcard *.c) # Includes only C source files
 OBJ = $(patsubst %.c, %.o, $(C_SRC)) operand_cpp.o 
 BUILD = ../build
 
-libjas.a: tabs.c $(OBJ) 
+libjas.a: $(OBJ) 
 	ar rcs $(BUILD)/$@ $^ 
 
 libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -std=c99 -O0

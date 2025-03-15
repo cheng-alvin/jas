@@ -1,6 +1,7 @@
 BUILD = build
 
 all: clean
+	$(MAKE) -C libjas tabs.c 
 	$(MAKE) -C libjas libjas.a -j8
 	@find . -name "*.o" -type f -delete
 	$(MAKE) -C libjas libjas_debug.a -j8
