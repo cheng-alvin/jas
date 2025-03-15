@@ -3,17 +3,29 @@
 // Usage: node tablegen.js <name> <ident> <opcode_ext> <opcode> <byte_opcode> <pre>
 // And you can use `>>` to append to a file, usually for the instructions.tbl file.
 
+// Note: if argv[3] zo, just type n an opcode and everything will fall into place automatically.
+
 const process = require('process');
 
-const name = process.argv[2];
-const ident = process.argv[3];
-const opcode_ext = process.argv[4];
-const opcode = process.argv[5];
-const byte_opcode = process.argv[6];
-const pre = process.argv[7];
+let name = process.argv[2];
+let ident = process.argv[3];
+let opcode_ext = process.argv[4];
+let opcode = process.argv[5];
+let byte_opcode = process.argv[6];
+let pre = process.argv[7];
+
+if (process.argv[3] == 'zo') {
+  opcode = process.argv[4];
+  byte_opcode = "-";
+  pre = "no_operands";
+  opcode_ext = "-";
+}
 
 let out = ""
-out = out.concat(`  ${name}${" ".repeat(5 - name.length)}|`);
+let len = 5 - name.length
+if (len < 0) len = 1;
+
+out = out.concat(`  ${name}${" ".repeat(len)}|`);
 out = out.concat(` ${ident}${" ".repeat(9 - ident.length)}|`);
 out = out.concat(` ${opcode_ext}${" ".repeat(17 - opcode_ext.length)}|`);
 out = out.concat(` ${opcode}${" ".repeat(18 - opcode.length)}|`);
