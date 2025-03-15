@@ -7,7 +7,7 @@ C_SRC = $(wildcard *.c) # Includes only C source files
 OBJ = $(patsubst %.c, %.o, $(C_SRC)) operand_cpp.o 
 BUILD = ../build
 
-libjas.a: $(OBJ) 
+libjas.a: tabs.c $(OBJ) 
 	ar rcs $(BUILD)/$@ $^ 
 
 libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -std=c99 -O0
@@ -15,7 +15,8 @@ libjas_debug.a: $(OBJ)
 	ar rcs $(BUILD)/$@ $^
 
 tabs.c: instructions.tbl
-	node compile.js $^
+	node compile.js $^ 
+	clang-format $@ -i
 
 # Individual object files rules:
 operand_cpp.o: CFLAGS = $(CFLAGS_COMMON) -std=c++11 -O0
