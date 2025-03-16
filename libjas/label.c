@@ -54,7 +54,7 @@ void label_create(
 }
 
 void label_destroy_all(label_t **label_table, size_t *label_table_size) {
-  free(label_table);
+  free(*label_table);
 
   label_table = NULL;
   *(label_table_size) = 0;
