@@ -33,7 +33,7 @@
   sub  | rm       | -                | 0x2b              | 0x2a              | same_operand_sizes
   sub  | mr       | -                | 0x29              | 0x28              | same_operand_sizes
   sub  | i        | -                | 0x2c              | 0x2d              | pre_imm
-  sub  | mi       | 8                | 0x80              | 0x81              | pre_imm
+  sub  | mi       | 5                | 0x81              | 0x80              | pre_imm
 
   mul  | m        | 4                | 0xF7              | 0xF6              | - 
 
