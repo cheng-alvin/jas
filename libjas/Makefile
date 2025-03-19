@@ -16,7 +16,6 @@ libjas_debug.a: $(OBJ)
 
 tabs.c: instructions.tbl
 	node compile.js $^ 
-	clang-format $@ -i
 
 # Individual object files rules:
 operand_cpp.o: CFLAGS = $(CFLAGS_COMMON) -std=c++11 -O0
