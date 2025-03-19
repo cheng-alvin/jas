@@ -116,8 +116,7 @@ enum instructions {
 
   INSTR_DUMMY,
 
-  // Directives:
-  INSTR_DIR_WRT_BUF, // A buffer_t to write to
+  INSTR_DIR_WRT_BUF,
 
   INSTR_DIR_LOCAL_LABEL,
   INSTR_DIR_GLOBAL_LABEL,

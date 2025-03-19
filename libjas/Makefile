@@ -18,7 +18,7 @@ libjas_debug.a: $(OBJ)
 	ar rcs $(BUILD)/$@ $^
 
 tabs.c: instructions.tbl
-	node compile.js $^ 
+	node ./scripts/compile.js $^ 
 
 # Individual object files rules:
 operand_cpp.o: CFLAGS = $(CFLAGS_COMMON) -std=c++11 -O0
