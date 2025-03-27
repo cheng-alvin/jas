@@ -90,9 +90,9 @@
   pop  | o        | -                | 0x58              | -                 | -
 
   in   | oi       | -                | 0xE5              | 0xE4              | pre_in_out
-  in   | ign      | -                | 0xED              | 0xEC              | pre_in_out
+  in   | -        | -                | 0xED              | 0xEC              | pre_in_out
 
-  out  | ign      | -                | 0xEF              | 0xEE              | pre_in_out
+  out  | -        | -                | 0xEF              | 0xEE              | pre_in_out
   out  | oi       | -                | 0xE7              | 0xE6              | pre_in_out
 
   clc  | zo       | -                | 0xF8              | -                 | no_operands
