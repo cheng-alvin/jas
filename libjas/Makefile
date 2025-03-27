@@ -8,13 +8,10 @@ OBJ = $(patsubst %.c, %.o, $(C_SRC)) operand_cpp.o
 BUILD = ../build
 
 libjas.a: $(OBJ) 
-	$(MAKE) tabs.c
 	ar rcs $(BUILD)/$@ $^ 
 
 libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -std=c99 -O0
-libjas_debug.a: tabs.c
 libjas_debug.a: $(OBJ)
-	$(MAKE) tabs.c
 	ar rcs $(BUILD)/$@ $^
 
 tabs.c: instructions.tbl

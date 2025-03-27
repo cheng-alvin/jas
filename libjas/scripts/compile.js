@@ -62,4 +62,5 @@ for (const [key, instr] of Object.entries(groups)) {
 const names = `char *instr_tab_names[] = {${namesList.join(', ')}};`
 const prepend = `#include "instruction.h" \n#include "pre.c"\n\n`;
 fs.writeFileSync('tabs.c', prepend + output + names);
+
 process.exit(0);

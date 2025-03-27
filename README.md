@@ -41,8 +41,7 @@ Jas is a very versitile library, it opens the door for generating low level asse
 [brainfry](https://github.com/cheng-alvin/brainfry) is a project I wrote during the weekend and is simple Brainf*ck compiler that compiled down to raw machine code, it performed well and only weighed in at a couple KiBs big, leading to immesely quick compile times. Jas severely simplified the development processs as anything written using LLVM or GCC backends would consist of long compile-times and huge binary sizes.
 
 ### 🏗️ Build and install
-The very first step in doing anything with jas is to build and link the library against your application code, since jas is a library. Ensure you have a C99 and C++17 compiler installed (Anything will do, preferably `clang`), and GNU make or something to run makefile while buidling. 
-
+The very first step in doing anything with jas is to build and link the library against your application code, since jas is a library. Ensure you have a C99 and C++17 compiler installed (Anything will do, preferably `clang`), a Javascript runner (such as `node`) for building the `instructions.tbl` file, as well as GNU `make` or something to run makefile for running the build script
 To obtain the Jas source files, run:
 ``` bash
 git clone https://github.com/cheng-alvin/jas/
