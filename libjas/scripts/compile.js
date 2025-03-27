@@ -35,6 +35,7 @@ let output = "";
 for (const [key, instr] of Object.entries(groups)) {
   output = output.concat(`instr_encode_table_t ${key.toString()}[] = {\n`)
   instr.forEach((group) => {
+    if (group[1] == "-") group[1] = "ign";
     const ident = `ENC_${group[1].toUpperCase()}`;
     if (group[2] === "-") group[2] = "NULL";
     const ext = group[2];
