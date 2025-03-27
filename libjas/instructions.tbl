@@ -16,6 +16,8 @@
 # `instruction.h` for more information. (Data sizes and omitted fields are auto-
 # matically computed by the compiler script)
 
+# NOTE: All tables should be in order of the `instructions` enumeration.
+
 # name | identity | opcode extension | opcode            | byte opcode       | pre 
 # -----------------------------------------------------------------------------------------------
   mov  | mr       | -                | 0x89              | 0x88              | same_operand_sizes

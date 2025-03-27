@@ -29,7 +29,9 @@ valid_data.forEach((line) => {
 function addQuotes(str) { return `{${str}}`; };
 function countComma(input) { return (input.match(/,/g) || []).length; }
 
+let namesList = [];
 let output = "";
+
 for (const [key, instr] of Object.entries(groups)) {
   output = output.concat(`instr_encode_table_t ${key.toString()}[] = {\n`)
   instr.forEach((group) => {
@@ -54,8 +56,10 @@ for (const [key, instr] of Object.entries(groups)) {
   });
 
   output = output.concat(`  INSTR_TAB_NULL,\n};\n`);
+  namesList.push(`"${key.toString().toLowerCase().replaceAll("_", "")}"`);
 }
 
-var prepend = `#include "instruction.h" \n#include "pre.c"\n\n`;
-fs.writeFileSync('tabs.c', prepend + output);
+const names = `char *instr_tab_names[] = {${namesList.join(', ')}};`
+const prepend = `#include "instruction.h" \n#include "pre.c"\n\n`;
+fs.writeFileSync('tabs.c', prepend + output + names);
 process.exit(0);
