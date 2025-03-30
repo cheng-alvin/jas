@@ -55,6 +55,7 @@ static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index, label_t *
   }
 
   int32_t rel_offset = label->address == 0 ? 0 : label->address - (buf->len + rel_sz - 1) - 1;
+  if (label->ext) rel_offset = 0;
   buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
 }
 
