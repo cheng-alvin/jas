@@ -27,6 +27,7 @@
 #define EXE_H
 
 #include "buffer.h"
+#include "codegen.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -53,7 +54,16 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
  * @param flags The flags of the section
  * @param off The pointer to the offset of the section
  * @param sect_sz The size of the section
- * @param label_size The size of the label table (if applicable)
+ * @param info Extra information (if applicable)
+ * @param label_sect The section of label table are located.
+ * @param ent_size The size of the entries in the content of this section.abort
+ *
+ * @note Please note the `ent_size` is used to depict the size of the
+ * entries of the section content, which could be applicable in some
+ * contexts such as a symbol *table* where each table has a certain size.
+ *
+ * @note Values of `label_sect`, `info` and `ent_size` are
+ * optional and can be set to 0 if not applicable for certain contexts.
  *
  * @return The buffer containing the section header
  *
@@ -65,7 +75,7 @@ buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_
  * @note The `off` pointer is used to keep track of the offset/size of the section
  * headers and helps the caller to keep track of the section headers.
  */
-buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uint64_t *off, uint64_t sect_sz, size_t label_size);
+buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uint64_t *off, uint64_t sect_sz, size_t info, uint32_t label_sect, uint64_t ent_size);
 
 /**
  * Function for generating a symbol table entry in the ELF object file.
@@ -84,5 +94,7 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
  * determine the section the symbol is in.
  */
 buffer_t exe_sym_ent(char *name, uint64_t sym_val, uint16_t sect_idx, buffer_t *strtab, uint8_t info);
+
+buffer_t exe_generate(struct codegen_ret ret);
 
 #endif

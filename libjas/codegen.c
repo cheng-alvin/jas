@@ -52,9 +52,11 @@ static instr_encode_table_t *get_instr_tabs(instruction_t *instr_arr, size_t arr
   }
   return tabs;
 }
+
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size,
                          instr_encode_table_t *tabs, bool is_pre, label_t *label_table, size_t label_table_size);
-buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count, enum codegen_output exec_mode) {
+struct codegen_ret
+codegen(enum modes mode, instruction_t **instr_input, size_t arr_count) {
   label_t *label_table = NULL;
   size_t label_table_size = 0;
 
@@ -82,84 +84,9 @@ buffer_t codegen(enum modes mode, instruction_t **instr_input, size_t arr_count,
   if (pre_ret != NULL) free(pre_ret);
 
   const buffer_t code = assemble(mode, instr_arr, arr_size, tabs, false, label_table, label_table_size);
-  free(tabs);
-  free(instr_arr);
+  FREE_ALL(label_table, tabs, instr_arr);
 
-  if (exec_mode == CODEGEN_RAW) return code;
-
-  if (mode != MODE_LONG) {
-    err("Only 64-bit ELF formats supported for object code generation.");
-    return BUF_NULL;
-  }
-
-  buffer_t strtab = BUF_NULL;
-  buffer_t symtab = BUF_NULL;
-  buffer_t out = BUF_NULL;
-
-  buffer_t header = exe_header(0x40, 5, 1);
-  buf_concat(&out, 1, &header);
-  free(header.data);
-
-  const uint8_t *pad = calloc(0x40, 1);
-  buf_write(&out, pad, 0x40); // Padding
-
-  /**
-   * @note
-   * The file offset of the section header table as seen with the expressions
-   * such as `6 * 0x40 + sizeof(shstrtab)` etc is shown as `6 * 0x40` because
-   * the ELF header is 64 bytes long and the section header table is 64 bytes
-   * EACH, given that there are 5 sections, the total size of the section header
-   * table is 256 bytes, hence the `6 * 0x40` expression.
-   *
-   * Also, the data offset must also be taken into account when calculating the
-   * file offset of the section header table. as we need some space for the data
-   * itself for the section.
-   */
-  size_t base = 6 * 0x40;
-
-  char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
-  buffer_t shstrtab_sect_head = exe_sect_header(1, 0x03, 0, &base, sizeof(shstrtab), NULL);
-
-  buf_write_byte(&strtab, 0);
-  buf_write(&symtab, pad, 0x18);
-
-  // Writing section name to symbol table
-  // For some reason the gcc compiler does not link if there's no filename.
-
-  const buffer_t section_ent = exe_sym_ent(".text", 0x0, 4, &strtab, (((1) << 4) + ((3) & 0xf)));
-  buf_concat(&symtab, 1, &section_ent);
-  free(section_ent.data);
-  free(pad);
-
-  for (size_t i = 0; i < label_table_size; i++) {
-    // Refer to https://www.sco.com/developers/devspecs/gabi41.pdf - Figure 4-16
-    uint8_t binding = 0;
-    if (label_table[i].exported || label_table[i].ext) binding = 1;
-
-    const buffer_t ent =
-        exe_sym_ent(label_table[i].name, label_table[i].address, 4, &strtab,
-                    (((binding) << 4) + ((0) & 0xf)));
-
-    buf_concat(&symtab, 1, &ent);
-    free(ent.data);
-  }
-
-  buffer_t strtab_sect_head = exe_sect_header(11, 0x03, 0x2, &base, strtab.len, NULL);
-  buffer_t symtab_sect_head = exe_sect_header(19, 0x02, 0x2, &base, symtab.len, label_table_size);
-  buffer_t text_sect_head = exe_sect_header(27, 0x01, 0x7, &base, code.len, NULL);
-
-  // Write and clean everything 🧹🧹
-
-  label_destroy_all(&label_table, &label_table_size);
-  buf_concat(&out, 4, &shstrtab_sect_head, &strtab_sect_head, &symtab_sect_head, &text_sect_head);
-  FREE_ALL(shstrtab_sect_head.data, strtab_sect_head.data, symtab_sect_head.data, text_sect_head.data);
-
-  buf_write(&out, (uint8_t *)shstrtab, sizeof(shstrtab));
-
-  buf_concat(&out, 3, &strtab, &symtab, &code);
-  FREE_ALL(strtab.data, symtab.data, code.data);
-
-  return out;
+  return (struct codegen_ret){.code = code, .label_table = label_table, .label_table_size = label_table_size};
 }
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size,
@@ -213,5 +140,5 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 }
 
 buffer_t assemble_instr(enum modes mode, instruction_t *instr) {
-  return codegen(mode, &instr, 1, CODEGEN_RAW);
+  return codegen(mode, &instr, 1).code;
 }
