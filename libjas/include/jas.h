@@ -50,6 +50,7 @@ namespace jas {
 #include "buffer.h"
 #include "codegen.h"
 #include "error.h"
+#include "exe.h"
 #include "instruction.h"
 #include "label.h"
 #include "operand.h"
