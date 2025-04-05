@@ -74,7 +74,7 @@ codegen(enum modes mode, instruction_t **instr_input, size_t arr_count) {
             &label_table, &label_table_size,
             instr_arr[i].operands[0].data,
             instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
-            instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
+            instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL, //!!
             0);
     }
   }
@@ -84,9 +84,10 @@ codegen(enum modes mode, instruction_t **instr_input, size_t arr_count) {
   if (pre_ret != NULL) free(pre_ret);
 
   const buffer_t code = assemble(mode, instr_arr, arr_size, tabs, false, label_table, label_table_size);
-  FREE_ALL(label_table, tabs, instr_arr);
+  FREE_ALL(tabs, instr_arr);
 
-  return (struct codegen_ret){.code = code, .label_table = label_table, .label_table_size = label_table_size};
+  const struct codegen_ret ret = {.code = code, .label_table = label_table, .label_table_size = label_table_size};
+  return ret;
 }
 
 static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size,
