@@ -94,10 +94,10 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
   *off += sect_sz;
 
   // Maybe padded:
-  buf_write(&ret, label_sect, 4);            // Section link
+  buf_write(&ret, &label_sect, 4);           // Section link
   buf_write(&ret, &(uint32_t){info + 1}, 4); // Section info
   buf_write(&ret, (uint8_t *)&long_pad, 8);  // Section address alignment
-  buf_write(&ret, ent_size, 8);              // Section entry size
+  buf_write(&ret, &ent_size, 8);              // Section entry size
 
   return ret;
 }
