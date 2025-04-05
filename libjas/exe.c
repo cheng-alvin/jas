@@ -94,10 +94,10 @@ buffer_t exe_sect_header(uint32_t str_offset, uint32_t type, uint64_t flags, uin
   *off += sect_sz;
 
   // Maybe padded:
-  buf_write(&ret, &label_sect, 4);           // Section link
-  buf_write(&ret, &(uint32_t){info + 1}, 4); // Section info
-  buf_write(&ret, (uint8_t *)&long_pad, 8);  // Section address alignment
-  buf_write(&ret, &ent_size, 8);              // Section entry size
+  buf_write(&ret, &label_sect, 4);          // Section link
+  buf_write(&ret, &info, 4);                // Section info
+  buf_write(&ret, (uint8_t *)&long_pad, 8); // Section address alignment
+  buf_write(&ret, &ent_size, 8);            // Section entry size
 
   return ret;
 }
@@ -123,7 +123,7 @@ buffer_t exe_generate(struct codegen_ret ret) {
   buffer_t result_buffer = BUF_NULL;
 
   /// @note header size of 0x40
-  size_t addr = 0x40;
+  size_t addr = 0x40 * 6;
 
   // Data has been HARD-CODED rather than messing around with
   // OOP and structs, we only need these for now, right? Add more.
@@ -151,13 +151,13 @@ buffer_t exe_generate(struct codegen_ret ret) {
   }
 
   buffer_t strtab_head = exe_sect_header(11, 3, 2, &addr, strtab.len, 0, 0, 0);
-  buffer_t symtab_head = exe_sect_header(19, 2, 2, &addr, symtab.len, 0, 0, 0);
+  buffer_t symtab_head = exe_sect_header(19, 2, 2, &addr, symtab.len, ret.label_table_size, 2, 24);
 
   const size_t info = ret.label_table_size + 1;
-  buffer_t text_head = exe_sect_header(27, 1, 7, &addr, ret.code.len, info, 3, 24);
+  buffer_t text_head = exe_sect_header(27, 1, 7, &addr, ret.code.len, 0, 0, 0);
 
   // Adjust the amount of sections as required.
-  const buffer_t header = exe_header(addr, 4, 3);
+  const buffer_t header = exe_header(0x40, 5, 1);
   buf_write(&result_buffer, header.data, header.len);
   buf_write(&result_buffer, p_padding, 0x40);
 
@@ -169,9 +169,9 @@ buffer_t exe_generate(struct codegen_ret ret) {
     }                                                                   \
   } while (0)
 
-  buf_concat(&result_buffer, 4, shstrtab_head, strtab_head, symtab_head, text_head);
+  buf_concat(&result_buffer, 4, &shstrtab_head, &strtab_head, &symtab_head, &text_head);
   buf_write(&result_buffer, shstrtab, sizeof(shstrtab));
-  buf_concat(&result_buffer, 3, strtab, symtab, ret.code);
+  buf_concat(&result_buffer, 3, &strtab, &symtab, &ret.code);
 
   free(p_padding);
 
@@ -183,4 +183,6 @@ buffer_t exe_generate(struct codegen_ret ret) {
   );
 
   // clang-format on
+
+  return result_buffer;
 }
