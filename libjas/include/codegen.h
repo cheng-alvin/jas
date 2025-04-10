@@ -31,9 +31,10 @@
 #include "mode.h"
 #include <stddef.h>
 
-enum codegen_output {
-  CODEGEN_RAW,
-  CODEGEN_ELF,
+struct codegen_ret {
+  buffer_t code;
+  label_t *label_table;
+  size_t label_table_size;
 };
 
 /**
@@ -44,14 +45,11 @@ enum codegen_output {
  * @param mode The mode to generate the machine code in
  * @param instr_input The instruction array to generate the code from
  * @param arr_count The size of the instruction array (in elements)
- * @param exec_mode The output mode of the codegen function
- * (i.e raw code or elf)
  *
- * @return The buffer struct containing the machine code
+ * @return The `codegen_ret` struct containing the machine code and meta-data.
  */
-buffer_t codegen(
-    enum modes mode, instruction_t **instr_input, size_t arr_count,
-    enum codegen_output exec_mode);
+struct codegen_ret codegen(
+    enum modes mode, instruction_t **instr_input, size_t arr_count);
 
 /**
  * Wrapper function for the `codegen` function that gives boiler-
