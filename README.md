@@ -14,7 +14,7 @@
 <p align="center" padding="10px"> Jas is a minimal, fast and simple zero-dependency assembler for the x64 family of processors, it comes packaged with tonnes of useful utlity functions targeted for implementing into compilers, operating systems and JIT interpreters and other types of utilites that need compilation to ELF or just a plain enocded buffer. </p>
 
 ### ⚡Quick start
-First of all, install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases) or build it from source with following the instructions below. Jas takes instructions in an array in a struct form defined in [instruction.h](https://github.com/cheng-alvin/jas/blob/0faa905be7cb1238796af46552b3271a11b4e2dd/libjas/instruction.h) and passes it to a `assemble_instr()` function which generates the the actual buffer of an array of `uint8_t` for you to process. (However, in this situation, we are using the `instr_gen()` function and operand generation macros to generate the instruction structure automatically without the janky C structure syntax)
+First of all, install/link against the binary releases [here](https://github.com/cheng-alvin/jas/releases)* or build it from source with following the instructions below. Jas takes instructions in an array in a struct form defined in [instruction.h](https://github.com/cheng-alvin/jas/blob/0faa905be7cb1238796af46552b3271a11b4e2dd/libjas/instruction.h) and passes it to a `assemble_instr()` function which generates the the actual buffer of an array of `uint8_t` for you to process. (However, in this situation, we are using the `instr_gen()` function and operand generation macros to generate the instruction structure automatically without the janky C structure syntax)
 ```c
 #include <jas.h>
 #include <stdlib.h>
@@ -72,3 +72,5 @@ All changes and reports are welcome, no matter how big or small your changes are
 
 ---
 *Made with love by Alvin / the Jas crew and contributors ❤️ .* 
+
+**Note:* Only releases tagged with `v1.x` provides binary releases or as indicated in release notes.
