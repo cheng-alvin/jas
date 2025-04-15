@@ -1,22 +1,21 @@
 Hey there!
 
-Thank you for choosing Jas as part of your development toolkit. We truly appreciate your interest
-and support. Whether you're using jas in a small script or a large-scale project, we're honored 
-to be a part of your workflow.
+Thank you for choosing Jas as part of your development toolkit. We truly appreciate
+your interest and support. Whether you're using jas in a small script or a large-
+scale project, we're honored to be a part of your workflow.
 
-Your feedback, questions, and bug reports help us make jas better with each release. If you've 
-taken the time to try it out, or even just explore what it can do ---—thank you.
+Your feedback, questions, and bug reports help us make jas better with each release.
 
-We hope jas makes your work easier, faster, and more efficient. If it does, consider sharing your
-experience or contributing back to the project in any way you can.
+We hope jas makes your work easier, faster, and more efficient. If it does, consider
+sharing your experience or contributing back to the project in any way you can.
 
 With gratitude,  
 - Alvin / the Jas crew and contributors ❤️
 
-For more information, please see https://github.com/cheng-alvin/jas or the attached `README.md` file
-
-If you should encounter any issues or difficulties, please don't hesitate to reach our to our 
-development community via the mailing list on: jas-assembler@google-groups.com
+For more information, please see https://github.com/cheng-alvin/jas or the attached 
+`README.md` file If you should encounter any issues or difficulties, please don't 
+hesitate to reach our to our development community via the mailing list on: 
+jas-assembler@google-groups.com
 
     ___
  __/_  `.  .-"""-.
