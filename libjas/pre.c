@@ -35,13 +35,6 @@ DEFINE_PRE_ENCODER(same_operand_sizes) {
   }
 }
 
-DEFINE_PRE_ENCODER(pre_imm) {
-  if (op_sizeof(op_arr[1].type) == 64) err("64-bit immediate is not allowed.");
-  const enum registers register_data = *(enum registers *)op_arr[0].data; // Get the register data
-  if (op_acc(register_data)) same_operand_sizes(op_arr, buf, instr_ref, mode);
-  if (instr_ref->ident == ENC_OI && !op_acc(register_data)) err("Invalid operand for this instruction.");
-}
-
 DEFINE_PRE_ENCODER(pre_jcc_no_byte) {
   if (op_sizeof(op_arr[0].type) == 8)
     err("Byte operands cannot be used with this instruction.");

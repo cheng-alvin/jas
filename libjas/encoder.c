@@ -209,7 +209,9 @@ DEFINE_ENCODER(mr) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_MR, label_ta
 DEFINE_ENCODER(rm) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_RM, label_table, label_table_size); }
 
 DEFINE_ENCODER(o) {
-  const size_t offset = (buf->len - 1) * sizeof(uint8_t);
+  enum registers register_data = *(enum registers *)op_arr[0].data;
+  if (!op_acc(register_data)) err("Invalid operand, unexpected accumulator used.");
+  size_t offset = (buf->len - 1) * sizeof(uint8_t);
   buf->data[offset] += reg_lookup_val(op_arr[0].data);
 }
 
