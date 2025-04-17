@@ -6,7 +6,8 @@ CFLAGS = $(CFLAGS_COMMON)
 
 .PHONY: all tests format clean debug pre_build
 
-all: pre_build $(BUILD)/lib/libjas.a $(BUILD)/jas debug
+all: pre_build $(BUILD)/lib/libjas.a 
+# all: pre_build $(BUILD)/lib/libjas.a $(BUILD)/jas debug
 debug: clean $(BUILD)/lib/libjas_debug.a $(BUILD)/jas_debug 
 
 format:
