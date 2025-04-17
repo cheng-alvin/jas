@@ -36,21 +36,21 @@ uint8_t op_modrm_mode(operand_t input) {
   if (reg_lookup_val(input.data) == 5 && !reg_needs_rex(deref_reg)) {
     if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP) {
       if (op_r(input.type))
-        err("RIP, EIP and IP cannot be used as direct operands.");
+        err("`rip`, `eip` or `ip` cannot be directly referenced");
       return OP_MODRM_INDIRECT;
     } else if (input.offset == 0)
-      return OP_MODRM_DISP8; // Assume to be Base pointer reg
+      return OP_MODRM_DISP8;
   }
 
   if (op_m(input.type) && input.offset == 0)
     return OP_MODRM_INDIRECT;
 
   if (input.offset != 0) {
-    if ((intmax_t)input.offset > INT32_MAX) err("Displacement value is too large.");
-    if ((intmax_t)input.offset > INT8_MAX) // Size of a `uint8_t`
+    if ((intmax_t)input.offset > INT32_MAX) err("displacement too large");
+    if ((intmax_t)input.offset > INT8_MAX)
       return OP_MODRM_DISP32;
 
-    return OP_MODRM_DISP8; // Revert to 8-bit displacement when extra space is not needed
+    return OP_MODRM_DISP8;
   }
 
   return OP_MODRM_REG;
@@ -77,38 +77,6 @@ uint8_t *op_write_opcode(operand_t *op_arr, instr_encode_table_t *instr_ref) {
 }
 
 void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
-  /**
-   * @brief
-   * The 0x66 and 0x67 hex prefixes are the operand and address size
-   * overrides respectively. They are used to change the size of the operand
-   * or address in the instruction. Basically, if there's no prefix, the op-
-   * erand as well as the address size is the same as the mode's bit size.
-   * So long mode is 64 and so on.
-   *
-   * However, the override prefixes can change the size of the operand or
-   * address to 16 bits in protected mode, or 32 bits in real mode. This is
-   * useful for instructions that require a specific operand size.
-   *
-   * mode | size    | output
-   * -----------------------------
-   * real | 32      | 0x66
-   * real | 32 addr | 0x67
-   * prot | 16      | 0x66
-   * prot | 16 addr | 0x67
-   * long | 16      | 0x66
-   * long | 32 addr | 0x67
-   * long | 16 addr | 0x67 + 0x66
-   *
-   * long | 64      | REX.W
-   *
-   * Additional: Register REX prefix for REX.B
-   *
-   * @note 64-bit operands are not allowed in any modes other than long mode
-   * hence, if a 64-bit operand is present throw an error if other than
-   * long mode
-   *
-   */
-
   uint8_t already_written = 0;
   uint8_t rex = REX_DEFAULT;
 
@@ -144,14 +112,11 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
 
     case 64:
       if (mode != MODE_LONG) {
-        err("64-bit operands are prohibited in modes other than long mode.");
+        err("64-bit operands not allowed");
         break;
       }
 
       rex |= REX_W;
-      break;
-
-    default:
       break;
     }
   }
@@ -160,11 +125,34 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
     buf_write_byte(buf, rex);
 }
 
-operand_t op_construct_operand(enum operands type, size_t offset, void *data, char *label) {
-  return (operand_t){
-      .type = type,
-      .offset = offset,
-      .data = data,
-      .label = label,
-  };
-}
+/**
+ * @brief
+ * The 0x66 and 0x67 hex prefixes are the operand and address size
+ * overrides respectively. They are used to change the size of the operand
+ * or address in the instruction. Basically, if there's no prefix, the op-
+ * erand as well as the address size is the same as the mode's bit size.
+ * So long mode is 64 and so on.
+ *
+ * However, the override prefixes can change the size of the operand or
+ * address to 16 bits in protected mode, or 32 bits in real mode. This is
+ * useful for instructions that require a specific operand size.
+ *
+ * mode | size    | output
+ * -----------------------------
+ * real | 32      | 0x66
+ * real | 32 addr | 0x67
+ * prot | 16      | 0x66
+ * prot | 16 addr | 0x67
+ * long | 16      | 0x66
+ * long | 32 addr | 0x67
+ * long | 16 addr | 0x67 + 0x66
+ *
+ * long | 64      | REX.W
+ *
+ * Additional: Register REX prefix for REX.B
+ *
+ * @note 64-bit operands are not allowed in any modes other than long mode
+ * hence, if a 64-bit operand is present throw an error if other than
+ * long mode
+ *
+ */
