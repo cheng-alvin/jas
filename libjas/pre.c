@@ -4,6 +4,12 @@
 #include "operand.h"
 #include "register.h"
 
+// Notes on refactoring of these:
+// - Only MI and I encoders need to have different operand sizes.
+// The rules for previous `same_operand_sizes` can be applied to
+// MR and similar encoders, check `mr_rm_common`.
+//
+
 #define DEFINE_PRE_ENCODER(name) \
   static void name(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
 
@@ -19,19 +25,6 @@ DEFINE_PRE_ENCODER(no_operands) {
   for (uint8_t i = 0; i < 4; i++) {
     if (op_arr[i].type != OP_NULL)
       err("This encoder identity does not support any operands.");
-  }
-}
-
-DEFINE_PRE_ENCODER(same_operand_sizes) {
-  const uint8_t ref = op_sizeof(op_arr[0].type);
-
-  for (uint8_t i = 0; i < 4; i++) {
-    if (op_arr[i].type == OP_NULL) continue;
-
-    if (op_sizeof(op_arr[i].type) != ref) {
-      err("Invalid operand sizes.");
-      break;
-    }
   }
 }
 
