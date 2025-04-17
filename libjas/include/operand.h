@@ -177,23 +177,6 @@ uint8_t op_modrm_mode(operand_t input);
 uint8_t op_sizeof(enum operands input);
 
 /**
- * Function for constructing an operand struct with the given
- * type, offset and data. Therefore, prevents the temptation
- * to make things difficult by using the struct initializer
- * as well as mangling around with void pointers.
- *
- * @param type The type of the operand
- * @param offset The offset of the operand
- * @param data The data of the operand
- * @param label The name of the referenced label (if applicable)
- * @return The constructed operand struct
- *
- * @note Operands and parameter types are based on `operand_t`
- * @see `operand_t`
- */
-operand_t op_construct_operand(enum operands type, size_t offset, void *data, char *label);
-
-/**
  * Function for returning the opcode of the instruction based
  * on the instruction encoder table provided in the function
  * arguments as well as if a byte opcode is provided in the

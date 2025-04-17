@@ -99,7 +99,7 @@ instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
       const size_t label_name_size = strlen(lab) + 1;
       char *copied_name = malloc(label_name_size);
       strcpy(copied_name, lab);
-      
+
       label = copied_name;
 
       // clang-format off
@@ -118,7 +118,8 @@ instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
       alloc_operand_data(temp_reg); /* Note braces as macro expands */
     }
     const size_t off = va_arg(args, size_t);
-    operands[i] = op_construct_operand(type, off, data, label);
+    operands[i] =
+        (operand_t){.type = type, .offset = off, .data = data, .label = label};
   }
 
   va_end(args);
@@ -146,7 +147,13 @@ instruction_t *instr_write_bytes(size_t data_sz, ...) {
   memcpy(buffer_ptr, &data, sizeof(buffer_t));
 
   operand_t *operands = calloc(4, sizeof(operand_t));
-  operands[0] = op_construct_operand(OP_MISC, 0, buffer_ptr, NULL);
+  operands[0] =
+      (operand_t){
+          .type = (enum operands)OP_MISC,
+          .offset = 0,
+          .data = buffer_ptr,
+          .label = NULL,
+      };
 
   *instr_ret = (instruction_t){
       .instr = INSTR_DIR_WRT_BUF,
