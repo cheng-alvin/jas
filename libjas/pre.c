@@ -41,17 +41,6 @@ DEFINE_PRE_ENCODER(pre_small_operands) {
     err("Invalid operand size for MOVZX/MOVSX instruction");
 }
 
-DEFINE_PRE_ENCODER(pre_cmov) {
-  for (uint8_t i = 0; i < 4; i++) {
-    if (op_arr[i].type == OP_NULL) break;
-
-    if (op_sizeof(op_arr[i].type) == 8) {
-      err("Byte operands cannot be used with the CMOV instruction.");
-      break;
-    }
-  }
-}
-
 DEFINE_PRE_ENCODER(pre_in_out) {
   const enum registers reg = *(enum registers *)op_arr[0].data;
   if (reg != REG_AL && reg != REG_AX && reg != REG_EAX)
