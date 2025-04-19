@@ -21,13 +21,6 @@ DEFINE_PRE_ENCODER(pre_lea) {
     err("Byte operands cannot be used with the LEA instruction.");
 }
 
-DEFINE_PRE_ENCODER(no_operands) {
-  for (uint8_t i = 0; i < 4; i++) {
-    if (op_arr[i].type != OP_NULL)
-      err("This encoder identity does not support any operands.");
-  }
-}
-
 DEFINE_PRE_ENCODER(pre_jcc_no_byte) {
   if (op_sizeof(op_arr[0].type) == 8)
     err("Byte operands cannot be used with this instruction.");

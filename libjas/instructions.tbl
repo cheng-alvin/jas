@@ -74,7 +74,7 @@
   call | d        | -                | 0xE8              | 0xEB              | -
   call | m        | 2                | 0xFF              | -                 | -
 
-  ret  | zo       | -                | 0xC3              | -                 | no_operands
+  ret  | zo       | -                | 0xC3              | -                 | -
   ret  | i        | -                | 0xC2              | -                 | pre_ret
 
   cmp  | rm       | -                | 0x3B              | 0x3A              | -
@@ -95,12 +95,12 @@
   out  | -        | -                | 0xEF              | 0xEE              | pre_in_out
   out  | oi       | -                | 0xE7              | 0xE6              | pre_in_out
 
-  clc  | zo       | -                | 0xF8              | -                 | no_operands
-  stc  | zo       | -                | 0xF9              | -                 | no_operands
-  cli  | zo       | -                | 0xFA              | -                 | no_operands
-  sti  | zo       | -                | 0xFB              | -                 | no_operands
-  nop  | zo       | -                | 0x90              | -                 | no_operands
-  hlt  | zo       | -                | 0xF4              | -                 | no_operands
+  clc  | zo       | -                | 0xF8              | -                 | -
+  stc  | zo       | -                | 0xF9              | -                 | -
+  cli  | zo       | -                | 0xFA              | -                 | -
+  sti  | zo       | -                | 0xFB              | -                 | -
+  nop  | zo       | -                | 0x90              | -                 | -
+  hlt  | zo       | -                | 0xF4              | -                 | -
   _int | i        | -                | 0xCD              | -                 | pre_int
 
   xchg | o        | -                | 0x90              | -                 | -
@@ -108,7 +108,7 @@
   xchg | rm       | -                | 0x87              | 0x86              | -
 
 # --------------------------------------------------------------------------------------------------
-  syscall | zo       | -                | 0x0f, 0x05         | -                 | no_operands
+  syscall | zo       | -                | 0x0f, 0x05         | -                 | -
   movzx   | rm       | -                | 0x0F, 0xB7        | 0x0F, 0xB6        | pre_small_operands
   movsx   | rm       | -                | 0x0F, 0xBF        | 0x0F, 0xBE        | pre_small_operands  
   bswap   | o        | -                | 0x0f, 0xC8        | -                 | -

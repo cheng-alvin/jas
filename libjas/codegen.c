@@ -133,7 +133,11 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
     buf_write(&buf, op_write_opcode(current.operands, &ref), opcode_sz);
     const encoder_t function_ptr = enc_lookup(ref.ident);
 
-    if (function_ptr == NULL) continue;
+    if (function_ptr == NULL) {
+      if (instr_arr[i].operands[0].type != OP_NULL)
+        err("instruction unsupported or improper usage");
+      continue;
+    }
     function_ptr(current.operands, &buf, &ref, mode, label_table, label_table_size);
   }
 
