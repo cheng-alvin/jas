@@ -4,48 +4,14 @@
 #include "operand.h"
 #include "register.h"
 
+// Notes on refactoring of these:
+// - Only MI and I encoders need to have different operand sizes.
+// The rules for previous `same_operand_sizes` can be applied to
+// MR and similar encoders, check `mr_rm_common`.
+//
+
 #define DEFINE_PRE_ENCODER(name) \
   static void name(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
-
-DEFINE_PRE_ENCODER(pre_lea) {
-  if (op_m(op_arr[0].type) || op_r(op_arr[1].type))
-    err("Invalid operands type for LEA instruction.");
-
-  if (op_sizeof(op_arr[0].type) == 8)
-    err("Byte operands cannot be used with the LEA instruction.");
-}
-
-DEFINE_PRE_ENCODER(no_operands) {
-  for (uint8_t i = 0; i < 4; i++) {
-    if (op_arr[i].type != OP_NULL)
-      err("This encoder identity does not support any operands.");
-  }
-}
-
-DEFINE_PRE_ENCODER(same_operand_sizes) {
-  const uint8_t ref = op_sizeof(op_arr[0].type);
-
-  for (uint8_t i = 0; i < 4; i++) {
-    if (op_arr[i].type == OP_NULL) continue;
-
-    if (op_sizeof(op_arr[i].type) != ref) {
-      err("Invalid operand sizes.");
-      break;
-    }
-  }
-}
-
-DEFINE_PRE_ENCODER(pre_imm) {
-  if (op_sizeof(op_arr[1].type) == 64) err("64-bit immediate is not allowed.");
-  const enum registers register_data = *(enum registers *)op_arr[0].data; // Get the register data
-  if (op_acc(register_data)) same_operand_sizes(op_arr, buf, instr_ref, mode);
-  if (instr_ref->ident == ENC_OI && !op_acc(register_data)) err("Invalid operand for this instruction.");
-}
-
-DEFINE_PRE_ENCODER(pre_jcc_no_byte) {
-  if (op_sizeof(op_arr[0].type) == 8)
-    err("Byte operands cannot be used with this instruction.");
-}
 
 DEFINE_PRE_ENCODER(pre_ret) {
   if (op_sizeof(op_arr[0].type) != 16)
@@ -60,17 +26,6 @@ DEFINE_PRE_ENCODER(pre_int) {
 DEFINE_PRE_ENCODER(pre_small_operands) {
   if (op_sizeof(op_arr[1].type) < 16)
     err("Invalid operand size for MOVZX/MOVSX instruction");
-}
-
-DEFINE_PRE_ENCODER(pre_cmov) {
-  for (uint8_t i = 0; i < 4; i++) {
-    if (op_arr[i].type == OP_NULL) break;
-
-    if (op_sizeof(op_arr[i].type) == 8) {
-      err("Byte operands cannot be used with the CMOV instruction.");
-      break;
-    }
-  }
 }
 
 DEFINE_PRE_ENCODER(pre_in_out) {

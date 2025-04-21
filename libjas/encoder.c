@@ -72,13 +72,13 @@ static void write_offset(uint8_t mode, buffer_t *buf, operand_t *op_arr, uint8_t
 
 DEFINE_ENCODER(i) {
   //  Error checking - A register only & only 8, 16, 32 bit-sized operands
-  if (reg_lookup_val(op_arr[0].data) != 0 && !reg_needs_rex(*(enum registers *)op_arr[0].data)) {
+  if (!op_acc(op_arr[0].type) || op_sizeof(op_arr[0].type) == 64) {
     err("Instruction identity must use an \"A\" register!");
     return;
   }
 
   if (op_arr[1].type == OP_IMM64) {
-    err("Invalid immediate value.");
+    err("operand type mismatch.");
     return;
   }
 
@@ -106,14 +106,12 @@ DEFINE_ENCODER(m) {
   write_offset(mod, buf, op_arr, 0);
 }
 
-/**
- * @note - Internal documentation (31th Dec 2024 - Last day of '24 🎉)
- * This function will be used to write a number (aka a immediate value)
- * to the buffer, which is considered a common ground for many encoder
- * identities, such as `mi`, `oi` etc that also require a immediate value
- * to be written to the buffer for the encoding.
- */
 static void i_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode) {
+  if (op_arr[1].type == OP_IMM64) {
+    err("operand type mismatch.");
+    return;
+  }
+
   const uint8_t imm_size = op_sizeof(op_arr[1].type) / 8;
   uint8_t *imm = (uint8_t *)op_arr[1].data;
   buf_write(buf, imm, imm_size);
@@ -142,14 +140,14 @@ DEFINE_ENCODER(d) {
 DEFINE_ENCODER(mi) {
   m(op_arr, buf, instr_ref, mode, label_table, label_table_size);
   i_common(op_arr, buf, instr_ref, mode);
-
-  if (op_arr[1].type == OP_IMM64) {
-    err("Invalid immediate value.");
-    return;
-  }
 }
 
 static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, enum enc_ident ident, label_t *label_table, size_t label_table_size) {
+  if (op_arr[0].type != op_arr[1].type) {
+    err("operand type mismatch.");
+    return;
+  }
+
   /**
    * @brief This opcode identity is a "Common ground for MR and RM"
    * Since rm and mr just has to be flipped, we can just use a boolean
@@ -209,7 +207,17 @@ DEFINE_ENCODER(mr) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_MR, label_ta
 DEFINE_ENCODER(rm) { rm_mr_common(op_arr, buf, instr_ref, mode, ENC_RM, label_table, label_table_size); }
 
 DEFINE_ENCODER(o) {
-  const size_t offset = (buf->len - 1) * sizeof(uint8_t);
+  for (uint8_t i = 1; i < 4; i++) {
+    if (op_arr[i].type == OP_NULL) break;
+    if (op_sizeof(op_arr[i].type) != op_sizeof(op_arr[0].type)) {
+      err("operand type mismatch.");
+      return;
+    }
+  }
+
+  enum registers register_data = *(enum registers *)op_arr[0].data;
+  if (!op_acc(register_data)) err("Invalid operand, unexpected accumulator used.");
+  size_t offset = (buf->len - 1) * sizeof(uint8_t);
   buf->data[offset] += reg_lookup_val(op_arr[0].data);
 }
 
