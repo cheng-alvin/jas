@@ -47,15 +47,17 @@
  */
 static void ref_label(operand_t *op_arr, buffer_t *buf, uint8_t index, label_t *label_table, size_t label_table_size) {
   const uint8_t rel_sz = op_sizeof(op_arr[index].type) / 8;
-
   label_t *label = label_lookup(&label_table, &label_table_size, (char *)op_arr[index].label);
-  if (!label) {
-    err("Referenced label was not found.");
-    return;
-  }
+
+  if (rel_sz > 32) goto label_error;
+  if (label == NULL) goto label_error;
 
   int32_t rel_offset = label->address == 0 ? 0 : label->address - (buf->len + rel_sz - 1) - 1;
   buf_write(buf, (uint8_t *)&rel_offset, rel_sz);
+  return;
+
+label_error:
+  err("invalid label");
 }
 
 static void write_offset(uint8_t mode, buffer_t *buf, operand_t *op_arr, uint8_t index) {
