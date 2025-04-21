@@ -36,14 +36,6 @@ Test(operand, write_prefix) {
   free(buf.data);
 }
 
-Test(operand, construct_operand) {
-  const operand_t byte = op_construct_operand(OP_IMM8, 0, &(unsigned char){0xFF}, "");
-
-  assert_eq(byte.type, OP_IMM8);
-  assert_eq(byte.offset, 0);
-  assert_eq(*(unsigned char *)byte.data, 0xFF);
-}
-
 #define sample_tab instr_table[1] /* Corresponds to the `mov` table */
 Test(operand, ident_identify) {
   const enum operands input[] = {OP_R8, OP_R16, OP_NULL, OP_NULL};
@@ -51,6 +43,25 @@ Test(operand, ident_identify) {
 
   assert_eq(op_ident_identify(input, sample_tab), ENC_MR);
   assert_eq(op_ident_identify(input2, sample_tab), ENC_RM);
+}
+
+// Temporary function since the removal of `op_construct_operand` from the
+// real codebase in commit number c77ffeca71222c8e837fd01348aafcc484d5adf6.
+// Please see the commit message of 6422cd1f5124f34c7e2575282a6df1046ca9efaa
+// for more information.
+
+// Please also see the commit message of 964d162c67f60daee870ade242439097425eda57
+// for more information regarding the refactoring works of the operand.c
+// file and the justification for the removal of  `op_construct_operand`.
+
+operand_t
+op_construct_operand(enum operands type, size_t offset, void *data, char *label) {
+  return (operand_t){
+      .type = type,
+      .offset = offset,
+      .data = data,
+      .label = label,
+  };
 }
 
 Test(operand, modrm_mode) {

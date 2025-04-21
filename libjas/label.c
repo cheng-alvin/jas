@@ -88,7 +88,13 @@ instruction_t *label_gen(char *name, enum label_type type) {
   strcpy(copied_name, name);
 
   operand_t *operands = calloc(4, sizeof(operand_t));
-  operands[0] = op_construct_operand(OP_MISC, 0, copied_name, NULL);
+  operands[0] =
+      (operand_t){
+          .type = OP_MISC,
+          .offset = 0,
+          .data = copied_name,
+          .label = NULL,
+      };
 
   instruction_t *instr_ret = malloc(sizeof(instruction_t));
   *instr_ret = (instruction_t){
