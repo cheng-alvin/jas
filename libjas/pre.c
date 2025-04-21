@@ -13,19 +13,6 @@
 #define DEFINE_PRE_ENCODER(name) \
   static void name(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode)
 
-DEFINE_PRE_ENCODER(pre_lea) {
-  if (op_m(op_arr[0].type) || op_r(op_arr[1].type))
-    err("Invalid operands type for LEA instruction.");
-
-  if (op_sizeof(op_arr[0].type) == 8)
-    err("Byte operands cannot be used with the LEA instruction.");
-}
-
-DEFINE_PRE_ENCODER(pre_jcc_no_byte) {
-  if (op_sizeof(op_arr[0].type) == 8)
-    err("Byte operands cannot be used with this instruction.");
-}
-
 DEFINE_PRE_ENCODER(pre_ret) {
   if (op_sizeof(op_arr[0].type) != 16)
     err("Other operand sizes cannot be used with this instruction.");

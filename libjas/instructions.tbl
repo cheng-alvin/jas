@@ -67,8 +67,8 @@
   je   | d        | -                | 0x0f, 0x84        | 0x74              | -
   jnz  | d        | -                | 0x0f, 0x85        | 0x75              | -
 
-  jne  | d        | -                | 0x0f, 0x85        | -                 | pre_jcc_no_byte
-  jz   | d        | -                | 0x0f, 0x84        | -                 | pre_jcc_no_byte
+  jne  | d        | -                | 0x0f, 0x85        | -                 | -
+  jz   | d        | -                | 0x0f, 0x84        | -                 | -
 
 
   call | d        | -                | 0xE8              | 0xEB              | -
