@@ -106,7 +106,7 @@
   xchg | rm       | -                | 0x87              | 0x86              | -
 
 # --------------------------------------------------------------------------------------------------
-  syscall | zo       | -                | 0x0f, 0x05         | -                 | -
+  syscall | zo       | -                | 0x0f, 0x05        | -                 | -
   movzx   | rm       | -                | 0x0F, 0xB7        | 0x0F, 0xB6        | pre_small_operands
   movsx   | rm       | -                | 0x0F, 0xBF        | 0x0F, 0xBE        | pre_small_operands  
   bswap   | o        | -                | 0x0f, 0xC8        | -                 | -

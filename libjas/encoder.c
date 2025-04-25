@@ -73,12 +73,6 @@ static void write_offset(uint8_t mode, buffer_t *buf, operand_t *op_arr, uint8_t
 }
 
 DEFINE_ENCODER(i) {
-  //  Error checking - A register only & only 8, 16, 32 bit-sized operands
-  if (!op_acc(op_arr[0].type) || op_sizeof(op_arr[0].type) == 64) {
-    err("Instruction identity must use an \"A\" register!");
-    return;
-  }
-
   if (op_arr[1].type == OP_IMM64) {
     err("operand type mismatch.");
     return;
