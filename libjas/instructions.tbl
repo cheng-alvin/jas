@@ -99,7 +99,7 @@
   sti  | zo       | -                | 0xFB              | -                 | -
   nop  | zo       | -                | 0x90              | -                 | -
   hlt  | zo       | -                | 0xF4              | -                 | -
-  _int | i        | -                | 0xCD              | -                 | pre_int
+  _int | i        | -                | -                 | 0xCD              | -
 
   xchg | o        | -                | 0x90              | -                 | -
   xchg | mr       | -                | 0x87              | 0x86              | -
