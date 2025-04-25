@@ -145,11 +145,6 @@ DEFINE_ENCODER(mi) {
 }
 
 static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, enum enc_ident ident, label_t *label_table, size_t label_table_size) {
-  if (op_arr[0].type != op_arr[1].type) {
-    err("operand type mismatch.");
-    return;
-  }
-
   /**
    * @brief This opcode identity is a "Common ground for MR and RM"
    * Since rm and mr just has to be flipped, we can just use a boolean
