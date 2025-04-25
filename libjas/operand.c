@@ -66,12 +66,9 @@ uint8_t op_sizeof(enum operands input) {
 }
 
 uint8_t *op_write_opcode(operand_t *op_arr, instr_encode_table_t *instr_ref) {
-  for (uint8_t i = 0; i < 4; i++) {
-    if (op_arr[i].type == OP_NULL) break;
-    if (op_byte(op_arr[i].type)) {
-      if (instr_ref->byte_opcode_size == 0) goto op_e;
-      return instr_ref->byte_instr_opcode;
-    }
+  if (op_byte(op_arr[0].type)) {
+    if (instr_ref->byte_opcode_size == 0) goto op_e;
+    return instr_ref->byte_instr_opcode;
   }
   if (!instr_ref->opcode_size) goto op_e;
   return instr_ref->opcode;
