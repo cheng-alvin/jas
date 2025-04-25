@@ -18,11 +18,6 @@ DEFINE_PRE_ENCODER(pre_ret) {
     err("Other operand sizes cannot be used with this instruction.");
 }
 
-DEFINE_PRE_ENCODER(pre_int) {
-  if (op_sizeof(op_arr[0].type) != 8)
-    err("Invalid operand size for INT instruction.");
-}
-
 DEFINE_PRE_ENCODER(pre_small_operands) {
   if (op_sizeof(op_arr[1].type) < 16)
     err("Invalid operand size for MOVZX/MOVSX instruction");

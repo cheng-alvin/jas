@@ -39,7 +39,7 @@ for (const [key, instr] of Object.entries(groups)) {
     const ident = `ENC_${group[1].toUpperCase()}`;
     if (group[2] === "-") group[2] = "NULL";
     const ext = group[2];
-    const opcode = addQuotes(group[3]);
+    const opcode = addQuotes(group[3] == "-" ? "NULL" : group[3]);
     const opcode_size = countComma(group[3]) + 1;
     const byte_opcode = addQuotes(group[4] == "-" ? "NULL" : group[4]);
     let byte_opcode_size = countComma(group[4]) + 1;
