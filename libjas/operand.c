@@ -66,17 +66,19 @@ uint8_t op_sizeof(enum operands input) {
 }
 
 uint8_t *op_write_opcode(operand_t *op_arr, instr_encode_table_t *instr_ref) {
-  if (instr_ref->byte_opcode_size > 0) return instr_ref->opcode;
-
   for (uint8_t i = 0; i < 4; i++) {
     if (op_arr[i].type == OP_NULL) break;
     if (op_byte(op_arr[i].type)) {
-      if (!instr_ref->byte_instr_opcode) err("invalid operands");
+      if (instr_ref->byte_opcode_size == 0) goto op_e;
       return instr_ref->byte_instr_opcode;
     }
   }
-
+  if (!instr_ref->opcode_size) goto op_e;
   return instr_ref->opcode;
+
+op_e:
+  err("operand type mismatch");
+  return NULL;
 }
 
 void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {

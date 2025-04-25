@@ -75,7 +75,7 @@
   call | m        | 2                | 0xFF              | -                 | -
 
   ret  | zo       | -                | 0xC3              | -                 | -
-  ret  | i        | -                | 0xC2              | -                 | pre_ret
+  ret  | i        | -                | 0xC2              | -                 | -
 
   cmp  | rm       | -                | 0x3B              | 0x3A              | -
   cmp  | mr       | -                | 0x39              | 0x38              | -
@@ -89,11 +89,9 @@
   pop  | m        | 0                | 0x8F              | -                 | -
   pop  | o        | -                | 0x58              | -                 | -
 
-  in   | oi       | -                | 0xE5              | 0xE4              | pre_in_out
-  in   | -        | -                | 0xED              | 0xEC              | pre_in_out
+  in   | oi       | -                | -                 | 0xE4              | -
 
-  out  | -        | -                | 0xEF              | 0xEE              | pre_in_out
-  out  | oi       | -                | 0xE7              | 0xE6              | pre_in_out
+  out  | oi       | -                | -                 | 0xE6              | -
 
   clc  | zo       | -                | 0xF8              | -                 | -
   stc  | zo       | -                | 0xF9              | -                 | -
@@ -101,7 +99,7 @@
   sti  | zo       | -                | 0xFB              | -                 | -
   nop  | zo       | -                | 0x90              | -                 | -
   hlt  | zo       | -                | 0xF4              | -                 | -
-  _int | i        | -                | 0xCD              | -                 | pre_int
+  _int | i        | -                | -                 | 0xCD              | -
 
   xchg | o        | -                | 0x90              | -                 | -
   xchg | mr       | -                | 0x87              | 0x86              | -
