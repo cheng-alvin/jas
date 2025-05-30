@@ -89,6 +89,8 @@
   pop  | m        | 0                | 0x8F              | -                 | -
   pop  | o        | -                | 0x58              | -                 | -
 
+# Issue with `in` and `out`!!!! Note the non-standard imm8, AL/AX/EAX identity 
+
   in   | oi       | -                | -                 | 0xE4              | -
 
   out  | oi       | -                | -                 | 0xE6              | -

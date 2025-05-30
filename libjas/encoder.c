@@ -138,6 +138,9 @@ DEFINE_ENCODER(mi) {
   i_common(op_arr, buf, instr_ref, mode);
 }
 
+// Note if an operand wants to use a RIP relative address, or a label,
+// it must be listed as such with the label but into `.label`
+
 static void rm_mr_common(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, enum enc_ident ident, label_t *label_table, size_t label_table_size) {
   /**
    * @brief This opcode identity is a "Common ground for MR and RM"
