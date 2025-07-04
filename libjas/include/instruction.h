@@ -33,22 +33,17 @@
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
 
-/**
- * Lookup macro for checking if an instruction is a directive.
- * Directives are instructions that are not executed by the CPU
- * but are used to provide information to the assembler.
- *
- * @param i The instruction to check
- * @example if (INSTR_DIRECTIVE(INSTR_MOV))
- *
- * @note - Internal
- * Please update this macro if more directives and/or instructions
- * are added/supported in this enum list (In the future).
- */
-#define INSTR_DIRECTIVE(i) ((uint8_t)i > (uint8_t)INSTR_DUMMY)
+enum instr_directives {
+  DIR_DEFINE_BYTES,
+
+  DIR_LOCAL_LABEL,
+  DIR_GLOBAL_LABEL,
+  DIR_EXTERN_LABEL,
+}
 
 enum instructions {
-  INSTR_NOTHING, /* Note naming conflict below `INSTR_NULL` */
+  INSTR_NULL,
+
   INSTR_MOV,
   INSTR_LEA,
   INSTR_ADD,
@@ -113,14 +108,6 @@ enum instructions {
   INSTR_CMOVPO,
   INSTR_CMOVS,
   INSTR_CMOVZ,
-
-  INSTR_DUMMY,
-
-  INSTR_DIR_WRT_BUF,
-
-  INSTR_DIR_LOCAL_LABEL,
-  INSTR_DIR_GLOBAL_LABEL,
-  INSTR_DIR_EXTERN_LABEL,
 };
 
 // Alias type for the encoder `encoder_t` function pointer. - See `encoder.h`
@@ -142,6 +129,16 @@ struct instr_encode_table {
  */
 extern instr_encode_table_t *instr_table[];
 
+typedef struct instr_generic {
+  enum { INSTR, DIRECTIVE } type; /* Type of assembler input */
+
+  // Union - Document later
+  union {
+    struct instruction instr;
+    struct instr_directive dir;
+  };
+}
+
 typedef struct instruction {
   enum instructions instr; /* Type of instruction */
   operand_t *operands;     /* Operands of the instruction */
@@ -157,14 +154,6 @@ typedef struct instruction {
     .pre = NULL,                 \
     .byte_opcode_size = NULL,    \
   }
-
-#define INSTR_NULL \
-  (instruction_t) { .instr = INSTR_NOTHING, .operands = NULL }
-
-// Macro for checking if the instruction is a label and shall be handled
-#define IS_LABEL(x)                                     \
-  (uint8_t)x.instr >= (uint8_t)INSTR_DIR_LOCAL_LABEL && \
-      (uint8_t)x.instr <= (uint8_t)INSTR_DIR_EXTERN_LABEL
 
 /**
  * Function for getting the instruction table based on the instruction
