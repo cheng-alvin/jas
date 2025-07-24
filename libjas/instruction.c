@@ -49,7 +49,7 @@ instr_encode_table_t *instr_table[] =
 #define CURR_TABLE instr_table[instr.instr][j]
 
 instr_encode_table_t instr_get_tab(instruction_t instr) {
-  if (instr.instr == INSTR_NOTHING && instr.operands == NULL) return INSTR_TAB_NULL;
+  if (instr.instr == INSTR_NULL && instr.operands == NULL) return INSTR_TAB_NULL;
   if (INSTR_DIRECTIVE(instr.instr)) return INSTR_TAB_NULL; // aka empty
   const enum operands operand_list[4] = {
       instr.operands[0].type, instr.operands[1].type,
@@ -155,6 +155,7 @@ instruction_t *instr_write_bytes(size_t data_sz, ...) {
           .label = NULL,
       };
 
+  // TODO for directives
   *instr_ret = (instruction_t){
       .instr = INSTR_DIR_WRT_BUF,
       .operands = operands,
