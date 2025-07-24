@@ -35,11 +35,8 @@ typedef struct instr_encode_table instr_encode_table_t;
 
 enum instr_directives {
   DIR_DEFINE_BYTES,
-
-  DIR_LOCAL_LABEL,
-  DIR_GLOBAL_LABEL,
-  DIR_EXTERN_LABEL,
-}
+  DIR_DEFINE_LABEL,
+};
 
 enum instructions {
   INSTR_NULL,
@@ -128,14 +125,35 @@ struct instr_encode_table {
  */
 extern instr_encode_table_t *instr_table[];
 
-typedef struct instr_generic {
-  enum { INSTR, DIRECTIVE } type; /* Type of assembler input */
+typedef struct instruction {
+  enum instructions instr; /* Type of instruction */
+  operand_t *operands;     /* Operands of the instruction */
+} instruction_t;
 
-  /** 
-   * Two forms of inputs are accepted into the Jas assembler, an 
-   * instruction and directive. Directives are used to alter the 
+typedef struct instr_directive {
+  enum instr_directives dir; /* Type of directive */
+
+  /**
+   * Payload data of the directive may vary depending on the type
+   * of directive. For example, the `DIR_DEFINE_BYTES` directive
+   * will have a data payload that contains the bytes to define
+   * in a `buffer_t`format.
+   */
+  union {
+    label_t label; /* Label portion of directive */
+    buffer_t data; /* Data portion of directive */
+  };
+} instr_directive_t;
+
+typedef struct instr_generic {
+  enum { INSTR,
+         DIRECTIVE } type; /* Type of assembler input */
+
+  /**
+   * Two forms of inputs are accepted into the Jas assembler, an
+   * instruction and directive. Directives are used to alter the
    * basic behavior of the assembler and its compilation steps.
-   * 
+   *
    * The union shares memory with both functionality, allowing
    * both types of data to be read through a single structure.
    */
@@ -143,12 +161,7 @@ typedef struct instr_generic {
     struct instruction instr;
     struct instr_directive dir;
   };
-}
-
-typedef struct instruction {
-  enum instructions instr; /* Type of instruction */
-  operand_t *operands;     /* Operands of the instruction */
-} instruction_t;
+};
 
 #define INSTR_TAB_NULL           \
   (instr_encode_table_t) {       \
