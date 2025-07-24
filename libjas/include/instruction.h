@@ -132,7 +132,14 @@ extern instr_encode_table_t *instr_table[];
 typedef struct instr_generic {
   enum { INSTR, DIRECTIVE } type; /* Type of assembler input */
 
-  // Union - Document later
+  /** 
+   * Two forms of inputs are accepted into the Jas assembler, an 
+   * instruction and directive. Directives are used to alter the 
+   * basic behavior of the assembler and its compilation steps.
+   * 
+   * The union shares memory with both functionality, allowing
+   * both types of data to be read through a single structure.
+   */
   union {
     struct instruction instr;
     struct instr_directive dir;
