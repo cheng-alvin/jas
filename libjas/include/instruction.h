@@ -127,13 +127,24 @@ enum instructions {
 typedef encoder_t pre_encoder_t;
 
 struct instr_encode_table {
-  enum enc_ident ident;         /* Operand encoding identity */
-  uint8_t opcode_ext;           /* Opcode extension */
-  uint8_t opcode[3];            /* Opcode of the instruction */
-  uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
-  uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
-  pre_encoder_t pre;            /* Pre-encoder processor function (Optional, null if not applicable) */
-  uint8_t byte_opcode_size;     /* Size of the byte opcode (max. 3 bytes, may be left null) */
+  /**
+   * This substruct in the instruction encoding table represents the
+   * instruction operand type and encoding specifics. The field `type
+   * allows error checking on mismatched operand types, while the `ident`
+   * provides the encoding identity for the operand.
+   *
+   * Due to the vast number of encoder formats, the `ident` field allows
+   * for flexible encoding of the operand types.
+   */
+  struct {
+    enum operands type; /* Operand type */
+
+    // TODO - Update corresponding encoder enumeration
+    enum enc_ident ident; /* Operand encoding identity */
+  } operands[4];          /* Operand type and encoding types */
+
+  uint8_t opcode[3];   /* Opcode of the instruction */
+  uint8_t opcode_size; /* Size of the opcode in bytes */
 };
 
 /**
