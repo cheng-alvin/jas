@@ -137,11 +137,9 @@ struct instr_encode_table {
    * for flexible encoding of the operand types.
    */
   struct {
-    enum operands type; /* Operand type */
-
-    // TODO - Update corresponding encoder enumeration
+    enum operands type;   /* Operand type */
     enum enc_ident ident; /* Operand encoding identity */
-  } operands[4];          /* Operand type and encoding types */
+  } operands[4];
 
   uint8_t opcode[3];   /* Opcode of the instruction */
   uint8_t opcode_size; /* Size of the opcode in bytes */
@@ -157,17 +155,6 @@ typedef struct instruction {
   enum instructions instr; /* Type of instruction */
   operand_t *operands;     /* Operands of the instruction */
 } instruction_t;
-
-#define INSTR_TAB_NULL           \
-  (instr_encode_table_t) {       \
-    .ident = NULL,               \
-    .opcode_ext = NULL,          \
-    .opcode = {NULL},            \
-    .byte_instr_opcode = {NULL}, \
-    .opcode_size = NULL,         \
-    .pre = NULL,                 \
-    .byte_opcode_size = NULL,    \
-  }
 
 #define INSTR_NULL \
   (instruction_t) { .instr = INSTR_NOTHING, .operands = NULL }
