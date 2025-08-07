@@ -129,8 +129,7 @@ instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
 }
 #undef alloc_data
 
-// TODO Migrate to `instr_generic` type interface
-instruction_t *instr_write_bytes(size_t data_sz, ...) {
+instr_generic_t *instr_write_bytes(size_t data_sz, ...) {
   buffer_t *buffer_ptr = malloc(sizeof(buffer_t));
   buffer_t data = BUF_NULL;
   va_list args;
@@ -143,26 +142,20 @@ instruction_t *instr_write_bytes(size_t data_sz, ...) {
 
   va_end(args);
 
-  instruction_t *instr_ret = malloc(sizeof(instruction_t));
-  memcpy(buffer_ptr, &data, sizeof(buffer_t));
+  instr_generic_t *instr_ret = malloc(sizeof(instr_generic_t));
 
-  operand_t *operands = calloc(4, sizeof(operand_t));
-  operands[0] =
-      (operand_t){
-          .type = (enum operands)OP_MISC,
-          .offset = 0,
-          .data = buffer_ptr,
-          .label = NULL,
-      };
-
-  // TODO for directives
-  *instr_ret = (instruction_t){
-      .instr = INSTR_DIR_WRT_BUF,
-      .operands = operands,
+  *instr_ret = (instr_generic_t){
+      .type = DIRECTIVE,
+      .dir = (instr_directive_t){
+          .dir = DIR_DEFINE_BYTES,
+          .data = data,
+      },
   };
-
   return instr_ret;
 }
+
+// Please note: from this point, **every** generic instruction
+// is to be allocated.
 
 void instr_free(instruction_t *instr) {
   for (uint8_t i = 0; i < 4; i++) {
