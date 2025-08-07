@@ -162,7 +162,7 @@ typedef struct instr_generic {
     struct instruction instr;
     struct instr_directive dir;
   };
-};
+} instr_generic_t;
 
 #define INSTR_TAB_NULL           \
   (instr_encode_table_t) {       \
