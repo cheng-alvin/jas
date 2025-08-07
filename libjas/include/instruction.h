@@ -196,15 +196,9 @@ instr_encode_table_t instr_get_tab(instruction_t instr);
  * @param data_sz The size of the data to write
  * @param ... The data to write into the buffer
  *
- * @return The instruction struct pointer
- *
- * @example The **Jas** function call of:
- * >  instr_write_bytes(7, 0x48, 0x89, 0x80, 0xff, 0x00, 0x00, 0x00);
- *
- * Is equivalent to: (In NASM)
- * >  db 0x48, 0x89, 0x80, 0xff, 0x00, 0x00, 0x00
+ * @return The instruction generic pointer
  */
-instruction_t *instr_write_bytes(size_t data_sz, ...);
+instr_generic_t *instr_write_bytes(size_t data_sz, ...);
 
 /**
  * Macros for defining the instruction operands in a more readable
