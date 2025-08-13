@@ -70,6 +70,36 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
 }
 #undef CURR_TABLE
 
+static void __instr_free__(instruction_t *instr) {
+  for (uint8_t i = 0; i < 4; i++) {
+    if (instr->operands[i].type == OP_NULL) break;
+    if (instr->operands[i].type) free(instr->operands[i].data);
+  }
+
+  free(instr->operands);
+  free(instr);
+}
+
+void instr_free(instr_generic_t *instr) {
+  if (instr->type == INSTR) __instr_free__(&(instr->instr));
+
+  if (instr->type == DIRECTIVE) {
+    if (instr->dir.dir == DIR_DEFINE_LABEL) {
+      if (strlen(instr->dir.label.name)) {
+        const char *label_name = instr->dir.label.name;
+        free(label_name);
+      }
+    }
+
+    if (instr->dir.dir == DIR_DEFINE_BYTES) {
+      const uint8_t buffer = instr->dir.data.data;
+      free(buffer);
+    }
+  }
+
+  free(instr); // All done now.
+}
+
 #define alloc_operand_data(type)             \
   do {                                       \
     type *type##_ = malloc(sizeof(type));    \
@@ -153,27 +183,4 @@ instr_generic_t *instr_write_bytes(size_t data_sz, ...) {
       },
   };
   return instr_ret;
-}
-
-// Please note: from this point, **every** generic instruction
-// is to be allocated.
-
-void instr_free(instruction_t *instr) {
-  for (uint8_t i = 0; i < 4; i++) {
-    if (instr->operands[i].type == OP_NULL) break;
-    if (instr->operands[i].type == OP_MISC && instr->instr == INSTR_DIR_WRT_BUF) {
-      buffer_t *data = (buffer_t *)instr->operands[i].data;
-      free(data->data);
-    }
-
-    if (strlen(instr->operands[i].label)) {
-      free(instr->operands[i].label);
-      continue;
-    }
-
-    if (instr->operands[i].type) free(instr->operands[i].data);
-  }
-
-  free(instr->operands);
-  free(instr);
 }
