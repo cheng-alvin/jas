@@ -70,14 +70,14 @@ label_t *label_lookup(label_t **label_table, size_t *label_table_size, char *nam
   return NULL;
 }
 
-instruction_t *label_gen(char *name, enum label_type type) {
-  enum instructions instr = INSTR_DIR_LOCAL_LABEL;
+instr_generic_t *label_gen(char *name, enum label_type type) {
+  label_t label_instance;
 
   // clang-format off
   switch (type) {
-    case LABEL_LOCAL: instr = INSTR_DIR_LOCAL_LABEL; break;
-    case LABEL_GLOBAL: instr = INSTR_DIR_GLOBAL_LABEL; break;
-    case LABEL_EXTERN: instr = INSTR_DIR_EXTERN_LABEL; break;
+    case LABEL_LOCAL: break;
+    case LABEL_GLOBAL: label_instance.exported = true; break;
+    case LABEL_EXTERN: label_instance.ext = true; break;
 
     default: break;
   }
@@ -85,21 +85,16 @@ instruction_t *label_gen(char *name, enum label_type type) {
 
   const size_t label_name_size = strlen(name) + 1;
   char *copied_name = malloc(label_name_size);
-  strcpy(copied_name, name);
+  strcpy(copied_name, label_instance.name);
 
-  operand_t *operands = calloc(4, sizeof(operand_t));
-  operands[0] =
-      (operand_t){
-          .type = OP_MISC,
-          .offset = 0,
-          .data = copied_name,
-          .label = NULL,
-      };
+  instr_generic_t *instr_ret = malloc(sizeof(instr_generic_t));
 
-  instruction_t *instr_ret = malloc(sizeof(instruction_t));
-  *instr_ret = (instruction_t){
-      .instr = instr,
-      .operands = operands,
+  *instr_ret = (instr_generic_t){
+      .type = DIRECTIVE,
+      .dir = (instr_directive_t){
+          .dir = DIR_DEFINE_LABEL,
+          .label = label_instance,
+      },
   };
 
   return instr_ret;
