@@ -292,6 +292,10 @@ instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
  * @note This function should only be used to free instruction allocated
  * using built-in Jas instruction generation functions, unless you actually
  * know what you are doing.
+ *
+ * @note It should also be worth noting that the all of the `instr_generic_t`
+ * structs are dynamically allocated, so the memory allocated for the
+ * instruction struct and its operands must be freed using this function.
  */
 void instr_free(instr_generic_t *instr);
 
