@@ -289,12 +289,12 @@ instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
  * leaks and free the memory allocated for the instruction structs
  * and the operand structs that are nested inside the instruction.
  *
- * @param instr The instruction struct to free
+ * @param instr The instruction generic struct to free
  *
  * @note This function should only be used to free instruction allocated
  * using built-in Jas instruction generation functions, unless you actually
  * know what you are doing.
  */
-void instr_free(instruction_t *instr);
+void instr_free(instr_generic_t *instr);
 
 #endif
