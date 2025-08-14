@@ -45,7 +45,7 @@ enum instructions parse_instr_name(char *name) {
       return (enum instructions)i + 1;
   }
 
-  return INSTR_NOTHING;
+  return INSTR_NULL;
 }
 
 uint64_t parse_str_num(char *name) {
