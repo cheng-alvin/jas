@@ -106,7 +106,7 @@ void instr_free(instr_generic_t *instr) {
     data = (void *)type##_;                  \
   } while (0);
 
-instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
+instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
   va_list args;
   va_start(args, operand_count * 3);
 
@@ -152,10 +152,15 @@ instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
   }
 
   va_end(args);
-  instruction_t *instr_struct = malloc(sizeof(instruction_t));
-  *instr_struct = (instruction_t){.instr = instr, .operands = operands};
 
-  return instr_struct;
+  instr_generic_t *instr_generic_ret = malloc(sizeof(instr_generic_t));
+
+  *instr_generic_ret = (instr_generic_t){
+      .type = INSTR,
+      .instr = (instruction_t){.instr = instr, .operands = operands},
+  };
+
+  return instr_generic_ret;
 }
 #undef alloc_data
 
