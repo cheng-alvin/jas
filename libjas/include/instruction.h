@@ -258,12 +258,11 @@ instr_generic_t *instr_write_bytes(size_t data_sz, ...);
  *
  * @return The instruction struct pointer
  *
- * @note Instruction pointers are `malloc`ed (aka dynamically allocated)
- * and shall be freed after useed to prevent memory leaks, please use the
- * `instr_free()` function to free the memory allocated for the instruction
- * structs by this function and similar functions.
+ * @note This function returns a pointer to a dynamically allocated generic
+ * struct, not a default instruction struct. Extract the pure instruction 
+ * through the `instr` property.
  */
-instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
+instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
 
 /**
  * Helper macro for freeing an array of instruction structs and
