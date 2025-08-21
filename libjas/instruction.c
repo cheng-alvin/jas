@@ -147,8 +147,7 @@ instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) 
       alloc_operand_data(temp_reg); /* Note braces as macro expands */
     }
     const size_t off = va_arg(args, size_t);
-    operands[i] =
-        (operand_t){.type = type, .offset = off, .data = data, .label = label};
+    operands[i] = (operand_t){ data, type, off, label };
   }
 
   va_end(args);
