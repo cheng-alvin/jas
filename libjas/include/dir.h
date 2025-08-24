@@ -43,6 +43,11 @@ typedef struct directive {
   union {
     label_t label; /* Label portion of directive */
     buffer_t data; /* Data portion of directive */
+
+    /// @brief To be used for future directives where applicable
+    /// with miscellaneous data such as alignment, etc.
+
+    void *misc; /* Miscellaneous data portion of directive */
   };
 } directive_t;
 
