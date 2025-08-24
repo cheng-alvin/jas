@@ -91,7 +91,7 @@ instr_generic_t *label_gen(char *name, enum label_type type) {
 
   *instr_ret = (instr_generic_t){
       .type = DIRECTIVE,
-      .dir = (instr_directive_t){
+      .dir = (directive_t){
           .dir = DIR_DEFINE_LABEL,
           .label = label_instance,
       },

@@ -33,10 +33,7 @@
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
 
-enum instr_directives {
-  DIR_DEFINE_BYTES,
-  DIR_DEFINE_LABEL,
-};
+#include "dir.h"
 
 enum instructions {
   INSTR_NULL,
@@ -131,21 +128,6 @@ typedef struct instruction {
   operand_t *operands;     /* Operands of the instruction */
 } instruction_t;
 
-typedef struct instr_directive {
-  enum instr_directives dir; /* Type of directive */
-
-  /**
-   * Payload data of the directive may vary depending on the type
-   * of directive. For example, the `DIR_DEFINE_BYTES` directive
-   * will have a data payload that contains the bytes to define
-   * in a `buffer_t`format.
-   */
-  union {
-    label_t label; /* Label portion of directive */
-    buffer_t data; /* Data portion of directive */
-  };
-} instr_directive_t;
-
 typedef struct instr_generic {
   enum { INSTR,
          DIRECTIVE } type; /* Type of assembler input */
@@ -160,7 +142,7 @@ typedef struct instr_generic {
    */
   union {
     struct instruction instr;
-    struct instr_directive dir;
+    struct directive dir;
   };
 } instr_generic_t;
 
@@ -259,7 +241,7 @@ instr_generic_t *instr_write_bytes(size_t data_sz, ...);
  * @return The instruction struct pointer
  *
  * @note This function returns a pointer to a dynamically allocated generic
- * struct, not a default instruction struct. Extract the pure instruction 
+ * struct, not a default instruction struct. Extract the pure instruction
  * through the `instr` property.
  */
 instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
