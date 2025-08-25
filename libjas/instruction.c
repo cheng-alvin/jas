@@ -24,6 +24,7 @@
  */
 
 #include "instruction.h"
+#include "dir.h"
 #include "error.h"
 #include "register.h"
 #include "tabs.c"

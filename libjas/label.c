@@ -25,6 +25,7 @@
 
 #include "label.h"
 #include "codegen.h"
+#include "dir.h"
 #include "error.h"
 #include "operand.h"
 #include <stdbool.h>
