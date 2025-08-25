@@ -41,15 +41,14 @@
     }                                                                   \
   } while (0)
 
-static instr_encode_table_t *get_instr_tabs(instruction_t *instr_arr, size_t arr_size) {
+static instr_encode_table_t *get_instr_tabs(instr_generic_t *instr_arr, size_t arr_size) {
   instr_encode_table_t *tabs = malloc(sizeof(instr_encode_table_t) * arr_size);
   for (size_t i = 0; i < arr_size; i++) {
-    if (IS_LABEL(instr_arr[i])) {
-      tabs[i] = INSTR_TAB_NULL;
-      continue;
-    }
-    tabs[i] = instr_get_tab(instr_arr[i]);
+    if (instr_arr[i].type != INSTR) continue;
+    
+    tabs[i] = instr_get_tab(instr_arr[i].instr);
   }
+
   return tabs;
 }
 
