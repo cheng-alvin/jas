@@ -24,6 +24,7 @@
  */
 
 #include "instruction.h"
+#include "dir.h"
 #include "error.h"
 #include "register.h"
 #include "tabs.c"
@@ -147,7 +148,7 @@ instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) 
       alloc_operand_data(temp_reg); /* Note braces as macro expands */
     }
     const size_t off = va_arg(args, size_t);
-    operands[i] = (operand_t){ data, type, off, label };
+    operands[i] = (operand_t){data, type, off, label};
   }
 
   va_end(args);
@@ -180,7 +181,7 @@ instr_generic_t *instr_write_bytes(size_t data_sz, ...) {
 
   *instr_ret = (instr_generic_t){
       .type = DIRECTIVE,
-      .dir = (instr_directive_t){
+      .dir = (directive_t){
           .dir = DIR_DEFINE_BYTES,
           .data = data,
       },
