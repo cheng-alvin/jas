@@ -45,15 +45,9 @@ for (const [key, instr] of Object.entries(groups)) {
     let byte_opcode_size = countComma(group[4]) + 1;
     if (group[4] == "-") byte_opcode_size = 0;
 
-    let pre;
-    if (group[5] == "-")
-      pre = "NULL";
-    else
-      pre = `&${group[5]}`;
-
     // Putting it all together
     output = output.concat(
-        `  {${ident}, ${ext}, ${opcode}, ${byte_opcode}, ${opcode_size}, ${pre}, ${byte_opcode_size}},\n`);
+        `  {${ident}, ${ext}, ${opcode}, ${byte_opcode}, ${opcode_size}, ${byte_opcode_size}},\n`);
   });
 
   output = output.concat(`  INSTR_TAB_NULL,\n};\n`);
@@ -61,7 +55,7 @@ for (const [key, instr] of Object.entries(groups)) {
 }
 
 const names = `char *instr_tab_names[] = {${namesList.join(', ')}};`
-const prepend = `#include "instruction.h" \n#include "pre.c"\n\n`;
+const prepend = `#include "instruction.h" \n\n`;
 fs.writeFileSync('tabs.c', prepend + output + names);
 
 process.exit(0);
