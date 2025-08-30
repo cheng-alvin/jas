@@ -133,13 +133,13 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
       if (current.operands[j].type == OP_NULL) break;
 
       bool valid_operands =
-          op_sizeof(current.operands[j].type) >=
+          op_sizeof(current.operands[j].type) <=
           op_sizeof(current.operands[j - 1].type);
 
-      if (!valid_operands) continue;
-
-      err("invalid operand type");
-      return BUF_NULL;
+      if (!valid_operands) {
+        err("invalid operand type");
+        return BUF_NULL;
+      }
     }
 
     op_write_prefix(&buf, current.operands, mode);
