@@ -136,7 +136,7 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
           op_sizeof(current.operands[j].type) >=
           op_sizeof(current.operands[j - 1].type);
 
-      if (!valid_operands) continue;
+      if (valid_operands) continue;
 
       err("invalid operand type");
       return BUF_NULL;
