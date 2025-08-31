@@ -41,10 +41,8 @@ using namespace std;
  * 1: Register operand (r8/16/32/64)
  * 2: Immediate operand (imm8/16/32/64)
  * 3: Memory operand (m8/16/32/64)
- * 4: -- Reserved for future use --
- * 5: Accumulator register operand (acc8/16/32/64)
  *
- * 6-7: Reserved for future use
+ * 4-7: Reserved for future use
  *
  * A bit set to 1 indicates that the operand is of the corresponding
  * type, while a bit set to 0 indicates that the operand is not of the
