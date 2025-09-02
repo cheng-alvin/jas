@@ -65,15 +65,19 @@ static multimap<enum enc_ident, uint32_t> master = {
     {ENC_MI, __combine__(OP_HASH_M, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE)},
 
     {ENC_ZO, __combine__(OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
-    {ENC_O, __combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE)},
     {ENC_I, __combine__(OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
     {ENC_D, __combine__(OP_HASH_REL, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
 
     {ENC_M, __combine__(OP_HASH_R, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
     {ENC_M, __combine__(OP_HASH_M, OP_HASH_NONE, OP_HASH_NONE, OP_HASH_NONE)},
-
-    {ENC_OI, __combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE)},
 };
+
+static bool ident_exists(enum enc_ident ident, instr_encode_table_t *instr_ref) {
+  for (auto j = 0; instr_ref[j].opcode_size > 0; j++)
+    if (instr_ref[j].ident == ident) return true;
+
+  return false;
+}
 
 extern "C" enum enc_ident op_ident_identify(enum operands *input, instr_encode_table_t *instr_ref) {
   uint32_t hash_key = 0;
@@ -92,7 +96,20 @@ extern "C" enum enc_ident op_ident_identify(enum operands *input, instr_encode_t
   }
 
   if (lookup_table.find(hash_key) != lookup_table.end()) {
-    return lookup_table.find(hash_key)->second;
+    enum enc_ident target = lookup_table.find(hash_key)->second;
+
+    bool o_exists = ident_exists(ENC_O, instr_ref);
+    bool oi_exists = ident_exists(ENC_OI, instr_ref);
+
+    if (o_exists || oi_exists) {
+      const uint32_t acc_hash = __combine__(OP_HASH_R, OP_HASH_IMM, OP_HASH_NONE, OP_HASH_NONE);
+
+      // Spaghetti code, would be ultimately removed
+      if (hash_key == acc_hash && o_exists) return ENC_O;
+      return ENC_OI;
+    }
+
+    return target;
   } else {
     uint8_t k = 0;
     while (instr_ref[k].opcode_size) {
