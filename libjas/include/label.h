@@ -98,20 +98,16 @@ enum label_type {
 };
 
 /**
- * Function similar to `instr_ge()` and `label_create()`, used to
- * generate a label instruction in the instruction array, and
- * return the instruction struct back to the caller.
+ * Function for generating an instruction generic structure for the
+ * represented label, with relative ease of use. This function would
+ * automatically create the instruction generic, leading to an instr-
+ * uction directive.
  *
- * @param name The name of the label to be generated.
- * @param type The type of the label. @see `enum label_type`
+ * @param name Name of the label to be created.
+ * @param type The permissions of this label, as defined in the OS.
  *
- * @return The instruction struct pointer of the label generated.
- *
- * @note The label name should not contain the `:` character, as
- * it is automatically added by the assembler. (The `:` character
- * is a label terminator usually found in assembly languages, and
- * does not get used in this assembler, typing in `:` would result
- * in that carrying over to the output)
+ * @return The instruction generic pointer: @note should be freed
  */
-instruction_t *label_gen(char *name, enum label_type type);
+instr_generic_t *label_gen(char *name, enum label_type type);
+
 #endif

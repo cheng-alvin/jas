@@ -24,6 +24,7 @@
  */
 
 #include "instruction.h"
+#include "dir.h"
 #include "error.h"
 #include "operand.h"
 #include "register.h"
@@ -50,7 +51,7 @@ instr_encode_table_t *instr_table[] =
 #define CURR_TABLE instr_table[instr.instr][j]
 
 instr_encode_table_t instr_get_tab(instruction_t instr) {
-  if (instr.instr == INSTR_NOTHING && instr.operands == NULL) return INSTR_TAB_NULL;
+  if (instr.instr == INSTR_NULL && instr.operands == NULL) return INSTR_TAB_NULL;
   if (INSTR_DIRECTIVE(instr.instr)) return INSTR_TAB_NULL; // aka empty
   const enum operands operand_list[4] = {
       instr.operands[0].type, instr.operands[1].type,
@@ -70,6 +71,36 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
 }
 #undef CURR_TABLE
 
+static void __instr_free__(instruction_t *instr) {
+  for (uint8_t i = 0; i < 4; i++) {
+    if (instr->operands[i].type == OP_NULL) break;
+    if (instr->operands[i].type) free(instr->operands[i].data);
+  }
+
+  free(instr->operands);
+  free(instr);
+}
+
+void instr_free(instr_generic_t *instr) {
+  if (instr->type == INSTR) __instr_free__(&(instr->instr));
+
+  if (instr->type == DIRECTIVE) {
+    if (instr->dir.dir == DIR_DEFINE_LABEL) {
+      if (strlen(instr->dir.label.name)) {
+        const char *label_name = instr->dir.label.name;
+        free(label_name);
+      }
+    }
+
+    if (instr->dir.dir == DIR_DEFINE_BYTES) {
+      const uint8_t buffer = instr->dir.data.data;
+      free(buffer);
+    }
+  }
+
+  free(instr); // All done now.
+}
+
 #define alloc_operand_data(type)             \
   do {                                       \
     type *type##_ = malloc(sizeof(type));    \
@@ -77,8 +108,7 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
     data = (void *)type##_;                  \
   } while (0);
 
-/* Stupid almost-stub implementation */
-instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
+instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
   va_list args;
   va_start(args, operand_count * 3);
 
@@ -119,19 +149,23 @@ instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
       alloc_operand_data(temp_reg); /* Note braces as macro expands */
     }
     const size_t off = va_arg(args, size_t);
-    operands[i] =
-        (operand_t){.type = type, .offset = off, .data = data, .label = label};
+    operands[i] = (operand_t){data, type, off, label};
   }
 
   va_end(args);
-  instruction_t *instr_struct = malloc(sizeof(instruction_t));
-  *instr_struct = (instruction_t){.instr = instr, .operands = operands};
 
-  return instr_struct;
+  instr_generic_t *instr_generic_ret = malloc(sizeof(instr_generic_t));
+
+  *instr_generic_ret = (instr_generic_t){
+      .type = INSTR,
+      .instr = (instruction_t){.instr = instr, .operands = operands},
+  };
+
+  return instr_generic_ret;
 }
 #undef alloc_data
 
-instruction_t *instr_write_bytes(size_t data_sz, ...) {
+instr_generic_t *instr_write_bytes(size_t data_sz, ...) {
   buffer_t *buffer_ptr = malloc(sizeof(buffer_t));
   buffer_t data = BUF_NULL;
   va_list args;
@@ -144,42 +178,14 @@ instruction_t *instr_write_bytes(size_t data_sz, ...) {
 
   va_end(args);
 
-  instruction_t *instr_ret = malloc(sizeof(instruction_t));
-  memcpy(buffer_ptr, &data, sizeof(buffer_t));
+  instr_generic_t *instr_ret = malloc(sizeof(instr_generic_t));
 
-  operand_t *operands = calloc(4, sizeof(operand_t));
-  operands[0] =
-      (operand_t){
-          .type = (enum operands)OP_MISC,
-          .offset = 0,
-          .data = buffer_ptr,
-          .label = NULL,
-      };
-
-  *instr_ret = (instruction_t){
-      .instr = INSTR_DIR_WRT_BUF,
-      .operands = operands,
+  *instr_ret = (instr_generic_t){
+      .type = DIRECTIVE,
+      .dir = (directive_t){
+          .dir = DIR_DEFINE_BYTES,
+          .data = data,
+      },
   };
-
   return instr_ret;
-}
-
-void instr_free(instruction_t *instr) {
-  for (uint8_t i = 0; i < 4; i++) {
-    if (instr->operands[i].type == OP_NULL) break;
-    if (instr->operands[i].type == OP_MISC && instr->instr == INSTR_DIR_WRT_BUF) {
-      buffer_t *data = (buffer_t *)instr->operands[i].data;
-      free(data->data);
-    }
-
-    if (strlen(instr->operands[i].label)) {
-      free(instr->operands[i].label);
-      continue;
-    }
-
-    if (instr->operands[i].type) free(instr->operands[i].data);
-  }
-
-  free(instr->operands);
-  free(instr);
 }

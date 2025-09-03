@@ -33,22 +33,11 @@
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
 
-/**
- * Lookup macro for checking if an instruction is a directive.
- * Directives are instructions that are not executed by the CPU
- * but are used to provide information to the assembler.
- *
- * @param i The instruction to check
- * @example if (INSTR_DIRECTIVE(INSTR_MOV))
- *
- * @note - Internal
- * Please update this macro if more directives and/or instructions
- * are added/supported in this enum list (In the future).
- */
-#define INSTR_DIRECTIVE(i) ((uint8_t)i > (uint8_t)INSTR_DUMMY)
+#include "dir.h"
 
 enum instructions {
-  INSTR_NOTHING, /* Note naming conflict below `INSTR_NULL` */
+  INSTR_NULL,
+
   INSTR_MOV,
   INSTR_LEA,
   INSTR_ADD,
@@ -113,14 +102,6 @@ enum instructions {
   INSTR_CMOVPO,
   INSTR_CMOVS,
   INSTR_CMOVZ,
-
-  INSTR_DUMMY,
-
-  INSTR_DIR_WRT_BUF,
-
-  INSTR_DIR_LOCAL_LABEL,
-  INSTR_DIR_GLOBAL_LABEL,
-  INSTR_DIR_EXTERN_LABEL,
 };
 
 // Alias type for the encoder `encoder_t` function pointer. - See `encoder.h`
@@ -146,6 +127,24 @@ typedef struct instruction {
   operand_t *operands;     /* Operands of the instruction */
 } instruction_t;
 
+typedef struct instr_generic {
+  enum { INSTR,
+         DIRECTIVE } type; /* Type of assembler input */
+
+  /**
+   * Two forms of inputs are accepted into the Jas assembler, an
+   * instruction and directive. Directives are used to alter the
+   * basic behavior of the assembler and its compilation steps.
+   *
+   * The union shares memory with both functionality, allowing
+   * both types of data to be read through a single structure.
+   */
+  union {
+    struct instruction instr;
+    struct directive dir;
+  };
+} instr_generic_t;
+
 #define INSTR_TAB_NULL           \
   (instr_encode_table_t) {       \
     .ident = NULL,               \
@@ -155,14 +154,6 @@ typedef struct instruction {
     .opcode_size = NULL,         \
     .byte_opcode_size = NULL,    \
   }
-
-#define INSTR_NULL \
-  (instruction_t) { .instr = INSTR_NOTHING, .operands = NULL }
-
-// Macro for checking if the instruction is a label and shall be handled
-#define IS_LABEL(x)                                     \
-  (uint8_t)x.instr >= (uint8_t)INSTR_DIR_LOCAL_LABEL && \
-      (uint8_t)x.instr <= (uint8_t)INSTR_DIR_EXTERN_LABEL
 
 /**
  * Function for getting the instruction table based on the instruction
@@ -187,15 +178,9 @@ instr_encode_table_t instr_get_tab(instruction_t instr);
  * @param data_sz The size of the data to write
  * @param ... The data to write into the buffer
  *
- * @return The instruction struct pointer
- *
- * @example The **Jas** function call of:
- * >  instr_write_bytes(7, 0x48, 0x89, 0x80, 0xff, 0x00, 0x00, 0x00);
- *
- * Is equivalent to: (In NASM)
- * >  db 0x48, 0x89, 0x80, 0xff, 0x00, 0x00, 0x00
+ * @return The instruction generic pointer
  */
-instruction_t *instr_write_bytes(size_t data_sz, ...);
+instr_generic_t *instr_write_bytes(size_t data_sz, ...);
 
 /**
  * Macros for defining the instruction operands in a more readable
@@ -253,12 +238,11 @@ instruction_t *instr_write_bytes(size_t data_sz, ...);
  *
  * @return The instruction struct pointer
  *
- * @note Instruction pointers are `malloc`ed (aka dynamically allocated)
- * and shall be freed after useed to prevent memory leaks, please use the
- * `instr_free()` function to free the memory allocated for the instruction
- * structs by this function and similar functions.
+ * @note This function returns a pointer to a dynamically allocated generic
+ * struct, not a default instruction struct. Extract the pure instruction
+ * through the `instr` property.
  */
-instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
+instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
 
 /**
  * Helper macro for freeing an array of instruction structs and
@@ -284,12 +268,16 @@ instruction_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
  * leaks and free the memory allocated for the instruction structs
  * and the operand structs that are nested inside the instruction.
  *
- * @param instr The instruction struct to free
+ * @param instr The instruction generic struct to free
  *
  * @note This function should only be used to free instruction allocated
  * using built-in Jas instruction generation functions, unless you actually
  * know what you are doing.
+ *
+ * @note It should also be worth noting that the all of the `instr_generic_t`
+ * structs are dynamically allocated, so the memory allocated for the
+ * instruction struct and its operands must be freed using this function.
  */
-void instr_free(instruction_t *instr);
+void instr_free(instr_generic_t *instr);
 
 #endif
