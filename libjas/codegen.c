@@ -33,6 +33,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Note: forthcoming re-write of the `codegen` module!  
 #define FREE_ALL(...)                                                   \
   do {                                                                  \
     void *pointers[] = {__VA_ARGS__};                                   \
@@ -52,33 +53,32 @@ static instr_encode_table_t *get_instr_tabs(instr_generic_t *instr_arr, size_t a
   return tabs;
 }
 
-static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size,
+static buffer_t assemble(enum modes mode, instr_generic_t *instr_arr, size_t arr_size,
                          instr_encode_table_t *tabs, bool is_pre, label_t *label_table, size_t label_table_size);
 struct codegen_ret
-codegen(enum modes mode, instruction_t **instr_input, size_t arr_count) {
+codegen(enum modes mode, instr_generic_t **instr_input, size_t arr_count) {
   label_t *label_table = NULL;
   size_t label_table_size = 0;
 
   /* Implementing a "wrapper" due to old baggage ~~(And partially out of lazy-ness)~~ */
-  const size_t arr_size = arr_count * sizeof(instruction_t);
+  const size_t arr_size = arr_count * sizeof(instr_generic_t);
   instruction_t *instr_arr = malloc(arr_size);
 
   for (size_t i = 0; i < arr_count; i++)
     instr_arr[i] = *instr_input[i];
 
-  for (size_t i = 0; i < arr_size / sizeof(instruction_t); i++) {
-    if (instr_arr[i].instr >= INSTR_DIR_LOCAL_LABEL) {
-      if (instr_arr[i].operands[0].data)
-        label_create(
-            &label_table, &label_table_size,
-            instr_arr[i].operands[0].data,
-            instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL,
-            instr_arr[i].instr == INSTR_DIR_GLOBAL_LABEL, //!!
-            0);
+  for (size_t i = 0; i < arr_size / sizeof(instr_generic_t); i++) {
+    if (instr_arr[i].type == DIRECTIVE) {
+      label_create(
+          &label_table, &label_table_size,
+          instr_arr[i].dir.label.name,
+          instr_arr[i].dir.exported,
+          instr_arr[i].dir.ext,
+        0);
     }
   }
 
-  const instr_encode_table_t *tabs = get_instr_tabs(instr_arr, arr_size / sizeof(instruction_t));
+  const instr_encode_table_t *tabs = get_instr_tabs(instr_arr, arr_size / sizeof(instr_generic_t));
   const uint8_t *pre_ret = assemble(mode, instr_arr, arr_size, tabs, true, label_table, label_table_size).data;
   if (pre_ret != NULL) free(pre_ret);
 
@@ -89,10 +89,10 @@ codegen(enum modes mode, instruction_t **instr_input, size_t arr_count) {
   return ret;
 }
 
-static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_size,
+static buffer_t assemble(enum modes mode, instr_generic_t *instr_arr, size_t arr_size,
                          instr_encode_table_t *tabs, bool is_pre, label_t *label_table, size_t label_table_size) {
 
-  arr_size /= sizeof(instruction_t);
+  arr_size /= sizeof(instr_generic_t);
   buffer_t buf = BUF_NULL;
   size_t label_index = 0;
 
@@ -102,15 +102,16 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
     if (is_pre && label_index >= label_table_size) break;
     if (instr_arr[i].operands == NULL) continue;
 
-    if (INSTR_DIRECTIVE(instr_arr[i].instr)) {
-      if (instr_arr[i].instr == INSTR_DIR_WRT_BUF) {
-        const buffer_t *data = (buffer_t *)instr_arr[i].operands[0].data;
+    if (instr_arr[i].type == DIRECTIVE) {
+      if (instr_arr[i].dir.dir == DIR_DEFINE_BYTES) {
+        const buffer_t *data = (buffer_t *)instr_arr[i].dir.data;
         buf_write(&buf, data->data, data->len);
+        free(instr_arr[i].dir.data.data)
       }
-      if (is_pre && IS_LABEL(instr_arr[i])) {
+      if (is_pre && instr_arr[i].dir.dir == DIR_DEFINE_LABEL) {
         for (size_t j = 0; j < label_table_size; j++) {
           label_t *tab = label_table;
-          if (strcmp(tab[j].name, instr_arr[i].operands[0].data) == 0) {
+          if (strcmp(tab[j].name, instr_arr[i].dir.label.name) == 0) {
             tab[j].address = buf.len;
             break;
           }
@@ -120,13 +121,14 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
 
       continue;
     }
-
+ 
     const instr_encode_table_t ref = tabs[i];
 
     uint8_t opcode_sz = ref.opcode_size;
     if (ref.byte_opcode_size > 0) opcode_sz = ref.byte_opcode_size;
 
-    instruction_t current = instr_arr[i];
+    // Hence, can assume instruction is typed as `INSTRUCTION` from here on out:
+    instruction_t current = instr_arr[i].instr;
 
     for (uint8_t j = 1; j < 4; j++) {
       if (current.operands[j].type == OP_NULL) break;
