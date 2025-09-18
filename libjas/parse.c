@@ -25,6 +25,8 @@
  */
 
 #include "parse.h"
+#include "error.h"
+#include "register.h"
 #include "tabs.c"
 #include <inttypes.h>
 #include <stdint.h>

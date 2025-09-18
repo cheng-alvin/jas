@@ -113,7 +113,6 @@ struct instr_encode_table {
   uint8_t opcode[3];            /* Opcode of the instruction */
   uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
   uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
-  pre_encoder_t pre;            /* Pre-encoder processor function (Optional, null if not applicable) */
   uint8_t byte_opcode_size;     /* Size of the byte opcode (max. 3 bytes, may be left null) */
 };
 
@@ -153,7 +152,6 @@ typedef struct instr_generic {
     .opcode = {NULL},            \
     .byte_instr_opcode = {NULL}, \
     .opcode_size = NULL,         \
-    .pre = NULL,                 \
     .byte_opcode_size = NULL,    \
   }
 

@@ -127,7 +127,20 @@ static buffer_t assemble(enum modes mode, instruction_t *instr_arr, size_t arr_s
     if (ref.byte_opcode_size > 0) opcode_sz = ref.byte_opcode_size;
 
     instruction_t current = instr_arr[i];
-    if (ref.pre != NULL) ref.pre(current.operands, &buf, &ref, mode, label_table, label_table_size);
+
+    for (uint8_t j = 1; j < 4; j++) {
+      if (current.operands[j].type == OP_NULL) break;
+
+      bool valid_operands =
+          op_sizeof(current.operands[j].type) <=
+          op_sizeof(current.operands[j - 1].type);
+
+      if (!valid_operands) {
+        err("invalid operand type");
+        return BUF_NULL;
+      }
+    }
+
     op_write_prefix(&buf, current.operands, mode);
     buf_write(&buf, op_write_opcode(current.operands, &ref), opcode_sz);
     const encoder_t function_ptr = enc_lookup(ref.ident);

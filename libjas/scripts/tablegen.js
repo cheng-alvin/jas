@@ -12,12 +12,10 @@ let ident = process.argv[3];
 let opcode_ext = process.argv[4];
 let opcode = process.argv[5];
 let byte_opcode = process.argv[6];
-let pre = process.argv[7];
 
 if (process.argv[3] == 'zo') {
   opcode = process.argv[4];
   byte_opcode = "-";
-  pre = "no_operands";
   opcode_ext = "-";
 }
 
@@ -30,7 +28,6 @@ out = out.concat(` ${ident}${" ".repeat(9 - ident.length)}|`);
 out = out.concat(` ${opcode_ext}${" ".repeat(17 - opcode_ext.length)}|`);
 out = out.concat(` ${opcode}${" ".repeat(18 - opcode.length)}|`);
 out = out.concat(` ${byte_opcode}${" ".repeat(18 - byte_opcode.length)}|`);
-out = out.concat(` ${pre}\n`);
 
 console.log(out);
 process.exit(0);
