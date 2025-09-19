@@ -33,7 +33,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Note: forthcoming re-write of the `codegen` module!  
+// Note: forthcoming re-write of the `codegen` module!
 #define FREE_ALL(...)                                                   \
   do {                                                                  \
     void *pointers[] = {__VA_ARGS__};                                   \
@@ -46,7 +46,7 @@ static instr_encode_table_t *get_instr_tabs(instr_generic_t *instr_arr, size_t a
   instr_encode_table_t *tabs = malloc(sizeof(instr_encode_table_t) * arr_size);
   for (size_t i = 0; i < arr_size; i++) {
     if (instr_arr[i].type != INSTR) continue;
-    
+
     tabs[i] = instr_get_tab(instr_arr[i].instr);
   }
 
@@ -62,7 +62,7 @@ codegen(enum modes mode, instr_generic_t **instr_input, size_t arr_count) {
 
   /* Implementing a "wrapper" due to old baggage ~~(And partially out of lazy-ness)~~ */
   const size_t arr_size = arr_count * sizeof(instr_generic_t);
-  instruction_t *instr_arr = malloc(arr_size);
+  instr_generic_t *instr_arr = malloc(arr_size);
 
   for (size_t i = 0; i < arr_count; i++)
     instr_arr[i] = *instr_input[i];
@@ -72,9 +72,9 @@ codegen(enum modes mode, instr_generic_t **instr_input, size_t arr_count) {
       label_create(
           &label_table, &label_table_size,
           instr_arr[i].dir.label.name,
-          instr_arr[i].dir.exported,
-          instr_arr[i].dir.ext,
-        0);
+          instr_arr[i].dir.label.exported,
+          instr_arr[i].dir.label.ext,
+          0);
     }
   }
 
@@ -100,14 +100,15 @@ static buffer_t assemble(enum modes mode, instr_generic_t *instr_arr, size_t arr
     /* -- Sanity checks -- */
     if (is_pre && label_table_size == 0) break;
     if (is_pre && label_index >= label_table_size) break;
-    if (instr_arr[i].operands == NULL) continue;
+    if (instr_arr[i].instr.operands == NULL) continue;
 
     if (instr_arr[i].type == DIRECTIVE) {
       if (instr_arr[i].dir.dir == DIR_DEFINE_BYTES) {
-        const buffer_t *data = (buffer_t *)instr_arr[i].dir.data;
-        buf_write(&buf, data->data, data->len);
-        free(instr_arr[i].dir.data.data)
+        buffer_t data = (buffer_t)instr_arr[i].dir.data;
+        buf_write(&buf, data.data, data.len);
+        free(instr_arr[i].dir.data.data);
       }
+
       if (is_pre && instr_arr[i].dir.dir == DIR_DEFINE_LABEL) {
         for (size_t j = 0; j < label_table_size; j++) {
           label_t *tab = label_table;
@@ -121,7 +122,7 @@ static buffer_t assemble(enum modes mode, instr_generic_t *instr_arr, size_t arr
 
       continue;
     }
- 
+
     const instr_encode_table_t ref = tabs[i];
 
     uint8_t opcode_sz = ref.opcode_size;
@@ -148,7 +149,7 @@ static buffer_t assemble(enum modes mode, instr_generic_t *instr_arr, size_t arr
     const encoder_t function_ptr = enc_lookup(ref.ident);
 
     if (function_ptr == NULL) {
-      if (instr_arr[i].operands[0].type != OP_NULL)
+      if (instr_arr[i].instr.operands[0].type != OP_NULL)
         err("instruction unsupported or improper usage");
       continue;
     }
@@ -158,6 +159,6 @@ static buffer_t assemble(enum modes mode, instr_generic_t *instr_arr, size_t arr
   return buf;
 }
 
-buffer_t assemble_instr(enum modes mode, instruction_t *instr) {
+buffer_t assemble_instr(enum modes mode, instr_generic_t *instr) {
   return codegen(mode, &instr, 1).code;
 }

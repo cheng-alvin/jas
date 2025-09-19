@@ -49,7 +49,7 @@ struct codegen_ret {
  * @return The `codegen_ret` struct containing the machine code and meta-data.
  */
 struct codegen_ret codegen(
-    enum modes mode, instruction_t **instr_input, size_t arr_count);
+    enum modes mode, instr_generic_t **instr_input, size_t arr_count);
 
 /**
  * Wrapper function for the `codegen` function that gives boiler-
@@ -64,6 +64,6 @@ struct codegen_ret codegen(
  *
  * @see `codegen`
  */
-buffer_t assemble_instr(enum modes mode, instruction_t *instr);
+buffer_t assemble_instr(enum modes mode, instr_generic_t *instr);
 
 #endif

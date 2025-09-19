@@ -46,7 +46,6 @@ typedef struct directive {
 
     /// @brief To be used for future directives where applicable
     /// with miscellaneous data such as alignment, etc.
-
     void *misc; /* Miscellaneous data portion of directive */
   };
 } directive_t;
