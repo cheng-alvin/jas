@@ -29,7 +29,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-typedef struct instruction instruction_t;
+typedef struct instr_generic instr_generic_t;
 
 typedef struct {
   char *name;     /* Name of the label in a string format */
