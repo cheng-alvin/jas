@@ -22,7 +22,7 @@ First of all, install/link against the binary releases [here](https://github.com
 #include <stdlib.h>
 
 int main(void) {
-  instruction_t *instr = instr_gen(INSTR_MOV, 2, r64(REG_RAX), imm64(0));
+  instr_generic_t *instr = instr_gen(INSTR_MOV, 2, r64(REG_RAX), imm64(0));
   buffer_t buf = assemble_instr(MODE_LONG, instr);
 
   /* Do something to `buf.data` - The uint8_t array */
