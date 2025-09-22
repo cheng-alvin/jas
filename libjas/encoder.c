@@ -27,7 +27,6 @@
 #include "codegen.h"
 #include "error.h"
 #include "instruction.h"
-#include "label.h"
 #include "operand.h"
 #include "register.h"
 #include <stdlib.h>
