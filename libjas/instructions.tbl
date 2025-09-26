@@ -3,7 +3,7 @@
 # Please consult the `LICENSE` file for more information.
 
 # Contributors' list: (Add your own name here, if applicable)
-# Copyright (c) 2023-2024 Alvin Cheng <eventide1029@gmail.com>
+# Copyright (c) 2023-2025 Alvin Cheng <eventide1029@gmail.com>
 
 # This is the Jas assembler instruction encoder bank, this file contains
 # the encoder tables for encoding the instructions into machine code, with
