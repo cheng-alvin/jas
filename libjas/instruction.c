@@ -50,6 +50,13 @@ instr_encode_table_t *instr_table[] =
 
 #define CURR_TABLE instr_table[instr.instr][j]
 
+static bool ident_exists(enum enc_ident ident, instr_encode_table_t *instr_ref) {
+  for (uint8_t j = 0; instr_ref[j].opcode_size > 0; j++)
+    if (instr_ref[j].ident == ident) return true;
+
+  return false;
+}
+
 instr_encode_table_t instr_get_tab(instruction_t instr) {
   if (instr.instr == INSTR_NULL && instr.operands == NULL) return INSTR_TAB_NULL;
   
@@ -59,8 +66,21 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   };
   // clang-format on
 
+  // Please note: would be eventually replaced with a better lookup
   enum enc_ident ident =
       op_ident_identify(operand_list, instr_table[(size_t)instr.instr]);
+
+  if (op_r(instr.operands[0].type) && op_imm(instr.operands[1].type)) {
+    const instr_encode_table_t *tab = instr_table[(size_t)instr.instr];
+
+    if (!op_acc(*(enum registers *)instr.operands[0].data)) goto skip;
+
+    if (ident_exists(ENC_O, tab)) ident = ENC_O;
+    if (ident_exists(ENC_OI, tab)) ident = ENC_OI;
+  }
+
+skip:
+  // ---
 
   for (uint8_t j = 0; CURR_TABLE.opcode_size; j++)
     if (CURR_TABLE.ident == ident) return CURR_TABLE;
