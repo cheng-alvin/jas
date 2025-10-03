@@ -44,9 +44,8 @@ typedef struct directive {
     label_t label; /* Label portion of directive */
     buffer_t data; /* Data portion of directive */
 
-    /// @brief To be used for future directives where applicable
-    /// with miscellaneous data such as alignment, etc.
-    void *misc; /* Miscellaneous data portion of directive */
+    /// @note tooling in dealing and construction of teh `label_t`
+    /// and `buffer_t` data structures are defined in `label.h` and
   };
 } directive_t;
 
