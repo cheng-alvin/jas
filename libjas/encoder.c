@@ -128,11 +128,6 @@ DEFINE_ENCODER(d) {
 }
 
 DEFINE_ENCODER(mi) {
-  if (op_arr[1].type == OP_IMM64) {
-    err("operand type mismatch.");
-    return;
-  }
-
   m(op_arr, buf, instr_ref, mode, label_table, label_table_size);
   i_common(op_arr, buf, instr_ref, mode);
 }
