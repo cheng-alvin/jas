@@ -169,29 +169,18 @@ typedef struct instr_generic {
 instr_encode_table_t instr_get_tab(instruction_t instr);
 
 /**
- * Function for generating an instruction struct with the given
- * instruction type and operands. The function is used to create
- * a Jas buffer and write it into a instruction, similar to the
- * `db` and `dw` directives in NASM, but this uses the size and
- * variadic arguments to write the bytes into the buffer.
+ * Function used to generate an instruction directive, representing a
+ * Jas buffer for the manual addition of raw binary bytes during the
+ * compilation process, akin to the 'db' directive in NASM.
  *
- * @param data_sz The size of the data to write
- * @param ... The data to write into the buffer
+ * @param data_sz Total size of data to write.
+ * @param ... Individual byte values to append in `uint8_t` form.
  *
- * @return The instruction generic pointer
+ * @return *Allocated* instruction directive pointer.
  */
 instr_generic_t *instr_write_bytes(size_t data_sz, ...);
 
-/**
- * Macros for defining the instruction operands in a more readable
- * form for passing into the `instr_gen` function. The macros are
- * used to define the operand type, register, immediate, memory
- * and relative operands.
- *
- * @example
- * We dont need to type in: `instr_gen(INSTR_MOV, 1, OP_R64, REG_RAX, 0);`
- * But instead, we can type in: `instr_gen(INSTR_MOV, 1, r64(REG_RAX));`
- */
+// Helper macro definitions in lieu of `instr_gen` functions:
 
 #define r64(x) OP_R64, x, 0
 #define r32(x) OP_R32, x, 0
@@ -228,19 +217,18 @@ instr_generic_t *instr_write_bytes(size_t data_sz, ...);
 /**
  * A function for easily defining a instruction in the `instruction_t`
  * form without having to use the struct initializer or mangle around
- * with void pointers and curly braces. This function is used to create
- * a instruction struct and its operands using variadic arguments
- * and grouping 3 arguments together and passed off into the function.
+ * with void pointers and curly braces. This function can create
+ * and automatically allocate an `instruction` struct using variadic
+ * arguments.
  *
- * @param instr The instruction type
- * @param operand_count The number of operands to pass
- * @param ... The operands to pass (Refer to below example)
+ * @param instr The instruction type, as defined in `enum instructions`
+ * @param operand_count The number of operands to pass (max. 4)
  *
- * @return The instruction struct pointer
+ * @param ... The operands to pass
+ * @note Can be used in conjunction with the helper macros defined
+ * above to improve readability, allowing code to be "self-documenting".
  *
- * @note This function returns a pointer to a dynamically allocated generic
- * struct, not a default instruction struct. Extract the pure instruction
- * through the `instr` property.
+ * @return An allocated `instr_generic` struct pointer.
  */
 instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
 
@@ -263,20 +251,15 @@ instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...);
   } while (0)
 
 /**
- * Function for freeing the memory allocated for the instruction
- * struct and its operands. The function is used to prevent memory
- * leaks and free the memory allocated for the instruction structs
- * and the operand structs that are nested inside the instruction.
+ * Function for freeing memory allocated through internal Jas instruction
+ * generation functions. All subsequent nested allocations would also be
+ * freed via this function.
  *
  * @param instr The instruction generic struct to free
  *
- * @note This function should only be used to free instruction allocated
- * using built-in Jas instruction generation functions, unless you actually
- * know what you are doing.
- *
- * @note It should also be worth noting that the all of the `instr_generic_t`
- * structs are dynamically allocated, so the memory allocated for the
- * instruction struct and its operands must be freed using this function.
+ * @note To prevent memory leaks and undefined behavior associated with
+ * the repeated freeing of memory, the pointer used must only be alloc-
+ * ated through Jas internal functions.
  */
 void instr_free(instr_generic_t *instr);
 
