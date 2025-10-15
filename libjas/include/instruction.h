@@ -128,6 +128,8 @@ struct instr_encode_table {
 
   uint8_t opcode_size : 4;   /* Size of opcode (max. 3) */
   uint8_t operand_count : 4; /* Number of applicable operands (max. 4) */
+
+  /// @note maximum denotes the maximum value, rather than size.
 };
 
 /**
