@@ -26,79 +26,31 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-#include "buffer.h"
-#include "label.h"
-#include "mode.h"
-
-// Forward declarations -  See `instruction.h` and `operand.h` respectively
-typedef struct instr_encode_table instr_encode_table_t;
-typedef struct operand operand_t;
-
 /**
- * Enumeration for the different operand identifiers.
- * Used to lookup the operand encoder functions.
+ * Enum to represent the different encoder identities, gives
+ * guidance on which corresponding field can be filled in with
+ * the instruction encoder table.
  *
  * @note See identities and their corresponding encoder
  * methods in the main source file - `encoder.c`.
  */
 enum enc_ident {
-  ENC_NULL,
-  ENC_MR,
+  /**
+   * Note, enumeration values from 0 to 7 are reserved for use
+   * for representation of the ModR/M byte's operand extension.
+   *
+   * Where applicable, the encoding reference table can request
+   * the usage of opcode extensions such as `/0` and can be assigned
+   * an identity of `(enum enc_ident)0` to `(enum enc_ident)7`,
+   * representing `/0` to `/7` respectively.
+   */
+  ENC_NULL = 8,
+  ENC_REG,
   ENC_RM,
-  ENC_OI,
-  ENC_MI,
-  ENC_I,
-  ENC_M,
-  ENC_ZO,
-  ENC_D,
-  ENC_O,
-  ENC_IGN, /* Although **NOT** original Intel, this identity will
-  void all operands, only writing the opcode (IGN meaning *ignore*) */
+  ENC_SIB,
+  ENC_DISP,
+  ENC_IMM,
 };
 
-/**
- * Macro definition for the encoder function signature,
- * this function signature and it's parameters are all
- * documented below.
- *
- * For very very special cases where you need to define
- * a custom encoder function, or if you need to reference
- * it in a different file, you can use this macro, instead
- * of using the `enc_lookup()` function.
- *
- * @see `encoder_t`
- */
-#define DEFINE_ENCODER(ident, ...) \
-  void ident(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, label_t *label_table, size_t label_table_size)
-
-/**
- * Type wrapper for the instruction encoder function pointer. Where
- * each operand encoder function takes an array of operands and
- * a buffer to write the encoded instruction to.
- *
- * (Based on the operand identities like MR, RM, etc.)
- *
- * @param op_arr The array of operands to encode
- * @param buf The buffer to write the encoded instruction to
- * @param instr_ref The instruction reference table
- * @param mode The operating mode of the instruction
- * @param label_table The label table applicable to the current context.
- * @param label_table_size The size of the label table (as described)
- *
- * @note All encoder functions will conform to this signature.
- */
-typedef void (*encoder_t)(operand_t *op_arr, buffer_t *buf, instr_encode_table_t *instr_ref, enum modes mode, label_t *label_table, size_t label_table_size);
-
-/**
- * Lookup table for the different instruction encoder functions.
- * The lookup table is indexed by the operand encoding identity
- * and the corresponding encoder function is returned.
- *
- * @see `encoder.c`
- *
- * @param input The instruction encoding identity
- * @return The instruction encoder function pointer
- */
-encoder_t enc_lookup(enum enc_ident input);
-
+// TODO Main encoder function to be added soon.
 #endif
