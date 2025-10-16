@@ -29,6 +29,7 @@
 #include "encoder.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
@@ -115,6 +116,11 @@ struct instr_encode_table {
     enum encoder_ident ident; /* Instruction encoder identity for that operand */
   } operand_descriptors[4];
 
+  /// @note describes the validity of the instruction as in adhereance to 
+  /// Intel-associated documentation.
+  bool long_mode: 1;
+  bool leg_mode: 1;
+
   /**
    * @note Due to x86's design optimisation in favour of code size,
    * all instruction's opcode sizes are variable, but is documented
@@ -126,8 +132,8 @@ struct instr_encode_table {
    * which is still sufficient for the range required.
    */
 
-  uint8_t opcode_size : 4;   /* Size of opcode (max. 3) */
-  uint8_t operand_count : 4; /* Number of applicable operands (max. 4) */
+  uint8_t opcode_size : 3;   /* Size of opcode (max. 3) */
+  uint8_t operand_count :3; /* Number of applicable operands (max. 4) */
 
   /// @note maximum denotes the maximum value, rather than size.
 };

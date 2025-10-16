@@ -8,6 +8,9 @@
 #         { 0 }, // unused slots must be zeroed
 #         { 0 }
 #     },
+#     .long_mode = true,
+#     .leg_mode = true,
+#
 #     .opcode_size = 1,
 #     .operand_count = 2
 # };
@@ -23,3 +26,7 @@ instructions:
         operands:
           - { type: r8, encoder: reg }
           - { type: r16, encoder: reg }
+
+        compatibility:
+          long: true
+          legacy: true
