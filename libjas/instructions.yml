@@ -22,7 +22,7 @@
 instructions:
   - mov:
     variants:
-      - opcode: 0x88
+      - opcode: [ 0x88 ]
         operands:
           - { type: r8, encoder: reg }
           - { type: r16, encoder: reg }
