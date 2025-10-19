@@ -29,6 +29,7 @@
 #include "encoder.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
