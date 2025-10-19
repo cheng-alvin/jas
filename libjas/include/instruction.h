@@ -29,7 +29,6 @@
 #include "encoder.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdbool.h>
 
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
@@ -105,21 +104,18 @@ enum instructions {
   INSTR_CMOVZ,
 };
 
-// Alias type for the encoder `encoder_t` function pointer. - See `encoder.h`
-typedef encoder_t pre_encoder_t;
-
 struct instr_encode_table {
   uint8_t opcode[3]; /* Opcode of the instruction */
 
   struct {
-    enum operands type;       /* Type of operand, for error checking purposes */
-    enum encoder_ident ident; /* Instruction encoder identity for that operand */
+    enum operands type;   /* Type of operand, for error checking purposes */
+    enum enc_ident ident; /* Instruction encoder identity for that operand */
   } operand_descriptors[4];
 
-  /// @note describes the validity of the instruction as in adhereance to 
+  /// @note describes the validity of the instruction as in adherence to
   /// Intel-associated documentation.
-  bool long_mode: 1;
-  bool leg_mode: 1;
+  bool long_mode : 1;
+  bool leg_mode : 1;
 
   /**
    * @note Due to x86's design optimisation in favour of code size,
@@ -133,7 +129,7 @@ struct instr_encode_table {
    */
 
   uint8_t opcode_size : 3;   /* Size of opcode (max. 3) */
-  uint8_t operand_count :3; /* Number of applicable operands (max. 4) */
+  uint8_t operand_count : 3; /* Number of applicable operands (max. 4) */
 
   /// @note maximum denotes the maximum value, rather than size.
 };
