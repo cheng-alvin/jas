@@ -30,3 +30,12 @@ instructions:
         compatibility:
           long: true
           legacy: true
+
+      - opcode: [ 0x81 ]
+        operands:
+          - { type: r/m16, encoder: r/m }
+          - { type: r/m8, encoder: r/m }
+
+        compatibility:
+          long: true
+          legacy: true
