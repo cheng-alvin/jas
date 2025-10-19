@@ -29,6 +29,7 @@
 #include "encoder.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
@@ -108,12 +109,33 @@ enum instructions {
 typedef encoder_t pre_encoder_t;
 
 struct instr_encode_table {
-  enum enc_ident ident;         /* Operand encoding identity */
-  uint8_t opcode_ext;           /* Opcode extension */
-  uint8_t opcode[3];            /* Opcode of the instruction */
-  uint8_t byte_instr_opcode[3]; /* 8 bit opcode fallback of the instruction */
-  uint8_t opcode_size;          /* Size of the opcode (max. 3 bytes)*/
-  uint8_t byte_opcode_size;     /* Size of the byte opcode (max. 3 bytes, may be left null) */
+  uint8_t opcode[3]; /* Opcode of the instruction */
+
+  struct {
+    enum operands type;       /* Type of operand, for error checking purposes */
+    enum encoder_ident ident; /* Instruction encoder identity for that operand */
+  } operand_descriptors[4];
+
+  /// @note describes the validity of the instruction as in adhereance to 
+  /// Intel-associated documentation.
+  bool long_mode: 1;
+  bool leg_mode: 1;
+
+  /**
+   * @note Due to x86's design optimisation in favour of code size,
+   * all instruction's opcode sizes are variable, but is documented
+   * to not exceed 3 bytes. Similarly, instructions also *do not*
+   * hold a fixed amount of operands.
+   *
+   * Hence, in attempts to reduce encoder reference table size,
+   * the opcode and operand counters are stored in 4 bits each,
+   * which is still sufficient for the range required.
+   */
+
+  uint8_t opcode_size : 3;   /* Size of opcode (max. 3) */
+  uint8_t operand_count :3; /* Number of applicable operands (max. 4) */
+
+  /// @note maximum denotes the maximum value, rather than size.
 };
 
 /**
@@ -144,16 +166,6 @@ typedef struct instr_generic {
     struct directive dir;
   };
 } instr_generic_t;
-
-#define INSTR_TAB_NULL           \
-  (instr_encode_table_t) {       \
-    .ident = NULL,               \
-    .opcode_ext = NULL,          \
-    .opcode = {NULL},            \
-    .byte_instr_opcode = {NULL}, \
-    .opcode_size = NULL,         \
-    .byte_opcode_size = NULL,    \
-  }
 
 /**
  * Function for getting the instruction table based on the instruction

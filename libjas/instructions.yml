@@ -1,0 +1,32 @@
+# Sample corresponding C struct compilation result:
+
+# struct instr_encode_table mov_sample_output = {
+#     .opcode = { 0x89, 0x00, 0x00 }, // Note padding bytes
+#     .operand_descriptors = {
+#         { .type = OP_R8, .encoder_ident = ENC_REG },   // first operand
+#         { .type = OP_R16, .encoder_ident = ENC_REG },  // second operand
+#         { 0 }, // unused slots must be zeroed
+#         { 0 }
+#     },
+#     .long_mode = true,
+#     .leg_mode = true,
+#
+#     .opcode_size = 1,
+#     .operand_count = 2
+# };
+# Should note that any r/m operands should have **two** entries for stricter
+# operand checking.
+
+# Sample YAML declaration for equivalent instruction encoding:
+
+instructions:
+  - mov:
+    variants:
+      - opcode: 0x88
+        operands:
+          - { type: r8, encoder: reg }
+          - { type: r16, encoder: reg }
+
+        compatibility:
+          long: true
+          legacy: true
