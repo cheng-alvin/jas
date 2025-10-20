@@ -3,8 +3,8 @@
 # struct instr_encode_table mov_sample_output = {
 #     .opcode = { 0x89, 0x00, 0x00 }, // Note padding bytes
 #     .operand_descriptors = {
-#         { .type = OP_R8, .encoder_ident = ENC_REG },   // first operand
-#         { .type = OP_R16, .encoder_ident = ENC_REG },  // second operand
+#         { .type = OP_R8, .encoder = ENC_REG },   // first operand
+#         { .type = OP_R16, .encoder = ENC_REG },  // second operand
 #         { 0 }, // unused slots must be zeroed
 #         { 0 }
 #     },
@@ -22,10 +22,19 @@
 instructions:
   - mov:
     variants:
-      - opcode: 0x88
+      - opcode: [ 0x88 ]
         operands:
           - { type: r8, encoder: reg }
           - { type: r16, encoder: reg }
+
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [ 0x81 ]
+        operands:
+          - { type: r/m16, encoder: r/m }
+          - { type: r/m8, encoder: r/m }
 
         compatibility:
           long: true
