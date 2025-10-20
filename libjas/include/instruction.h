@@ -104,18 +104,15 @@ enum instructions {
   INSTR_CMOVZ,
 };
 
-// Alias type for the encoder `encoder_t` function pointer. - See `encoder.h`
-typedef encoder_t pre_encoder_t;
-
 struct instr_encode_table {
   uint8_t opcode[3]; /* Opcode of the instruction */
 
   struct {
-    enum operands type;         /* Type of operand, for error checking purposes */
-    enum encoder_ident encoder; /* Instruction encoder identity for that operand */
+    enum operands type;   /* Type of operand, for error checking purposes */
+    enum enc_ident ident; /* Instruction encoder identity for that operand */
   } operand_descriptors[4];
 
-  /// @note describes the validity of the instruction as in adhereance to
+  /// @note describes the validity of the instruction as in adherence to
   /// Intel-associated documentation.
   bool long_mode : 1;
   bool leg_mode : 1;
