@@ -33,23 +33,6 @@
 #include <stdint.h>
 
 /**
- * Definitions to the macros used in the operand encoder functions.
- * to represent the addressing modes of the ModR/M byte.
- *
- * Basically, the ModR/M byte, in a nutshell is a byte that gives
- * the addressing mode of the operand, register and/or memory
- * data associated with the current operation.
- *
- * They definitely did a way better job explaining it here:
- * @see https://wiki.osdev.org/X86-64_Instruction_Encoding#ModR.2FM_Byte
- */
-
-#define OP_MODRM_INDIRECT 0b00000000
-#define OP_MODRM_DISP8 0b01000000
-#define OP_MODRM_DISP32 0b10000000
-#define OP_MODRM_REG 0b11000000
-
-/**
  * Macro definition for the 16-bit operand override byte for supporting
  * word-sized operands and addresses in the x86 family.
  *
@@ -57,6 +40,30 @@
  */
 #define OP_WORD_OVERRIDE 0x66
 #define OP_ADDR_OVERRIDE 0x67
+
+/**
+ * Struct definition for the ModR/M byte used in x86 instruction
+ * encoding for specifying operands, especially for register or
+ * memory-related operands.
+ *
+ * The struct is packed to preserve exact bit layout as expected in
+ * encoding. Hence, The struct is designed to be casted and written
+ * directly.
+ */
+
+enum op_modrm_modes {
+  OP_MODRM_MODE_INDIRECT = 0,
+  OP_MODRM_MODE_DISP8 = 1,
+  OP_MODRM_MODE_DISP32 = 2,
+  OP_MODRM_MODE_REG = 3,
+};
+
+typedef struct __attribute__((packed)) op_modrm {
+  enum op_modrm_modes mod : 2; /* Mode selection of ModR/M operand */
+
+  uint8_t reg : 3; /* Register field, or for an extended opcode */
+  uint8_t rm : 3;  /* Memory or additional register fields */
+} op_modrm_t;
 
 /**
  * Enumeration for the different types of operands and
