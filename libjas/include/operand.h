@@ -195,11 +195,4 @@ uint8_t op_sizeof(enum operands input);
  */
 uint8_t *op_write_opcode(operand_t *op_arr, instr_encode_table_t *instr_ref);
 
-#define OP_NONE      \
-  (operand_t) {      \
-    .data = NULL,    \
-    .type = OP_NULL, \
-    .offset = 0,     \
-  }
-
 #endif
