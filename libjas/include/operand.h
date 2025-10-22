@@ -193,11 +193,4 @@ uint8_t op_sizeof(enum operands input);
  */
 bool op_assert_types(operand_t *in, enum operands *ex, size_t sz);
 
-#define OP_NONE      \
-  (operand_t) {      \
-    .data = NULL,    \
-    .type = OP_NULL, \
-    .offset = 0,     \
-  }
-
 #endif
