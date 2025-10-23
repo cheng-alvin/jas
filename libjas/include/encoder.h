@@ -26,6 +26,9 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
+#include "operand.h"
+#include <stdint.h>
+
 /**
  * Enum to represent the different encoder identities, gives
  * guidance on which corresponding field can be filled in with
@@ -53,5 +56,26 @@ enum enc_ident {
   ENC_OPCODE_APPENDED,
 };
 
-// TODO Main encoder function to be added soon.
+typedef struct enc_serialized_instr {
+  buffer_t prefixes; /* Instruction prefixes (raw bytes) */
+
+  /* Opcode */
+  uint8_t opcode[3];       /* Opcode bytes (max 3) */
+  uint8_t opcode_size : 2; /* Size of opcode (0–3 bytes) */
+
+  /* ModR/M + SIB -  Memory representation */
+  struct op_modrm modrm; /* ModR/M byte */
+  struct op_sib sib;     /* SIB byte */
+  bool has_modrm : 1;    /* ModR/M present */
+  bool has_sib : 1;      /* SIB present */
+
+  uint64_t disp; /* Displacement value */
+  uint64_t imm;  /* Immediate value */
+
+  /// @note A 0 size field depicts absence of the respective field.
+  uint8_t disp_size : 4; /* Displacement size (0–8 bytes) */
+  uint8_t imm_size : 4;  /* Immediate size (0–8 bytes) */
+
+} enc_serialized_instr_t;
+
 #endif
