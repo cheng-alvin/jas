@@ -126,6 +126,27 @@ typedef struct operand {
   char *label;        /* The name of a referenced label (if applicable) */
 } operand_t;
 
+enum op_sib_scale {
+  OP_SIB_SCALE_1 = 0,
+  OP_SIB_SCALE_2 = 1,
+  OP_SIB_SCALE_4 = 2,
+  OP_SIB_SCALE_8 = 3,
+};
+
+/// Implementation @note: when ModR/M's R/M field is 0b100 (4), an SIB
+/// would be expected to be present after the ModR/M byte. A placeholder
+/// such as 0x24 can be used in lieu of an actual SIB byte where applicable.
+
+typedef struct __attribute__((packed)) op_sib {
+  enum op_sib_scale scale : 2; /* Scale factor for index register */
+
+  // Note how scale applies to index and not the base, hence expression:
+  // base + (index * scale) [ + displacement, where applicable]
+
+  uint8_t index : 3; /* Index register */
+  uint8_t base : 3;  /* Base register */
+} op_sib_t;
+
 /**
  * Function for setting the prefix of the operand based on the
  * size of the reference operand array, and writes it the
