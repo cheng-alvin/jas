@@ -66,7 +66,7 @@ opcode, and support status in different operating modes.
 
 **Constructing a entry**
 
-Jas encoder banks has now been since compiled using a text-based format. Every entry is line-seperated and values are seperated using `|`s, spaces are used to pad and align the values with the others (mainly for cosmetics) but they are eventually ignored by the compiler. Characters such as `-` are in-place for `NULL` and will be replaced with `NULL` during compilation. To compile the instruction encoder table, make the `tabs.c` target in the `libjas` directory, this will invoke the Node.js script and automatically generate the `tabs.c` file. 
+Jas encoder banks has now been since compiled using a text-based format. Every entry is line-seperated and values are seperated using `|`s, spaces are used to pad and align the values with the others (mainly for cosmetics) but they are eventually ignored by the compiler. Characters such as `-` are in-place for `NULL` and will be replaced with `NULL` during compilation. To compile the instruction encoder table, make the `instructions.inc` target in the `libjas` directory, this will invoke the Node.js script and automatically generate the `instructions.inc` file. 
 
 Here's a sample entry:
 

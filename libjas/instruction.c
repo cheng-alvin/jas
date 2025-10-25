@@ -26,9 +26,9 @@
 #include "instruction.h"
 #include "dir.h"
 #include "error.h"
+#include "instructions.inc"
 #include "operand.h"
 #include "register.h"
-#include "tabs.c"
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdlib.h>

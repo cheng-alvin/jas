@@ -53,7 +53,7 @@ function handleOperands(operands) {
 
 // clang-format off
 let output =
-    "#include <stdbool.h> \n" + "#include \"instruction.h\" \n " +
+    "#include <stdbool.h> \n" + "#include \"instruction.h\" \n" +
     "#include \"operand.h\" \n " + "#include \"encoder.h\" \n\n ";
 // clang-format on
 
@@ -67,7 +67,7 @@ for (let k = 0; k < instructions.length; k++) {
 }
 output += "};"
 
-fs.writeFileSync("tabs.c", output);
+fs.writeFileSync("instructions.inc", output);
 
 function handleVariant(variant) {
   let res = "";

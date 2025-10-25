@@ -13,7 +13,7 @@ $(TESTS): %: %.o
 	$(CC) -o $@ $< ../build/libjas_debug.a $(CFLAGS)
 
 libjas_debug.a: 
-	$(MAKE) -C ../libjas tabs.c
+	$(MAKE) -C ../libjas instructions.inc
 	$(MAKE) -C ../libjas libjas_debug.a
 
 clean:
