@@ -32,77 +32,13 @@
 
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
+typedef enum instructions instructions_t;
 
 #include "dir.h"
 
-enum instructions {
-  INSTR_NULL,
-
-  INSTR_MOV,
-  INSTR_LEA,
-  INSTR_ADD,
-  INSTR_SUB,
-  INSTR_MUL,
-  INSTR_DIV,
-  INSTR_AND,
-  INSTR_OR,
-  INSTR_XOR,
-  INSTR_NOT,
-  INSTR_INC,
-  INSTR_DEC,
-  INSTR_JMP,
-  INSTR_JE,
-  INSTR_JNE,
-  INSTR_JZ,
-  INSTR_JNZ,
-  INSTR_CALL,
-  INSTR_RET,
-  INSTR_CMP,
-  INSTR_PUSH,
-  INSTR_POP,
-  INSTR_IN,
-  INSTR_OUT,
-  INSTR_CLC,
-  INSTR_STC,
-  INSTR_CLI,
-  INSTR_STI,
-  INSTR_NOP,
-  INSTR_HLT,
-  INSTR_INT,
-  INSTR_SYSCALL,
-  INSTR_MOVZX,
-  INSTR_MOVSX,
-  INSTR_XCHG,
-  INSTR_BSWAP,
-  INSTR_CMOVA,
-  INSTR_CMOVAE,
-  INSTR_CMOVB,
-  INSTR_CMOVBE,
-  INSTR_CMOVE,
-  INSTR_CMOVG,
-  INSTR_CMOVGE,
-  INSTR_CMOVL,
-  INSTR_CMOVLE,
-  INSTR_CMOVNA,
-  INSTR_CMOVNAE,
-  INSTR_CMOVNB,
-  INSTR_CMOVNBE,
-  INSTR_CMOVNE,
-  INSTR_CMOVNG,
-  INSTR_CMOVNGE,
-  INSTR_CMOVNL,
-  INSTR_CMOVNLE,
-  INSTR_CMOVNO,
-  INSTR_CMOVNP,
-  INSTR_CMOVNS,
-  INSTR_CMOVNZ,
-  INSTR_CMOVO,
-  INSTR_CMOVP,
-  INSTR_CMOVPE,
-  INSTR_CMOVPO,
-  INSTR_CMOVS,
-  INSTR_CMOVZ,
-};
+/// @note Special formatting for the definition of the instruction enum.
+#define INSTR_ENUM
+#include "instructions.inc"
 
 struct instr_encode_table {
   uint8_t opcode[3]; /* Opcode of the instruction */
@@ -133,12 +69,6 @@ struct instr_encode_table {
 
   /// @note maximum denotes the maximum value, rather than size.
 };
-
-/**
- * The lookup table using the `instructions_t` enum as the index
- * to get the corresponding instruction operand encoder structs.
- */
-extern instr_encode_table_t *instr_table[];
 
 typedef struct instruction {
   enum instructions instr; /* Type of instruction */
