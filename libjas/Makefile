@@ -14,7 +14,7 @@ libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -std=c99 -O0 -gembed-source
 libjas_debug.a: $(OBJ)
 	ar rcs $(BUILD)/$@ $^
 
-tabs.c: instructions.yml
+instructions.inc: instructions.yml
 	node ./scripts/compile.js $^ 
 
 # Individual object files rules:

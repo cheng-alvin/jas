@@ -53,8 +53,10 @@ function handleOperands(operands) {
 
 // clang-format off
 let output =
-    "#include <stdbool.h> \n" + "#include \"instruction.h\" \n " +
-    "#include \"operand.h\" \n " + "#include \"encoder.h\" \n\n ";
+    "// Auto-generated file. Do not edit directly. \n\n" +
+    "#include <stdbool.h> \n" + "#include \"instruction.h\" \n" +
+    "#include \"operand.h\" \n" + "#include \"encoder.h\" \n\n" +
+    "#ifndef INSTR_ENUM \n";
 // clang-format on
 
 output += `struct instr_encode_table instr_table[] = {`
@@ -65,9 +67,20 @@ for (let k = 0; k < instructions.length; k++) {
   for (let l = 0; l < variants.length; l++)
     output += handleVariant(variants[l]);
 }
-output += "};"
+output += "}; \n#endif";
 
-fs.writeFileSync("tabs.c", output);
+let instrEnumEntries = "#ifdef INSTR_ENUM \n" +
+                       "enum instructions {\n";
+
+instructionNames = [ "null", ...instructionNames ];
+for (let m = 0; m < instructionNames.length; m++) {
+  instrEnumEntries +=
+      `  INSTR_${instructionNames[m].toUpperCase()},\n`;
+}
+
+instrEnumEntries += "};\n#undef INSTR_ENUM\n#endif";
+
+fs.writeFileSync("instructions.inc", output + "\n\n" + instrEnumEntries);
 
 function handleVariant(variant) {
   let res = "";

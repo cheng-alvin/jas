@@ -26,8 +26,8 @@
 
 #include "parse.h"
 #include "error.h"
+#include "instructions.inc"
 #include "register.h"
-#include "tabs.c"
 #include <inttypes.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -36,7 +36,7 @@ enum instructions parse_instr_name(char *name) {
   for (int i = 0; name[i]; i++)
     name[i] = (unsigned char)tolower((int)name[i]);
 
-  /// @note `instr_tab_names` is defined in `tabs.c`
+  /// @note `instr_tab_names` is defined in `instructions.inc`
   /// depicting instruction names in order of enum.
 
   for (int i = 0; i < sizeof(instr_tab_names); i++) {
