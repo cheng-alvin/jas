@@ -25,11 +25,18 @@
 
 #include "operand.h"
 #include "error.h"
-#include "instruction.h"
 #include "mode.h"
-#include "register.h"
 #include "rex.h"
 #include <stdbool.h>
+
+bool op_assert_types(operand_t *in, enum operands *ex, size_t sz) {
+  for (size_t i = 0; i < sz; i++) {
+    if (ex[i].type == OP_NULL) break;
+    if (in[i].type != ex[i]) return false;
+  }
+
+  return true;
+}
 
 uint8_t op_sizeof(enum operands input) {
   if (op_byte(input)) return 8;
