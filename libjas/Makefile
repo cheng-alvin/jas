@@ -16,8 +16,4 @@ libjas_debug.a: $(OBJ)
 
 instructions.inc: instructions.yml
 	node ./scripts/compile.js $^ 
-
-# Individual object files rules:
-operand_cpp.o: CFLAGS = $(CFLAGS_COMMON) -std=c++11 -O0
-operand_cpp.o: operand.cpp
-	$(CC) $(CFLAGS) -c $< -o $@	
+	

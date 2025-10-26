@@ -31,31 +31,6 @@
 #include "rex.h"
 #include <stdbool.h>
 
-uint8_t op_modrm_mode(operand_t input) {
-  register const enum registers deref_reg = (*(enum registers *)input.data);
-  if (reg_lookup_val(input.data) == 5 && !reg_needs_rex(deref_reg)) {
-    if (deref_reg == REG_RIP || deref_reg == REG_EIP || deref_reg == REG_IP) {
-      if (op_r(input.type))
-        err("`rip`, `eip` or `ip` cannot be directly referenced");
-      return OP_MODRM_INDIRECT;
-    } else if (input.offset == 0)
-      return OP_MODRM_DISP8;
-  }
-
-  if (op_m(input.type) && input.offset == 0)
-    return OP_MODRM_INDIRECT;
-
-  if (input.offset != 0) {
-    if ((intmax_t)input.offset > INT32_MAX) err("displacement too large");
-    if ((intmax_t)input.offset > INT8_MAX)
-      return OP_MODRM_DISP32;
-
-    return OP_MODRM_DISP8;
-  }
-
-  return OP_MODRM_REG;
-}
-
 uint8_t op_sizeof(enum operands input) {
   if (op_byte(input)) return 8;
   if (op_word(input)) return 16;
@@ -63,19 +38,6 @@ uint8_t op_sizeof(enum operands input) {
   if (op_qword(input)) return 64;
 
   return 0;
-}
-
-uint8_t *op_write_opcode(operand_t *op_arr, instr_encode_table_t *instr_ref) {
-  if (op_byte(op_arr[0].type)) {
-    if (instr_ref->byte_opcode_size == 0) goto op_e;
-    return instr_ref->byte_instr_opcode;
-  }
-  if (!instr_ref->opcode_size) goto op_e;
-  return instr_ref->opcode;
-
-op_e:
-  err("operand type mismatch");
-  return NULL;
 }
 
 void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode) {
