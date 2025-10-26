@@ -32,6 +32,8 @@
 #include "mode.h"
 #include <stdint.h>
 
+typedef struct instr_encode_table instr_encode_table_t;
+
 /**
  * Macro definition for the 16-bit operand override byte for supporting
  * word-sized operands and addresses in the x86 family.
@@ -154,6 +156,21 @@ void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode);
  * NOT THE OPERAND DATA ITSELF!
  */
 uint8_t op_sizeof(enum operands input);
+
+/**
+ * Function for asserting that the types of the input operand
+ * array matches the expected operand types provided in the
+ * expected operand array.
+ *
+ * @param in The input operand array to check against `ex`
+ * @param ex List of expected operand types in enumerated form.
+ *
+ * @param sz The size of the arrays provided.
+ *
+ * @return The result of the assertion; true if all types match
+ * with the expected types, false otherwise.
+ */
+bool op_assert_types(operand_t *in, enum operands *ex, size_t sz);
 
 #define OP_NONE      \
   (operand_t) {      \

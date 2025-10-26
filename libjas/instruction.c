@@ -24,9 +24,9 @@
  */
 
 #include "instruction.h"
+
 #include "dir.h"
 #include "error.h"
-#include "instructions.inc"
 #include "operand.h"
 #include "register.h"
 #include <stdarg.h>
@@ -36,60 +36,29 @@
 
 // clang-format off
 
-instr_encode_table_t *instr_table[] =
-    {
-        NULL, mov, lea, add, sub, mul, _div, and, or, xor, _not, inc,
-        dec, jmp, je, jne, jz, jnz, call, ret, cmp, push, pop,
-        in, out, clc, stc, cli, sti, nop, hlt, _int, syscall, 
-        movzx, movsx, xchg, bswap, cmova, cmovae, cmovb, cmovbe, cmove, 
-        cmovg, cmovge, cmovl, cmovle, cmovna, cmovnae, cmovnb, cmovnbe,
-        cmovne, cmovng, cmovnge, cmovnl, cmovnle, cmovno, cmovnp, cmovns,
-        cmovnz, cmovo, cmovp, cmovpe, cmovpo, cmovs, cmovz,       
-    };
-
-
-#define CURR_TABLE instr_table[instr.instr][j]
-
-static bool ident_exists(enum enc_ident ident, instr_encode_table_t *instr_ref) {
-  for (uint8_t j = 0; instr_ref[j].opcode_size > 0; j++)
-    if (instr_ref[j].ident == ident) return true;
-
-  return false;
-}
-
+#define CURR_TABLE instr_table[(uint8_t)instr.instr]
 instr_encode_table_t instr_get_tab(instruction_t instr) {
-  if (instr.instr == INSTR_NULL && instr.operands == NULL) return INSTR_TAB_NULL;
-  
-  const enum operands operand_list[4] = {
-      instr.operands[0].type, instr.operands[1].type,
-      instr.operands[2].type, instr.operands[3].type,
-  };
+  #include "instructions.inc"
   // clang-format on
 
-  // Please note: would be eventually replaced with a better lookup
-  enum enc_ident ident =
-      op_ident_identify(operand_list, instr_table[(size_t)instr.instr]);
+  // TODO find out and eliminate compilation error here:
+  for (uint8_t i = 0; CURR_TABLE[i].opcode_size; i++) {
+    const enum operands operand_list[4] = {
+        CURR_TABLE[i].operand_descriptors[0].type,
+        CURR_TABLE[i].operand_descriptors[1].type,
+        CURR_TABLE[i].operand_descriptors[2].type,
+        CURR_TABLE[i].operand_descriptors[3].type,
+    };
 
-  if (op_r(instr.operands[0].type) && op_imm(instr.operands[1].type)) {
-    const instr_encode_table_t *tab = instr_table[(size_t)instr.instr];
-
-    if (!op_acc(*(enum registers *)instr.operands[0].data)) goto skip;
-
-    if (ident_exists(ENC_O, tab)) ident = ENC_O;
-    if (ident_exists(ENC_OI, tab)) ident = ENC_OI;
+    bool pass = op_assert_types(instr.operands, operand_list, 4);
+    if (pass) return CURR_TABLE[i];
   }
-
-skip:
-  // ---
-
-  for (uint8_t j = 0; CURR_TABLE.opcode_size; j++)
-    if (CURR_TABLE.ident == ident) return CURR_TABLE;
 
   // fall-through; no corresponding instruction opcode found
   err("No corrsponding instruction opcode found.");
   return INSTR_TAB_NULL; // aka empty
 }
-#undef CURR_TABLE
+#undef CURR_TABLE // As in not applicable in other contexts.
 
 static void __instr_free__(instruction_t *instr) {
   for (uint8_t i = 0; i < 4; i++) {

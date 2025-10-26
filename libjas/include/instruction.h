@@ -32,7 +32,6 @@
 
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
-typedef enum instructions instructions_t;
 
 #include "dir.h"
 
