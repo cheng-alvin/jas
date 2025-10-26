@@ -138,34 +138,6 @@ typedef struct operand {
 void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode);
 
 /**
- * Function for identifying the operand identity, created using
- * a large c++ unordered_map.
- *
- * @param input The input operand list
- * @return The operand identity enumeration
- */
-enum enc_ident op_ident_identify(enum operands *input, instr_encode_table_t *instr_ref);
-
-/**
- * Simple function for determining the ModR/M mode based on the
- * operand type and offset provided by the operand struct.
- * (As defined below)
- *
- * @param input The operand struct to determine the mode from
- * @return The ModR/M mode
- *
- * @note Function also performs checks for RIP, ESP, IP instr-
- * uction pointers for offset and ModR/M bytes and modes.
- *
- * @note The function requires the offset value to be typed as
- * signed types to prevent confusion and to match with the Intel
- * -required specifications as outlined.
- *
- * @see `operand_t`
- */
-uint8_t op_modrm_mode(operand_t input);
-
-/**
  * Function for finding the size of the operand type in bits, very
  * similar to the `sizeof` operator in C99. Used to determine
  * the size of the operand in the instruction.
@@ -182,25 +154,6 @@ uint8_t op_modrm_mode(operand_t input);
  * NOT THE OPERAND DATA ITSELF!
  */
 uint8_t op_sizeof(enum operands input);
-
-/**
- * Function for returning the opcode of the instruction based
- * on the instruction encoder table provided in the function
- * arguments as well as if a byte opcode is provided in the
- * the encoder table.
- *
- * @param op_arr The operand array to base the opcode from
- * @param instr_ref The instruction reference table
- * @return The opcode of the instruction
- *
- * You can literally wrap this into a buffer write function
- * to quickly and easily write in the opcode like as shown:
- *
- *  buf_write(buf, op_write_opcode(<operands>, <encoder table>), <opcode size>);
- *
- * @see buffer.h
- */
-uint8_t *op_write_opcode(operand_t *op_arr, instr_encode_table_t *instr_ref);
 
 #define OP_NONE      \
   (operand_t) {      \
