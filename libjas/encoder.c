@@ -24,4 +24,8 @@
  */
 
 #include "encoder.h"
+#include "instruction.h"
 
+struct enc_serialized_instr enc_serialize(instruction_t instr) {
+  struct enc_serialized_instr serialized = {0};
+}
