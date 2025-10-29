@@ -1,10 +1,10 @@
 CC = clang
 
-CFLAGS_COMMON =-I include -Wno-incompatible-pointer-types -Wno-int-conversion -O3
+CFLAGS_COMMON =-I include -I . -Wno-incompatible-pointer-types -Wno-int-conversion -O3
 CFLAGS = $(CFLAGS_COMMON)
 
 C_SRC = $(wildcard *.c) # Includes only C source files
-OBJ = $(patsubst %.c, %.o, $(C_SRC)) operand_cpp.o 
+OBJ = $(patsubst %.c, %.o, $(C_SRC))
 BUILD = ../build
 
 libjas.a: $(OBJ) 
