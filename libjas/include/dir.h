@@ -26,6 +26,9 @@
 #ifndef DIR_H
 #define DIR_H
 
+#include "buffer.h"
+#include "label.h"
+
 enum directives {
   DIR_DEFINE_BYTES,
   DIR_DEFINE_LABEL,
