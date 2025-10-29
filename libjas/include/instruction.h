@@ -43,8 +43,8 @@ struct instr_encode_table {
   uint8_t opcode[3]; /* Opcode of the instruction */
 
   struct {
-    enum operands type;   /* Type of operand, for error checking purposes */
-    enum enc_ident ident; /* Instruction encoder identity for that operand */
+    enum operands type;     /* Type of operand, for error checking purposes */
+    enum enc_ident encoder; /* Instruction encoder identity for that operand */
   } operand_descriptors[4];
 
   /// @note describes the validity of the instruction as in adherence to
