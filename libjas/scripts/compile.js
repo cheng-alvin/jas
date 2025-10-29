@@ -59,10 +59,10 @@ let output =
     "#ifndef INSTR_ENUM \n";
 // clang-format on
 
-output += `struct instr_encode_table instr_table[][] = {`
+output += `struct instr_encode_table *instr_table[] = {`
 
 for (let k = 0; k < instructions.length; k++) {
-  output += `{`;
+  output += `(struct instr_encode_table []){`;
   const variants = instructions[k].variants;
 
   for (let l = 0; l < variants.length; l++)
