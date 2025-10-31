@@ -45,11 +45,12 @@ enum enc_ident {
    * representing `/0` to `/7` respectively.
    */
   ENC_NULL = 8,
+
   ENC_REG,
-  ENC_RM,
-  ENC_SIB,
-  ENC_DISP,
+  ENC_RM, // Would be determined automatically, adding SIB where applicable.
   ENC_IMM,
+  ENC_REL,
+  ENC_OPCODE_APPENDED,
 };
 
 // TODO Main encoder function to be added soon.
