@@ -30,6 +30,7 @@
 #include "codegen.h"
 #include "encoder.h"
 #include "mode.h"
+#include "rex.h"
 #include <stdint.h>
 
 typedef struct instr_encode_table instr_encode_table_t;
@@ -154,11 +155,15 @@ typedef struct __attribute__((packed)) op_sib {
  * size of the reference operand array, and writes it the
  * buffer provided in `buf`.
  *
+ * The `rex` parameter can be used with the `enc_serialized_instr`
+ * structure by providing a reference to the `rex` member.
+ *
  * @param buf The pointer to the buffer to write the prefixes to.
  * @param op_arr The operand array to base the prefixes from.
  * @param mode The current operating mode of the instruction
+ * @param rex Reference to the REX byte of the instruction.
  */
-void op_write_prefix(buffer_t *buf, const operand_t *op_arr, enum modes mode);
+void op_write_prefix(buffer_t *buf, operand_t *op_arr, enum modes mode, rex_t *rex);
 
 /**
  * Function for finding the size of the operand type in bits, very
