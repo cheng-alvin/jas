@@ -26,8 +26,24 @@
 #ifndef REX_H
 #define REX_H
 
-#include "buffer.h"
 #include <stdint.h>
+
+/**
+ * Type alias for a single byte representing the REX byte value
+ * which is prepended to the beginning of the instruction in order
+ * to alter certain properties of its operands, as described by
+ * the Intel Systems Programming Guide. Conventions for its use
+ * appear below:
+ *
+ * A variable carrying the REX prefix for appending to an instruction
+ * should be initalized with the `REX_DEFAULT` value. The value
+ * represents an absent REX prefix and can be filtered out.
+ *
+ * Subsequent additions modifications to the prefix can be done
+ * through the manual combination of provided values via bitwise
+ * operations such as `|`.
+ */
+typedef uint8_t rex_t;
 
 #define REX_W 0x48
 #define REX_R 0x44
