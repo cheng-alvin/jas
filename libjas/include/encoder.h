@@ -27,6 +27,7 @@
 #define ENCODER_H
 
 #include "operand.h"
+#include "rex.h"
 #include <stdint.h>
 
 /**
@@ -57,7 +58,8 @@ enum enc_ident {
 };
 
 typedef struct enc_serialized_instr {
-  buffer_t prefixes; /* Instruction prefixes (raw bytes) */
+  buffer_t prefixes; /* Instruction prefixes (excluding REX) */
+  rex_t rex;         /* Reserved byte for the REX prefix */
 
   /* Opcode */
   uint8_t opcode[3];       /* Opcode bytes (max 3) */
