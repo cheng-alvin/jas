@@ -29,7 +29,6 @@
 #include "encoder.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdbool.h>
 
 // Forward declaration - see instr_encode_table
 typedef struct instr_encode_table instr_encode_table_t;
@@ -72,7 +71,7 @@ struct instr_encode_table {
 
 typedef struct instruction {
   enum instructions instr; /* Type of instruction */
-  operand_t *operands;     /* Operands of the instruction */
+  operand_t operands[4];   /* Operands of the instruction */
 } instruction_t;
 
 typedef struct instr_generic {
