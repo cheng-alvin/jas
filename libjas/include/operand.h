@@ -30,6 +30,7 @@
 #include "codegen.h"
 #include "encoder.h"
 #include "mode.h"
+#include "register.h"
 #include "rex.h"
 #include <stdint.h>
 
@@ -122,19 +123,48 @@ enum operands {
 
 #define op_rm(x) (op_r(x) || op_m(x))
 
-typedef struct operand {
-  void *data;         /* Data in the operand */
-  enum operands type; /* Type tied to the void pointer*/
-  uint32_t offset;    /* The offset applied to the data (if applicable) */
-  char *label;        /* The name of a referenced label (if applicable) */
-} operand_t;
-
 enum op_sib_scale {
   OP_SIB_SCALE_1 = 0,
   OP_SIB_SCALE_2 = 1,
   OP_SIB_SCALE_4 = 2,
   OP_SIB_SCALE_8 = 3,
 };
+
+typedef struct operand {
+  enum operands type; /* Type describing data stored */
+
+  /**
+   * The operand struct can be used for the representation of
+   * a range of operand types, with a range of operand sizes.
+   * The following union is used to represent data, which is
+   * in form as indicated by the `type` enumerated value.
+   *
+   * In lieu of providing a reference to a type's specific value
+   * through a void pointer, the usage of a union allows for
+   * the improved readability for the Jas codebase.
+   */
+  union {
+    uint64_t imm;
+    char *label; /* String named reference to a label */
+
+    struct {
+      enum op_sib_scale scale; /* Check enumerated `op_sib_scale` type */
+
+      /// @note `reg` should be used as primary register, rather than
+      /// `reg_disp`. Said member should only be used in line with an
+      /// SIB instance.
+
+      enum registers reg;
+      enum registers reg_disp;
+      uint64_t disp; // RIP addressing requires 32-bit displacement
+    } mem;
+
+    /// @note The encoding of the `mem` element as an SIB byte,
+    /// ModR/M or RIP addressing is of sole decision of the encoder
+    /// function. Not be confused with `op_sib`
+  };
+
+} operand_t;
 
 /// Implementation @note: when ModR/M's R/M field is 0b100 (4), an SIB
 /// would be expected to be present after the ModR/M byte. A placeholder
