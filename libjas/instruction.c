@@ -49,7 +49,7 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
         CURR_TABLE[i].operand_descriptors[3].type,
     };
 
-    bool pass = op_assert_types(instr.operands, operand_list, 4);
+    bool pass = op_assert_types(&instr.operands, operand_list, 4);
     if (pass) return CURR_TABLE[i];
   }
 
@@ -59,18 +59,8 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
 }
 #undef CURR_TABLE // As in not applicable in other contexts.
 
-static void __instr_free__(instruction_t *instr) {
-  for (uint8_t i = 0; i < 4; i++) {
-    if (instr->operands[i].type == OP_NULL) break;
-    if (instr->operands[i].type) free(instr->operands[i].data);
-  }
-
-  free(instr->operands);
-  free(instr);
-}
-
 void instr_free(instr_generic_t *instr) {
-  if (instr->type == INSTR) __instr_free__(&(instr->instr));
+  if (instr->type == INSTR) free(&(instr->instr));
 
   if (instr->type == DIRECTIVE) {
     if (instr->dir.dir == DIR_DEFINE_LABEL) {

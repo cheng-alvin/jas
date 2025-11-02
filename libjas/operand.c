@@ -60,7 +60,7 @@ void op_write_prefix(buffer_t *buf, operand_t *op_arr, enum modes mode, rex_t *r
         op_m(op_arr[i].type) ? OP_ADDR_OVERRIDE : OP_WORD_OVERRIDE;
 
     if (op_rm(op_arr[i].type))
-      *rex |= reg_needs_rex(op_arr[i].data) ? REX_B : 0;
+      *rex |= reg_needs_rex(op_arr[i].mem.reg) ? REX_B : 0;
 
     switch (size) {
     case 16:
