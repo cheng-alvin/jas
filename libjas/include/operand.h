@@ -74,7 +74,8 @@ typedef struct __attribute__((packed)) op_modrm {
  * operand sizes supported by the jas assembler.
  */
 enum operands {
-  OP_NULL,
+  OP_NULL = 0,
+
   OP_MISC,
   OP_REL8,
   OP_REL16,
