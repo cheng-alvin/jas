@@ -59,8 +59,15 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
 }
 #undef CURR_TABLE // As in not applicable in other contexts.
 
+static void __instr_free__(instruction_t *instr) {
+  for (uint8_t i = 0; (uint8_t)instr->operands[i].type; i++) {
+    if (op_rel(instr->operands[i].type))
+      free(instr->operands[i].label);
+  }
+}
+
 void instr_free(instr_generic_t *instr) {
-  if (instr->type == INSTR) free(&(instr->instr));
+  if (instr->type == INSTR) __instr_free__(&(instr->instr));
 
   if (instr->type == DIRECTIVE) {
     if (instr->dir.dir == DIR_DEFINE_LABEL) {
@@ -79,11 +86,10 @@ void instr_free(instr_generic_t *instr) {
   free(instr); // All done now.
 }
 
-#define alloc_operand_data(type)             \
-  do {                                       \
-    type *type##_ = malloc(sizeof(type));    \
-    *type##_ = (type)va_arg(args, uint64_t); \
-    data = (void *)type##_;                  \
+#define write_imm_data(type)                     \
+  do {                                           \
+    type type##_ = (type)va_arg(args, uint64_t); \
+    operands[i].imm = (type)type##_;             \
   } while (0);
 
 instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) {
@@ -91,43 +97,44 @@ instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) 
   va_start(args, operand_count * 3);
 
   // Note, a temporary register type is used to prevent conflict
-  // with the `enum registers` type by passing into `alloc_operand_data`
+  // with the `enum registers` type by passing into `write_imm_data`
   typedef enum registers temp_reg;
 
-  // clang-format off
-  operand_t *operands = malloc(sizeof(operand_t) * 4);
-  for (uint8_t i = 0; i < 4; i++) operands[i] = OP_NONE;
-  // clang-format on
+  if (operand_count > 4) {
+    err("operand count must not exceed 4");
+    return NULL;
+  }
+
+  operand_t operands[4] = {0};
 
   for (uint8_t i = 0; i < operand_count; i++) {
     const enum operands type = va_arg(args, enum operands);
-    char *label = "";
-    void *data;
+
     if (op_rel(type)) {
       char *lab = va_arg(args, char *);
       const size_t label_name_size = strlen(lab) + 1;
       char *copied_name = malloc(label_name_size);
       strcpy(copied_name, lab);
 
-      label = copied_name;
+      operands[i].label = copied_name;
 
       // clang-format off
     } else if (op_imm(type)) {
       switch (op_sizeof(type)) {
-      case 8: alloc_operand_data(uint8_t); break;
-      case 16: alloc_operand_data(uint16_t); break;
-      case 32: alloc_operand_data(uint32_t); break;
-      case 64: alloc_operand_data(uint64_t); break;
+      case 8: write_imm_data(uint8_t); break;
+      case 16: write_imm_data(uint16_t); break;
+      case 32: write_imm_data(uint32_t); break;
+      case 64: write_imm_data(uint64_t); break;
       default:
         err("Invalid operand size.");
         break;
       }
       // clang-format on
     } else {
-      alloc_operand_data(temp_reg); /* Note braces as macro expands */
+      operands[i].mem = (typeof(operands[i].mem)){
+          va_arg(args, enum registers),
+          REG_NULL, va_arg(args, uint64_t)};
     }
-    const size_t off = va_arg(args, size_t);
-    operands[i] = (operand_t){data, type, off, label};
   }
 
   va_end(args);
@@ -136,9 +143,10 @@ instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) 
 
   *instr_generic_ret = (instr_generic_t){
       .type = INSTR,
-      .instr = (instruction_t){.instr = instr, .operands = operands},
+      .instr = (instruction_t){.instr = instr},
   };
 
+  memcpy(instr_generic_ret->instr.operands, operands, 4);
   return instr_generic_ret;
 }
 #undef alloc_data
