@@ -30,6 +30,8 @@
 #include <stdint.h>
 
 enum registers {
+  REG_NULL = 0,
+
   REG_AL,
   REG_CL,
   REG_DL,
@@ -49,7 +51,7 @@ enum registers {
   REG_DI,
 
   REG_EAX,
-  REG_ECX,
+REG_ECX,
   REG_EDX,
   REG_EBX,
   REG_ESP,
