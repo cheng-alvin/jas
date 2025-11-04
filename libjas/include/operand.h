@@ -149,6 +149,8 @@ typedef struct operand {
     char *label; /* String named reference to a label */
 
     struct {
+      enum op_sib_scale scale; /* Scale that should be applied */
+
       /// @note `reg` should be used as primary register, rather than
       /// `reg_disp`. Said member should only be used in line with an
       /// SIB instance.
