@@ -75,7 +75,7 @@ output += "}; \n#endif";
 let instrEnumEntries = "#ifdef INSTR_ENUM \n" +
                        "enum instructions {\n";
 
-instructionNames = [ "null", ...instructionNames ];
+instructionNames = [ "null = 0", ...instructionNames ];
 for (let m = 0; m < instructionNames.length; m++) {
   instrEnumEntries +=
       `  INSTR_${instructionNames[m].toUpperCase()},\n`;
