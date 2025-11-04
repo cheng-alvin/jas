@@ -155,18 +155,17 @@ instr_generic_t *instr_write_bytes(size_t data_sz, ...);
 #define m64(x, off) OP_M64, x, off
 
 /**
- * A function for easily defining a instruction in the `instruction_t`
- * form without having to use the struct initializer or mangle around
- * with void pointers and curly braces. This function can create
- * and automatically allocate an `instruction` struct using variadic
- * arguments.
+ * Generates an instruction generic, dynamically without the need for
+ * static compilation syntax and definition.
+ *
+ * @note Currently does not support full functionality of memory op-
+ * rands. Only base register and indirect offset supported. Usage of
+ * displacement using other registers & scaled displacement not allowed.
  *
  * @param instr The instruction type, as defined in `enum instructions`
  * @param operand_count The number of operands to pass (max. 4)
  *
  * @param ... The operands to pass
- * @note Can be used in conjunction with the helper macros defined
- * above to improve readability, allowing code to be "self-documenting".
  *
  * @return An allocated `instr_generic` struct pointer.
  */
