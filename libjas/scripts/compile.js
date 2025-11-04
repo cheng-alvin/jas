@@ -43,9 +43,12 @@ function handleOperands(operands) {
 
   for (let i = 0; i < operands.length; i++) {
     const type = operands[i].type.toUpperCase();
-    const encoder = operands[i].encoder.toUpperCase().replace("/", "");
+    let encoder = `ENC_${operands[i].encoder.toUpperCase()}`;
 
-    res += `{ .type = OP_${type}, .encoder = ENC_${encoder} }, `
+    const match = operands[i].encoder.match(/^\/([0-7])$/);
+    if (match) encoder = `(enum enc_ident)${match[1]}}`;
+
+    res += `{ .type = OP_${type}, .encoder = ${encoder} }, `;
   }
 
   return `{${res}${'{ 0 }, '.repeat(4 - operands.length)}}`
