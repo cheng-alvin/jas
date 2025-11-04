@@ -132,7 +132,7 @@ instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) 
       // clang-format on
     } else {
       operands[i].mem = (typeof(operands[i].mem)){
-          va_arg(args, enum registers),
+          OP_SIB_SCALE_1, va_arg(args, temp_reg),
           REG_NULL, va_arg(args, uint64_t)};
     }
   }
