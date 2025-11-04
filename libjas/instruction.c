@@ -41,7 +41,7 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   #include "instructions.inc"
   // clang-format on
 
-  for (uint8_t i = 0; CURR_TABLE[i].opcode_size; i++) {
+  for (uint8_t i = 1; CURR_TABLE[i].opcode_size; i++) {
     const enum operands operand_list[4] = {
         CURR_TABLE[i].operand_descriptors[0].type,
         CURR_TABLE[i].operand_descriptors[1].type,
