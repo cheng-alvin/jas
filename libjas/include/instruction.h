@@ -92,7 +92,8 @@ typedef struct instr_generic {
   };
 } instr_generic_t;
 
-#define INSTR_TAB_NULL (instr_encode_table_t){0}
+#define INSTR_TAB_NULL \
+  (instr_encode_table_t) { 0 }
 
 /**
  * Function for getting the instruction table based on the instruction
