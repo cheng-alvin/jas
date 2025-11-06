@@ -29,7 +29,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define STD_UNIT_SIZE (uint8_t[]){0x40, 0x00}
+#define STD_UNIT_SIZE \
+  (uint8_t[]) { 0x40, 0x00 }
 
 buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_str) {
   buffer_t ret = BUF_NULL;
