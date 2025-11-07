@@ -24,8 +24,45 @@
  */
 
 #include "encoder.h"
+#include "error.h"
 #include "instruction.h"
+#include <stdbool.h>
+#include <stdlib.h>
 
-struct enc_serialized_instr enc_serialize(instruction_t instr) {
-  struct enc_serialized_instr serialized = {0};
+struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mode) {
+  if (input->type != INSTR) return NULL;
+  const instruction_t instr = input->instr;
+  struct instr_encode_table tab = instr_get_tab(instr);
+
+  struct enc_serialized_instr *serialized =
+      calloc(1, sizeof(enc_serialized_instr_t));
+
+  // clang-format off
+  op_write_prefix(&serialized->prefixes, 
+    instr.operands, mode, &serialized->rex);
+  // clang-format on
+
+  memcpy(serialized->opcode, tab.opcode, tab.opcode_size);
+  serialized->opcode_size = tab.opcode_size;
+
+  if (!enc_operands_valid(tab, instr)) {
+    err("operand type mismatch");
+    free(serialized);
+
+    return NULL;
+  }
+}
+
+static bool enc_operands_valid(struct instr_encode_table tab, instruction_t instr) {
+  uint8_t i = 0;
+  for (; (uint8_t)instr.operands[i].type; i++)
+    ;
+
+  if (tab.operand_count != i + 1) return false;
+  for (uint8_t j = 0; j < tab.operand_count; j++) {
+    enum operands op = instr.operands[j].type;
+    if (tab.operand_descriptors[j].type != op) return false;
+  }
+
+  return true;
 }
