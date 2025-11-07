@@ -75,4 +75,17 @@ typedef struct enc_serialized_instr {
 
 } enc_serialized_instr_t;
 
+/**
+ * Function for the serialization of instructions and operands in
+ * a form input-able by the user into a semi-encoded form through
+ * the utilization of the encoder reference table. The encoder
+ * reference table also facilitates error checking in line with this
+ * function.
+ *
+ * @param instr Pointer to the input instruction to be encoded.
+ * @param mode Mode that the encoder should be subjected to.
+ *
+ * @return An encoded serialized structure.
+ */
+struct enc_serialized_instr *enc_serialize(instr_generic_t *instr, enum modes mode);
 #endif
