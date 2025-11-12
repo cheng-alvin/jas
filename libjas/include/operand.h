@@ -62,6 +62,19 @@ enum op_modrm_modes {
   OP_MODRM_MODE_REG = 3,
 };
 
+/**
+ * Function for the determining the mode of the ModR/M byte through
+ * a given displacement and corresponding displacement size pointer.
+ * This function also supports the determination of the size of the 
+ * displacement value, such behavior may be inhibited by passing `NULL`
+ * 
+ * @param displacement The value of the displaced value.
+ * @param sz Pointer representing the size of the displacement. 
+ * 
+ * @return A mode applicable to the ModR/M byte of provided displacement.
+ */
+enum op_modrm_modes op_modrm_mode(uint64_t displacement, uint8_t *sz);
+
 typedef struct __attribute__((packed)) op_modrm {
   enum op_modrm_modes mod : 2; /* Mode selection of ModR/M operand */
 

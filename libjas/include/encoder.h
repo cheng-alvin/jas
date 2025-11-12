@@ -49,6 +49,9 @@ enum enc_ident {
    * representing `/0` to `/7` respectively.
    */
   ENC_NULL = 8,
+  ENC_RM,
+  ENC_IGNORE,
+  ENC_DEFAULT,
   ENC_OPCODE_APPENDED,
 };
 

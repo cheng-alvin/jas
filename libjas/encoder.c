@@ -26,6 +26,7 @@
 #include "encoder.h"
 #include "error.h"
 #include "instruction.h"
+#include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -51,6 +52,60 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
 
     return NULL;
   }
+
+  for (uint8_t i = 0; i < tab.operand_count; i++) {
+    enum enc_ident option = tab.operand_descriptors[i].encoder;
+    if (option == ENC_IGNORE) continue;
+
+    uint8_t operand_size = op_sizeof(instr.operands[i].type);
+
+    if (op_rel(instr.operands[i].type)) continue;
+    if (op_imm(instr.operands[i].type)) {
+      if (option == ENC_OPCODE_APPENDED) {
+        serialized->opcode[serialized->opcode_size - 1] +=
+            (uint8_t)instr.operands[i].imm;
+
+        continue;
+      }
+      serialized->imm = instr.operands[i].imm;
+      serialized->imm_size = operand_size;
+      continue;
+    }
+
+    uint8_t reg = reg_lookup_val(&instr.operands[i].mem.reg);
+    serialized->has_modrm = true;
+
+    if (op_r(instr.operands[i].type)) {
+      if ((uint8_t)option >= 8) serialized->modrm.rm = reg;
+      else {
+        serialized->modrm = (struct op_modrm) \ 
+            {OP_MODRM_MODE_REG, (uint8_t)option, reg};
+      }
+
+      continue;
+    }
+    serialized->modrm.rm = reg;
+
+    enum registers index = instr.operands[i].mem.reg_disp;
+    if (index == REG_NULL) err("an index is required.");
+
+    uint64_t disp = instr.operands[i].mem.disp;
+    serialized->disp = disp;
+
+    uint8_t disp_sz;
+    serialized->modrm.mod = op_modrm_mode(disp, &disp_sz);
+    serialized->disp_size = disp_sz;
+
+    if (instr.operands[i].mem.reg_disp != REG_NULL || reg == 4) {
+      const index_val = reg_lookup_val(index);
+
+      serialized->has_sib = true;
+      serialized->sib = (op_sib_t) \ 
+        {instr.operands[i].mem.scale, index_val, reg};
+    }
+  }
+
+  return serialized;
 }
 
 static bool enc_operands_valid(struct instr_encode_table tab, instruction_t instr) {
