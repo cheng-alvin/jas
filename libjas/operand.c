@@ -27,6 +27,7 @@
 #include "error.h"
 #include "mode.h"
 #include "rex.h"
+#include <limits.h>
 #include <stdbool.h>
 
 bool op_assert_types(operand_t *in, enum operands *ex, size_t sz) {
@@ -37,6 +38,18 @@ bool op_assert_types(operand_t *in, enum operands *ex, size_t sz) {
 
   return true;
 }
+// clang-format off
+#define mode_return(size, mode) { if (sz) *sz = size; return mode; }
+
+enum op_modrm_modes op_modrm_mode(uint64_t displacement, uint8_t *sz) {
+  if (!displacement) mode_return(0, OP_MODRM_MODE_INDIRECT);
+  if (displacement <= UCHAR_MAX) mode_return(1, OP_MODRM_MODE_DISP8);
+
+  mode_return(4, OP_MODRM_MODE_DISP32);
+}
+
+#undef mode_return
+// clang-format on
 
 uint8_t op_sizeof(enum operands input) {
   if (op_byte(input)) return 8;
