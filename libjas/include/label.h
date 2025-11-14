@@ -31,11 +31,39 @@
 
 typedef struct instr_generic instr_generic_t;
 
+/**
+ * Enumeration for expressing the different types of labels used
+ * in the assembler, such as local, global, and external labels.
+ *
+ * Determines the type of label to be created in the assembler.
+ * (And if a label table should be generated)
+ */
+
+enum label_type {
+  LABEL_LOCAL,
+  LABEL_GLOBAL,
+  LABEL_EXTERN, // Associated with external linkage, TBD
+};
+
 typedef struct {
+  /// @note Union discriminates between instruction indexes and data offsets
+  /// depending on the label type. Encoder uses the defined`instruction_indexes`
+  /// union element to track the exact struct acting as the caller of
+  /// the label.
+
+  union {
+    uint64_t *instruction_indexes; /* List of callers of instruction indexes */
+    size_t *data_offsets;          /* Callers aray in offset form  */
+  } callers;
+
   char *name;     /* Name of the label in a string format */
-  bool exported;  /* Boolean for whether the label is exported to the linker table or not */
-  bool ext;       /* Boolean for whether the label is external or not (If a relocation table should be created) */
-  size_t address; /* Address of the label entry, can use `buf.len` */
+  size_t address; /* Offset of label's definition relative to `.text` */
+
+  enum label_type type; /* Type of the label */
+
+  /// implementation @note The relative offset may be calculated
+  /// during the encoding phase, through the use of `address`
+  /// subtracted by the current caller's instruction pointer.
 } label_t;
 
 /**
@@ -61,20 +89,6 @@ void label_create(label_table_t *label_table, label_t input);
  * @return Pointer to the label if found, NULL otherwise.
  */
 label_t *label_lookup(label_table_t *label_table, char *name);
-
-/**
- * Enumeration for expressing the different types of labels used
- * in the assembler, such as local, global, and external labels.
- *
- * Determines the type of label to be created in the assembler.
- * (And if a label table should be generated)
- */
-
-enum label_type {
-  LABEL_LOCAL,
-  LABEL_GLOBAL,
-  LABEL_EXTERN,
-};
 
 typedef struct label_table {
   label_t *entries; /* Pointer to array of labels as part of table*/

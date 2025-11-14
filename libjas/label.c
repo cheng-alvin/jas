@@ -56,15 +56,7 @@ label_t *label_lookup(label_table_t *label_table, char *name) {
 instr_generic_t *label_gen(char *name, enum label_type type) {
   label_t label_instance;
 
-  // clang-format off
-  switch (type) {
-    case LABEL_LOCAL: break;
-    case LABEL_GLOBAL: label_instance.exported = true; break;
-    case LABEL_EXTERN: label_instance.ext = true; break;
-
-    default: break;
-  }
-  // clang-format on
+  label_instance.type = type;
 
   const size_t label_name_size = strlen(name) + 1;
   char *copied_name = malloc(label_name_size);
