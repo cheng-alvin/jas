@@ -54,8 +54,7 @@ label_t *label_lookup(label_table_t *label_table, char *name) {
 }
 
 instr_generic_t *label_gen(char *name, enum label_type type) {
-  label_t label_instance;
-
+  label_t label_instance = (label_t){0};
   label_instance.type = type;
 
   const size_t label_name_size = strlen(name) + 1;
