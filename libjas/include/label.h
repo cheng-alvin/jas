@@ -31,58 +31,6 @@
 
 typedef struct instr_generic instr_generic_t;
 
-typedef struct {
-  char *name;     /* Name of the label in a string format */
-  bool exported;  /* Boolean for whether the label is exported to the linker table or not */
-  bool ext;       /* Boolean for whether the label is external or not (If a relocation table should be created) */
-  size_t address; /* Address of the label entry, can use `buf.len` */
-} label_t;
-
-/**
- * A factory function for creating a label entry in the label table.
- * The label entry is a struct that contains the name of the label,
- * whether it is exported or not, whether it is external or not, and
- * the address of the label. This data is constructed and then stored
- * into the given table pointer.
- *
- * @param label_table The label table to store the label entry in.
- * @param label_table_size The size of the label table.
- *
- * @param name The name of the label.
- * @param exported Boolean for whether the label is exported or not.
- * @param ext Boolean for whether the label is external or not.
- * @param address The address of the label.
- */
-void label_create(
-    label_t **label_table, size_t *label_table_size,
-    char *name, bool exported, bool ext, size_t address);
-
-/**
- * Function for destroying the label table, freeing the memory
- * allocated for the label names and the label entries itself.
- *
- * @param label_table The label table to destroy.
- * @param label_table_size The size of the label table
- */
-void label_destroy_all(label_t **label_table, size_t *label_table_size);
-
-/**
- * Function for looking up a label in the label table, and retu-
- * rning the label entry if found, otherwise returning a `NULL`
- * label entry will be returned back to the caller.
- *
- * @param label_table The label table to look up the label in.
- * @param label_table_size The size of the label table.
- *
- * @param name The name of the label to look up in the label table.
- * @return The pointer to the label entry if found, otherwise `NULL`
- *
- * @note The label table is **assumed** to be allocated and setup
- * correctly before calling this function, stored in the `label_table`
- * and `label_table_size` pointers (as shown above).
- */
-label_t *label_lookup(label_t **label_table, size_t *label_table_size, char *name);
-
 /**
  * Enumeration for expressing the different types of labels used
  * in the assembler, such as local, global, and external labels.
@@ -94,8 +42,58 @@ label_t *label_lookup(label_t **label_table, size_t *label_table_size, char *nam
 enum label_type {
   LABEL_LOCAL,
   LABEL_GLOBAL,
-  LABEL_EXTERN,
+  LABEL_EXTERN, // Associated with external linkage, TBD
 };
+
+typedef struct {
+  /// @note Union discriminates between instruction indexes and data offsets
+  /// depending on the label type. Encoder uses the defined`instruction_indexes`
+  /// union element to track the exact struct acting as the caller of
+  /// the label.
+
+  union {
+    uint64_t *instruction_indexes; /* List of callers of instruction indexes */
+    size_t *data_offsets;          /* Callers aray in offset form  */
+  } callers;
+
+  char *name;     /* Name of the label in a string format */
+  size_t address; /* Offset of label's definition relative to `.text` */
+
+  enum label_type type; /* Type of the label */
+
+  /// implementation @note The relative offset may be calculated
+  /// during the encoding phase, through the use of `address`
+  /// subtracted by the current caller's instruction pointer.
+} label_t;
+
+/**
+ * Function for creating a new label entry in the label table,
+ * handling required memory allocations and duplication checks.
+ * However, this function does not exempt the caller's responsibility
+ * of freeing the buffer after use.
+ *
+ * @param label_table The label table to store the label entry in.
+ * @param input New table entry to be added to the label table.
+ */
+
+void label_create(label_table_t *label_table, label_t input);
+
+/**
+ * Looks up and returns a pointer to a matching label as with
+ * the name provided in the arguments list, obtained within the
+ * label table provided.
+ *
+ * @param label_table The label table to search within.
+ * @param name The name of the label to search for.
+ *
+ * @return Pointer to the label if found, NULL otherwise.
+ */
+label_t *label_lookup(label_table_t *label_table, char *name);
+
+typedef struct label_table {
+  label_t *entries; /* Pointer to array of labels as part of table*/
+  size_t size;      /* Total size offset of the label table */
+} label_table_t;
 
 /**
  * Function for generating an instruction generic structure for the

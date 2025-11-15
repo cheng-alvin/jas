@@ -24,65 +24,38 @@
  */
 
 #include "label.h"
-#include "codegen.h"
 #include "dir.h"
 #include "error.h"
 #include "operand.h"
-#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
-void label_create(
-    label_t **label_table, size_t *label_table_size,
-    char *name, bool exported, bool ext, size_t address) {
+void label_create(label_table_t *label_table, label_t input) {
+  if (label_lookup(label_table, input.name))
+    return err("duplicated labels");
 
-  if (label_lookup(label_table, label_table_size, name) != NULL) {
-    err("Label conflict detected, a duplicate cannot be created.");
-    return;
-  }
+  size_t size = label_table->size * sizeof(label_t);
+  label_table->entries = realloc(label_table->entries, size);
 
-  // clang-format off
-  label_t label =
-    {.name = name, .exported = exported, .ext = ext,
-     .address = address, };
-  // clang-format on
-
-  (*label_table_size)++;
-  *label_table = (label_t *)
-      realloc(*label_table, *label_table_size * sizeof(label_t));
-
-  *(label_table)[*label_table_size - 1] = label;
+  label_table->size++;
+  label_table->entries[label_table->size - 1] = input;
 }
 
-void label_destroy_all(label_t **label_table, size_t *label_table_size) {
-  free(*label_table);
+label_t *label_lookup(label_table_t *label_table, char *name) {
+  label_t *table_defref = label_table->entries;
 
-  label_table = NULL;
-  *(label_table_size) = 0;
-}
-
-label_t *label_lookup(label_t **label_table, size_t *label_table_size, char *name) {
-  const label_t *table_defref = *label_table;
-  for (size_t i = 0; i < table_defref; i++) {
+  for (size_t i = 0; i < label_table->size; i++) {
     if (table_defref[i].name == NULL) return NULL;
-    if (strcmp(table_defref[i].name, name) == 0) return &table_defref[i];
-  }
 
+    if (strcmp(table_defref[i].name, name) == 0)
+      return &table_defref[i];
+  }
   return NULL;
 }
 
 instr_generic_t *label_gen(char *name, enum label_type type) {
-  label_t label_instance;
-
-  // clang-format off
-  switch (type) {
-    case LABEL_LOCAL: break;
-    case LABEL_GLOBAL: label_instance.exported = true; break;
-    case LABEL_EXTERN: label_instance.ext = true; break;
-
-    default: break;
-  }
-  // clang-format on
+  label_t label_instance = (label_t){0};
+  label_instance.type = type;
 
   const size_t label_name_size = strlen(name) + 1;
   char *copied_name = malloc(label_name_size);
