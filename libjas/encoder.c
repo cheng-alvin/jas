@@ -30,6 +30,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+static bool enc_operands_valid(struct instr_encode_table tab, instruction_t instr);
+
 struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mode) {
   if (input->type != INSTR) return NULL;
   const instruction_t instr = input->instr;
@@ -86,6 +88,9 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
     }
     serialized->modrm.rm = reg;
 
+    // Assumption that all operands are memory from this point
+    // onwards, generates ModR/M and SIB bytes where applicable.
+
     enum registers index = instr.operands[i].mem.reg_disp;
     if (index == REG_NULL) err("an index is required.");
 
@@ -97,7 +102,12 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
     serialized->disp_size = disp_sz;
 
     if (instr.operands[i].mem.reg_disp != REG_NULL || reg == 4) {
-      const index_val = reg_lookup_val(index);
+      uint8_t index_val = reg_lookup_val(index);
+      if (index_val == REG_NULL) index_val = reg;
+
+      /// @note where the SIB byte is used, the R/M field of
+      /// ModR/M must be manually overriden to `0b100` (4).
+      serialized->modrm.rm = 4;
 
       serialized->has_sib = true;
       serialized->sib = (op_sib_t) \ 
