@@ -63,12 +63,6 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
 
     if (op_rel(instr.operands[i].type)) continue;
     if (op_imm(instr.operands[i].type)) {
-      if (option == ENC_OPCODE_APPENDED) {
-        serialized->opcode[serialized->opcode_size - 1] +=
-            (uint8_t)instr.operands[i].imm;
-
-        continue;
-      }
       serialized->imm = instr.operands[i].imm;
       serialized->imm_size = operand_size;
       continue;
@@ -78,10 +72,21 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
     serialized->has_modrm = true;
 
     if (op_r(instr.operands[i].type)) {
-      if ((uint8_t)option >= 8) serialized->modrm.rm = reg;
-      else {
+      if (option == ENC_RM) serialized->modrm.rm = reg;
+
+      /// @note such option depicts Intel's /r option, using
+      /// the register raw encoded value as the register field
+      /// of the ModR/M byte.
+
+      if (option == ENC_DEFAULT) serialized->modrm.reg = reg;
+      else if ((uint8_t)option < 8) {
         serialized->modrm = (struct op_modrm) \ 
             {OP_MODRM_MODE_REG, (uint8_t)option, reg};
+      }
+
+      if (option == ENC_OPCODE_APPENDED) {
+        serialized->opcode[serialized->opcode_size - 1] +=
+            reg_lookup_val(&instr.operands[i].mem.reg);
       }
 
       continue;
