@@ -1,3 +1,58 @@
+/**
+ * Script to compile YAML instruction definitions into a C structure
+ * representation, allowing for a more manageable way to define
+ * instruction encodings outside of C code. The general structure
+ * of the YAML files should follow the following format:
+ *
+ * instructions:
+ *  - <name>:           # Name of instruction
+ *     variants:
+ *      - opcode: [...] # List of opcode bytes (max 3)
+ *       operands:      # List of operands (max 4)
+ *        - {
+ *          type: <type>,         # Type of operand to be encoded
+ *          encoder: <encoder>,   # Encoder option for operand
+ *         }
+ *
+ *      compatibility:  # Describes compatibility modes
+ *       long: <bool>   # 64-bit mode
+ *       legacy: <bool> # 16/32-bit mode
+ *
+ * Such YAML files can then be passed as arguments to this script,
+ * in form of a file reference, in the OS. Instructions added to the
+ * list of arguments will be compiled together into a single compiled
+ * C structure representation, as a `instructions.inc` file in the
+ * current working directory.
+ *
+ * @note `js-yaml` package must be installed and accessible to allow
+ * yaml parsing functionality to be used.
+ *
+ * Licensing details appear below:
+ *
+ * MIT License
+ * Copyright (c) 2023-2025 Alvin Cheng <eventide1029@gmail.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * @see `LICENSE`
+ */
+
 const yaml = require("js-yaml"); // Ensure `js-yaml` is installed and accessible
 const fs = require("fs")
 
@@ -14,7 +69,6 @@ for (let i = 2; i < process.argv.length; i++) {
   }
 }
 
-// TODO refactor since this is a mess
 function produceOperands(instruction) {
   for (let i = 0; i < instruction.variants.length; i++) {
     for (let j = 0; j < instruction.variants[i].operands.length; j++) {
@@ -47,6 +101,7 @@ function handleOperands(operands) {
 
     const match = operands[i].encoder.match(/^\/([0-7])$/);
     if (match) encoder = `(enum enc_ident)${match[1]}}`;
+    encoder = encoder.replace("/", "");
 
     res += `{ .type = OP_${type}, .encoder = ${encoder} }, `;
   }

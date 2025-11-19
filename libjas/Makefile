@@ -1,6 +1,6 @@
 CC = clang
 
-CFLAGS_COMMON =-I include -I . -Wall -Werror -std=c99
+CFLAGS_COMMON =-I include -I . -I encoders -Wall -Werror -std=c99
 
 C_SRC = $(wildcard *.c) # Includes only C source files
 OBJ = $(patsubst %.c, %.o, $(C_SRC))
@@ -14,6 +14,6 @@ libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -O0 -gembed-source
 libjas_debug.a: $(OBJ)
 	ar rcs $(BUILD)/$@ $^
 
-instructions.inc: instructions.yml
-	node ./scripts/compile.js $^ 
+instructions.inc: encoders/instructions.yml
+	node ./encoders/compile.js $^ 
 	
