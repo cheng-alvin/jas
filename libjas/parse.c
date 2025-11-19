@@ -26,7 +26,6 @@
 
 #include "parse.h"
 #include "error.h"
-#include "instructions.inc"
 #include "register.h"
 #include <inttypes.h>
 #include <stdint.h>
@@ -36,8 +35,18 @@ enum instructions parse_instr_name(char *name) {
   for (int i = 0; name[i]; i++)
     name[i] = (unsigned char)tolower((int)name[i]);
 
+  // clang-format off
   /// @note `instr_tab_names` is defined in `instructions.inc`
   /// depicting instruction names in order of enum.
+
+  /// The definitionof the the variable `INSTR_ENUM` is used to
+  /// conditionally include the variable definition only here,
+  /// in lieu of the entire instruction encoder reference table
+  /// with substantial size.
+
+  #define INSTR_ENUM
+  #include "instructions.inc"
+  // clang-format on
 
   for (int i = 0; i < sizeof(instr_tab_names); i++) {
     if (instr_tab_names[i][0] != name[0]) continue;
