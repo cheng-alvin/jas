@@ -138,8 +138,14 @@ for (let m = 0; m < instructionNames.length; m++) {
   instrEnumEntries +=
       `  INSTR_${instructionNames[m].toUpperCase()},\n`;
 }
+instrEnumEntries += "};\n";
 
-instrEnumEntries += "};\n#undef INSTR_ENUM\n#endif";
+instrEnumEntries += "char *instr_tab_names[] = {\n";
+for (let n = 1; n < instructionNames.length; n++)
+  instrEnumEntries += `  "${instructionNames[n]}",`;
+
+instrEnumEntries += "};\n";
+instrEnumEntries += "#undef INSTR_ENUM\n#endif";
 
 fs.writeFileSync("instructions.inc", output + "\n\n" + instrEnumEntries);
 
