@@ -27,8 +27,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Note: this function seems only to be used in the `exe` module, may remove in the future
-
 uint8_t *endian(uint8_t *data, size_t data_size) {
 
 #ifdef __LITTLE_ENDIAN__
