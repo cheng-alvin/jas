@@ -31,7 +31,6 @@
 #include <stdlib.h>
 
 static bool enc_operands_valid(struct instr_encode_table tab, instruction_t instr);
-
 struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mode) {
   if (input->type != INSTR) return NULL;
   const instruction_t instr = input->instr;
@@ -122,6 +121,30 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
 
   return serialized;
 }
+
+#define write_imm_data(data, size) \ 
+  buf_write(&buf, endian(&data), size);
+
+buffer_t enc_deserialize(enc_serialized_instr_t *in, buffer_t buf) {
+  buf_concat(&buf, 1, &(in->prefixes));
+  if (in->rex != REX_DEFAULT) buf_write_byte(&buf, in->rex);
+
+  buf_write(&buf, in->opcode, in->opcode_size);
+
+  /// @note Structures that are packed cannot be written
+  /// directly due to inherent compiler protection measures.
+
+  if (in->has_modrm) {
+    buf_write(&buf, (uint8_t *)&in->modrm, 1);
+    if (in->has_sib) buf_write(&buf, (uint8_t *)&in->sib, 1);
+  }
+
+  write_imm_data(in->imm, in->imm_size);
+  write_imm_data(in->disp, in->disp_size);
+
+  return buf;
+}
+#undef write_imm_data // Macro no longer applicable.
 
 static bool enc_operands_valid(struct instr_encode_table tab, instruction_t instr) {
   uint8_t i = 0;
