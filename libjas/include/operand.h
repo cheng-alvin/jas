@@ -65,12 +65,12 @@ enum op_modrm_modes {
 /**
  * Function for the determining the mode of the ModR/M byte through
  * a given displacement and corresponding displacement size pointer.
- * This function also supports the determination of the size of the 
+ * This function also supports the determination of the size of the
  * displacement value, such behavior may be inhibited by passing `NULL`
- * 
+ *
  * @param displacement The value of the displaced value.
- * @param sz Pointer representing the size of the displacement. 
- * 
+ * @param sz Pointer representing the size of the displacement.
+ *
  * @return A mode applicable to the ModR/M byte of provided displacement.
  */
 enum op_modrm_modes op_modrm_mode(uint64_t displacement, uint8_t *sz);
@@ -144,6 +144,36 @@ enum op_sib_scale {
   OP_SIB_SCALE_8 = 3,
 };
 
+/// @brief Union for representing memory source operands, rather than the
+/// the use of a direct value itself. It can be thought of as being directed
+/// towards a memory address through [], instead of directly.
+
+/// @note The `label` member must not be confused with the generic `label`.
+
+typedef union op_mem_src {
+  char *label; /* String named reference to a label */
+  struct {
+    enum op_sib_scale scale; /* Scale that should be applied */
+
+    /// @note `reg` should be used as primary register, rather than
+    /// `reg_disp`. Said member should only be used in line with an
+    /// SIB instance.
+
+    enum registers reg;
+    enum registers reg_disp;
+  } sib; /* Standard memory-block model */
+} op_mem_src_t;
+
+/// @brief Abstracted encapsulation of a memory operand, allowing for added
+/// portability and readability when dealing with instruction creation.
+typedef struct op_mem {
+  enum { LABEL,
+         SIB } src_type; // Source type selector enumeration
+
+  union op_mem_src src; // Source of memory operand, refer to `op_mem_src`
+  uint64_t disp;        // RIP addressing requires 32-bit displacement
+} op_mem_t;
+
 typedef struct operand {
   enum operands type; /* Type describing data stored */
 
@@ -158,24 +188,13 @@ typedef struct operand {
    * the improved readability for the Jas codebase.
    */
   union {
-    uint64_t imm;
-    char *label; /* String named reference to a label */
-
-    struct {
-      enum op_sib_scale scale; /* Scale that should be applied */
-
-      /// @note `reg` should be used as primary register, rather than
-      /// `reg_disp`. Said member should only be used in line with an
-      /// SIB instance.
-
-      enum registers reg;
-      enum registers reg_disp;
-      uint64_t disp; // RIP addressing requires 32-bit displacement
-    } mem;
+    uint64_t imm; /* Immediate value, dependent on `type` */
+    char *label;
 
     /// @note The encoding of the `mem` element as an SIB byte,
     /// ModR/M or RIP addressing is of sole decision of the encoder
     /// function. Not be confused with `op_sib`
+    op_mem_t mem;
   };
 
 } operand_t;
