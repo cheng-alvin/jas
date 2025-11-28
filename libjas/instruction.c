@@ -63,6 +63,9 @@ static void __instr_free__(instruction_t *instr) {
   for (uint8_t i = 0; (uint8_t)instr->operands[i].type; i++) {
     if (op_rel(instr->operands[i].type))
       free(instr->operands[i].label);
+
+    char *mem_label = instr->operands[i].mem.src.label;
+    if (instr->operands[i].mem.src_type == LABEL) free(mem_label);
   }
 }
 
@@ -131,9 +134,8 @@ instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) 
       }
       // clang-format on
     } else {
-      operands[i].mem = (typeof(operands[i].mem)){
-          OP_SIB_SCALE_1, va_arg(args, temp_reg),
-          REG_NULL, va_arg(args, uint64_t)};
+      operands[i].mem = va_arg(args, op_mem_t);
+      operands[i].mem.disp = va_arg(args, uint64_t);
     }
   }
 
