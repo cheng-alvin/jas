@@ -33,6 +33,7 @@
 static bool enc_operands_valid(struct instr_encode_table tab, instruction_t instr);
 struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mode) {
   if (input->type != INSTR) return NULL;
+
   const instruction_t instr = input->instr;
   struct instr_encode_table tab = instr_get_tab(instr);
 
@@ -40,8 +41,8 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
       calloc(1, sizeof(enc_serialized_instr_t));
 
   // clang-format off
-  op_write_prefix(&serialized->prefixes, 
-    instr.operands, mode, &serialized->rex);
+  op_write_prefix
+    (&serialized->prefixes, instr.operands, mode, &serialized->rex);
   // clang-format on
 
   memcpy(serialized->opcode, tab.opcode, tab.opcode_size);
@@ -55,9 +56,10 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
   }
 
   for (uint8_t i = 0; i < tab.operand_count; i++) {
+    op_mem_src_t mem_src = instr.operands[i].mem.src;
     enum enc_ident option = tab.operand_descriptors[i].encoder;
-    if (option == ENC_IGNORE) continue;
 
+    if (option == ENC_IGNORE) continue;
     uint8_t operand_size = op_sizeof(instr.operands[i].type);
 
     if (op_rel(instr.operands[i].type)) continue;
@@ -67,7 +69,7 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
       continue;
     }
 
-    uint8_t reg = reg_lookup_val(&instr.operands[i].mem.reg);
+    uint8_t reg = reg_lookup_val(&(mem_src.sib.reg));
     serialized->has_modrm = true;
 
     if (op_r(instr.operands[i].type)) {
@@ -85,7 +87,7 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
 
       if (option == ENC_OPCODE_APPENDED) {
         serialized->opcode[serialized->opcode_size - 1] +=
-            reg_lookup_val(&instr.operands[i].mem.reg);
+            reg_lookup_val(&(mem_src.sib.reg));
       }
 
       continue;
@@ -95,17 +97,22 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
     // Assumption that all operands are memory from this point
     // onwards, generates ModR/M and SIB bytes where applicable.
 
-    enum registers index = instr.operands[i].mem.reg_disp;
+    uint64_t disp = instr.operands[i].mem.disp;
+    if (instr.operands[i].mem.src_type == LABEL) {
+      serialized->disp += disp;
+      continue;
+    }
+
+    enum registers index = mem_src.sib.reg_disp;
     if (index == REG_NULL) err("an index is required.");
 
-    uint64_t disp = instr.operands[i].mem.disp;
     serialized->disp = disp;
 
     uint8_t disp_sz;
     serialized->modrm.mod = op_modrm_mode(disp, &disp_sz);
     serialized->disp_size = disp_sz;
 
-    if (instr.operands[i].mem.reg_disp != REG_NULL || reg == 4) {
+    if (mem_src.sib.reg_disp != REG_NULL || reg == 4) {
       uint8_t index_val = reg_lookup_val(index);
       if (index_val == REG_NULL) index_val = reg;
 
@@ -115,7 +122,7 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
 
       serialized->has_sib = true;
       serialized->sib = (op_sib_t) \ 
-        {instr.operands[i].mem.scale, index_val, reg};
+        {mem_src.sib.scale, index_val, reg};
     }
   }
 

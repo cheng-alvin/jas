@@ -93,7 +93,7 @@ typedef struct instr_generic {
 } instr_generic_t;
 
 #define INSTR_TAB_NULL \
-  (instr_encode_table_t) { 0 }
+  (instr_encode_table_t){0}
 
 /**
  * Function for getting the instruction table based on the instruction
@@ -140,19 +140,31 @@ instr_generic_t *instr_write_bytes(size_t data_sz, ...);
  * instructions and other instructions that require a relative
  * offset to a label.
  *
- * @example rel("label", 10)
+ * @example rel("label")
  */
 
-#define rel8(x, off) OP_REL8, x, off
-#define rel32(x, off) OP_REL32, x, off
+#define rel8(x) OP_REL8, x, 0
+#define rel32(x) OP_REL32, x, 0
 
+// clang-format off
 // Note: offset must be provided - equivalent to: [eax + xyz]
 // (SIB bytes and another register for displacement not supported)
 
-#define m8(x, off) OP_M8, x, off
-#define m16(x, off) OP_M16, x, off
-#define m32(x, off) OP_M32, x, off
-#define m64(x, off) OP_M64, x, off
+#define mem_macro_factory(sz) \
+  OP_M##sz, _Generic((x), \
+    enum registers: (op_mem_t){ .src_type = SIB, \
+      .src.sib = { OP_SIB_SCALE_1, x, REG_NULL } }, \
+      char *: (op_mem_t){ .src_type = LABEL, .src.label = x } \
+  ), off
+// clang-format on
+
+#define m8(x, off) mem_macro_factory(8)
+#define m16(x, off) mem_macro_factory(16)
+#define m32(x, off) mem_macro_factory(32)
+
+#define m64(x, off) mem_macro_factory(64)
+
+#undef mem_macro_factory
 
 /**
  * Generates an instruction generic, dynamically without the need for
