@@ -73,14 +73,16 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
     serialized->has_modrm = true;
 
     if (op_r(instr.operands[i].type)) {
-      if (option == ENC_RM) serialized->modrm.rm = reg;
+      if (option == ENC_DEFAULT) serialized->modrm.reg = reg;
 
       /// @note such option depicts Intel's /r option, using
       /// the register raw encoded value as the register field
       /// of the ModR/M byte.
 
-      if (option == ENC_DEFAULT) serialized->modrm.reg = reg;
-      else if ((uint8_t)option < 8) {
+      if (option == ENC_RM) {
+        serialized->modrm.rm = reg; // Assign directly to R/M field
+        serialized->modrm.mod = OP_MODRM_MODE_REG;
+      } else if ((uint8_t)option < 8) {
         serialized->modrm = (struct op_modrm) \ 
             {OP_MODRM_MODE_REG, (uint8_t)option, reg};
       }
@@ -114,7 +116,7 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
 
     if (mem_src.sib.reg_disp != REG_NULL || reg == 4) {
       uint8_t index_val = reg_lookup_val(index);
-      if (index_val == REG_NULL) index_val = reg;
+      if (index == REG_NULL) index_val = reg;
 
       /// @note where the SIB byte is used, the R/M field of
       /// ModR/M must be manually overriden to `0b100` (4).
