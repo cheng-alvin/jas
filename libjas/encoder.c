@@ -35,7 +35,12 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
   if (input->type != INSTR) return NULL;
 
   const instruction_t instr = input->instr;
-  struct instr_encode_table tab = instr_get_tab(instr);
+  const struct instr_encode_table tab = instr_get_tab(instr);
+
+  if (!enc_operands_valid(tab, instr)) {
+    err("operand type mismatch");
+    return NULL;
+  }
 
   struct enc_serialized_instr *serialized =
       calloc(1, sizeof(enc_serialized_instr_t));
@@ -47,13 +52,6 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
 
   memcpy(serialized->opcode, tab.opcode, tab.opcode_size);
   serialized->opcode_size = tab.opcode_size;
-
-  if (!enc_operands_valid(tab, instr)) {
-    err("operand type mismatch");
-    free(serialized);
-
-    return NULL;
-  }
 
   for (uint8_t i = 0; i < tab.operand_count; i++) {
     op_mem_src_t mem_src = instr.operands[i].mem.src;
