@@ -203,6 +203,9 @@ typedef struct operand {
 /// would be expected to be present after the ModR/M byte. A placeholder
 /// such as 0x24 can be used in lieu of an actual SIB byte where applicable.
 
+/// A RIP addressed operand is also indicated through ModR/M's mode field
+/// being set to `00` and R/M field being set to `101` (5), with a following.
+/// 32-bit wide displacement value.
 typedef struct __attribute__((packed)) op_sib {
   enum op_sib_scale scale : 2; /* Scale factor for index register */
 
