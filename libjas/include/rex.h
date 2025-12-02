@@ -1,31 +1,33 @@
 /**
- * MIT License
- * Copyright (c) 2023-2025 Alvin Cheng <eventide1029@gmail.com>
+ * mit license
+ * copyright (c) 2023-2025 alvin cheng <eventide1029@gmail.com>
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
+ * permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "software"), to deal
+ * in the software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
+ * copies of the software, and to permit persons to whom the software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * the above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * the software is provided "as is", without warranty of any kind, express or
+ * implied, including but not limited to the warranties of merchantability,
+ * fitness for a particular purpose and noninfringement. in no event shall the
+ * authors or copyright holders be liable for any claim, damages or other
+ * liability, whether in an action of contract, tort or otherwise, arising from,
+ * out of or in connection with the software or the use or other dealings in the
+ * software.
  *
- * @see `LICENSE`
+ * @see `license`
  */
 
 #ifndef REX_H
 #define REX_H
 
+#include "mode.h"
+#include "operand.h"
 #include <stdint.h>
 
 /**
@@ -45,11 +47,28 @@
  */
 typedef uint8_t rex_t;
 
-#define REX_W 0x48
-#define REX_R 0x44
-#define REX_X 0x42
-#define REX_B 0x41
+// Constants for the REX prefix bits and corresponding meanings,
+// as documented below from the Intel Systems Programming Guide:
+
+#define REX_W 0x48 // Allows 64-bit operand sizes
+#define REX_R 0x44 // Extension of ModR/M reg field
+#define REX_X 0x42 // Extension of SIB index field
+#define REX_B 0x41 // Extends ModR/M r/m, SIB base, or opcode
 
 #define REX_DEFAULT 0b01000000
+
+/// @note forward declaration to prevent circular dependency.
+typedef struct instruction instruction_t;
+
+/**
+ * Function for applying the REX prefix to the instruction based
+ * on the instruction's operands and the current operating mode,
+ * returning the final resulting REX byte to be written into
+ * the instruction.
+ *
+ * @param input The instruction generic pointer
+ * @return The final resulting REX prefix byte.
+ */
+rex_t rex_apply(instruction_t *input);
 
 #endif
