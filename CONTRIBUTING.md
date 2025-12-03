@@ -47,10 +47,10 @@ automatically format the code using `clang-format`. You can ignore this behavior
 and a corresponding `clang-format on` comment in your code for small snippets that may break or cause issues 
 down the line if formatted automatically.
 
-### Adding support for a instruction to the assembler
+## Adding support for a instruction to the assembler
 A common addition for the Jas assembler, especially since how complex the Intel x64 instruction set is, is the 
 addition of new instructions and instruction encoder identities, which can be done by creating a instruction 
-encoder table, adding and/or registering the instruction encoder tables to the instruction list(s), and finally testing 
+encoder table entry, adding and/or registering the instruction encoder tables to the instruction list(s), and finally testing 
 and writing unit tests.
 
 **First, define a instruction encode table:**
@@ -62,84 +62,34 @@ Each instruction encoder table includes *entries*, each entry defines the meta d
 identity. For example, a MR identity (A identity with a m64 and r64) will be one entry and includes the 
 opcode, and support status in different operating modes. 
 
-** These entries are defined in the [`instructions.tbl`](https://github.com/cheng-alvin/jas/blob/main/libjas/instructions.tbl) file and is compiled using a script that compiles it into native C structs that can be used and accessed by the other parts of the assembler. **
+**Constructing an entry**
 
-**Constructing a entry**
+Entries of encoder reference tables are all located in the `libjas/encoders` directory. Each instruction, or a set of minor instructions are typically grouped together, (you can use Intel's documentation grouping conventions as a general guideline) and should be registered to the dependencies of the `instructions.inc` target. Each file contains an overarching `instructions` field that houses an array of instructions, it should be noted that all other field on the top level would be ignored, allowing contributors to add user-defined meta data such as license information, implementation comments etc. Within each instruction of the yaml file, the instruction exists *variants* of the instruction with distinct configurations of operands and instruction opcodes among other components supporting the encoding of instructions.
 
-Jas encoder banks has now been since compiled using a text-based format. Every entry is line-seperated and values are seperated using `|`s, spaces are used to pad and align the values with the others (mainly for cosmetics) but they are eventually ignored by the compiler. Characters such as `-` are in-place for `NULL` and will be replaced with `NULL` during compilation. To compile the instruction encoder table, make the `instructions.inc` target in the `libjas` directory, this will invoke the Node.js script and automatically generate the `instructions.inc` file. 
+> Each encoder reference table is defined in a simple yaml structure, allowing for easy diffing between versions and human readability. Such yaml files are provided to a Node.Js script and compiled into a C structure array. A enum of all instructions available and a string array of instructions is generated automatically, supporting code generation and parsing features within the assembler. 
 
-Here's a sample entry:
+Below is a sample of the yaml structure supported by the compiler script (Not a real instruction):
+``` yaml
+instructions:
+  - sample:
+    variants:
+      - opcode: [ 0x00 ]
+        operands:
+          - { type: r/m32, encoder: default }
 
-```
-# name | identity | opcode extension | opcode            | byte opcode       | pre 
-# -----------------------------------------------------------------------------------------------
-  cmc  | zo       | -                | 0xF5              | -                 | no_operands
-```
-Note that lines prepended with a `#` will be ignored and removed from the output.
-
-This example text-based entry depicts the sample `cmc` instruction provided by intel in *Chapter 3 (Instruction set reference A-L) Vol 2A 3-1*, and will be compiled to the following C structure (Note that formatting may differ):
-
-``` c
-instr_encode_table_t cmc[] = {
-  {
-    .ident                 = OP_ZO, 
-    .opcode_ext            = NULL, 
-    .opcode                = {0xF5},
-    .byte_instr_opcode     = NULL,
-    .opcode_size           = 1,
-    .pre                   = &no_operands,
-    .byte_opcode_size      = 0,
-  },
-
-  INSTR_TAB_NULL,
-};
+        compatibility:
+          long: true
+          legacy: true
 ```
 
-**FAQ:** What does `zo`, `OP_ZO` mean? What are they for? These are called *operand identies*, Intel calls them *Instruction Operand Encoding*(s), usually found below a instruction encoder table on the manual. Every enum is mapped to one of these *encoder funtions* and encodes the operands. (See [here](https://github.com/cheng-alvin/jas/edit/main/CONTRIBUTING.md#adding-a-new-encoder))
+Each variant of an instruction should contain the following:
+- `opcode` - An array of a maximum of 3 bytes, depicting the opcode as indicated by the Intel developer handbook. It is typical convention that bytes are expressed hexadecimal in adherence to the Intel Developer Manual; implementations of encoder tables should also avoid having bytes merged together such as `0xABCD`.
+  
+- `operands` -  An array with a 4 element capacity depicting the type, and options of operands expected of by the instruction. It should be noted that **all** possibilities must be listed by said array, despite its verbosity, such approach allows for better error handling in spite of some inconsistencies across instructions. Details regarding niche operand encoder options can be obtained in [`encoder.c`](https://github.com/cheng-alvin/jas/blob/encoder-rework/libjas/encoder.c) and should be set to `default` where no special consideration or encoding is required.
+  
+- `compatibility` - A option that contains boolean values for checking if such instruction is supported in either `long`, or `legacy` mode. The use of boolean values in yaml through the `Yes` and `No` keywords is strongly discouraged.
 
-**Next, register the new instruction:**
-
-Even though you have the instruction encoder table already setup, currently the assembler has no indication that
-this instruction actually *exists*. Therefore, we'll need to indicate to the assembler that this instruction 
-actually exists and there's actually a encoder table for it somewhere in the source code. (Which we wrote in the
-previous "chapter")
-
-So, register the instruction and the instruction encoder table to the assembler, we'll add the instruction's name
-in the `instructions` enum in the `instruction.h` header, the name should be prefixed with the prefix of `INSTR_`
-and followed with the instruction's name as shown on the Intel manual to maintain consistency. 
-
-> Please ensure the instruction is not appended in the enum, but instead added **before** the directives section,
-> otherwise the instruction you are trying to add as a *instruction* will be interpreted as an assembler directive. (All assembler directives are prefixed as `INSTR_DIR_` instead of just `INSTR_`)
-
-After your shiny new instruction is registered to the `instructions` enum, you'll also need to register the instruction's
-encoder table to the general lookup table for instructions called `instr_table`, they must be placed in a array in **the same** 
-order as the enum is in. This is very important since the assembler uses a lookup and uses the enum as a indexing tool
-and fetch whatever table is needed.
-
-### Adding a new encoder
-Although most of the encoders used by 80% of all Intel x64 instructions, many are still unsupported and require 
-you to add it into the assembler manually, especially many of the specialized floating point instructions and
-CPU specific stuff. All encoders live in the `libjas/encoder.c` file, to write a new encoder function, use the `DEFINE_ENCODER`
-macro defined in `libjas/include/encoder.h` and providing the name of the encoder as the argument. (The name should be in 
-lowercase and match the naming scheme as shown on the Intel manual.) See example below:
-```c
-// ...
-DEFINE_ENCODER(xx){
-  // ...
-}
-```
-
-The `DEFINE_ENCODER` macro already gives developers some helper arguments such as the instruction encoder table to reference,
-the operand array, more details appear in the `encoder.h` header, all "invokers" of these encoder function, including the 
-assembler itself will conform to this structure.
-
-After defining a encoder that you are happy with, there is no way the assembler can have any indication of the *existence* of 
-this encoder and cannot be invoked. All encoders should be *appended* to the `enc_ident` enum in the `libjas/include/encoder.h` 
-header so that the order can match up to the encoders array in the `enc_lookup()` function. 
-
-> The `enc_ident` enum serves as a *indexer* for the `enc_lookup()` array and allows the lookup table to work properly. 
-
-### How does maintaining work?
+## How does maintaining work?
 Code in Jas should be a collaborative project, there is no way that one person will have the ability to look after
 all the code in such a complicated project. Once a new block of code such as function or a new file is added, they
 will be automatically assigned to the author(s) of that block. For example, a new encoder is merged into the assembler,
@@ -163,7 +113,7 @@ he or she should also review any related PRs and keep in constant communication 
 contributors.
 
 > If you do contribute some code and **do not wish** to look after it long-term as a maintainer (Which is 100% okay)
-> you may drop support for it at anytime, just drop a email to eventide1029@gmail.com and I (Alvin) will be keen to do my best to look after it.
+> you may drop support for it at anytime, just drop a email to eventide1029@gmail.com someone else would be keen t o look after it!
 
 #### Becoming a maintainer
 Becoming a maintainer is easy! Everyone can do it! It's a great way to contribute to the community and help out 
