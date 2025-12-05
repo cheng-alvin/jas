@@ -48,8 +48,8 @@ int main(void) {
 }
 ```
 
-Yeah! that's it! Seriously! It's that simple, this little snippet of code generates
-and encodes a `mov rax, 0` instruction.
+Yeah! that's it! Seriously! It's that simple, this little snippet of code
+generates and encodes a `mov rax, 0` instruction in binary.
 
 > Since the returned buffer is in the form of a dynamically allocated pointer, 
 > care must be taken to `free` and manage the block of memory.
