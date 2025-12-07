@@ -9,7 +9,9 @@ CFLAGS = $(CFLAGS_COMMON)
 all: clean $(BUILD)/lib/libjas.a $(BUILD)/lib/libjas_debug.a
 
 format:
-	@find ./ -type f \( -name "*.cpp" -o -name "*.c" -o -name "*.h" \) -exec clang-format --verbose -i {} +
+	flowmark $(wildcard *.md) --semantic -w 80 -i --nobackup
+	clang-format --verbose $(shell find . -name "*.c") -i
+	clang-format --verbose $(shell find . -name "*.h") -i
 
 pre_build:
 	@find . -name "*.o" -type f -delete
