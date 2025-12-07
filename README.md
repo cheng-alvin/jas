@@ -125,7 +125,7 @@ the official mailing list: mailto:jas-assembler@google-groups.com.
 
 However, for developers interested and passionate about assemblers and low-level
 programming, please see the
-[contributing guide](https://github.com/cheng-alvin/jas/blob/a02fea10d9d398ef63a9fc9419ce54d8b406c3a5/CONTRIBUTING.txt)
+[contributing guide](https://github.com/cheng-alvin/jas/blob/main/CONTRIBUTING.md)
 in the home directory for more information on how to contribute code to the
 repository!
 
