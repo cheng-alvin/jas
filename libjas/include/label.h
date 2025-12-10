@@ -45,15 +45,15 @@ enum label_type {
   LABEL_EXTERN, // Associated with external linkage, TBD
 };
 
-typedef struct {
-  /// @note Union discriminates between instruction indexes and data offsets
-  /// depending on the label type. Encoder uses the defined`instruction_indexes`
-  /// union element to track the exact struct acting as the caller of
-  /// the label.
+typedef struct label {
+  /// @note Union discriminates between instruction indexes and data
+  /// offsets depending on the label type. Encoder uses the defined
+  /// `instruction_indexes` union element to track the exact struct
+  /// acting as the caller of the label.
 
   union {
     uint64_t *instruction_indexes; /* List of callers of instruction indexes */
-    size_t *data_offsets;          /* Callers aray in offset form  */
+    size_t *data_offsets;          /* Callers array in offset form. */
   } callers;
 
   char *name;     /* Name of the label in a string format */

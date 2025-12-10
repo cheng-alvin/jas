@@ -30,7 +30,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-static bool enc_operands_valid(struct instr_encode_table tab, instruction_t instr);
+static bool op_valid(instr_encode_table_t tab, instruction_t instr);
 struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mode) {
   if (input->type != INSTR) return NULL;
 
@@ -151,7 +151,7 @@ buffer_t enc_deserialize(enc_serialized_instr_t *in, buffer_t buf) {
 }
 #undef write_imm_data // Macro no longer applicable.
 
-static bool enc_operands_valid(struct instr_encode_table tab, instruction_t instr) {
+static bool op_valid(instr_encode_table_t tab, instruction_t instr) {
   uint8_t i = 0;
   for (; (uint8_t)instr.operands[i].type; i++)
     ;
