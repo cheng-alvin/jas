@@ -34,10 +34,10 @@ void label_create(label_table_t *label_table, label_t input) {
   if (label_lookup(label_table, input.name))
     return err("duplicated labels");
 
+  label_table->size++;
+
   size_t size = label_table->size * sizeof(label_t);
   label_table->entries = realloc(label_table->entries, size);
-
-  label_table->size++;
   label_table->entries[label_table->size - 1] = input;
 }
 
