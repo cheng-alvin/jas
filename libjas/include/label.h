@@ -40,20 +40,40 @@ typedef struct instr_generic instr_generic_t;
  */
 
 enum label_type {
+  LABEL_NULL = 0,
   LABEL_LOCAL,
   LABEL_GLOBAL,
   LABEL_EXTERN, // Associated with external linkage, TBD
 };
 
-typedef struct label {
-  /// @note Union discriminates between instruction indexes and data
-  /// offsets depending on the label type. Encoder uses the defined
-  /// `instruction_indexes` union element to track the exact struct
-  /// acting as the caller of the label.
+/**
+ * Function used for the generation of a complete label table
+ * based off an array of encoded/serialized instructions, and
+ * evaluating the label's addresses and callers.
+ *
+ * @param instr The array of encoded instructions.
+ * @param generics The array of instruction/directive generics.
+ * @param s The size of the instruction generic array.
+ *
+ * @return The generated label table.
+ *
+ * @note The array of serialized instructions must be padded
+ * with zeroed-out entries for non-instruction generics such as
+ * program or label directives.
+ */
 
-  union {
-    uint64_t *instruction_indexes; /* List of callers of instruction indexes */
-    size_t *data_offsets;          /* Callers array in offset form. */
+label_table_t label_table_gen(
+    enc_serialized_instr_t *instr, // Should be padded!
+    instr_generic_t *generics, size_t s);
+
+typedef struct label {
+  /// @note Should be allocated in accordance to the `count` variable
+  /// and should not be confused with `buffer_t` as it only carries
+  /// an array of single-byte data with an associated size.
+
+  struct {
+    uint64_t *offsets; /* List of callers of callers' offsets */
+    size_t count;      /* Number of callers */
   } callers;
 
   char *name;     /* Name of the label in a string format */
