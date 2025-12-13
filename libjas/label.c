@@ -53,6 +53,79 @@ label_t *label_lookup(label_table_t *label_table, char *name) {
   return NULL;
 }
 
+static void add_call(char *name, label_t **table, size_t count) {
+  label_t *label = (label_t *)NULL;
+
+  if (!label_lookup(*table, name)) {
+    label_t temp = (label_t){.name = name};
+
+    label_create(table, temp);
+    label = label_lookup(*table, name);
+  }
+
+  label->callers.count++;
+
+  size_t s = label->callers.count * sizeof(size_t);
+  label->callers.offsets = realloc(label->callers.offsets, s);
+  label->callers.offsets[label->callers.count - 1] = count;
+}
+
+label_table_t label_table_gen(
+    enc_serialized_instr_t *instr, // Should be padded!
+    instr_generic_t *generics, size_t s) {
+
+  label_table_t table = (label_table_t){0};
+  size_t counter = 0;
+
+  for (size_t i = 0; i < s; i++) {
+    if (generics[i].type == DIRECTIVE) {
+      directive_t curr_directive = generics[i].dir;
+
+      // clang-format off
+        if (curr_directive.dir == DIR_DEFINE_LABEL) {
+          label_t *prev = 
+          label_lookup(table, curr_directive.label.name);
+          
+          if (prev) {
+            prev->address = counter;
+            prev->type = curr_directive.label.type;
+          } else {
+            label_t processed_label = curr_directive.label;
+            processed_label.address = counter;
+            label_create(&table, processed_label);
+          }
+        }
+        else { counter += curr_directive.data.len; }
+        continue; // clang-format on
+    }
+
+    /// @note assumption that instructions that pass the
+    /// previous guard is now considered to posses a type
+    /// of `INSTRUCTION`.
+
+    for (uint8_t j = 0; j < 4; j++) {
+      operand_t curr_op = generics[i].instr.operands[j];
+      char *label_name = NULL;
+
+      if (!curr_op.type) break;
+
+      if (op_rel(curr_op.type)) label_name = curr_op.label;
+      if (op_m(curr_op.type) && curr_op.mem.src_type == LABEL)
+        label_name = curr_op.mem.src.label;
+
+      add_call_entry(label_name, table, counter);
+    }
+
+    // Messy means to calculate instruction size.
+    counter += instr[i].prefixes.len + instr[i].rex;
+    counter += instr[i].opcode_size;
+    counter += instr[i].has_modrm + instr[i].has_sib;
+    counter += instr[i].disp_size + instr[i].imm_size;
+  }
+
+  return table;
+}
+
 instr_generic_t *label_gen(char *name, enum label_type type) {
   label_t label_instance = (label_t){0};
   label_instance.type = type;
