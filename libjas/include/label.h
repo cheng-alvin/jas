@@ -86,6 +86,28 @@ typedef struct label {
   /// subtracted by the current caller's instruction pointer.
 } label_t;
 
+/// @see `label_free()`:
+
+#define label_free_table(table)             \
+  do {                                      \
+    for (size_t i = 0; i < table.size; i++) \
+      label_free(&table.entries[i]);        \
+    table.size = 0;                         \
+  } while (0)
+
+/**
+ * Frees allocated memory within an allocated label structure
+ * pointer. This function assumes the structure itself passed
+ * into the function is allocated dynamically.
+ *
+ * @param label Pointer of the label to be deallocated
+ *
+ * @note To automatically free the entire label table, use
+ * the shown `label_free_table` macro instead that combines
+ * function calls.
+ */
+void label_free(label_t *label);
+
 /**
  * Function for creating a new label entry in the label table,
  * handling required memory allocations and duplication checks.

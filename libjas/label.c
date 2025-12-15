@@ -84,7 +84,7 @@ label_table_t label_table_gen(
       // clang-format off
         if (curr_directive.dir == DIR_DEFINE_LABEL) {
           label_t *prev = 
-          label_lookup(table, curr_directive.label.name);
+            label_lookup(table, curr_directive.label.name);
           
           if (prev) {
             prev->address = counter;
@@ -123,6 +123,15 @@ label_table_t label_table_gen(
     counter += instr[i].disp_size + instr[i].imm_size;
   }
 
+  for (size_t i = 0; i < table.size; i++) {
+    // Since `LABEL_NULL` is denoted as a raw value of 0:
+    if ((uint8_t)table.entries[i].type == 0) {
+      label_free_table(table);
+
+      err("undefined label");
+      return (label_table_t){0};
+    }
+  }
   return table;
 }
 
@@ -145,4 +154,13 @@ instr_generic_t *label_gen(char *name, enum label_type type) {
   };
 
   return instr_ret;
+}
+
+void label_free(label_t *label) {
+  if (label->callers.count > 0) {
+    for (size_t i = 0; i < label->callers.count; i++)
+      free(label->callers.offsets[i]);
+  }
+
+  free(label);
 }
