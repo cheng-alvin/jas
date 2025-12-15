@@ -30,7 +30,7 @@
 #include <string.h>
 
 #define STD_UNIT_SIZE \
-  (uint8_t[]) { 0x40, 0x00 }
+  (uint8_t[]){0x40, 0x00}
 
 buffer_t exe_header(size_t sect_start, uint16_t sect_count, uint16_t sect_count_str) {
   buffer_t ret = BUF_NULL;
@@ -129,7 +129,8 @@ buffer_t exe_generate(struct codegen_ret ret) {
   // Data has been HARD-CODED rather than messing around with
   // OOP and structs, we only need these for now, right? Add more.
   const char shstrtab[] = "\0.shstrtab\0.strtab\0.symtab\0.text\0";
-  buffer_t shstrtab_head = exe_sect_header(1, 3, 2, &addr, sizeof(shstrtab), 0, 0, 0);
+  buffer_t shstrtab_head =
+      exe_sect_header(1, 3, 2, &addr, sizeof(shstrtab), 0, 0, 0);
 
   buffer_t strtab = BUF_NULL;
   buffer_t symtab = BUF_NULL;
@@ -142,32 +143,33 @@ buffer_t exe_generate(struct codegen_ret ret) {
     buf_write(&strtab, name, strlen(ret.label_table[i].name) + 1);
 
     uint8_t binding = 0;
-    if (ret.label_table[i].exported || ret.label_table[i].ext) binding = 1;
-    const buffer_t ent =
-        exe_sym_ent(ret.label_table[i].name, ret.label_table[i].address, 4, &strtab,
-                    (((binding) << 4) + ((0) & 0xf)));
+    label_t curr_label = ret.label_table[i];
+    if (label_exported(curr_label) || label_extern(curr_label)) binding = 1;
+
+    const buffer_t ent = exe_sym_ent(curr_label.name, curr_label.address, 4,
+                                     &strtab, (((binding) << 4) + ((0) & 0xf)));
 
     buf_concat(&symtab, 1, ent);
     free(ent.data);
   }
 
-  buffer_t strtab_head = exe_sect_header(11, 3, 2, &addr, strtab.len, 0, 0, 0);
-  buffer_t symtab_head = exe_sect_header(19, 2, 2, &addr, symtab.len, ret.label_table_size, 2, 24);
-
   const size_t info = ret.label_table_size + 1;
   buffer_t text_head = exe_sect_header(27, 1, 7, &addr, ret.code.len, 0, 0, 0);
+  buffer_t strtab_head = exe_sect_header(11, 3, 2, &addr, strtab.len, 0, 0, 0);
+  buffer_t symtab_head =
+      exe_sect_header(19, 2, 2, &addr, symtab.len, ret.label_table_size, 2, 24);
 
   // Adjust the amount of sections as required.
   const buffer_t header = exe_header(0x40, 5, 1);
   buf_write(&result_buffer, header.data, header.len);
   buf_write(&result_buffer, p_padding, 0x40);
 
-#define FREE_ALL(...)                                                   \
-  do {                                                                  \
-    void *pointers[] = {__VA_ARGS__};                                   \
-    for (size_t i = 0; i < sizeof(pointers) / sizeof(*pointers); ++i) { \
-      free(pointers[i]);                                                \
-    }                                                                   \
+#define FREE_ALL(...)                        \
+  do {                                       \
+    void *p[] = {__VA_ARGS__};               \
+    size_t len = sizeof(p) / sizeof(void *); \
+    for (size_t i = 0; i < len; ++i)         \
+      free(p[i]);                            \
   } while (0)
 
   buf_concat(&result_buffer, 4, shstrtab_head, strtab_head, symtab_head, text_head);
