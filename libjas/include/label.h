@@ -120,6 +120,16 @@ void label_free(label_t *label);
 
 void label_create(label_table_t *label_table, label_t input);
 
+// Macros that simplify label type checks, akin to the `op_` macros
+// that can be used with the `operand_t` structure and type checks.
+// Such macros can be implemented in `if` statements for improved
+// readability and consistency across the codebase.
+
+#define label_exported(x) ((x.type) == LABEL_GLOBAL)
+#define label_extern(x) ((x.type) == LABEL_EXTERN)
+
+#define label_null(x) ((x.type) == LABEL_NULL)
+
 /**
  * Looks up and returns a pointer to a matching label as with
  * the name provided in the arguments list, obtained within the
