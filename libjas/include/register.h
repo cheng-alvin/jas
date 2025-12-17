@@ -51,7 +51,7 @@ enum registers {
   REG_DI,
 
   REG_EAX,
-REG_ECX,
+  REG_ECX,
   REG_EDX,
   REG_EBX,
   REG_ESP,
