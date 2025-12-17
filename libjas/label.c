@@ -58,9 +58,6 @@ label_t *label_lookup(label_table_t *label_table, char *name) {
 }
 
 #define is_word(x) (x < INT16_MAX && x > INT16_MIN)
-#define write_addr_ovr(x) \ 
-  if (!buf_element_exists(x, OP_ADDR_OVERRIDE)) \
-    buf_write_byte(x, OP_ADDR_OVERRIDE);
 
 enc_serialized_instr_t *label_evaluate(
     enc_serialized_instr_t *instr,
@@ -68,7 +65,7 @@ enc_serialized_instr_t *label_evaluate(
 
   bool is_mem =
       instr->has_modrm && (instr->modrm.mod == 0b11) &&
-      ((instr->modrm.rm == 0b110) || (instr->modrm.rm == 0b101));
+      ((instr->modrm.rm == 5) || (instr->modrm.rm == 6));
 
   int64_t effective_offset = label;
   if (mode != MODE_LONG && is_mem) goto default;
@@ -85,25 +82,24 @@ enc_serialized_instr_t *label_evaluate(
   effective_offset = label - (current + instr_size);
 
 default:
-  if (is_mem) instr->disp_size = 4;
+  instr->disp_size = is_mem ? 4 : instr->disp_size;
   instr->disp = (int64_t)effective_offset;
   if (mode == MODE_LONG || !is_mem) return instr;
 
   bool offset_is_word = is_word(effective_offset);
+  buffer_t *pre = &instr->prefixes;
 
   switch (mode) {
   case MODE_REAL:
     if (offset_is_word) break;
 
-    instr->disp_size = 4; // `enc_serialize` sets `2` by default.
-    instr->modrm.rm = 5;  // Since `enc_serialize` sets 6 already.
+    if (!buf_element_exists(pre, OP_ADDR_OVERRIDE))
+      buf_write_byte(pre, OP_ADDR_OVERRIDE);
 
-    write_addr_ovr(&instr->prefixes);
+    instr->disp_size = 4; // `enc_serialize` presets `2`.
+    instr->modrm.rm = 5;  // `5` is default across x86.
+
     break;
-
-    /// @note Despite the offsets being 32 bits used as
-    /// the default, the evaluated value would allow for a
-    /// reduction in offset size by overriding to 16 bits.
 
   case MODE_PROTECTED:
     if (!offset_is_word) break;
@@ -112,14 +108,14 @@ default:
     instr->modrm.rm = 6;
 
     // Overrides offset where the hasn't already been:
-    write_addr_ovr(&instr->prefixes);
+    if (!buf_element_exists(pre, OP_ADDR_OVERRIDE))
+      buf_write_byte(pre, OP_ADDR_OVERRIDE);
+
     break;
   }
   return instr;
 }
-
 #undef is_word
-#undef write_addr_ovr
 
 static void add_call(char *name, label_t **table, size_t count) {
   label_t *label = (label_t *)NULL;
