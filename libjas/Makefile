@@ -1,19 +1,24 @@
-CC = clang
+# It should be noted that the final build directory in which all
+# resulting libraries are produced can be customized by setting the 
+# `BUILD` property, which defaults to `../build/lib`
 
-CFLAGS_COMMON =-I include -I . -I encoders -Wall -Werror -std=c11
+CC              = clang
+CFLAGS_COMMON 	= -I include -I encoders -Wall -Werror -std=c11
 
-C_SRC = $(wildcard *.c) # Includes only C source files
-OBJ = $(patsubst %.c, %.o, $(C_SRC))
-BUILD = ../build
+SRC := $(wildcard *.c)
+OBJ := $(patsubst %.c,$(BUILD)/%.o,$(SRC))
 
-libjas.a: CFLAGS = $(CFLAGS_COMMON) -O3 
-libjas.a: $(OBJ) 
-	ar rcs $(BUILD)/$@ $^ 
+# `BUILD` should be provided by the command's caller:
+BUILD ?= ../build/lib # And is defaulted where not provided.
 
-libjas_debug.a: CFLAGS = $(CFLAGS_COMMON) -g -O0 -gembed-source
-libjas_debug.a: $(OBJ)
-	ar rcs $(BUILD)/$@ $^
+$(BUILD)/libjas.a: CFLAGS = $(CFLAGS_COMMON) -O3
+$(BUILD)/libjas.a: $(OBJ)
+	ar rcs $@ $^
+
+DEBUG_FLAGS := $(CFLAGS_COMMON) -O0 -gembed-source
+$(BUILD)/libjas_debug.a: $(DEBUG_FLAGS)
+$(BUILD)/libjas_debug.a: $(patsubst %.o, %.debug.o, $(OBJ))
+	ar rcs $@ $^
 
 instructions.inc: encoders/instructions.yml
 	node ./encoders/compile.js $^ 
-	
