@@ -1,20 +1,20 @@
 ## Contributing to Jas
 
-Thank you for considering to contribute to the Jas assembler!
-The jas assembler is a project that is developed by a small group of people.
-We are always looking for new contributors to help us improve the assembler.
-This guide is for **DEVELOPERS looking to commit code to the Jas assembler**. If
-you are looking to report a bug or request a feature, please use the official
-mailing list: mailto:jas-assembler@google-groups.com.
+Thank you for considering to contribute to the Jas assembler! The jas assembler
+is a project that is developed by a small group of people. We are always looking
+for new contributors to help us improve the assembler. This guide is for
+**DEVELOPERS looking to commit code to the Jas assembler**. If you are looking
+to report a bug or request a feature, please use the official mailing list:
+mailto:jas-assembler@google-groups.com.
 
 ### Getting started
 
 For beginners and those who are new to Git and GitHub, please see
 [here](https://guides.github.com/activities/hello-world/) for a quick tutorial
-on how to get started with Git and GitHub.
-The Jas project is hosted on this Github page and does not have any official
-mirrors on other sites at this point, you may create a un-official mirror on
-other sites and hosts if you wish, but all official development will occur here.
+on how to get started with Git and GitHub. The Jas project is hosted on this
+Github page and does not have any official mirrors on other sites at this point,
+you may create a un-official mirror on other sites and hosts if you wish, but
+all official development will occur here.
 
 First of all, clone and hop into the repository’s directory:
 
@@ -34,9 +34,9 @@ description of your work and changes you have committed.
 > details appearing in the description.
 
 To ensure the quality of the contributed code, all pull requests must be
-reviewed by a maintainer (which is most cases is me).
-Please direct all queries and concerns to mailto:eventide1029+jas@gmail.com as
-well as for any feedback on code and contributions to the Assembler.
+reviewed by a maintainer (which is most cases is me). Please direct all queries
+and concerns to mailto:eventide1029+jas@gmail.com as well as for any feedback on
+code and contributions to the Assembler.
 [See below](https://github.com/cheng-alvin/jas/blob/contributing-guide-changes/CONTRIBUTING.md#how-does-maintaining-work)
 
 ### Building and testing
@@ -44,8 +44,7 @@ well as for any feedback on code and contributions to the Assembler.
 To build Jas, simply run `make` in the home or `libjas` directories (A debug
 binary must be built in `libjas`). Tests can be added in the `tests` directory
 and built using `make tests` as well in the home directory, all C test files
-will be automatically built and run.
-You may include the Jas testing framework
+will be automatically built and run. You may include the Jas testing framework
 [here](https://github.com/cheng-alvin/jas/blob/main/tests/test.h)
 
 ### Code style
@@ -76,30 +75,29 @@ list(s), and finally testing and writing unit tests.
 
 A instruction encoder table describes the identity of the instruction and how
 each instance can be encoded in binary as well as some key meta data such as
-what modes the instruction support and operand extensions etc.
-(Details will appear in the
+what modes the instruction support and operand extensions etc. (Details will
+appear in the
 [`instruction.h`](https://github.com/cheng-alvin/jas/blob/main/libjas/include/instruction.h)
 file) Each instruction encoder table includes *entries*, each entry defines the
-meta data that correspond to a certain identity.
-For example, a MR identity (A identity with a m64 and r64) will be one entry and
-includes the opcode, and support status in different operating modes.
+meta data that correspond to a certain identity. For example, a MR identity (A
+identity with a m64 and r64) will be one entry and includes the opcode, and
+support status in different operating modes.
 
-** These entries are defined in the
+\*\* These entries are defined in the
 [`instructions.tbl`](https://github.com/cheng-alvin/jas/blob/main/libjas/instructions.tbl)
 file and is compiled using a script that compiles it into native C structs that
-can be used and accessed by the other parts of the assembler.
-**
+can be used and accessed by the other parts of the assembler. \*\*
 
 **Constructing a entry**
 
-Jas encoder banks has now been since compiled using a text-based format.
-Every entry is line-seperated and values are seperated using `|`s, spaces are
-used to pad and align the values with the others (mainly for cosmetics) but they
-are eventually ignored by the compiler.
-Characters such as `-` are in-place for `NULL` and will be replaced with `NULL`
-during compilation. To compile the instruction encoder table, make the `tabs.c`
-target in the `libjas` directory, this will invoke the Node.js script and
-automatically generate the `tabs.c` file.
+Jas encoder banks has now been since compiled using a text-based format. Every
+entry is line-seperated and values are seperated using `|`s, spaces are used to
+pad and align the values with the others (mainly for cosmetics) but they are
+eventually ignored by the compiler. Characters such as `-` are in-place for
+`NULL` and will be replaced with `NULL` during compilation. To compile the
+instruction encoder table, make the `tabs.c` target in the `libjas` directory,
+this will invoke the Node.js script and automatically generate the `tabs.c`
+file.
 
 Here’s a sample entry:
 
@@ -108,6 +106,7 @@ Here’s a sample entry:
 # -----------------------------------------------------------------------------------------------
   cmc  | zo       | -                | 0xF5              | -                 | no_operands
 ```
+
 Note that lines prepended with a `#` will be ignored and removed from the
 output.
 
@@ -131,12 +130,10 @@ instr_encode_table_t cmc[] = {
 };
 ```
 
-**FAQ:** What does `zo`, `OP_ZO` mean?
-What are they for? These are called *operand identies*, Intel calls them
-*Instruction Operand Encoding*(s), usually found below a instruction encoder
-table on the manual.
-Every enum is mapped to one of these *encoder funtions* and encodes the
-operands. (See
+**FAQ:** What does `zo`, `OP_ZO` mean? What are they for? These are called
+*operand identies*, Intel calls them *Instruction Operand Encoding*(s), usually
+found below a instruction encoder table on the manual. Every enum is mapped to
+one of these *encoder funtions* and encodes the operands. (See
 [here](https://github.com/cheng-alvin/jas/edit/main/CONTRIBUTING.md#adding-a-new-encoder))
 
 **Next, register the new instruction:**
@@ -144,8 +141,8 @@ operands. (See
 Even though you have the instruction encoder table already setup, currently the
 assembler has no indication that this instruction actually *exists*. Therefore,
 we’ll need to indicate to the assembler that this instruction actually exists
-and there’s actually a encoder table for it somewhere in the source code.
-(Which we wrote in the previous “chapter”)
+and there’s actually a encoder table for it somewhere in the source code. (Which
+we wrote in the previous “chapter”)
 
 So, register the instruction and the instruction encoder table to the assembler,
 we’ll add the instruction’s name in the `instructions` enum in the
@@ -155,16 +152,15 @@ maintain consistency.
 
 > Please ensure the instruction is not appended in the enum, but instead added
 > **before** the directives section, otherwise the instruction you are trying to
-> add as a *instruction* will be interpreted as an assembler directive.
-> (All assembler directives are prefixed as `INSTR_DIR_` instead of just
-> `INSTR_`)
+> add as a *instruction* will be interpreted as an assembler directive. (All
+> assembler directives are prefixed as `INSTR_DIR_` instead of just `INSTR_`)
 
 After your shiny new instruction is registered to the `instructions` enum,
 you’ll also need to register the instruction’s encoder table to the general
 lookup table for instructions called `instr_table`, they must be placed in a
-array in **the same** order as the enum is in.
-This is very important since the assembler uses a lookup and uses the enum as a
-indexing tool and fetch whatever table is needed.
+array in **the same** order as the enum is in. This is very important since the
+assembler uses a lookup and uses the enum as a indexing tool and fetch whatever
+table is needed.
 
 ### Adding a new encoder
 
@@ -173,9 +169,10 @@ are still unsupported and require you to add it into the assembler manually,
 especially many of the specialized floating point instructions and CPU specific
 stuff. All encoders live in the `libjas/encoder.c` file, to write a new encoder
 function, use the `DEFINE_ENCODER` macro defined in `libjas/include/encoder.h`
-and providing the name of the encoder as the argument.
-(The name should be in lowercase and match the naming scheme as shown on the
-Intel manual.) See example below:
+and providing the name of the encoder as the argument. (The name should be in
+lowercase and match the naming scheme as shown on the Intel manual.) See example
+below:
+
 ```c
 // ...
 DEFINE_ENCODER(xx){
@@ -202,12 +199,12 @@ array in the `enc_lookup()` function.
 Code in Jas should be a collaborative project, there is no way that one person
 will have the ability to look after all the code in such a complicated project.
 Once a new block of code such as function or a new file is added, they will be
-automatically assigned to the author(s) of that block.
-For example, a new encoder is merged into the assembler, the people who
-initially wrote it will take care of the encoder’s source, documentation and
-addressing issues. Their name(s) and email addresses as well as relevant contact
-details (preferably Github username) should be added on the documentation
-comment for the encoder similar to the one below:
+automatically assigned to the author(s) of that block. For example, a new
+encoder is merged into the assembler, the people who initially wrote it will
+take care of the encoder’s source, documentation and addressing issues. Their
+name(s) and email addresses as well as relevant contact details (preferably
+Github username) should be added on the documentation comment for the encoder
+similar to the one below:
 
 ```c
 // func.h
@@ -232,10 +229,9 @@ contributors.
 
 #### Becoming a maintainer
 
-Becoming a maintainer is easy!
-Everyone can do it! It’s a great way to contribute to the community and help out
-with the constant stream of issues.
-To become a maintainer just drop in a quick email to me (Alvin)
+Becoming a maintainer is easy! Everyone can do it! It’s a great way to
+contribute to the community and help out with the constant stream of issues. To
+become a maintainer just drop in a quick email to me (Alvin)
 mailto:eventide1029@gmail.com and I’ll be happy to let you look after that
 portion of code.
 
@@ -265,8 +261,8 @@ in the patch mentioned or quoted in the title.
 ### What now?
 
 After reading the instructions here, you should have a good understanding of how
-to contribute to the Jas assembler project!
-Write some code, drink some coffee, and have fun!
+to contribute to the Jas assembler project! Write some code, drink some coffee,
+and have fun!
 
 If you have any questions, please feel free to email me at
 mailto:eventide1029+jas@gmail.com
