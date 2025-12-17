@@ -35,9 +35,8 @@ description of your work and changes you have committed.
 
 To ensure the quality of the contributed code, all pull requests must be
 reviewed by a maintainer (which is most cases is me). Please direct all queries
-and concerns to mailto:eventide1029+jas@gmail.com as well as for any feedback on
-code and contributions to the Assembler.
-[See below](https://github.com/cheng-alvin/jas/blob/contributing-guide-changes/CONTRIBUTING.md#how-does-maintaining-work)
+and concerns to eventide1029+jas@gmail.com as well as for any feedback on code
+and contributions to the Assembler. [See below](https://shorturl.at/NuGEq/)
 
 ### Building and testing
 
@@ -85,12 +84,29 @@ support status in different operating modes.
 
 **Constructing an entry**
 
-Entries of encoder reference tables are all located in the `libjas/encoders` directory. Each instruction, or a set of minor instructions are typically grouped together, (you can use Intel's documentation grouping conventions as a general guideline) and should be registered to the dependencies of the `instructions.inc` target. Each file contains an overarching `instructions` field that houses an array of instructions, it should be noted that all other field on the top level would be ignored, allowing contributors to add user-defined meta data such as license information, implementation comments etc. Within each instruction of the yaml file, the instruction exists *variants* of the instruction with distinct configurations of operands and instruction opcodes among other components supporting the encoding of instructions.
+Entries of encoder reference tables are all located in the `libjas/encoders`
+directory. Each instruction, or a set of minor instructions are typically
+grouped together, (you can use Intel's documentation grouping conventions as a
+general guideline) and should be registered to the dependencies of the
+`instructions.inc` target. Each file contains an overarching `instructions`
+field that houses an array of instructions, it should be noted that all other
+field on the top level would be ignored, allowing contributors to add
+user-defined meta data such as license information, implementation comments etc.
+Within each instruction of the yaml file, the instruction exists *variants* of
+the instruction with distinct configurations of operands and instruction opcodes
+among other components supporting the encoding of instructions.
 
-> Each encoder reference table is defined in a simple yaml structure, allowing for easy diffing between versions and human readability. Such yaml files are provided to a Node.Js script and compiled into a C structure array. A enum of all instructions available and a string array of instructions is generated automatically, supporting code generation and parsing features within the assembler. 
+> Each encoder reference table is defined in a simple yaml structure, allowing
+> for easy diffing between versions and human readability. Such yaml files are
+> provided to a Node.Js script and compiled into a C structure array. A enum of
+> all instructions available and a string array of instructions is generated
+> automatically, supporting code generation and parsing features within the
+> assembler.
 
-Below is a sample of the yaml structure supported by the compiler script (Not a real instruction):
-``` yaml
+Below is a sample of the yaml structure supported by the compiler script (Not a
+real instruction):
+
+```yaml
 instructions:
   - sample:
     variants:
@@ -104,19 +120,39 @@ instructions:
 ```
 
 Each variant of an instruction should contain the following:
-- `opcode` - An array of a maximum of 3 bytes, depicting the opcode as indicated by the Intel developer handbook. It is typical convention that bytes are expressed hexadecimal in adherence to the Intel Developer Manual; implementations of encoder tables should also avoid having bytes merged together such as `0xABCD`.
-  
-- `operands` -  An array with a 4 element capacity depicting the type, and options of operands expected of by the instruction. It should be noted that **all** possibilities must be listed by said array, despite its verbosity, such approach allows for better error handling in spite of some inconsistencies across instructions. Details regarding niche operand encoder options can be obtained in [`encoder.c`](https://github.com/cheng-alvin/jas/blob/encoder-rework/libjas/encoder.c) and should be set to `default` where no special consideration or encoding is required.
-  
-- `compatibility` - A option that contains boolean values for checking if such instruction is supported in either `long`, or `legacy` mode. The use of boolean values in yaml through the `Yes` and `No` keywords is strongly discouraged.
+
+- `opcode` - An array of a maximum of 3 bytes, depicting the opcode as indicated
+  by the Intel developer handbook. It is typical convention that bytes are
+  expressed hexadecimal in adherence to the Intel Developer Manual;
+  implementations of encoder tables should also avoid having bytes merged
+  together such as `0xABCD`.
+
+- `operands` - An array with a 4 element capacity depicting the type, and
+  options of operands expected of by the instruction. It should be noted that
+  **all** possibilities must be listed by said array, despite its verbosity,
+  such approach allows for better error handling in spite of some
+  inconsistencies across instructions. Details regarding niche operand encoder
+  options can be obtained in
+  [`encoder.c`](https://github.com/cheng-alvin/jas/blob/encoder-rework/libjas/encoder.c)
+  and should be set to `default` where no special consideration or encoding is
+  required.
+
+- `compatibility` - A option that contains boolean values for checking if such
+  instruction is supported in either `long`, or `legacy` mode. The use of
+  boolean values in yaml through the `Yes` and `No` keywords is strongly
+  discouraged.
 
 ## How does maintaining work?
-Code in Jas should be a collaborative project, there is no way that one person will have the ability to look after
-all the code in such a complicated project. Once a new block of code such as function or a new file is added, they
-will be automatically assigned to the author(s) of that block. For example, a new encoder is merged into the assembler,
-the people who initially wrote it will take care of the encoder's source, documentation and addressing issues. Their name(s)
-and email addresses as well as relevant contact details (preferably Github username) should be added on the documentation
-comment for the encoder similar to the one below:
+
+Code in Jas should be a collaborative project, there is no way that one person
+will have the ability to look after all the code in such a complicated project.
+Once a new block of code such as function or a new file is added, they will be
+automatically assigned to the author(s) of that block. For example, a new
+encoder is merged into the assembler, the people who initially wrote it will
+take care of the encoder's source, documentation and addressing issues. Their
+name(s) and email addresses as well as relevant contact details (preferably
+Github username) should be added on the documentation comment for the encoder
+similar to the one below:
 
 ```c
 // func.h

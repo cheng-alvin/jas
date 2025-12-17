@@ -39,11 +39,10 @@ void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len);
 void buf_write_byte(buffer_t *buf, const uint8_t data);
 void buf_remove(buffer_t *buf, const size_t elem);
 
-#define BUF_NULL  \
-  (buffer_t) {    \
-    .data = NULL, \
-    .len = 0      \
-  }
+#define BUF_NULL    \
+  (buffer_t){       \
+      .data = NULL, \
+      .len = 0}
 
 bool buf_element_exists(buffer_t *buf, const uint8_t elem);
 void buf_concat(buffer_t *buf, size_t count, ...);
