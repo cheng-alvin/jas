@@ -9,7 +9,7 @@ CFLAGS = $(CFLAGS_COMMON)
 all: clean $(BUILD)/lib/libjas.a $(BUILD)/lib/libjas_debug.a
 
 format:
-	flowmark $(wildcard *.md) --semantic -w 80 -i --nobackup
+	mdformat $(shell find . -name "*.md") --wrap 80
 	clang-format --verbose $(shell find . -name "*.c") -i
 	clang-format --verbose $(shell find . -name "*.h") -i
 
