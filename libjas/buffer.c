@@ -71,8 +71,8 @@ void buf_concat(buffer_t *buf, size_t count, ...) {
   va_start(args, count);
 
   for (size_t i = 0; i < count; i++) {
-    buffer_t *other = va_arg(args, buffer_t *);
-    buf_write(buf, other->data, other->len);
+    buffer_t other = va_arg(args, buffer_t);
+    buf_write(buf, other.data, other.len);
   }
 
   va_end(args);
