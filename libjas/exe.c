@@ -169,9 +169,9 @@ buffer_t exe_generate(struct codegen_ret ret) {
     }                                                                   \
   } while (0)
 
-  buf_concat(&result_buffer, 4, &shstrtab_head, &strtab_head, &symtab_head, &text_head);
+  buf_concat(&result_buffer, 4, shstrtab_head, strtab_head, symtab_head, text_head);
   buf_write(&result_buffer, shstrtab, sizeof(shstrtab));
-  buf_concat(&result_buffer, 3, &strtab, &symtab, &ret.code);
+  buf_concat(&result_buffer, 3, strtab, symtab, ret.code);
 
   free(p_padding);
 
