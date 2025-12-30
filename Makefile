@@ -4,22 +4,23 @@ CC = clang
 CFLAGS_COMMON = -I libjas/include
 CFLAGS = $(CFLAGS_COMMON)
 
-.PHONY: all tests format clean pre_build
+SRC_FILES = $(shell find . -type f \( -name "*.c" -o -name "*.h" \))
+OBJ_FILES = $(shell find . -type f -name "*.o")
+
+.PHONY: all tests format clean pre_build format_md
 
 all: clean $(BUILD)/lib/libjas.a $(BUILD)/lib/libjas_debug.a
 
-format:
-	mdformat $(shell find . -name "*.md") --wrap 80
-	clang-format --verbose $(shell find . -name "*.c") -i
-	clang-format --verbose $(shell find . -name "*.h") -i
+format_md: $(shell find . -name "*.md") 
+	node ./mdformatwrapper.js $^
+
+format: format_md
+	@clang-format -i --verbose $(SRC_FILES)
 
 pre_build:
-	@find . -name "*.o" -type f -delete
+	@rm -rf $(BUILD) $(OBJ_FILES)
 
-clean:
-	@find . -name "*.o" -type f -delete
-	@find . -name "*.a" -type f -delete
-	@rm -r -f $(BUILD)
+clean: pre_build
 	@mkdir -p $(BUILD)/include
 	@mkdir -p $(BUILD)/lib
 	@mkdir -p $(BUILD)make
