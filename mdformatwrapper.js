@@ -17,7 +17,7 @@ const options = '--wrap 80';  // Add additional supported options here.
  * processed by `mdformat` with ignored regions preserved by this wrapper.
  *
  * @license MIT
- * Copyright (c) 2026 Alvin Cheng <eventide1029@gmail.com>
+ * Copyright (c) 2025-2026 Alvin Cheng <eventide1029@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

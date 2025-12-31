@@ -1,6 +1,6 @@
 /**
  * MIT License
- * Copyright (c) 2023-2025 Alvin Cheng <eventide1029@gmail.com>
+ * Copyright (c) 2023-2026 Alvin Cheng <eventide1029@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -150,16 +150,16 @@ typedef struct label_table {
 /**
  * Function for facilitating the automatic computation of label
  * relative offsets, across all operation modes. `label_evaluate`
- * is designed purely for delegation between a label address and 
+ * is designed purely for delegation between a label address and
  * current address and serialized instructions.
- * 
+ *
  * @param instr The serialized structure that lacks a label offset
  * @param current The current address, till end of this instruction.
  * @param label Address in offset of the label in question.
  * @param mode Current operating mode for the encoder's target.
- * 
- * @return A pointer of the `instr` and indicative of success, 
- * or of an error, where `NULL` is returned. 
+ *
+ * @return A pointer of the `instr` and indicative of success,
+ * or of an error, where `NULL` is returned.
  */
 enc_serialized_instr_t *label_evaluate(
     enc_serialized_instr_t *instr,
