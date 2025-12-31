@@ -118,7 +118,7 @@ No software is perfect, nor is Jas. As the assembler is written in C, many
 security issues may arise, causing issues across the program. It’s a shared
 responsibility to safeguard Jas of all developers, contributors and users alike.
 Please report all security or any other concerns in a timely manner via email to
-the official mailing list: mailto:jas-assembler@google-groups.com.
+the official mailing list: jas-assembler@google-groups.com.
 
 However, for developers interested and passionate about assemblers and low-level
 programming, please see the

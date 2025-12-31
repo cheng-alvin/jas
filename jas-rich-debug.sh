@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2023-2025 Alvin Cheng <eventide1029@gmail.com>
+# Copyright (c) 2023-2026 Alvin Cheng <eventide1029@gmail.com>
 
 # Where debugging is required for the Jas library, these operations
 # must be performed externally through an application dependant on

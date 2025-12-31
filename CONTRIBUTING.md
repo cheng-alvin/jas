@@ -5,7 +5,7 @@ is a project that is developed by a small group of people. We are always looking
 for new contributors to help us improve the assembler. This guide is for
 **DEVELOPERS looking to commit code to the Jas assembler**. If you are looking
 to report a bug or request a feature, please use the official mailing list:
-mailto:jas-assembler@google-groups.com.
+jas-assembler@google-groups.com.
 
 ### Getting started
 
@@ -136,7 +136,7 @@ contributors.
 
 > If you do contribute some code and **do not wish** to look after it long-term
 > as a maintainer (Which is 100% okay) you may drop support for it at anytime,
-> just drop a email to mailto:eventide1029@gmail.com and I (Alvin) will be keen
+> just drop a email to eventide1029@gmail.com and I (Alvin) will be keen
 > to do my best to look after it.
 
 #### Becoming a maintainer
@@ -144,7 +144,7 @@ contributors.
 Becoming a maintainer is easy! Everyone can do it! It’s a great way to
 contribute to the community and help out with the constant stream of issues. To
 become a maintainer just drop in a quick email to me (Alvin)
-mailto:eventide1029@gmail.com and I’ll be happy to let you look after that
+eventide1029@gmail.com and I’ll be happy to let you look after that
 portion of code.
 
 ### What to remember before submitting a PR
@@ -177,6 +177,6 @@ to contribute to the Jas assembler project! Write some code, drink some coffee,
 and have fun!
 
 If you have any questions, please feel free to email me at
-mailto:eventide1029+jas@gmail.com
+eventide1029+jas@gmail.com
 
 Happy hacking!
