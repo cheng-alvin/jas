@@ -148,6 +148,24 @@ typedef struct label_table {
 } label_table_t;
 
 /**
+ * Function for facilitating the automatic computation of label
+ * relative offsets, across all operation modes. `label_evaluate`
+ * is designed purely for delegation between a label address and 
+ * current address and serialized instructions.
+ * 
+ * @param instr The serialized structure that lacks a label offset
+ * @param current The current address, till end of this instruction.
+ * @param label Address in offset of the label in question.
+ * @param mode Current operating mode for the encoder's target.
+ * 
+ * @return A pointer of the `instr` and indicative of success, 
+ * or of an error, where `NULL` is returned. 
+ */
+enc_serialized_instr_t *label_evaluate(
+    enc_serialized_instr_t *instr,
+    uint64_t current, uint64_t label, enum modes mode);
+
+/**
  * Function for generating an instruction generic structure for the
  * represented label, with relative ease of use. This function would
  * automatically create the instruction generic, leading to an instr-
