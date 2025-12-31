@@ -24,6 +24,7 @@
  */
 
 #include "encoder.h"
+#include "endian.h"
 #include "error.h"
 #include "instruction.h"
 #include <limits.h>
@@ -42,6 +43,9 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
     return NULL;
   }
 
+  // Preliminary error checking done, proceed with encoding
+  // and the generation of serialized instruction.
+
   struct enc_serialized_instr *serialized =
       calloc(1, sizeof(enc_serialized_instr_t));
 
@@ -58,7 +62,11 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
     if (option == ENC_IGNORE) continue;
     uint8_t operand_size = op_sizeof(instr.operands[i].type);
 
-    if (op_rel(instr.operands[i].type)) continue;
+    if (op_rel(instr.operands[i].type)) {
+      serialized->disp_size = operand_size;
+      continue;
+    }
+
     if (op_imm(instr.operands[i].type)) {
       serialized->imm = instr.operands[i].imm;
       serialized->imm_size = operand_size;
@@ -95,8 +103,37 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
     // Assumption that all operands are memory from this point
     // onwards, generates ModR/M and SIB bytes where applicable.
 
-    uint64_t disp = instr.operands[i].mem.disp;
+    int64_t disp = instr.operands[i].mem.disp;
     if (instr.operands[i].mem.src_type == LABEL) {
+      serialized->modrm.mod = OP_MODRM_MODE_INDIRECT;
+
+      if ((uint8_t)option < 8)
+        serialized->modrm.reg = (uint8_t)option;
+
+      if (mode != MODE_LONG) {
+        // Writing code segment override prefix as Jas only
+        // currently has support for flat memory model in
+        // protected mode, that is, having no segmentation.
+
+        buf_write_byte(&serialized->prefixes, 0x2E);
+      }
+
+      if (mode == MODE_LONG) serialized->modrm.rm = 5;
+      if (mode == MODE_PROTECTED) serialized->modrm.rm = 5;
+
+      /// @note in real mode, where required, the access of
+      /// memory beyond the 0xFFFF limit can be overriden
+      /// through the usage of address overrides and the use
+      /// of 5 in the R/M field of ModR/M, akin to protected
+      /// mode behavior.
+
+      serialized->disp_size = 4; // 32-bit displacement for labels
+
+      if (mode == MODE_REAL) {
+        serialized->modrm.rm = 6;
+        serialized->disp_size = 2;
+      }
+
       serialized->disp += disp;
       continue;
     }
@@ -128,7 +165,7 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
 }
 
 #define write_imm_data(data, size) \ 
-  buf_write(&buf, endian(&data), size);
+  buf_write(&buf, endian(&data, size), size);
 
 buffer_t enc_deserialize(enc_serialized_instr_t *in, buffer_t buf) {
   buf_concat(&buf, 1, &(in->prefixes));

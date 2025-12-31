@@ -71,7 +71,7 @@ typedef struct enc_serialized_instr {
   bool has_sib : 1;      /* SIB present */
 
   uint64_t disp; /* Displacement value (Big endian) */
-  uint64_t imm;  /* Immediate value  (Big endian) */
+  int64_t imm;   /* Immediate value  (Big endian) */
 
   /// @note A 0 size field depicts absence of the respective field.
   uint8_t disp_size : 4; /* Displacement size (0–8 bytes) */

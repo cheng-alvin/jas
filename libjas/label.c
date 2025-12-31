@@ -53,6 +53,70 @@ label_t *label_lookup(label_table_t *label_table, char *name) {
   return NULL;
 }
 
+#define is_word(x) (x < INT16_MAX && x > INT16_MIN)
+#define write_addr_ovr(x) \ 
+  if (!buf_element_exists(x, OP_ADDR_OVERRIDE)) \
+    buf_write_byte(x, OP_ADDR_OVERRIDE);
+
+enc_serialized_instr_t *label_evaluate(
+    enc_serialized_instr_t *instr,
+    uint64_t current, uint64_t label, enum modes mode) {
+
+  bool is_mem =
+      instr->has_modrm && (instr->modrm.mod == 0b11) &&
+      ((instr->modrm.rm == 0b110) || (instr->modrm.rm == 0b101));
+
+  int64_t effective_offset = label;
+  if (mode != MODE_LONG && is_mem) goto default;
+
+  uint8_t instr_size =
+      instr->prefixes.len +
+      instr->rex + instr->opcode_size +
+      instr->has_modrm + instr->has_sib +
+      instr->disp_size + instr->imm_size;
+
+  /// @note how an offset of 0x00 is a valid offset of the
+  /// next instruction **following** the current instruction
+  /// when addressing via RIP in long mode.
+  effective_offset = label - (current + instr_size);
+
+default:
+  if (is_mem) instr->disp_size = 4;
+  instr->disp = (int64_t)effective_offset;
+  if (mode == MODE_LONG || !is_mem) return instr;
+
+  bool offset_is_word = is_word(effective_offset);
+
+  switch (mode) {
+  case MODE_REAL:
+    if (offset_is_word) break;
+
+    instr->disp_size = 4; // `enc_serialize` sets `2` by default.
+    instr->modrm.rm = 5;  // Since `enc_serialize` sets 6 already.
+
+    write_addr_ovr(&instr->prefixes);
+    break;
+
+    /// @note Despite the offsets being 32 bits used as
+    /// the default, the evaluated value would allow for a
+    /// reduction in offset size by overriding to 16 bits.
+
+  case MODE_PROTECTED:
+    if (!offset_is_word) break;
+
+    instr->disp_size = 2; // Overrides value of 4 as initalized
+    instr->modrm.rm = 6;
+
+    // Overrides offset where the hasn't already been:
+    write_addr_ovr(&instr->prefixes);
+    break;
+  }
+  return instr;
+}
+
+#undef is_word
+#undef write_addr_ovr
+
 static void add_call(char *name, label_t **table, size_t count) {
   label_t *label = (label_t *)NULL;
 
