@@ -130,7 +130,7 @@ instr_generic_t *instr_gen(enum instructions instr, uint8_t operand_count, ...) 
       case 64: write_imm_data(uint64_t); break;
       default:
         err("Invalid operand size.");
-        break;
+        return NULL;
       }
       // clang-format on
     } else {

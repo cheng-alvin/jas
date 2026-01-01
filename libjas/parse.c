@@ -66,12 +66,7 @@ uint64_t parse_str_num(char *name) {
     base = 16;
     name += 2;
   }
-
-  if (len > 16 && base == 16) {
-    err("Number is out of range");
-    return 0;
-  }
-
+  
   return strtoull(name, NULL, base);
 }
 

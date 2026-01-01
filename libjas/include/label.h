@@ -116,9 +116,12 @@ void label_free(label_t *label);
  *
  * @param label_table The label table to store the label entry in.
  * @param input New table entry to be added to the label table.
+ *
+ * @return The success the of the label creation is indicated back
+ * to the caller. A non-zero value indicates failure.
  */
 
-void label_create(label_table_t *label_table, label_t input);
+uint8_t label_create(label_table_t *label_table, label_t input);
 
 // Macros that simplify label type checks, akin to the `op_` macros
 // that can be used with the `operand_t` structure and type checks.

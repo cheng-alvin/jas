@@ -30,15 +30,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-void label_create(label_table_t *label_table, label_t input) {
-  if (label_lookup(label_table, input.name))
-    return err("duplicated labels");
+uint8_t label_create(label_table_t *label_table, label_t input) {
+  if (label_lookup(label_table, input.name)) {
+    err("duplicated labels");
+    return 1;
+  }
 
   label_table->size++;
 
   size_t size = label_table->size * sizeof(label_t);
   label_table->entries = realloc(label_table->entries, size);
   label_table->entries[label_table->size - 1] = input;
+
+  return 0;
 }
 
 label_t *label_lookup(label_table_t *label_table, char *name) {
