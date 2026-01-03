@@ -1,47 +1,53 @@
-BUILD = build
+# Main Makefile of the Jas assembler, the central process that 
+# orchestrates the compilation of associated project files across
+# the entire repository.
+
+# Usage: $ make all         # Builds everything
+
+# Miscellaneous targets such as `format`, `pre_build` and `clean`
+# are not to be confused as compilation targets as it does not
+# build any real code as indicated by the `.PHONY` flag.
+
+# - `clean` resets the entire working directory's build artifacts 
+#			and re-instantiates informational files in the `build`
+
+# - `pre_build` Should be executed after every compilation of any
+#               of Jas' internal libraries to ensure the currency
+#               for project compiler outcomes.
+
+
 CC = clang
 
-CFLAGS_COMMON = -I libjas/include
-CFLAGS = $(CFLAGS_COMMON)
+BUILD = build
+LIB = $(BUILD)/lib
 
-SRC_FILES = $(shell find . -type f \( -name "*.c" -o -name "*.h" \))
-OBJ_FILES = $(shell find . -type f -name "*.o")
+MD_FILES    := $(shell find . -name "*.md")
+C_SRC 	    := $(shell find libjas -name '*.c')
+H_SRC       := $(shell find libjas -name '*.h')
 
-.PHONY: all tests format clean pre_build format_md
+SRC_FILES 	:= $(C_SRC) $(H_SRC)
 
+.PHONY: all tests format clean pre_build 
 all: clean $(BUILD)/lib/libjas.a $(BUILD)/lib/libjas_debug.a
 
-format_md: $(shell find . -name "*.md") 
-	node ./mdformatwrapper.js $^
-
-format: format_md
+format:
 	@clang-format -i --verbose $(SRC_FILES)
+	@node ./mdformatwrapper.js $(MD_FILES)
 
-pre_build:
-	@rm -rf $(BUILD) $(OBJ_FILES)
+$(LIB)/libjas%.a: pre_build
+	$(MAKE) -C libjas instructions.inc 
+	$(MAKE) -C libjas $@ BUILD=$(abspath $(LIB))
+
+pre_build: $(shell find . -type f -name "*.o")
+	@rm -rf $(BUILD) $^
 
 clean: pre_build
-	@mkdir -p $(BUILD)/include
-	@mkdir -p $(BUILD)/lib
-	@mkdir -p $(BUILD)make
+	@mkdir -p $(BUILD)/include $(LIB)
 	@$(MAKE) -C tests clean
 	@rm -rf libjas/instructions.inc
 	@cp libjas/include/*.h $(BUILD)/include
-	@cp README.md $(BUILD)
-	@cp LICENSE $(BUILD)
-	@cp THANKS.txt $(BUILD)
+	@cp README.md LICENSE THANKS.txt $(BUILD)
 
-tests: 
-	$(MAKE) -C tests
-
-$(BUILD)/lib/libjas.a: 
-	$(MAKE) pre_build
-	$(MAKE) -C libjas instructions.inc
-	$(MAKE) -C libjas libjas.a
-	mv $(BUILD)/libjas.a $(BUILD)/lib/libjas.a
-
-$(BUILD)/lib/libjas_debug.a: 
-	$(MAKE) pre_build
-	$(MAKE) -C libjas instructions.inc
-	$(MAKE) -C libjas libjas_debug.a
-	mv $(BUILD)/libjas_debug.a $(BUILD)/lib/libjas_debug.a
+# test:
+# Currently not extensively used - unit testing would
+# be reworked ~one day~ when unit testing is required

@@ -66,7 +66,7 @@ uint64_t parse_str_num(char *name) {
     base = 16;
     name += 2;
   }
-  
+
   return strtoull(name, NULL, base);
 }
 
