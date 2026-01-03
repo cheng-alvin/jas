@@ -28,6 +28,7 @@ to develop software and squash bugs in parallel, before starting any development
 work, you must create a new branch and create a pull request with a detailed
 description of your work and changes you have committed.
 
+> [!NOTE]
 > Please note that branch and commit names shall be as short as possible, branch
 > names should contain a one or two word overview on the changes committed and
 > commit messages shall show the added changes in another couple words with
@@ -172,16 +173,16 @@ contributors.
 
 > If you do contribute some code and **do not wish** to look after it long-term
 > as a maintainer (Which is 100% okay) you may drop support for it at anytime,
-> just drop a email to eventide1029@gmail.com and I (Alvin) will be keen
-> to do my best to look after it.
+> just drop a email to eventide1029@gmail.com and I (Alvin) will be keen to do
+> my best to look after it.
 
 #### Becoming a maintainer
 
 Becoming a maintainer is easy! Everyone can do it! It’s a great way to
 contribute to the community and help out with the constant stream of issues. To
 become a maintainer just drop in a quick email to me (Alvin)
-eventide1029@gmail.com and I’ll be happy to let you look after that
-portion of code.
+eventide1029@gmail.com and I’ll be happy to let you look after that portion of
+code.
 
 ### What to remember before submitting a PR
 
