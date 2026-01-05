@@ -10,6 +10,10 @@ theme:
   logo: img/logo.png
   favicon: img/favicon.ico
 
+validation:
+  links:
+    absolute_links: relative_to_docs
+    
 plugins:
   - "gh-admonitions"
   - search

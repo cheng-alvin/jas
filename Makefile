@@ -27,12 +27,12 @@ H_SRC       := $(shell find libjas -name '*.h')
 
 SRC_FILES 	:= $(C_SRC) $(H_SRC)
 
-.PHONY: all tests format clean pre_build 
+.PHONY: all tests format clean pre_build
 all: clean $(BUILD)/lib/libjas.a $(BUILD)/lib/libjas_debug.a
 
 format:
 	@clang-format -i --verbose $(SRC_FILES)
-	@node ./mdformatwrapper.js $(MD_FILES)
+	@node ./scripts/mdformatwrapper.js $(MD_FILES)
 
 $(LIB)/libjas%.a: pre_build
 	$(MAKE) -C libjas instructions.inc 
@@ -44,9 +44,15 @@ pre_build: $(shell find . -type f -name "*.o")
 clean: pre_build
 	@mkdir -p $(BUILD)/include $(LIB)
 	@$(MAKE) -C tests clean
-	@rm -rf libjas/instructions.inc
+	@rm -rf libjas/instructions.inc mkdocs.yml
 	@cp libjas/include/*.h $(BUILD)/include
 	@cp README.md LICENSE THANKS.txt $(BUILD)
+
+# Target for building the documentation files index. The mkdocs
+# main Yaml file coordinates the entire mkdocs website.
+
+mkdocs.yml:
+	$(MAKE) -C docs/ CONFIG_PATH=$(abspath .)
 
 # test:
 # Currently not extensively used - unit testing would
