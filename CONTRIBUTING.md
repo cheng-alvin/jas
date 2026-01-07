@@ -7,7 +7,7 @@ for new contributors to help us improve the assembler. This guide is for
 to report a bug or request a feature, please use the official mailing list:
 jas-assembler@google-groups.com.
 
-### Getting started
+## Getting started
 
 For beginners and those who are new to Git and GitHub, please see
 [here](https://guides.github.com/activities/hello-world/) for a quick tutorial
@@ -39,70 +39,93 @@ reviewed by a maintainer (which is most cases is me). Please direct all queries
 and concerns to eventide1029+jas@gmail.com as well as for any feedback on code
 and contributions to the Assembler. [See below](https://shorturl.at/NuGEq/)
 
-### Building and testing
+### Building Jas
 
-To build Jas, simply run `make` in the home or `libjas` directories (A debug
-binary must be built in `libjas`). Tests can be added in the `tests` directory
-and built using `make tests` as well in the home directory, all C test files
-will be automatically built and run. You may include the Jas testing framework
-[here](https://github.com/cheng-alvin/jas/blob/main/tests/test.h)
+The very first step in doing anything with Jas, which includes development is to
+build the library. The entirety of the Jas source tree has been written in C and
+requires a suitable toolchain in order to compile the archive files. Details on
+the prerequisites for building and developing Jas appear below.
 
-### Code style
+#### Build dependencies
+
+- A standard C11-compatible compiler + linker (preferably `clang` or `gcc`)
+- Node.js (later than v23.0.0), or ES6 compatible alternative
+- GNU Make, or suitable alternative
+- `clang-format` to format C code (formatting requirements as shown below)
+
+After all dependencies has been obtained, invoke the GNU make scripts as shown:
+
+```bash
+cd jas # Change into the cloned directory
+make clean # Clean directory and setup
+make # Build source code
+```
+
+## Code style
 
 Preferably, if you have `clang-format` installed on your system, you can simply
 run `make format` in the home directory to *automatically* format the source
 files to conform to our programming style as specified in
 [this](https://github.com/cheng-alvin/jas/blob/main/.clang-format) file.
-Otherwise you are welcome to write your patch in your own coding style and have
-it formatted automatically when merged into the main branch, just as long as the
-maintainers can read it, then it’ll okay.
 
-As mentioned above, a Github action will automatically run when new code is
-pushed onto the main branch to automatically format the code using
-`clang-format`. You can ignore this behavior by adding a `clang-format off` and
-a corresponding `clang-format on` comment in your code for small snippets that
-may break or cause issues down the line if formatted automatically.
+A Github action will automatically run when new code is pushed onto the main
+branch to automatically format the code using `clang-format` via the GNU Make
+target. You can inhibit this behavior by adding a `clang-format off` and a
+corresponding `clang-format on` comment in your code for small snippets that may
+break or cause issues down the line if formatted automatically.
+
+### Markdown files
+
+Markdown and documentation files (such as this one) is unable to be formatted
+using the traditional `clang-format` command line tool due to inherent
+limitations with syntax. However, this is now completed by the command line tool
+[`md-format`](https://github.com/hukkin/mdformat) and invoked through Jas'
+`mdformatwrapper.js` script that adds custom behavior which `md-format` lacks
+support of. The formatting of markdown and associated files is also included
+with the `make format` Make target.
 
 ### Adding support for a instruction to the assembler
 
 A common addition for the Jas assembler, especially since how complex the Intel
-x64 instruction set is, is the addition of new instructions and instruction
-encoder identities, which can be done by creating a instruction encoder table,
-adding and/or registering the instruction encoder tables to the instruction
-list(s), and finally testing and writing unit tests.
+x64 instruction set is, the addition of new instructions and instruction encoder
+identities, which can be done by creating a instruction encoder table, adding
+and/or registering the instruction encoder tables to the instruction list(s),
+and finally testing and writing unit tests.
 
-**First, define a instruction encode table:**
+### First, define a instruction encode table:
 
-A instruction encoder table describes the identity of the instruction and how
-each instance can be encoded in binary as well as some key meta data such as
-what modes the instruction support and operand extensions etc. (Details will
-appear in the
+A instruction encoder table describes the instruction and how each instance can
+be encoded in binary as well as some key meta data such as what modes the
+instruction support for encoding and so on. (Details will appear in the
 [`instruction.h`](https://github.com/cheng-alvin/jas/blob/main/libjas/include/instruction.h)
-file) Each instruction encoder table includes *entries*, each entry defines the
-meta data that correspond to a certain identity. For example, a MR identity (A
-identity with a m64 and r64) will be one entry and includes the opcode, and
-support status in different operating modes.
+file) Each instruction encoder table includes *entries*, or otherwise denoted as
+`variants`, each entry defines the meta data that correspond to a certain
+identity.
 
-**Constructing an entry**
+### Constructing an entry
 
 Entries of encoder reference tables are all located in the `libjas/encoders`
 directory. Each instruction, or a set of minor instructions are typically
 grouped together, (you can use Intel's documentation grouping conventions as a
 general guideline) and should be registered to the dependencies of the
-`instructions.inc` target. Each file contains an overarching `instructions`
-field that houses an array of instructions, it should be noted that all other
-field on the top level would be ignored, allowing contributors to add
-user-defined meta data such as license information, implementation comments etc.
-Within each instruction of the yaml file, the instruction exists *variants* of
-the instruction with distinct configurations of operands and instruction opcodes
-among other components supporting the encoding of instructions.
+`instructions.inc` target. Within each instruction of the yaml file, the
+instruction exists *variants* of the instruction with distinct configurations of
+operands and instruction opcodes among other components supporting the encoding
+of instructions.
 
+Each file contains an overarching `instructions` field that houses an array of
+instructions, it should be noted that all other field on the top level would be
+ignored, allowing contributors to add user-defined meta data such as license
+information, implementation comments etc.
+
+> [!TIP]
 > Each encoder reference table is defined in a simple yaml structure, allowing
 > for easy diffing between versions and human readability. Such yaml files are
 > provided to a Node.Js script and compiled into a C structure array. A enum of
 > all instructions available and a string array of instructions is generated
 > automatically, supporting code generation and parsing features within the
-> assembler.
+> assembler. This can be generated through `make instruction.inc` and found in
+> the corresponding output file from the make script
 
 Below is a sample of the yaml structure supported by the compiler script (Not a
 real instruction):
@@ -171,6 +194,7 @@ should be directed to this maintainer, he or she should also review any related
 PRs and keep in constant communication with other maintainers and the
 contributors.
 
+> [!NOTE]
 > If you do contribute some code and **do not wish** to look after it long-term
 > as a maintainer (Which is 100% okay) you may drop support for it at anytime,
 > just drop a email to eventide1029@gmail.com and I (Alvin) will be keen to do
@@ -189,25 +213,21 @@ code.
 Once you have completed your work, remember to submit pull requests that are
 organized and have a clear sense of purpose, any change from one line of code to
 a whole file is okay, it just has to have a purpose and a clear reason to be
-merged upstream. (but also remember to try and keep it small) Speaking of size,
-please also ensure that you properly and logically organize branches and pull
-requests, if changes don’t seem to fit in one pull request logically, feel free
-to submit multiple, as long as it makes sense logically.
+merged upstream. Please ensure you are mindful of pull sizes, if changes don’t
+seem to fit in one pull request logically, feel free to submit multiple pulls.
 
 ### Don’t like Github? Don’t worry!
 
 If you don’t prefer to use Github as the platform for communication and merging
-code, patches may be submitted via the mailing list (Just like old-school), the
-maintainer taking care of that portion of the code will be responsible in
-checking for patches and reviewing them before applying them to the source code
-and merging it using a Pull request.
+code, patches may be submitted via the mailing list, the maintainer taking care
+of that portion of the code will be responsible in the application of patched
+into the upstream.
 
-Basically, once the patch has been received by the maintainer from the mailing
-list, the maintainer should apply and review the patch in their **own** branch
-before merging it in, labeling it as *patch* with the person who originally sent
-in the patch mentioned or quoted in the title.
+Once the patch has been received by the maintainer from the mailing list, the
+maintainer should apply and review the patch in their **own** branch before
+merging it in, preserving the original commit email in the patch.
 
-### What now?
+## What now?
 
 After reading the instructions here, you should have a good understanding of how
 to contribute to the Jas assembler project! Write some code, drink some coffee,
