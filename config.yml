@@ -1,0 +1,24 @@
+# Intermediate configuration file for the documentation homepage
+# and relies upon `mkdocs` for the static generation of the 
+# website.
+
+site_name: Jas Documentation
+docs_dir: docs/
+
+theme:
+  name: readthedocs
+  logo: img/logo.png
+  favicon: img/favicon.ico
+
+plugins:
+  - "gh-admonitions"
+  - search
+
+markdown_extensions:
+  - admonition
+
+# Please note: The `nav` property must be reserved ton the
+# final property as the entry `reference`'s members would
+# be populated by appending data via a script.
+
+nav:
