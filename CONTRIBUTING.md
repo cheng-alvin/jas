@@ -53,14 +53,6 @@ the prerequisites for building and developing Jas appear below.
 - GNU Make, or suitable alternative
 - `clang-format` to format C code (formatting requirements as shown below)
 
-After all dependencies has been obtained, invoke the GNU make scripts as shown:
-
-```bash
-cd jas # Change into the cloned directory
-make clean # Clean directory and setup
-make # Build source code
-```
-
 ## Code style
 
 Preferably, if you have `clang-format` installed on your system, you can simply
@@ -84,7 +76,7 @@ limitations with syntax. However, this is now completed by the command line tool
 support of. The formatting of markdown and associated files is also included
 with the `make format` Make target.
 
-### Adding support for a instruction to the assembler
+### Markdown files
 
 A common addition for the Jas assembler, especially since how complex the Intel
 x64 instruction set is, the addition of new instructions and instruction encoder

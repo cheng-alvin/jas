@@ -77,8 +77,11 @@ compile-times and huge binary sizes.
 ### 🏗️ Build and install
 
 The very first step in doing anything with jas is to build and link the library
-against your application code, since jas is a library. Ensure you have a
-C11-compatible compiler installed (preferably `clang` or `gcc`), and Node.js v23.0.0+ (or another suitable alternative).
+against your application code, since jas is a library. Ensure you have a C99
+compiler installed (Anything will do, preferably `clang`), a Javascript runner
+(such as `node`) for building the `instructions.tbl` file, as well as GNU `make`
+or something to run makefile for running the build script To obtain the Jas
+source files, run:
 
 ```bash
 git clone https://github.com/cheng-alvin/jas/
