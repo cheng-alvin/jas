@@ -39,28 +39,56 @@ reviewed by a maintainer (which is most cases is me). Please direct all queries
 and concerns to eventide1029+jas@gmail.com as well as for any feedback on code
 and contributions to the Assembler. [See below](https://shorturl.at/NuGEq/)
 
-### Building Jas
+## Building Jas
 
 The very first step in doing anything with Jas, which includes development is to
 build the library. The entirety of the Jas source tree has been written in C and
 requires a suitable toolchain in order to compile the archive files. Details on
 the prerequisites for building and developing Jas appear below.
 
-#### Build dependencies
+> [!NOTE]
+> The `clean` target should always be invoked before the building of any real
+> targets. The `clean` target sets up the final build directory for the
+> resulting archive files. Where the `clean` target has not been invoked prior
+> to the invocation of other targets, build errors may persist and unexpected
+> behavior may occur.
 
-- A standard C11-compatible compiler + linker (preferably `clang` or `gcc`)
+### Build dependencies
+
+<!-- @mdformat pause -->
+<!-- Formatter paused so natural line breaking can be preserved -->
+
+- A standard **C11**-compatible compiler + linker (preferably `clang` or `gcc`)
 - Node.js (later than v23.0.0), or ES6 compatible alternative
 - GNU Make, or suitable alternative
 - `clang-format` to format C code (formatting requirements as shown below)
 
+<!-- @mdformat resume -->
+
+- `lldb` _if wishing to debug the Jas assembler_
+
+### Building & debugging
+
+To build the assembler, invoke the `all` target in the `/Makefile` of the root
+directory, This builds two archives for the release and debug versions labeled
+as `libjas.a` and `libjas_debug.a` respectively. Developers of the Jas assembler
+may link the `libjas_debug.a` file, which contains debugger symbols to test its
+functionalities using a suitable debugger such as `lldb`.
+
+Jas also supports a style of debugging dubbed as _rich debugging_. The
+[`/jas-rich-debug.sh`](https://github.com/cheng-alvin/jas/blob/main/jas-rich-debug.sh)
+shell script symlinks the output directory of the Jas assembler to the active
+project. This allows source changes in Jas source to be rapidly deployed to the
+target project in question.
+
 ## Code style
 
 Preferably, if you have `clang-format` installed on your system, you can simply
-run `make format` in the home directory to *automatically* format the source
+run `make format` in the home directory to _automatically_ format the source
 files to conform to our programming style as specified in
 [this](https://github.com/cheng-alvin/jas/blob/main/.clang-format) file.
 
-A Github action will automatically run when new code is pushed onto the main
+A Github action will automatically run when new code is pushed onto the `main`
 branch to automatically format the code using `clang-format` via the GNU Make
 target. You can inhibit this behavior by adding a `clang-format off` and a
 corresponding `clang-format on` comment in your code for small snippets that may
@@ -76,7 +104,7 @@ limitations with syntax. However, this is now completed by the command line tool
 support of. The formatting of markdown and associated files is also included
 with the `make format` Make target.
 
-### Markdown files
+## Adding an instruction
 
 A common addition for the Jas assembler, especially since how complex the Intel
 x64 instruction set is, the addition of new instructions and instruction encoder
@@ -84,13 +112,13 @@ identities, which can be done by creating a instruction encoder table, adding
 and/or registering the instruction encoder tables to the instruction list(s),
 and finally testing and writing unit tests.
 
-### First, define a instruction encode table:
+### Defining an instruction encode table
 
 A instruction encoder table describes the instruction and how each instance can
 be encoded in binary as well as some key meta data such as what modes the
 instruction support for encoding and so on. (Details will appear in the
 [`instruction.h`](https://github.com/cheng-alvin/jas/blob/main/libjas/include/instruction.h)
-file) Each instruction encoder table includes *entries*, or otherwise denoted as
+file) Each instruction encoder table includes _entries_, or otherwise denoted as
 `variants`, each entry defines the meta data that correspond to a certain
 identity.
 
@@ -101,7 +129,7 @@ directory. Each instruction, or a set of minor instructions are typically
 grouped together, (you can use Intel's documentation grouping conventions as a
 general guideline) and should be registered to the dependencies of the
 `instructions.inc` target. Within each instruction of the yaml file, the
-instruction exists *variants* of the instruction with distinct configurations of
+instruction exists _variants_ of the instruction with distinct configurations of
 operands and instruction opcodes among other components supporting the encoding
 of instructions.
 
@@ -126,7 +154,7 @@ real instruction):
 instructions:
   - sample:
     variants:
-      - opcode: [ 0x00 ]
+      - opcode: [0x00]
         operands:
           - { type: r/m32, encoder: default }
 
@@ -175,10 +203,10 @@ similar to the one below:
 
 /**
  * @author example <example@example.com>
- * 
+ *
  * ...
  */
-void func(); 
+void func();
 ```
 
 All questions, concerns and general inquires related to this block of code
@@ -224,8 +252,5 @@ merging it in, preserving the original commit email in the patch.
 After reading the instructions here, you should have a good understanding of how
 to contribute to the Jas assembler project! Write some code, drink some coffee,
 and have fun!
-
-If you have any questions, please feel free to email me at
-eventide1029+jas@gmail.com
 
 Happy hacking!

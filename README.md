@@ -11,11 +11,10 @@ src="https://img.shields.io/github/license/cheng-alvin/jas"> <img alt="GitHub
 closed issues"
 src="https://img.shields.io/github/issues-closed/cheng-alvin/jas"/> </p>
 
-<p align="center" padding="10px"> Jas is a minimal, fast and simple
-zero-dependency assembler for the x64 family of processors, it comes packaged
-with tonnes of useful utility functions targeted for implementing into
-compilers, operating systems and JIT interpreters and other types of utility
-applications that need compilation to ELF or just a plain encoded buffer.
+<p align="center" padding="10px"> Jas is a minimal, fast and simple assembler
+for the x64 family of processors, and is targeted for the implementation into
+compilers, operating systems and JIT interpreters and other types of applications
+that demand fast compilation to ELF object code or just a plain encoded buffer.
 </p>
 
 - Supports **60+** instructions!
@@ -23,18 +22,13 @@ applications that need compilation to ELF or just a plain encoded buffer.
 - Outputs **ELF object files**
 - Unparalleled size and efficiency!
 
-### ⚡Quick start
+[brainfry](https://github.com/cheng-alvin/brainfry) is a demonstration project
+of the Jas assembler that compiles Brainf\*ck code into raw ELF object code.
+Brainfry demonstrates how Jas can simplify the development process without the
+implications that come with usage of heavy-duty LLVM or GCC based backends,
+that's the beauty of Jas!
 
-First of all, install/link against the binary releases
-[here](https://github.com/cheng-alvin/jas/releases)\* or build it from source
-with following the instructions below. Jas takes instructions in an array in a
-struct form defined in
-[instruction.h](https://github.com/cheng-alvin/jas/blob/0faa905be7cb1238796af46552b3271a11b4e2dd/libjas/instruction.h)
-and passes it to a `assemble_instr()` function which generates the the actual
-buffer of an array of `uint8_t` for you to process. (However, in this situation,
-we are using the `instr_gen()` function and operand generation macros to
-generate the instruction structure automatically without the janky C structure
-syntax)
+### ⚡Quick start
 
 ```c
 #include <jas.h>
@@ -53,54 +47,58 @@ int main(void) {
 ```
 
 Yeah! that's it! Seriously! It's that simple, this little snippet of code
-generates and encodes a `mov rax, 0` instruction.
-
-> Since the returned buffer is in the form of a dynamically allocated pointer,
-> care must be taken to `free` and manage the block of memory.
+generates and encodes a `mov rax, 0` instruction. See our documentation website
+[here](https://github.com/cheng-alvin/jas/tree/add-docs?tab=readme-ov-file#-documentation)
+for more information about the Jas assembler library.
 
 ### 💡 Why Jas?
 
-Jas is a very versatile library, it opens the door for generating low level
-assembly and ELF object files to us average programers, suddenly, we can use
-write our own compilers from scratch, without the complexities of LLVM or
-compiling down to a GCC backend. Jas is optimized to speed and complexity, as
-well as size, allowing it to be used in small-scale compilers and interpreters
-where compile time matters.
+Jas strives to lower the barrier of entry for low-level compiler development,
+while providing a performant solution for serious production-grade projects. The
+Jas project believes that generating machine code should'nt be a chore. Code
+generation should'nt be an afterthought, but rather its the beating heart
+driving the soul of the compiler toolchain!
 
-[brainfry](https://github.com/cheng-alvin/brainfry) is a project I wrote during
-the weekend and is simple Brainf\*ck compiler that compiled down to raw machine
-code, it performed well and only weighed in at a couple KiBs big, leading to
-immensely quick compile times. Jas severely simplified the development process
-as anything written using LLVM or GCC backends would consist of long
-compile-times and huge binary sizes.
+Jas avoids the complexities associated with the LLVM or GCC toolchains, making
+it perfect for small-scale compilers and interpreters where compile time
+matters. Optimized for speed and simplicity -- Its a minimalist's dream
+assembler, and we hope you enjoy it!
 
 ### 🏗️ Build and install
 
-The very first step in doing anything with jas is to build and link the library
-against your application code, since jas is a library. Ensure you have a C99
-compiler installed (Anything will do, preferably `clang`), a Javascript runner
-(such as `node`) for building the `instructions.tbl` file, as well as GNU `make`
-or something to run makefile for running the build script To obtain the Jas
-source files, run:
+The very first step in doing anything with Jas is to build the library into an
+archive file. The entirety of the Jas source tree has been written in C and
+requires a suitable toolchain in order to compile the archive files. Details on
+the prerequisites for building and developing Jas appear below.
 
-```bash
-git clone https://github.com/cheng-alvin/jas/
-```
+#### Build dependencies
 
-Now, you should have a folder named `jas` in your current directory, now you can
-just simply run `make` within that directory like so: (Some directories and
-folders can be missing, you must run `make clean` before you actually build the
-library.)
+<!-- @mdformat pause -->
+<!-- Formatter paused so natural line breaking can be preserved -->
 
-```bash
-cd jas # Change into the cloned directory
-make clean # Clean directory and setup
-make # Build source code
-```
+- A standard **C11**-compatible compiler + linker (preferably `clang` or `gcc`)
+- Node.js (later than v23.0.0), or ES6 compatible alternative
+- GNU Make, or suitable alternative
+- `clang-format` to format C code (formatting requirements as shown below)
 
-Voila! Now you have a built copy of Jas in the `build` folder, just simply copy
-and link against the archive to start building your dream compiler or assembler
-frontend!
+<!-- @mdformat resume -->
+
+- `lldb` _if wishing to debug the Jas assembler_
+
+Invoke **both** the `clean` and `/build/lib/libjas.a` Make targets to build Jas'
+optimized release archive and copy relevant headers into the `/build/`
+directory, which can be copied over to your project's dependency folder for
+linking. More information regarding the building of Jas for the purposes of
+debugging can be found
+[here](https://github.com/cheng-alvin/jas/blob/main/CONTRIBUTING.md).
+
+### 📖 Documentation
+
+The Jas documentation website is accessible online [here](<>) and can be built
+and served locally by running and statically serving the `mkdocs.yml` file via
+the `mkdocs` command line tool. The Jas assembler documentation website provides
+a reference for the assembler's function as well as step by step guides for
+leveraging the ins-and-outs of the assembler!
 
 ### 📝 Licensing
 
@@ -109,8 +107,8 @@ All the code under the Jas assembler project repository is licensed under the
 open-source license for projects like this! Please see
 [LICENSE](https://github.com/cheng-alvin/jas/blob/main/LICENSE) for the details.
 
-*No warranty of any kind is provided, please double check official sources
-before deploying code to production*
+_No warranty of any kind is provided, please double check official sources
+before deploying code to production_
 
 ### ❤️ Contributing / reporting bugs
 
@@ -131,7 +129,7 @@ All changes and reports are welcome, no matter how big or small your changes are
 
 ______________________________________________________________________
 
-*Made with love by Alvin / the Jas crew and contributors ❤️ .*
+_Made with love by Alvin / the Jas crew and contributors ❤️ ._
 
-\**Note:* Only releases tagged with `v1.x` provides binary releases or as
+\*_Note:_ Only releases tagged with `v1.x` provides binary releases or as
 indicated in release notes.
