@@ -80,6 +80,7 @@ the prerequisites for building and developing Jas appear below.
 - Node.js (later than v23.0.0), or ES6 compatible alternative
 - GNU Make, or suitable alternative
 - `clang-format` to format C code (formatting requirements as shown below)
+- `js-yaml` installed globally, supports the generation of the encoder table.
 
 <!-- @mdformat resume -->
 
