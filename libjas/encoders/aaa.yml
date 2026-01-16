@@ -1,0 +1,8 @@
+instructions:
+  - aaa:
+    variants:
+      - opcode: [0x37]
+        operands: []
+        compatibility:
+          long: false
+          legacy: true

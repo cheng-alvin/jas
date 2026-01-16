@@ -1,0 +1,130 @@
+instructions:
+  - mov:
+    variants:
+      - opcode: [0x88]
+        operands:
+          - { type: r/m8, encoder: r/m }
+          - { type: r8, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x89]
+        operands:
+          - { type: r/m16, encoder: r/m }
+          - { type: r16, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x89]
+        operands:
+          - { type: r/m32, encoder: r/m }
+          - { type: r32, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x89]
+        operands:
+          - { type: r/m64, encoder: r/m }
+          - { type: r64, encoder: default }
+        compatibility:
+          long: true
+          legacy: false
+
+      - opcode: [0x8A]
+        operands:
+          - { type: r8, encoder: default }
+          - { type: r/m8, encoder: r/m }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x8B]
+        operands:
+          - { type: r16, encoder: default }
+          - { type: r/m16, encoder: r/m }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x8B]
+        operands:
+          - { type: r32, encoder: default }
+          - { type: r/m32, encoder: r/m }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x8B]
+        operands:
+          - { type: r64, encoder: default }
+          - { type: r/m64, encoder: r/m }
+        compatibility:
+          long: true
+          legacy: false
+
+      - opcode: [0xB0]
+        operands:
+          - { type: r8, encoder: opcode_appended }
+          - { type: imm8, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0xB8]
+        operands:
+          - { type: r16, encoder: opcode_appended }
+          - { type: imm16, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0xB8]
+        operands:
+          - { type: r32, encoder: opcode_appended }
+          - { type: imm32, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0xB8]
+        operands:
+          - { type: r64, encoder: opcode_appended }
+          - { type: imm64, encoder: default }
+        compatibility:
+          long: true
+          legacy: false
+
+      - opcode: [0xC6]
+        operands:
+          - { type: r/m8, encoder: /0 }
+          - { type: imm8, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0xC7]
+        operands:
+          - { type: r/m16, encoder: /0 }
+          - { type: imm16, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0xC7]
+        operands:
+          - { type: r/m32, encoder: /0 }
+          - { type: imm32, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0xC7]
+        operands:
+          - { type: r/m64, encoder: /0 }
+          - { type: imm64, encoder: default }
+        compatibility:
+          long: true
+          legacy: false
