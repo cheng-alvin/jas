@@ -100,7 +100,7 @@ function handleOperands(operands) {
     let encoder = `ENC_${operands[i].encoder.toUpperCase()}`;
 
     const match = operands[i].encoder.match(/^\/([0-7])$/);
-    if (match) encoder = `(enum enc_ident)${match[1]}}`;
+    if (match) encoder = `(enum enc_ident)${match[1]}`;
     encoder = encoder.replace("/", "");
 
     res += `{ .type = OP_${type}, .encoder = ${encoder} }, `;
@@ -128,7 +128,7 @@ for (let k = 0; k < instructions.length; k++) {
   for (let l = 0; l < variants.length; l++)
     output += handleVariant(variants[l]);
 
-  output += " (instr_encode_table_t){0},}, \n";
+  output += " (instr_encode_table_t){0},},";
 }
 output += "}; \n#endif";
 
@@ -147,7 +147,7 @@ for (let n = 1; n < instructionNames.length; n++)
 instrEnumEntries += "};\n";
 instrEnumEntries += "#undef INSTR_ENUM\n#endif";
 
-fs.writeFileSync("instructions.inc", output + "\n\n" + instrEnumEntries);
+console.log(output + "\n\n" + instrEnumEntries);
 
 function handleVariant(variant) {
   let res = "";

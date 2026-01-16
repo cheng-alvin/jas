@@ -20,5 +20,5 @@ $(BUILD)/libjas_debug.a: $(DEBUG_FLAGS)
 $(BUILD)/libjas_debug.a: $(patsubst %.o, %.debug.o, $(OBJ))
 	ar rcs $@ $^
 
-instructions.inc: encoders/instructions.yml
-	node ./encoders/scripts/compile.js $^ 
+instructions.inc: $(wildcard encoders/*.yml)
+	node ./encoders/scripts/compile.js $^ > $@
