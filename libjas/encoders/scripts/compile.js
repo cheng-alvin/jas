@@ -54,13 +54,13 @@
  */
 
 const yaml = require("js-yaml"); // Ensure `js-yaml` is installed and accessible
-const fs = require("fs")
+const fs = require("fs");
 
 let instructions = [];
 let instructionNames = [];
 
 for (let i = 2; i < process.argv.length; i++) {
-  const fileContents = fs.readFileSync(process.argv[i], {encoding : 'utf-8'});
+  const fileContents = fs.readFileSync(process.argv[i], { encoding: "utf-8" });
   const data = yaml.load(fileContents);
 
   for (let j = 0; j < data.instructions.length; j++) {
@@ -80,12 +80,12 @@ function produceOperands(instruction) {
         instruction.variants[i].operands[j].type = `m${match[1]}`;
 
         modifiedVariant.operands[j].type = `r${match[1]}`;
-        instruction.variants.push(modifiedVariant)
+        instruction.variants.push(modifiedVariant);
       }
     }
   }
 
-  return instruction
+  return instruction;
 }
 
 instructions.forEach((instr) => {
@@ -106,18 +106,20 @@ function handleOperands(operands) {
     res += `{ .type = OP_${type}, .encoder = ${encoder} }, `;
   }
 
-  return `{${res}${'{ 0 }, '.repeat(4 - operands.length)}}`
+  return `{${res}${"{ 0 }, ".repeat(4 - operands.length)}}`;
 }
 
 // clang-format off
 let output =
-    "// Auto-generated file. Do not edit directly. \n\n" +
-    "#include <stdbool.h> \n" + "#include \"instruction.h\" \n" +
-    "#include \"operand.h\" \n" + "#include \"encoder.h\" \n\n" +
-    "#ifndef INSTR_ENUM \n";
+  "// Auto-generated file. Do not edit directly. \n\n" +
+  "#include <stdbool.h> \n" +
+  '#include "instruction.h" \n' +
+  '#include "operand.h" \n' +
+  '#include "encoder.h" \n\n' +
+  "#ifndef INSTR_ENUM \n";
 // clang-format on
 
-output += `struct instr_encode_table *instr_table[] = {`
+output += `struct instr_encode_table *instr_table[] = {`;
 
 for (let k = 0; k < instructions.length; k++) {
   output += `(struct instr_encode_table []){`;
@@ -130,13 +132,11 @@ for (let k = 0; k < instructions.length; k++) {
 }
 output += "}; \n#endif";
 
-let instrEnumEntries = "#ifdef INSTR_ENUM \n" +
-                       "enum instructions {\n";
+let instrEnumEntries = "#ifdef INSTR_ENUM \n" + "enum instructions {\n";
 
-instructionNames = [ "null = 0", ...instructionNames ];
+instructionNames = ["null = 0", ...instructionNames];
 for (let m = 0; m < instructionNames.length; m++) {
-  instrEnumEntries +=
-      `  INSTR_${instructionNames[m].toUpperCase()},\n`;
+  instrEnumEntries += `  INSTR_${instructionNames[m].toUpperCase()},\n`;
 }
 instrEnumEntries += "};\n";
 
@@ -152,18 +152,20 @@ fs.writeFileSync("instructions.inc", output + "\n\n" + instrEnumEntries);
 function handleVariant(variant) {
   let res = "";
 
-  res += `.opcode = { `
+  res += `.opcode = { `;
 
-  variant.opcode.forEach(e => { res += `0x${e.toString(16)}, `; });
+  variant.opcode.forEach((e) => {
+    res += `0x${e.toString(16)}, `;
+  });
 
-  res += `${"0x00, ".repeat(3 - variant.opcode.length)}}, `
-  res += `.operand_descriptors = ${handleOperands(variant.operands)}, `
+  res += `${"0x00, ".repeat(3 - variant.opcode.length)}}, `;
+  res += `.operand_descriptors = ${handleOperands(variant.operands)}, `;
 
-  res += `.long_mode = ${variant.compatibility.long ? "true" : "false"}, `
-  res += `.leg_mode = ${variant.compatibility.legacy ? "true" : "false"}, `
+  res += `.long_mode = ${variant.compatibility.long ? "true" : "false"}, `;
+  res += `.leg_mode = ${variant.compatibility.legacy ? "true" : "false"}, `;
 
-  res += `.opcode_size = ${variant.opcode.length}, `
-  res += `.operand_count = ${variant.operands.length},`
+  res += `.opcode_size = ${variant.opcode.length}, `;
+  res += `.operand_count = ${variant.operands.length},`;
 
   return `{ ${res} },`;
 }
