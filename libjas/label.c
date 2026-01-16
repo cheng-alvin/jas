@@ -68,7 +68,7 @@ enc_serialized_instr_t *label_evaluate(
       ((instr->modrm.rm == 5) || (instr->modrm.rm == 6));
 
   int64_t effective_offset = label;
-  if (mode != MODE_LONG && is_mem) goto default;
+  if (mode != MODE_LONG && is_mem) goto default_operand;
 
   uint8_t instr_size =
       instr->prefixes.len +
@@ -81,7 +81,7 @@ enc_serialized_instr_t *label_evaluate(
   /// when addressing via RIP in long mode.
   effective_offset = label - (current + instr_size);
 
-default:
+default_operand:
   instr->disp_size = is_mem ? 4 : instr->disp_size;
   instr->disp = (int64_t)effective_offset;
   if (mode == MODE_LONG || !is_mem) return instr;
