@@ -117,7 +117,7 @@ default_operand:
 }
 #undef is_word
 
-static void add_call(char *name, label_t **table, size_t count) {
+static void add_call(char *name, label_table_t *table, size_t count) {
   label_t *label = (label_t *)NULL;
 
   if (!label_lookup(*table, name)) {
@@ -177,7 +177,7 @@ label_table_t label_table_gen(
       if (op_m(curr_op.type) && curr_op.mem.src_type == LABEL)
         label_name = curr_op.mem.src.label;
 
-      add_call_entry(label_name, table, counter);
+      add_call(label_name, &table, counter);
     }
 
     // Messy means to calculate instruction size.

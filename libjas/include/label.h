@@ -26,8 +26,11 @@
 #ifndef LABEL_H
 #define LABEL_H
 
+#include "encoder.h"
+#include "instruction.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
 typedef struct instr_generic instr_generic_t;
 

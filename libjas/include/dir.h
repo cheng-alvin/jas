@@ -27,7 +27,8 @@
 #define DIR_H
 
 #include "buffer.h"
-#include "label.h"
+
+typedef label_t; // Circular dependency workaround, see `label.h`
 
 enum directives {
   DIR_DEFINE_BYTES,
