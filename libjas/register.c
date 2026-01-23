@@ -42,6 +42,9 @@ uint8_t reg_lookup_val(enum registers *input) {
       REG_VALUE_R11, REG_VALUE_R12, REG_VALUE_R13, REG_VALUE_R14, REG_VALUE_R15, REG_VALUE_SPL,
       REG_VALUE_BPL, REG_VALUE_SIL, REG_VALUE_DIL, REG_VALUE_IP, REG_VALUE_EIP, REG_VALUE_RIP};
 
+  if ((sizeof(lookup) / sizeof(uint8_t)) <= (unsigned int)*input)
+    return err("invalid register");
+
   return lookup[(unsigned int)*input];
 }
 
