@@ -28,7 +28,7 @@ instructions:
       - opcode: [0x81]
         operands:
           - { type: r/m64, encoder: /4 }
-          - { type: imm64, encoder: default }
+          - { type: imm32, encoder: default }
         compatibility:
           long: true
           legacy: false
