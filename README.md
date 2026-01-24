@@ -95,7 +95,7 @@ debugging can be found
 
 ### 📖 Documentation
 
-The Jas documentation website is accessible online [here]() and can be built
+The Jas documentation website is accessible online [here](<>) and can be built
 and served locally by running and statically serving the `mkdocs.yml` file via
 the `mkdocs` command line tool. The Jas assembler documentation website provides
 a reference for the assembler's function as well as step by step guides for
@@ -128,7 +128,7 @@ repository!
 All changes and reports are welcome, no matter how big or small your changes are
 :-)
 
----
+______________________________________________________________________
 
 _Made with love by Alvin / the Jas crew and contributors ❤️ ._
 

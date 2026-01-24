@@ -66,7 +66,6 @@ the prerequisites for building and developing Jas appear below.
 
 <!-- @mdformat resume -->
 
-
 - `lldb` _if wishing to debug the Jas assembler_
 
 ### Building & debugging
