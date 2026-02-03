@@ -45,6 +45,15 @@ enum op_modrm_modes op_modrm_mode(uint64_t displacement, uint8_t *sz) {
   if (!displacement) mode_return(0, OP_MODRM_MODE_INDIRECT);
   if (displacement <= UCHAR_MAX) mode_return(1, OP_MODRM_MODE_DISP8);
 
+  /// @note Although the x86 architecture supports 64-bit dis-
+  /// placements, the ModR/M byte only supports up to double word
+  /// displacements. 
+
+  if (displacement > UINT32_MAX) {
+    err("displacement exceeds 32-bit limit");
+    return OP_MODRM_MODE_INDIRECT;
+  }
+
   mode_return(4, OP_MODRM_MODE_DISP32);
 }
 
