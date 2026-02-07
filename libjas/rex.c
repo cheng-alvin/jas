@@ -24,25 +24,27 @@
  */
 
 #include "rex.h"
+#include "instruction.h"
 
-rex_t rex_apply(instruction_t *input) {
+rex_t rex_apply(instruction_t *input, instr_encode_table_t *input_tab) {
   rex_t rex = REX_DEFAULT;
   instr_encode_table_t tab = (instr_encode_table_t){0};
+  if (input_tab) tab = *input_tab;
 
   for (uint8_t i = 0; i < 4; i++) {
     const operand_t op = input->operands[i];
-    if (op.type == OP_NULL) break;
 
+    if (op.type == OP_NULL) break;
     if (op_sizeof(op.type) == 64) rex |= REX_W;
 
     /// @note such usage of REX fields is only applicable
-    /// in context of SIB-based memory operands and register
-    /// usage!
+    /// in context of SIB-based memory operands and register!
+
     if (op_rm(op.type) && op.mem.src_type == SIB) {
       if (!tab.opcode_size) tab = instr_get_tab(*input);
 
       const enum enc_ident option =
-          tab.operand_descriptors[i].encoder;
+        tab.operand_descriptors[i].encoder;
 
       if (option == ENC_DEFAULT) rex |= REX_R;
       if (reg_needs_rex(op.mem.src.sib.reg_disp)) rex |= REX_X;

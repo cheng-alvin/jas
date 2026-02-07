@@ -46,8 +46,7 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
   // Preliminary error checking done, proceed with encoding
   // and the generation of serialized instruction.
 
-  struct enc_serialized_instr *serialized =
-      calloc(1, sizeof(enc_serialized_instr_t));
+  struct enc_serialized_instr *serialized = (enc_serialized_instr_t){0};
 
   op_write_prefix(&serialized->prefixes, instr.operands, mode);
   serialized->rex = rex_apply(&instr);
