@@ -20,7 +20,7 @@
  * out of or in connection with the software or the use or other dealings in the
  * software.
  *
- * @see `license`
+ * @see `LICENSE`
  */
 
 #ifndef REX_H
@@ -59,6 +59,7 @@ typedef uint8_t rex_t;
 
 /// @note forward declaration to prevent circular dependency.
 typedef struct instruction instruction_t;
+typedef struct instr_encode_table instr_encode_table_t;
 
 /**
  * Function for applying the REX prefix to the instruction based
@@ -67,8 +68,10 @@ typedef struct instruction instruction_t;
  * the instruction.
  *
  * @param input The instruction generic pointer
+ * @param input_tab Optional pointer to an instruction table.
+ *
  * @return The final resulting REX prefix byte.
  */
-rex_t rex_apply(instruction_t *input);
+rex_t rex_apply(instruction_t *input, instr_encode_table_t *input_tab);
 
 #endif
