@@ -1,5 +1,5 @@
 instructions:
-  - and:
+  - add:
     variants:
       - opcode: [0x80]
         operands:
