@@ -73,6 +73,21 @@ function produceOperands(instruction) {
   for (let i = 0; i < instruction.variants.length; i++) {
     for (let j = 0; j < instruction.variants[i].operands.length; j++) {
       const operand = instruction.variants[i].operands[j];
+
+      const normalType = operand.type.match(/^[^0-9]+(8|16|32|64)$/);
+      if (!normalType) {
+        const type = operand.type;
+
+        const sizes = [8, 16, 32, 64];
+        instruction.variants[i].operands[j].type = `${type}8`;
+
+        for (const size of sizes.slice(1)) {
+          const variant = structuredClone(instruction.variants[i]);
+          variant.operands[j].type = `${type}${size.toString()}`;
+          instruction.variants.push(variant);
+        }
+      }
+
       const match = operand.type.match(/^r\/m(8|16|32|64)$/);
 
       if (match) {
