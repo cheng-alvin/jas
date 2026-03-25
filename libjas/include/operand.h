@@ -246,6 +246,19 @@ void op_write_prefix(buffer_t *buf, operand_t *op_arr, enum modes mode);
 uint8_t op_sizeof(enum operands input);
 
 /**
+ * Function for determining the size of the displacement value in
+ * bytes, based on the value of the displacement itself. This is
+ * used to determine the size of the displacement field in the
+ * instruction encoding.
+ *
+ * @param displacement The value of the displacement to be checked.
+ *
+ * @return The size of the displacement in bytes, or 0 when there
+ * is no, or excess displacement of 32-bits limit.
+ */
+uint8_t op_disp_size(uint64_t displacement);
+
+/**
  * Function for asserting that the types of the input operand
  * array matches the expected operand types provided in the
  * expected operand array.
