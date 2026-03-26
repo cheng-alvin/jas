@@ -41,18 +41,24 @@ bool op_assert_types(operand_t *in, enum operands *ex, size_t sz) {
 // clang-format off
 #define mode_return(size, mode) { if (sz) *sz = size; return mode; }
 
+uint8_t op_disp_size(uint64_t displacement) {
+  if (!displacement) return 0;
+  if (displacement <= UCHAR_MAX) return 1;
+  if (displacement <= UINT32_MAX) return 4;
+
+  err("displacement exceeds 32-bit limit");
+  return 0;
+}
+
 enum op_modrm_modes op_modrm_mode(uint64_t displacement, uint8_t *sz) {
-  if (!displacement) mode_return(0, OP_MODRM_MODE_INDIRECT);
-  if (displacement <= UCHAR_MAX) mode_return(1, OP_MODRM_MODE_DISP8);
+  uint8_t disp_size = op_disp_size(displacement);
+
+  if (!disp_size) mode_return(0, OP_MODRM_MODE_INDIRECT);
+  if (disp_size == 1) mode_return(1, OP_MODRM_MODE_DISP8);
 
   /// @note Although the x86 architecture supports 64-bit dis-
   /// placements, the ModR/M byte only supports up to double word
   /// displacements. 
-
-  if (displacement > UINT32_MAX) {
-    err("displacement exceeds 32-bit limit");
-    return OP_MODRM_MODE_INDIRECT;
-  }
 
   mode_return(4, OP_MODRM_MODE_DISP32);
 }

@@ -60,7 +60,7 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
     enum enc_ident option = tab.operand_descriptors[i].encoder;
 
     if (option == ENC_IGNORE) continue;
-    uint8_t operand_size = op_sizeof(instr.operands[i].type);
+    uint8_t operand_size = op_disp_size(instr.operands[i].type);
 
     if (op_rel(instr.operands[i].type)) {
       serialized->disp_size = operand_size;
