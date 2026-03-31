@@ -1,0 +1,26 @@
+instructions:
+  - lea:
+    variants:
+      - opcode: [0x8D]
+        operands:
+          - { type: r16, encoder: default }
+          - { type: m, encoder: r/m }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x8D]
+        operands:
+          - { type: r32, encoder: default }
+          - { type: m, encoder: r/m }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x8D]
+        operands:
+          - { type: r64, encoder: default }
+          - { type: m, encoder: r/m }
+        compatibility:
+          long: true
+          legacy: false
