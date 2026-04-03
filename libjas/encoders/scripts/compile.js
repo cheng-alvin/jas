@@ -187,7 +187,7 @@ function handleVariant(variant) {
 }
 
 function generateEnumNames(instructions) {
-  let instrEnumEntries = "enum instr_enum {\n";
+  let instrEnumEntries = "enum instructions {\n";
 
   let instructionNames = ["null = 0", ...instructions];
   for (let m = 0; m < instructionNames.length; m++) {
