@@ -77,6 +77,8 @@ typedef struct enc_serialized_instr {
   uint8_t disp_size : 4; /* Displacement size (0–8 bytes) */
   uint8_t imm_size : 4;  /* Immediate size (0–8 bytes) */
 
+  uint8_t encoded_size; /* Sum of the total encoded bytes */
+
 } enc_serialized_instr_t;
 
 /**

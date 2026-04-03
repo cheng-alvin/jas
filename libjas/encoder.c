@@ -161,6 +161,12 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
     }
   }
 
+  serialized->encoded_size =
+      serialized->prefixes.len +
+      serialized->rex + serialized->opcode_size +
+      serialized->has_modrm + serialized->has_sib +
+      serialized->disp_size + serialized->imm_size;
+
   return serialized;
 }
 

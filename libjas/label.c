@@ -70,11 +70,7 @@ enc_serialized_instr_t *label_evaluate(
   int64_t effective_offset = label;
   if (mode != MODE_LONG && is_mem) goto default_operand;
 
-  uint8_t instr_size =
-      instr->prefixes.len +
-      instr->rex + instr->opcode_size +
-      instr->has_modrm + instr->has_sib +
-      instr->disp_size + instr->imm_size;
+  uint8_t instr_size = instr->encoded_size;
 
   /// @note how an offset of 0x00 is a valid offset of the
   /// next instruction **following** the current instruction
