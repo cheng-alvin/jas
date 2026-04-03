@@ -124,16 +124,18 @@ function handleOperands(operands) {
   return `{${res}${"{ 0 }, ".repeat(4 - operands.length)}}`;
 }
 
-// clang-format off
-let output =
-  "// Auto-generated file. Do not edit directly. \n\n" +
+let output = "";
+
+let includes =
   "#include <stdbool.h> \n" +
   '#include "instruction.h" \n' +
   '#include "operand.h" \n' +
-  '#include "encoder.h" \n\n' +
-  "#ifndef INSTR_ENUM \n";
-// clang-format on
+  '#include "encoder.h" \n';
 
+let headerComment = "// Auto-generated file. Do not edit directly. \n\n";
+let guard = "#ifdef INSTR_ENCODER_TAB \n";
+
+output += headerComment + guard + includes;
 output += `struct instr_encode_table *instr_table[] = {`;
 
 for (let k = 0; k < instructions.length; k++) {
@@ -145,24 +147,23 @@ for (let k = 0; k < instructions.length; k++) {
 
   output += " (instr_encode_table_t){0},},";
 }
-output += "}; \n#endif";
+let trailingGuard = "}; \n#undef INSTR_ENCODER_TAB \n#endif";
+output += trailingGuard;
 
-let instrEnumEntries = "#ifdef INSTR_ENUM \n" + "enum instructions {\n";
+output += "\n\n"; // -----------------------------------
 
-instructionNames = ["null = 0", ...instructionNames];
-for (let m = 0; m < instructionNames.length; m++) {
-  instrEnumEntries += `  INSTR_${instructionNames[m].toUpperCase()},\n`;
-}
-instrEnumEntries += "};\n";
+let instrEnumBoiler = "#ifdef INSTR_ENUM \n";
+output += instrEnumBoiler;
 
-instrEnumEntries += "char *instr_tab_names[] = {\n";
-for (let n = 1; n < instructionNames.length; n++)
-  instrEnumEntries += `  "${instructionNames[n]}",`;
+output += generateEnumNames(instructionNames);
+output += generateInstructionNames(instructionNames);
 
-instrEnumEntries += "};\n";
-instrEnumEntries += "#undef INSTR_ENUM\n#endif";
+output += "};\n";
+output += "#undef INSTR_ENUM\n#endif";
 
-console.log(output + "\n\n" + instrEnumEntries);
+// ---
+
+console.log(output);
 
 function handleVariant(variant) {
   let res = "";
@@ -183,4 +184,25 @@ function handleVariant(variant) {
   res += `.operand_count = ${variant.operands.length},`;
 
   return `{ ${res} },`;
+}
+
+function generateEnumNames(instructions) {
+  let instrEnumEntries = "enum instructions {\n";
+
+  let instructionNames = ["null = 0", ...instructions];
+  for (let m = 0; m < instructionNames.length; m++) {
+    instrEnumEntries += `  INSTR_${instructionNames[m].toUpperCase()},\n`;
+  }
+  instrEnumEntries += "};\n";
+
+  return instrEnumEntries;
+}
+
+function generateInstructionNames(names) {
+  let instrNames = "char *instr_tab_names[] = {\n";
+  for (let n = 1; n < names.length; n++) {
+    instrNames += `  "${names[n]}",`;
+  }
+
+  return instrNames;
 }

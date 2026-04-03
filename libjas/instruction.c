@@ -38,6 +38,8 @@
 
 #define CURR_TABLE instr_table[(uint8_t)instr.instr]
 instr_encode_table_t instr_get_tab(instruction_t instr) {
+
+  #define INSTR_ENCODER_TAB
   #include "instructions.inc"
   // clang-format on
 
