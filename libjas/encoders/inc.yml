@@ -1,0 +1,44 @@
+instructions:
+  - inc:
+    variants:
+      - opcode: [0xFE]
+        operands:
+          - { type: r/m8, encoder: /0 }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0xFF]
+        operands:
+          - { type: r/m16, encoder: /0 }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0xFF]
+        operands:
+          - { type: r/m32, encoder: /0 }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0xFF]
+        operands:
+          - { type: r/m64, encoder: /0 }
+        compatibility:
+          long: true
+          legacy: false
+
+      - opcode: [0x40]
+        operands:
+          - { type: r16, encoder: opcode_appended }
+        compatibility:
+          long: false
+          legacy: true
+
+      - opcode: [0x40]
+        operands:
+          - { type: r32, encoder: opcode_appended }
+        compatibility:
+          long: false
+          legacy: true
