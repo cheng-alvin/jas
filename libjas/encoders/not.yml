@@ -1,0 +1,27 @@
+instructions:
+  - not:
+    variants:
+      - opcode: [0xF6]
+        operands:
+          - { type: r/m8, encoder: /2 }
+        compatibility:
+          long: true
+          legacy: true
+      - opcode: [0xF7]
+        operands:
+          - { type: r/m16, encoder: /2 }
+        compatibility:
+          long: true
+          legacy: true
+      - opcode: [0xF7]
+        operands:
+          - { type: r/m32, encoder: /2 }
+        compatibility:
+          long: true
+          legacy: true
+      - opcode: [0xF7]
+        operands:
+          - { type: r/m64, encoder: /2 }
+        compatibility:
+          long: true
+          legacy: false
