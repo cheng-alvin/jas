@@ -1,0 +1,14 @@
+instructions:
+  - ret:
+    variants:
+      - opcode: [0xC3]
+        operands: []
+        compatibility:
+          long: true
+          legacy: true
+      - opcode: [0xC2]
+        operands:
+          - { type: imm16, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
