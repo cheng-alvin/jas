@@ -27,6 +27,28 @@
  * @note `js-yaml` package must be installed and accessible to allow
  * yaml parsing functionality to be used.
  *
+ * Encoder options are to be filled in each operand definition's 
+ * `encoder` field. The value of the `encoder` field is to either
+ * map to a predefined encoder enum, or be an integer value from 
+ * 0 to 7 inclusive.
+ * 
+ * Shorthand syntax:
+ * Operand types can also be defined in a general shorthand form for
+ * convenience. For example, `r/m16` will be generated and expanded
+ * into both `r16` and `m16` operand types, with the encoder field
+ * 
+ * Operands can also be defined lacking the operand size trailing the 
+ * type such as simply `r`, or `imm`, expanding into all respective 
+ * sizes of the type provided. 
+ * 
+ * Shorthand formats for encoder options are as follows:
+ * - /[0-7]: Maps to the integer value for the `reg` field.
+ * - r/m: Corresponds to the `ENC_RM` encoder, with `/` removed.
+ * 
+ * All `/`'s will be removed from the final output, and all char-
+ * acters in the encoder field will be converted to uppercase to 
+ * match the format as expected by the enum.
+ * 
  * Licensing details appear below:
  *
  * MIT License
