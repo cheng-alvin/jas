@@ -168,10 +168,10 @@ typedef union op_mem_src {
 /// portability and readability when dealing with instruction creation.
 typedef struct op_mem {
   enum { LABEL,
-         SIB } src_type; // Source type selector enumeration
+         SIB } src_type; /* Source type selector enumeration */
 
-  union op_mem_src src; // Source of memory operand, refer to `op_mem_src`
-  uint64_t disp;        // RIP addressing requires 32-bit displacement
+  union op_mem_src src; /* Source of memory operand, refer to `op_mem_src` */
+  uint64_t disp;        /* Displacement value applied on the memory reference */
 } op_mem_t;
 
 typedef struct operand {

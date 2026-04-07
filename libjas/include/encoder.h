@@ -54,6 +54,7 @@ enum enc_ident {
   ENC_IGNORE,
   ENC_DEFAULT,
   ENC_OPCODE_APPENDED,
+  ENC_LITERAL,
 };
 
 typedef struct enc_serialized_instr {
