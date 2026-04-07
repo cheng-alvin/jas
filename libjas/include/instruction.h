@@ -45,6 +45,11 @@ struct instr_encode_table {
   struct {
     enum operands type;     /* Type of operand, for error checking purposes */
     enum enc_ident encoder; /* Instruction encoder identity for that operand */
+
+    union {
+      uint64_t imm;       /* Literal immediate value to be matched */
+      enum registers reg; /* Literal register value */
+    } literal;            /* Literal data for the encoder, if applicable */
   } operand_descriptors[4];
 
   /// @note describes the validity of the instruction as in adherence to
