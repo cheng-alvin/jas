@@ -18,16 +18,16 @@
  *
  * (where `x` is the operand index starting from 1)
  *
- * The construction of the CSV file can be done by exporting any type 
+ * The construction of the CSV file can be done by exporting any type
  * of spreadsheet file via any spreadsheet software that supports the
  * export of the file through CSV, as long as the headers remain con-
- * sistent with the above format. 
- * 
- * You can use this https://shorturl.at/DW73H Google Drive link as a 
- * template for the CSV file. You may download or make a copy of the 
+ * sistent with the above format.
+ *
+ * You can use this https://shorturl.at/DW73H Google Drive link as a
+ * template for the CSV file. You may download or make a copy of the
  * spreadsheet for editing on your own before conversion to the CSV
  * file format.
- * 
+ *
  * Licensing details appear below:
  *
  * MIT License
@@ -121,6 +121,6 @@ function constructYamlFile() {
         noRefs: true,
         styles: { "!!null": "empty", "!!int": "hexadecimal" },
       })
-      .replaceAll("'", "")
+      .replaceAll("'", ""),
   );
 }
