@@ -1,6 +1,38 @@
 instructions:
   - add:
     variants:
+      - opcode: [0x04]
+        operands:
+          - { type: r8, encoder: literal, value: al }
+          - { type: imm8, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x05]
+        operands:
+          - { type: r16, encoder: literal, value: ax }
+          - { type: imm16, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x05]
+        operands:
+          - { type: r32, encoder: literal, value: eax }
+          - { type: imm32, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
+      - opcode: [0x05]
+        operands:
+          - { type: r64, encoder: literal, value: rax }
+          - { type: imm32, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+
       - opcode: [0x80]
         operands:
           - { type: r/m8, encoder: /4 }
