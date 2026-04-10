@@ -44,14 +44,13 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   // clang-format on
 
   for (uint8_t i = 1; CURR_TABLE[i].opcode_size; i++) {
-    const enum operands operand_list[4] = {
-        CURR_TABLE[i].operand_descriptors[0].type,
-        CURR_TABLE[i].operand_descriptors[1].type,
-        CURR_TABLE[i].operand_descriptors[2].type,
-        CURR_TABLE[i].operand_descriptors[3].type,
-    };
+    bool pass = false; // Represents if current table passes match
+    for (uint8_t j = 0; j < 4; j++) {
+      op_descriptor_t *descriptors = CURR_TABLE[i].operand_descriptors;
 
-    bool pass = op_assert_types(&instr.operands, operand_list, 4);
+      pass = op_assert_descriptor(instr.operands[j], descriptors[j]);
+      if (!pass) break; // No need to check further if one operand fails
+    }
     if (pass) return CURR_TABLE[i];
   }
 
