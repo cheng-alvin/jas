@@ -39,18 +39,10 @@ typedef struct instr_encode_table instr_encode_table_t;
 #define INSTR_ENUM
 #include "instructions.inc"
 
+typedef struct op_descriptor op_descriptor_t;
 struct instr_encode_table {
-  uint8_t opcode[3]; /* Opcode of the instruction */
-
-  struct {
-    enum operands type;     /* Type of operand, for error checking purposes */
-    enum enc_ident encoder; /* Instruction encoder identity for that operand */
-
-    union {
-      uint64_t imm;       /* Literal immediate value to be matched */
-      enum registers reg; /* Literal register value */
-    } literal;            /* Literal data for the encoder, if applicable */
-  } operand_descriptors[4];
+  uint8_t opcode[3];                      /* Opcode of the instruction */
+  op_descriptor_t operand_descriptors[4]; /* List of operand descriptors */
 
   /// @note describes the validity of the instruction as in adherence to
   /// Intel-associated documentation.

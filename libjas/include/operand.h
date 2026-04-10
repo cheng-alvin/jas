@@ -137,6 +137,16 @@ enum operands {
 
 #define op_rm(x) (op_r(x) || op_m(x))
 
+// --
+// clang-format off
+
+#define op_case_r case OP_R8: case OP_R16: case OP_R32: case OP_R64
+#define op_case_m case OP_M8: case OP_M16: case OP_M32: case OP_M64
+#define op_case_imm case OP_IMM8: case OP_IMM16: case OP_IMM32: case OP_IMM64
+#define op_case_rel case OP_REL8: case OP_REL16: case OP_REL32
+
+// clang-format on
+
 enum op_sib_scale {
   OP_SIB_SCALE_1 = 0,
   OP_SIB_SCALE_2 = 1,
@@ -258,19 +268,27 @@ uint8_t op_sizeof(enum operands input);
  */
 uint8_t op_disp_size(uint64_t displacement);
 
+typedef struct op_descriptor {
+  enum operands type;     /* Type of operand, for error checking purposes */
+  enum enc_ident encoder; /* Instruction encoder identity for that operand */
+
+  union {
+    uint64_t imm;       /* Literal immediate value to be matched */
+    enum registers reg; /* Literal register value */
+  } literal;            /* Literal data for the encoder, if applicable */
+} op_descriptor_t;
+
 /**
- * Function for asserting that the types of the input operand
- * array matches the expected operand types provided in the
- * expected operand array.
+ * Function for asserting the validity of an operand's type and
+ * value information against expected values as indicated to by
+ * the operand descriptor provided.
  *
- * @param in The input operand array to check against `ex`
- * @param ex List of expected operand types in enumerated form.
+ * @param in The Input operand array t be checked against.
+ * @param expected Operand descriptor array to be asserted.
  *
- * @param sz The size of the arrays provided.
- *
- * @return The result of the assertion; true if all types match
- * with the expected types, false otherwise.
+ * @return The result of the assertion, whether the input operands
+ * matches the expected operand descriptor's requirements.
  */
-bool op_assert_types(operand_t *in, enum operands *ex, size_t sz);
+bool op_assert_descriptor(operand_t in, op_descriptor_t expected);
 
 #endif

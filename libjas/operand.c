@@ -30,14 +30,6 @@
 #include <limits.h>
 #include <stdbool.h>
 
-bool op_assert_types(operand_t *in, enum operands *ex, size_t sz) {
-  for (size_t i = 0; i < sz; i++) {
-    if (ex[i] == OP_NULL) break;
-    if (in[i].type != ex[i]) return false;
-  }
-
-  return true;
-}
 // clang-format off
 #define mode_return(size, mode) { if (sz) *sz = size; return mode; }
 
@@ -64,6 +56,22 @@ enum op_modrm_modes op_modrm_mode(uint64_t displacement, uint8_t *sz) {
 }
 
 #undef mode_return
+
+bool op_assert_descriptor(operand_t in, op_descriptor_t expected) {
+  if (in.type != expected.type) return false;
+
+  if (expected.encoder == ENC_LITERAL) {
+    switch (expected.type) {
+    op_case_r:
+      if (in.mem.src_type != SIB) return false;
+      return in.mem.src.sib.reg == expected.literal.reg;
+      
+    op_case_imm: return in.imm == expected.literal.imm;
+    default: return false;
+    }
+  }
+}
+
 // clang-format on
 
 uint8_t op_sizeof(enum operands input) {
