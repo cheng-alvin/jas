@@ -43,13 +43,13 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   #include "instructions.inc"
   // clang-format on
 
-  for (uint8_t i = 1; CURR_TABLE[i].opcode_size; i++) {
+  for (uint8_t i = 0; CURR_TABLE[i].opcode_size; i++) {
     bool pass = false; // Represents if current table passes match
     for (uint8_t j = 0; j < 4; j++) {
-      op_descriptor_t *descriptors = CURR_TABLE[i].operand_descriptors;
+      op_descriptor_t *ex = CURR_TABLE[i].operand_descriptors;
 
-      pass = op_assert_descriptor(instr.operands[j], descriptors[j]);
-      if (!pass) break; // No need to check further if one operand fails
+      pass = op_assert_descriptor(instr.operands[j], ex[j]);
+      if (!pass) break; // No need to check further
     }
     if (pass) return CURR_TABLE[i];
   }
