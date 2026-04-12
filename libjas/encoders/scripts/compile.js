@@ -231,7 +231,7 @@ function generateEnumNames(instructions) {
 
 function generateInstructionNames(names) {
   let instrNames = "char *instr_tab_names[] = {\n";
-  for (let n = 1; n < names.length; n++) {
+  for (let n = 0; n < names.length; n++) {
     instrNames += `  "${names[n]}",`;
   }
 
