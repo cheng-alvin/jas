@@ -32,26 +32,34 @@ rex_t rex_apply(instruction_t *input, instr_encode_table_t *input_tab) {
   if (input_tab) tab = *input_tab;
 
   for (uint8_t i = 0; i < 4; i++) {
-    const operand_t op = input->operands[i];
+    const operand_t op = input->operands[i]; // Preserves current operand
 
-    if (op.type == OP_NULL) break;
     if (op_sizeof(op.type) == 64) rex |= REX_W;
+    if (op.type == OP_NULL || !op_rm(op.type)) break;
 
-    /// @note such usage of REX fields is only applicable
-    /// in context of SIB-based memory operands and register!
+    /// @note Boolean value representing whether the primary
+    /// register field of the current operand requires the use
+    /// of the register extension prefix.
+    const bool primary_reg = reg_needs_rex(op.mem.src.sib.reg);
 
-    if (op_rm(op.type) && op.mem.src_type == SIB) {
-      if (!tab.opcode_size) tab = instr_get_tab(*input);
+    if (!op.mem.src.sib.reg_disp) { // Checks whether is SIB-addressed.
+      enum enc_ident encoder = tab.operand_descriptors[i].encoder;
 
-      const enum enc_ident option =
-        tab.operand_descriptors[i].encoder;
+      // clang-format off
+      switch (encoder) {
+        case ENC_RM: case ENC_OPCODE_APPENDED:
+          if (primary_reg) rex |= REX_B;
+          break;
 
-      if (option == ENC_DEFAULT) rex |= REX_R;
-      if (reg_needs_rex(op.mem.src.sib.reg_disp)) rex |= REX_X;
-      else
-        rex |= REX_B;
+        default: if (primary_reg) rex |= REX_R; break;
+      }
+      // clang-format on
+    } else {
+      bool secondary_reg = reg_needs_rex(op.mem.src.sib.reg_disp);
+
+      if (primary_reg) rex |= REX_R;
+      if (secondary_reg) rex |= REX_X;
     }
   }
-
   return rex;
 }
