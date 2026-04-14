@@ -187,8 +187,8 @@ buffer_t enc_deserialize(enc_serialized_instr_t *in, buffer_t buf) {
     if (in->has_sib) buf_write(&buf, (uint8_t *)&in->sib, 1);
   }
 
-  write_imm_data(in->imm, in->imm_size);
   write_imm_data(in->disp, in->disp_size);
+  write_imm_data(in->imm, in->imm_size);
 
   return buf;
 }
