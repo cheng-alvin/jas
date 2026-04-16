@@ -174,6 +174,13 @@ struct enc_serialized_instr *enc_serialize(instr_generic_t *input, enum modes mo
   buf_write(&buf, endian(&data, size), size);
 
 buffer_t enc_deserialize(enc_serialized_instr_t *in, buffer_t buf) {
+  bool should_pre_allocate = !buf.capacity;
+  if (!should_pre_allocate) goto deserialize; // Jump forwards
+
+  buf.capacity = buf.len + in->encoded_size;
+  buf.data = realloc(buf.data, buf.capacity);
+
+deserialize:
   buf_concat(&buf, 1, &(in->prefixes));
   if (in->rex != REX_DEFAULT) buf_write_byte(&buf, in->rex);
 
@@ -190,6 +197,7 @@ buffer_t enc_deserialize(enc_serialized_instr_t *in, buffer_t buf) {
   write_imm_data(in->disp, in->disp_size);
   write_imm_data(in->imm, in->imm_size);
 
+  if (should_pre_allocate) buf.capacity = 0;
   return buf;
 }
 #undef write_imm_data // Macro no longer applicable.
