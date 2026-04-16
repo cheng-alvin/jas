@@ -33,6 +33,15 @@
 typedef struct {
   uint8_t *data; /* Buffer data */
   size_t len;    /* Length of buffer */
+
+  /// @brief Allows the buffer to reduce the number of
+  /// heap reallocations by keeping track of the pre-
+  /// dicted capacity of the buffer.
+
+  size_t capacity; /* Capacity of buffer */
+
+  /// @note If capacity is set, the buffer will give all
+  /// control to the caller to manage buffer's memory size.
 } buffer_t;
 
 void buf_write(buffer_t *buf, const uint8_t *data, const size_t data_len);
@@ -42,7 +51,8 @@ void buf_remove(buffer_t *buf, const size_t elem);
 #define BUF_NULL    \
   (buffer_t){       \
       .data = NULL, \
-      .len = 0}
+      .len = 0,     \
+      .capacity = 0}
 
 bool buf_element_exists(buffer_t *buf, const uint8_t elem);
 void buf_concat(buffer_t *buf, size_t count, ...);
