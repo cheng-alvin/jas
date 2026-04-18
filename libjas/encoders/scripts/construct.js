@@ -103,6 +103,13 @@ function constructYamlFile() {
         type: current[`type-${operandCount}`],
         encoder: current[`encoder-${operandCount}`],
       };
+      const match = current[`encoder-${operandCount}`].match(/^\{.*\}$/);
+
+      if (match) {
+        operand.encoder = "literal";
+        operand.value = match[0].slice(1, -1);
+      }
+
       variant.operands.push(operand);
       operandCount++;
     }
