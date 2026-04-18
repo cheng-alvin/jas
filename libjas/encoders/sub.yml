@@ -1,6 +1,34 @@
 instructions:
   - sub:
     variants:
+      - opcode: [0x2C]
+        operands:
+          - { type: r8, encoder: literal, value: al }
+          - { type: imm8, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+      - opcode: [0x2D]
+        operands:
+          - { type: r16, encoder: literal, value: ax }
+          - { type: imm16, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+      - opcode: [0x2D]
+        operands:
+          - { type: r32, encoder: literal, value: eax }
+          - { type: imm32, encoder: default }
+        compatibility:
+          long: true
+          legacy: true
+      - opcode: [0x2D]
+        operands:
+          - { type: r64, encoder: literal, value: rax }
+          - { type: imm32, encoder: default }
+        compatibility:
+          long: true
+          legacy: false
       - opcode: [0x80]
         operands:
           - { type: r/m8, encoder: /5 }
@@ -8,7 +36,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x81]
         operands:
           - { type: r/m16, encoder: /5 }
@@ -16,7 +43,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x81]
         operands:
           - { type: r/m32, encoder: /5 }
@@ -24,7 +50,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x81]
         operands:
           - { type: r/m64, encoder: /5 }
@@ -32,7 +57,6 @@ instructions:
         compatibility:
           long: true
           legacy: false
-
       - opcode: [0x83]
         operands:
           - { type: r/m16, encoder: /5 }
@@ -40,7 +64,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x83]
         operands:
           - { type: r/m32, encoder: /5 }
@@ -48,7 +71,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x83]
         operands:
           - { type: r/m64, encoder: /5 }
@@ -56,7 +78,6 @@ instructions:
         compatibility:
           long: true
           legacy: false
-
       - opcode: [0x28]
         operands:
           - { type: r/m8, encoder: r/m }
@@ -64,7 +85,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x29]
         operands:
           - { type: r/m16, encoder: r/m }
@@ -72,7 +92,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x29]
         operands:
           - { type: r/m32, encoder: r/m }
@@ -80,7 +99,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x29]
         operands:
           - { type: r/m64, encoder: r/m }
@@ -88,7 +106,6 @@ instructions:
         compatibility:
           long: true
           legacy: false
-
       - opcode: [0x2A]
         operands:
           - { type: r8, encoder: default }
@@ -96,7 +113,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x2B]
         operands:
           - { type: r16, encoder: default }
@@ -104,7 +120,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x2B]
         operands:
           - { type: r32, encoder: default }
@@ -112,7 +127,6 @@ instructions:
         compatibility:
           long: true
           legacy: true
-
       - opcode: [0x2B]
         operands:
           - { type: r64, encoder: default }
