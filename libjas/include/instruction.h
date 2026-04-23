@@ -94,14 +94,16 @@ typedef struct instr_generic {
 
 /**
  * Function for getting the instruction table based on the instruction
- * struct provided. The function will return a instruction table struct
- * as described above in this header file.
+ * struct provided. The function will return a instruction encoder 
+ * table struct that fulfils the criteria set by the input instruction.
+ * 
+ * @note Some instructions may include multiple valid encodings for a
+ * same operand type. A maximum of 2 valid encodings are expected and
+ * can contain a broad version _or_ or a tailored literal operand en-
+ * coding option.
  *
  * @param instr The instruction struct to get the identifier from
- * @return The instruction table struct
- *
- * @see `instr_encode_table_t`
- * @see `instruction_t`
+ * @return The instruction table struct that best matches input.
  */
 instr_encode_table_t instr_get_tab(instruction_t instr);
 

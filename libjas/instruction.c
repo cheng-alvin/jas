@@ -43,15 +43,43 @@ instr_encode_table_t instr_get_tab(instruction_t instr) {
   #include "instructions.inc"
   // clang-format on
 
-  for (uint8_t i = 0; CURR_TABLE[i].opcode_size; i++) {
-    bool pass = false; // Represents if current table passes match
-    for (uint8_t j = 0; j < 4; j++) {
-      op_descriptor_t *ex = CURR_TABLE[i].operand_descriptors;
+  // There may only be 2 candidates at most when dealing with
+  // instruction encoder cases. Either, that the instruction
+  // is matched with a same time _or_ a literal operand option.
 
-      pass = op_assert_descriptor(instr.operands[j], ex[j]);
-      if (!pass) break; // No need to check further
+  instr_encode_table_t *candidates[2] = {NULL, NULL};
+  uint8_t candidate_count = 0;
+
+  for (uint8_t i = 0; CURR_TABLE[i].opcode_size; i++) {
+    bool operand_match = false;
+    bool candidate_is_literal = false;
+
+    for (uint8_t j = 0; j < 4; j++) {
+      op_descriptor_t desc = CURR_TABLE[i].operand_descriptors[j];
+      operand_match = op_assert_descriptor(instr.operands[j], desc);
+
+      if (!operand_match) break; // No looping needed anymore
+      if (desc.encoder == ENC_LITERAL) candidate_is_literal = true;
     }
-    if (pass) return CURR_TABLE[i];
+    if (!operand_match) continue;
+
+    if (candidate_is_literal) return CURR_TABLE[i];
+    candidates[candidate_count] = &CURR_TABLE[i];
+    candidate_count++;
+  }
+
+  // Logic to bypass checker if there is no optimal literal operand
+  // option that fulfils the current input criteria.
+
+  if (candidate_count == 1) return *candidates[0];
+  for (uint8_t i = 0; i < candidate_count; i++) {
+    const instr_encode_table_t *current = candidates[i];
+
+    for (uint8_t j = 0; j < 4; j++) {
+      // Always prefer the literal operand option, if applicable.
+      const op_descriptor_t desc = current->operand_descriptors[j];
+      if (desc.encoder == ENC_LITERAL) return *current;
+    }
   }
 
   // fall-through; no corresponding instruction opcode found
